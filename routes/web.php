@@ -35,5 +35,15 @@ Route::middleware('auth')->group(function () {
         'profile.destroy'
     );
 });
+Route::prefix('admin')->group(function(){
+Route::controller(App\Http\Controllers\Admin\DashboardController::class)->group(function(){
+        Route::get('dashboard','index');
+        Route::get('dashboard/create','create');
+    });   
+Route::controller(App\Http\Controllers\Admin\MemberControlller::class)->group(function(){
+        Route::get('members','index');
+        Route::get('members/create','create');
+    });
+});
 
 require __DIR__ . '/auth.php';

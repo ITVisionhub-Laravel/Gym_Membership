@@ -1,15 +1,27 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{ url('admin/dashboard') }}">
           <i class="mdi mdi-home menu-icon"></i>
           <span class="menu-title">Dashboard</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('admin/members') }}">
+          <i class="mdi mdi-account menu-icon"></i>
+          <span class="menu-title">Add Members</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="index.html">
           <i class="mdi mdi-emoticon menu-icon"></i>
           <span class="menu-title">CheckIn CheckOut</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="index.html">
+          <i class="mdi mdi-webhook menu-icon"></i>
+          <span class="menu-title">Equipments</span>
         </a>
       </li>
       <li class="nav-item">

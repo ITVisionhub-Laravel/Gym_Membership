@@ -16,10 +16,10 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->integer('age');
-            $table->integer('height');
-            $table->integer('weight');
-            $table->integer('phone-number');
-            $table->integer('emergency-phone');
+            $table->string('height');
+            $table->string('weight');
+            $table->string('phone_number');
+            $table->string('emergency_phone');
             $table->timestamps();
         });
     }

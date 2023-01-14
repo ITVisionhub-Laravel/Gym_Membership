@@ -13,46 +13,47 @@
                 </h3>
             </div>
             <div class="card-body">
-                <form action="{{ url('admin/members') }}" method="POST">
+                <form action="{{ url('admin/members/'.$member->id) }}" method="POST">
                     @csrf
+                    @method('PUT')
                 <div class="mb-3">
                     <label for="">Name</label>
-                    <input type="text" name="name" class="form-control">
+                    <input type="text" name="name" value="{{ $member->name }}" class="form-control">
                     @error('name')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 <div class="mb-3">
                     <label for="">Age</label>
-                    <input type="number" name="age" class="form-control">
+                    <input type="number" name="age" value="{{ $member->age }}" class="form-control">
                     @error('age')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 <div class="mb-3">
                     <label for="">Height</label>
-                    <input type="text" name="height" class="form-control">
+                    <input type="text" name="height" value="{{ $member->height }}" class="form-control">
                     @error('height')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 <div class="mb-3">
                     <label for="">Weight</label>
-                    <input type="text" name="weight" class="form-control">
+                    <input type="text" name="weight" value="{{ $member->weight }}" class="form-control">
                     @error('weight')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 <div class="mb-3">
                     <label for="">Address</label>
-                    <input type="text" name="address" class="form-control">
+                    <input type="text" name="address" value="{{ $member->address }}" class="form-control">
                     @error('address')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 <div class="mb-3">
                     <label for="">Mobile</label>
-                    <input type="text" name="phone_number" class="form-control">
+                    <input type="text" name="phone_number" value="{{ $member->phone_number }}" class="form-control">
                     @error('phone_number')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 <div class="mb-3">
                     <label for="">Emergency Mobile</label>
-                    <input type="text" name="emergency_phone" class="form-control">
+                    <input type="text" name="emergency_phone" value="{{ $member->emergency_phone }}" class="form-control">
                     @error('emergency_phone')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
 
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
                 </form>
             </div>

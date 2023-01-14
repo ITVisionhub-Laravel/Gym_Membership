@@ -19,6 +19,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="index.html">
+          <i class="mdi mdi-webhook menu-icon"></i>
+          <span class="menu-title">Equipments</span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
           <i class="mdi mdi-chart-pie menu-icon"></i>
           <span class="menu-title">Package</span>

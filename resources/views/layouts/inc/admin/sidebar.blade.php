@@ -19,7 +19,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{ url('admin/equipments') }}">
           <i class="mdi mdi-webhook menu-icon"></i>
           <span class="menu-title">Equipments</span>
         </a>
@@ -32,16 +32,23 @@
         </a>
         <div class="collapse" id="ui-basic">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/package/create') }}">Add Packages</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/package') }}">View Packages</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/packages/create') }}">Add Packages</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/packages') }}">View Packages</a></li>
           </ul>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ url('admin/brands') }}">
+        <a class="nav-link" data-bs-toggle="collapse" href="#payment" aria-expanded="false" aria-controls="payment">
           <i class="mdi mdi-currency-usd menu-icon"></i>
           <span class="menu-title">Payment</span>
+          <i class="menu-arrow"></i>
         </a>
+        <div class="collapse" id="payment">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/payment') }}">Add Payment Records</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/payment/provider') }}">Add Payment Method</a></li>
+          </ul>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">

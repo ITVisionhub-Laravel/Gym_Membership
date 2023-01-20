@@ -19,7 +19,7 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="{{ url('admin/equipments') }}">
           <i class="mdi mdi-webhook menu-icon"></i>
           <span class="menu-title">Equipments</span>
         </a>

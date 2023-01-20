@@ -35,16 +35,13 @@ Route::middleware('auth')->group(function () {
         'profile.destroy'
     );
 });
-Route::prefix('admin')->group(function () {
-    Route::controller(
-        App\Http\Controllers\Admin\DashboardController::class
-    )->group(function () {
-        Route::get('dashboard', 'index');
-        Route::get('dashboard/create', 'create');
-    });
-    Route::controller(
-        App\Http\Controllers\Admin\MemberControlller::class
-    )->group(function () {
+
+Route::prefix('admin')->group(function(){
+Route::controller(App\Http\Controllers\Admin\DashboardController::class)->group(function(){
+        Route::get('dashboard','index');
+        Route::get('dashboard/create','create');
+    });   
+Route::controller(App\Http\Controllers\Admin\MemberControlller::class)->group(function () {
         Route::get('/members', 'index');
         Route::get('/members/create', 'create');
         Route::post('/members', 'store');
@@ -53,8 +50,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/members/{member_id}/delete', 'destroy');
     });
 
-    Route::controller(
-        App\Http\Controllers\Admin\EquipmentController::class
+Route::controller(App\Http\Controllers\Admin\EquipmentController::class
     )->group(function () {
         Route::get('/equipments', 'index');
         Route::get('/equipments/create', 'create');
@@ -63,6 +59,7 @@ Route::prefix('admin')->group(function () {
         Route::put('/equipments/{equipment}', 'update');
         Route::get('/equipments/{equipment_id}/delete', 'destroy');
     });
+
 });
 
 require __DIR__ . '/auth.php';

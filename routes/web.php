@@ -40,14 +40,15 @@ Route::controller(App\Http\Controllers\Admin\DashboardController::class)->group(
         Route::get('dashboard','index');
         Route::get('dashboard/create','create');
     });   
-Route::controller(App\Http\Controllers\Admin\MemberControlller::class)->group(function(){
-        Route::get('/members','index');
-        Route::get('/members/create','create');
-        Route::post('/members','store');
-        Route::get('/members/{member}/edit','edit');
-        Route::put('/members/{member}','update');
-        Route::get('/members/{member_id}/delete','destroy');
+Route::controller(App\Http\Controllers\Admin\MemberControlller::class)->group(function () {
+        Route::get('/members', 'index');
+        Route::get('/members/create', 'create');
+        Route::post('/members', 'store');
+        Route::get('/members/{member}/edit', 'edit');
+        Route::put('/members/{member}', 'update');
+        Route::get('/members/{member_id}/delete', 'destroy');
     });
+
 });
 
 require __DIR__ . '/auth.php';

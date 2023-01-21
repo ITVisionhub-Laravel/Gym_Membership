@@ -45,15 +45,15 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#payment" aria-expanded="false" aria-controls="payment">
-          <i class="mdi mdi-currency-usd menu-icon"></i>
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <i class="mdi mdi-currency-usd menu-icon"></i>
           <span class="menu-title">Payment</span>
           <i class="menu-arrow"></i>
         </a>
-        <div class="collapse" id="payment">
+        <div class="collapse" id="ui-basic">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/payment') }}">Add Payment Records</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/payment/provider') }}">Add Payment Method</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_providers.create') }}">Add Payments</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_providers.index')}}">View Payments</a></li>
           </ul>
         </div>
       </li>

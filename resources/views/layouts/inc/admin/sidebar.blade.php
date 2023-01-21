@@ -57,6 +57,7 @@
           </ul>
         </div>
       </li>
+      {{--  trainer  --}}
       <li class="nav-item">
         <a class="nav-link" href="{{ url('admin/trainers') }}">
           <i class="mdi mdi-webhook menu-icon"></i>

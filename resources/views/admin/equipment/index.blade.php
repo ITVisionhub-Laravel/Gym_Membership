@@ -15,7 +15,7 @@
                 </h3>
             </div>
             <div class="card-body">
-                <table class="table table-bordered table-striped">
+                <table id="myTable" class="display">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -48,4 +48,12 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+     $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
+</script>
 @endsection

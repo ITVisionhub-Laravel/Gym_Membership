@@ -7,16 +7,23 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ url('admin/members') }}">
+        <a class="nav-link" href="{{ url('admin/customers') }}">
           <i class="mdi mdi-account menu-icon"></i>
           <span class="menu-title">Add Members</span>
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
-          <i class="mdi mdi-emoticon menu-icon"></i>
-          <span class="menu-title">CheckIn CheckOut</span>
+        <a class="nav-link" data-bs-toggle="collapse" href="#attendance" aria-expanded="false" aria-controls="attendance">
+          <i class="mdi mdi-checkbox-marked-circle menu-icon"></i>
+          <span class="menu-title">Attendance</span>
+          <i class="menu-arrow"></i>
         </a>
+        <div class="collapse" id="attendance">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="#">CheckIn CheckOut</a></li>
+            <li class="nav-item"> <a class="nav-link" href="#">View Attendance</a></li>
+          </ul>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url('admin/equipments') }}">
@@ -32,8 +39,8 @@
         </a>
         <div class="collapse" id="ui-basic">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/packages/create') }}">Add Packages</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/packages') }}">View Packages</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_packages.create') }}">Add Packages</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_packages.index')}}">View Packages</a></li>
           </ul>
         </div>
       </li>
@@ -54,12 +61,6 @@
         <a class="nav-link" href="{{ url('admin/trainers') }}">
           <i class="mdi mdi-webhook menu-icon"></i>
           <span class="menu-title">Trainers</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="documentation/documentation.html">
-          <i class="mdi mdi-file-document-box-outline menu-icon"></i>
-          <span class="menu-title">Attendent</span>
         </a>
       </li>
     </ul>

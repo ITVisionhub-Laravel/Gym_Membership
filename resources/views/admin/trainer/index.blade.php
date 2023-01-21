@@ -10,7 +10,7 @@
         @endif
         <div class="card">
             <div class="card-header">
-                <h3>Tainer List
+                <h3>Trainer List
                     <a href="{{ url('admin/trainers/create') }}" class="btn btn-primary btn-sm text-white float-end">Add Trainer</a>
                 </h3>
             </div>

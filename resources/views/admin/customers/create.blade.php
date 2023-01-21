@@ -56,7 +56,7 @@
                     @error('emergency_phone')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 </div>
-                <div class="row pt-3">
+                {{--  <div class="row pt-3">
                 <div class="form-group col-md-6">
                     <label for="">Select Packages</label>
                     <select name="package" class="form-control" id="">
@@ -65,7 +65,7 @@
                         @endforeach
                     </select>
                     @error('package')<small class="text-danger">{{ $message }}</small>@enderror
-                </div>
+                </div>  --}}
                 <div class="form-group col-md-6">
                     <label for="">Image</label>
                         <input type="file" name="image" class="form-control">

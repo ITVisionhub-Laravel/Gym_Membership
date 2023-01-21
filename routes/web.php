@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\PaymentPackageController;
+use App\Http\Controllers\Admin\PaymentProviderController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,8 @@ Route::middleware('auth')->group(function () {
     );
     
     Route::resource('payment_packages', PaymentPackageController::class);
+    Route::resource('payment_providers', PaymentProviderController::class);
+
 });
 
 Route::prefix('admin')->group(function(){

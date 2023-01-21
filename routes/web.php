@@ -67,6 +67,16 @@ Route::controller(App\Http\Controllers\Admin\EquipmentController::class
         Route::get('/equipments/{equipment_id}/delete', 'destroy');
     });
 
+    Route::controller(App\Http\Controllers\Admin\TrainerController::class
+    )->group(function () {
+        Route::get('/trainers', 'index');
+        Route::get('/trainers/create', 'create');
+        Route::post('/trainers', 'store');
+        Route::get('/trainers/{trainer}/edit', 'edit');
+        Route::put('/trainers/{trainer}', 'update');
+        Route::get('/trainers/{trainer_id}/delete', 'destroy');
+    });
+
 });
 
 require __DIR__ . '/auth.php';

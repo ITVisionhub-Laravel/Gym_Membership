@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PaymentPackageController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
         'profile.destroy'
     );
+    
+    Route::resource('payment_packages', PaymentPackageController::class);
 });
 
 Route::prefix('admin')->group(function(){
@@ -41,13 +44,14 @@ Route::controller(App\Http\Controllers\Admin\DashboardController::class)->group(
         Route::get('dashboard','index');
         Route::get('dashboard/create','create');
     });   
-Route::controller(App\Http\Controllers\Admin\MemberControlller::class)->group(function () {
-        Route::get('/members', 'index');
-        Route::get('/members/create', 'create');
-        Route::post('/members', 'store');
-        Route::get('/members/{member}/edit', 'edit');
-        Route::put('/members/{member}', 'update');
-        Route::get('/members/{member_id}/delete', 'destroy');
+
+Route::controller(App\Http\Controllers\Admin\CustomerController::class)->group(function () {
+        Route::get('/customers', 'index');
+        Route::get('/customers/create', 'create');
+        Route::post('/customers', 'store');
+        Route::get('/customers/{customer}/edit', 'edit');
+        Route::put('/customers/{customer}', 'update');
+        Route::get('/customers/{customer_id}/delete', 'destroy');
     });
 
 Route::controller(App\Http\Controllers\Admin\EquipmentController::class

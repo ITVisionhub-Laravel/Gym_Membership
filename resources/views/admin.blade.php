@@ -25,6 +25,7 @@
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="{{asset('admin/css/style.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/css/jquery.dataTables.min.css')}}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{{asset('admin/images/favicon.png')}}" />
 
@@ -65,8 +66,16 @@
     <script src="{{asset('admin/js/jquery.dataTables.js')}}"></script>
     <script src="{{asset('admin/js/dataTables.bootstrap4.js')}}"></script>
      {{--  End custom js for this page  --}}
-     @yield('scripts')
+
+
+     //Pukit
+     <script src="{{asset('assets/js/jquery-3.6.3.min.js')}}"></script>
+     <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+
+   
     @livewireScripts
+    @yield('script')
+    
     @stack('script')
 </body>
 </html>

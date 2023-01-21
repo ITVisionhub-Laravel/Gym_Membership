@@ -9,11 +9,11 @@
         <div class="card">
             <div class="card-header">
                 <h3>Add Member
-                    <a href="{{ url('admin/members') }}" class="btn btn-danger btn-sm text-white float-end">Back</a>
+                    <a href="{{ url('admin/customers') }}" class="btn btn-danger btn-sm text-white float-end">Back</a>
                 </h3>
             </div>
             <div class="card-body">
-                <form action="{{ url('admin/members') }}" method="POST">
+                <form action="{{ url('admin/customers') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                 <div class="row pt-3">
                     <div class="form-group col-md-6">
@@ -56,8 +56,24 @@
                     @error('emergency_phone')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 </div>
+                <div class="row pt-3">
+                <div class="form-group col-md-6">
+                    <label for="">Select Packages</label>
+                    <select name="package" class="form-control" id="">
+                        @foreach ($packages as $package)
+                            <option value="{{ $package->package }}">{{ $package->package }}</option>
+                        @endforeach
+                    </select>
+                    @error('package')<small class="text-danger">{{ $message }}</small>@enderror
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="">Image</label>
+                        <input type="file" name="image" class="form-control">
+                    @error('image')<small class="text-danger">{{ $message }}</small>@enderror 
+                </div>
+                </div>
                 <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
                 </div>
                 </form>
             </div>

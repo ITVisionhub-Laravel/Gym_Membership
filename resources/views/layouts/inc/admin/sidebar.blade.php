@@ -51,11 +51,10 @@
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-          <i class="mdi mdi-account menu-icon"></i>
-          <span class="menu-title">Trainner</span>
+        <a class="nav-link" href="{{ url('admin/trainers') }}">
+          <i class="mdi mdi-webhook menu-icon"></i>
+          <span class="menu-title">Trainers</span>
         </a>
-       
       </li>
       <li class="nav-item">
         <a class="nav-link" href="documentation/documentation.html">

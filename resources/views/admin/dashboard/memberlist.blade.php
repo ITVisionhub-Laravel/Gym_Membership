@@ -20,7 +20,7 @@
                 <div class="tab-pane fade show active" id="pills-active" role="tabpanel" aria-labelledby="pills-active-tab" tabindex="0">
                   <div class="container bg-grey p-2 my-2 border col-md-12">
                    @forelse ($attendencedMembers as $attendencedMember)
-                      if($attendencedMember->customer){
+                      @if($attendencedMember->customer)
                         <div class="row col-md-12">
                           <div class="item-thumbnail col-md-5">
                             <img src="images/faces/face4.jpg" alt="image" class="profile-pic" style="border-radius: 100%;">
@@ -31,9 +31,9 @@
                             <p>12-3-2023</p>
                           </div>
                         </div> 
-                       }  else{
+                       @else
                           <div>No Attended Member</div>
-                       } 
+                       @endif 
                    @empty
                        <div>No Attended Member</div>
                    @endforelse

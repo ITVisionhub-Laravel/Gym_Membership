@@ -31,7 +31,7 @@
      
        @include('admin.dashboard.barchart')
 
-       @include('admin.dashboard.memberlist')
+       @include('admin.dashboard.memberlist',compact('attendencedMembers','members'))
       
     </div>
 

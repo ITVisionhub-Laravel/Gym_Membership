@@ -39,10 +39,29 @@
                     @error('weight')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 </div>
-                <div class="form-group col-md-12">
-                    <label for="">Address</label>
-                    <input type="text" name="address" class="form-control" placeholder="Enter Your Address">
-                    @error('address')<small class="text-danger">{{ $message }}</small>@enderror
+                <div class="row pt-3">
+                <div class="form-group col-md-4">
+                    <label for="">City</label>
+                    <select  id="city-dd" class="form-control" name="city">
+                            <option value="">Select City</option>
+                            @foreach ($cities as $data)
+                                <option value="{{$data->id}}">
+                                    {{$data->name}}
+                                </option>
+                            @endforeach
+                    </select>
+                    </div>
+                    @error('city')<small class="text-danger">{{ $message }}</small>@enderror
+                    <div class="form-group col-md-4">
+                        <label for="">Township</label>
+                        <select id="township-dd" class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="">Street</label>
+                        <select id="street-dd" class="form-control">
+                        </select>
+                    </div>
                 </div>
                 <div class="row pt-3">
                 <div class="form-group col-md-6">
@@ -56,16 +75,19 @@
                     @error('emergency_phone')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 </div>
-                {{--  <div class="row pt-3">
+                <div class="row pt-3">
                 <div class="form-group col-md-6">
-                    {{-- <label for="">Select Packages</label>
-                    <select name="package" class="form-control" id="">
-                        @foreach ($packages as $package)
-                            <option value="{{ $package->package }}">{{ $package->package }}</option>
-                        @endforeach
+                    <label for="">Select Packages</label>
+                    <select  id="package-dd" class="form-control">
+                            <option value="">Select Package</option>
+                            @foreach ($packages as $data)
+                            <option value="{{$data->id}}">
+                                {{$data->package}}
+                            </option>
+                            @endforeach
                     </select>
 
-                    @error('package')<small class="text-danger">{{ $message }}</small>@enderror --}}
+                    @error('package')<small class="text-danger">{{ $message }}</small>@enderror 
                 </div>
                 <div class="form-group col-md-6">
                     <label for="">Image</label>
@@ -82,3 +104,49 @@
     </div>
 </div>
 @endsection
+
+<script>
+        $(document).ready(function () {
+            $('#city-dd').on('change', function () {
+                var idCity = this.value;
+                $("#township-dd").html('');
+                $.ajax({
+                    url: "{{url('admin/customers/fetch_township')}}",
+                    type: "POST",
+                    data: {
+                        city_id: idCity,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#township-dd').html('<option value="">Select Township</option>');
+                        $.each(result.townships, function (key, value) {
+                            $("#township-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                        $('#city-dd').html('<option value="">Select City</option>');
+                    }
+                });
+            });
+            $('#township-dd').on('change', function () {
+                var idTownship = this.value;
+                $("#street-dd").html('');
+                $.ajax({
+                    url: "{{url('admin/customers/fetch_street')}}",
+                    type: "POST",
+                    data: {
+                        township_id: idTownship,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        $('#street-dd').html('<option value="">Select Street</option>');
+                        $.each(res.streets, function (key, value) {
+                            $("#street-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>

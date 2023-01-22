@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CustomerFormRequest;
+use App\Models\City;
 use App\Models\Customer;
 use App\Models\PaymentPackage;
+use App\Models\Street;
+use App\Models\Township;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -19,9 +22,22 @@ class CustomerController extends Controller
     public function create()
     {
         // dd('hit');
-        $packages=PaymentPackage::all();
-        return view('admin.customers.create',compact('packages'));
+         $data['cities'] = City::get(["name", "id"]);
+         $data['packages'] = PaymentPackage::get(["package", "promotion"]);
+        // $packages=PaymentPackage::all();
+        return view('admin.customers.create',$data);
     }
+    public function fetchTownship(Request $request)
+    {
+        $data['townships'] = Township::where("city_id",$request->city_id)->get(["name", "id"]);
+        return response()->json($data);
+    }
+    public function fetchStreet(Request $request)
+    {
+        $data['streets'] = Street::where("township_id",$request->township_id)->get(["name", "id"]);
+        return response()->json($data);
+    }
+    
     public function store(CustomerFormRequest $request)
     {
         $validatedData = $request->validated();

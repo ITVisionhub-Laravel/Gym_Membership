@@ -16,38 +16,45 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers=Customer::all();
-        return view('admin.customers.index',compact('customers'));
+        $customers = Customer::all();
+        return view('admin.customers.index', compact('customers'));
     }
     public function create()
     {
         // dd('hit');
-         $data['cities'] = City::get(["name", "id"]);
-         $data['packages'] = PaymentPackage::get(["package", "promotion"]);
+        $data['cities'] = City::get(['name', 'id']);
+        $data['packages'] = PaymentPackage::get();
+        // dd($data['packages']);
         // $packages=PaymentPackage::all();
-        return view('admin.customers.create',$data);
+        return view('admin.customers.create', $data);
     }
     public function fetchTownship(Request $request)
     {
-        $data['townships'] = Township::where("city_id",$request->city_id)->get(["name", "id"]);
+        $data['townships'] = Township::where(
+            'city_id',
+            $request->city_id
+        )->get(['name', 'id']);
         return response()->json($data);
     }
     public function fetchStreet(Request $request)
     {
-        $data['streets'] = Street::where("township_id",$request->township_id)->get(["name", "id"]);
+        $data['streets'] = Street::where(
+            'township_id',
+            $request->township_id
+        )->get(['name', 'id']);
         return response()->json($data);
     }
-    
+
     public function store(CustomerFormRequest $request)
     {
         $validatedData = $request->validated();
         $customer = new Customer();
         $customer->name = $validatedData['name'];
-        $customer->age=$validatedData['age'];
-        $customer->height=$validatedData['height'];
-        $customer->weight=$validatedData['weight'];
-        $customer->phone_number=$validatedData['phone_number'];
-        $customer->emergency_phone=$validatedData['emergency_phone'];
+        $customer->age = $validatedData['age'];
+        $customer->height = $validatedData['height'];
+        $customer->weight = $validatedData['weight'];
+        $customer->phone_number = $validatedData['phone_number'];
+        $customer->emergency_phone = $validatedData['emergency_phone'];
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $ext = $file->getClientOriginalExtension();
@@ -65,19 +72,19 @@ class CustomerController extends Controller
     public function edit(Customer $customer)
     {
         // dd("hello");
-        return view('admin.customers.edit',compact('customer'));
+        return view('admin.customers.edit', compact('customer'));
     }
-    public function update(CustomerFormRequest $request,$customer)
+    public function update(CustomerFormRequest $request, $customer)
     {
         // dd($customer);
-        $validatedData=$request->validated();
-        $customer=Customer::findOrFail($customer);
-        $customer->name=$validatedData['name'];
-        $customer->age=$validatedData['age'];
-        $customer->height=$validatedData['height'];
-        $customer->weight=$validatedData['weight'];
-        $customer->phone_number=$validatedData['phone_number'];
-        $customer->emergency_phone=$validatedData['emergency_phone'];
+        $validatedData = $request->validated();
+        $customer = Customer::findOrFail($customer);
+        $customer->name = $validatedData['name'];
+        $customer->age = $validatedData['age'];
+        $customer->height = $validatedData['height'];
+        $customer->weight = $validatedData['weight'];
+        $customer->phone_number = $validatedData['phone_number'];
+        $customer->emergency_phone = $validatedData['emergency_phone'];
         if ($request->hasFile('image')) {
             $path = public_path('uploads/customer/' . $customer->image);
             if (File::exists($path)) {
@@ -90,18 +97,24 @@ class CustomerController extends Controller
             $customer->image = $filename;
         }
         $customer->update();
-        return redirect('admin/customers')->with('message','Customer Updated Successfully');
+        return redirect('admin/customers')->with(
+            'message',
+            'Customer Updated Successfully'
+        );
     }
 
     public function destroy($customer_id)
     {
-        $customer=Customer::findOrFail($customer_id);
+        $customer = Customer::findOrFail($customer_id);
         $path = public_path('uploads/customer/' . $customer->image);
         if (File::exists($path)) {
             File::delete($path);
         }
         $customer->delete();
-        return redirect('admin/customers')->with('message','Customer Deleted Successfully');
+        return redirect('admin/customers')->with(
+            'message',
+            'Customer Deleted Successfully'
+        );
     }
     public function payment()
     {

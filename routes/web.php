@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PaymentPackageController;
 use App\Http\Controllers\Admin\PaymentProviderController;
 use App\Http\Controllers\ProfileController;
@@ -55,6 +56,8 @@ Route::controller(App\Http\Controllers\Admin\CustomerController::class)->group(f
         Route::get('/customers/{customer}/edit', 'edit');
         Route::put('/customers/{customer}', 'update');
         Route::get('/customers/{customer_id}/delete', 'destroy');
+        Route::post('/customers/fetch_township', 'fetchTownship');
+        Route::post('/customers/fetch_street', 'fetchStreet');
     });
 
 Route::controller(App\Http\Controllers\Admin\EquipmentController::class

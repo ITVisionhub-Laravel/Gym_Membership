@@ -49,10 +49,9 @@
     </table>
 </div>
 @endsection
-@section('script')
+@section('scripts')
 <script>
      $(document).ready( function () {
-        $('#myTable').DataTable();
         // scrollX: true,
     } );
 </script>

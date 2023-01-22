@@ -39,10 +39,10 @@
                     @error('weight')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 </div>
-                <div class="row pt-3">
+                 <div class="row pt-3">
                 <div class="form-group col-md-4">
                     <label for="">City</label>
-                    <select  id="city-dd" class="form-control" name="city">
+                    <select  id="city" class="form-control" name="city">
                             <option value="">Select City</option>
                             @foreach ($cities as $data)
                                 <option value="{{$data->id}}">
@@ -81,7 +81,7 @@
                     <select  id="package-dd" class="form-control">
                             <option value="">Select Package</option>
                             @foreach ($packages as $data)
-                            <option value="{{$data->id}}">
+                            <option value="{{ $data->id." ".$data->promotion }}">
                                 {{$data->package}}
                             </option>
                             @endforeach
@@ -89,7 +89,11 @@
 
                     @error('package')<small class="text-danger">{{ $message }}</small>@enderror 
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-2">
+                  <label for="promotion"> Promotion</label>
+                  <input type="text" class="form-control" id="promotion" name="promotion"  placeholder="Promotion" required readonly/>
+                </div>
+                <div class="form-group col-md-4">
                     <label for="">Image</label>
                         <input type="file" name="image" class="form-control">
                     @error('image')<small class="text-danger">{{ $message }}</small>@enderror 
@@ -104,17 +108,18 @@
     </div>
 </div>
 @endsection
-
-<script>
+@section('scripts')
+<script  type="text/javascript">
         $(document).ready(function () {
-            $('#city-dd').on('change', function () {
-                var idCity = this.value;
+        
+            $('#city').on('change', function () {
+                var cityId = $(this).val();
                 $("#township-dd").html('');
                 $.ajax({
                     url: "{{url('admin/customers/fetch_township')}}",
                     type: "POST",
                     data: {
-                        city_id: idCity,
+                        city_id: cityId,
                         _token: '{{csrf_token()}}'
                     },
                     dataType: 'json',
@@ -129,13 +134,13 @@
                 });
             });
             $('#township-dd').on('change', function () {
-                var idTownship = this.value;
+                var townshipId = $(this).val();
                 $("#street-dd").html('');
                 $.ajax({
                     url: "{{url('admin/customers/fetch_street')}}",
                     type: "POST",
                     data: {
-                        township_id: idTownship,
+                        township_id: townshipId,
                         _token: '{{csrf_token()}}'
                     },
                     dataType: 'json',
@@ -148,5 +153,10 @@
                     }
                 });
             });
+             $('#package-dd').on('change', function () {
+                var packageData = $(this).val().split(" ");
+                document.getElementById("promotion").value = packageData[1];
+            });
         });
     </script>
+    @endsection

@@ -3,6 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Address;
+use App\Models\City;
+use App\Models\Street;
+use App\Models\Township;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -14,11 +19,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        Street::truncate();
+        City::truncate();
+        Township::truncate();
+        Address::truncate();
+        Street::factory(30)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        $this->call([
+        CityTableData::class,
+        TownshipTableData::class,
+        AddressTableData::class,
+    ]);
     }
 }

@@ -20,7 +20,7 @@
                 <i class="mdi mdi-magnify"></i>
               </span>
             </div>
-            <input type="text" class="form-control" placeholder="Search now" aria-label="search" aria-describedby="search">
+            <input type="text" class="form-control" placeholder="Search" aria-label="search" aria-describedby="search">
           </div>
         </li>
       </ul>
@@ -121,6 +121,7 @@
         <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" id="profileDropdown">
             <img src="images/faces/face5.jpg" alt="profile"/>
+
             <span class="nav-profile-name">hi</span>
           </a>
           <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MemberFormRequest extends FormRequest
+class CustomerFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,6 +30,7 @@ class MemberFormRequest extends FormRequest
             'weight'=>['required','string'],
             'phone_number'=>['required','string'],
             'emergency_phone'=>['required','string'],
+            'image' => ['nullable', 'mimes:jpg,jpeg,png'],
         ];
     }
 }

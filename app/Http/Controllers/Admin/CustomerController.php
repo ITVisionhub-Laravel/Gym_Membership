@@ -116,4 +116,13 @@ class CustomerController extends Controller
             'Customer Deleted Successfully'
         );
     }
+    public function payment()
+    {
+        $data['customers'] = Customer::get(["name", "id"]);
+        return view('admin.customers.payment',$data);
+    }
+    public function invoice()
+    {
+        return view('admin.customers.invoice'); 
+    }
 }

@@ -22,13 +22,12 @@ class DatabaseSeeder extends Seeder
         Street::truncate();
         City::truncate();
         Township::truncate();
-        Address::truncate();
-        Street::factory(30)->create();
+        Street::truncate();
 
         $this->call([
         CityTableData::class,
         TownshipTableData::class,
-        AddressTableData::class,
+        StreetTableData::class,
     ]);
     }
 }

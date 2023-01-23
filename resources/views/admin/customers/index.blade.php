@@ -6,7 +6,7 @@
             <div class="alert alert-success">{{ session('message') }}</div>
     @endif
     <h3 class="my-2">Members List
-    <a href="{{ url('admin/customers/payment') }}"  class="btn btn-success btn-sm text-white float-end">Add Fees</a>
+    {{-- <a href="{{ url('admin/customers/payment') }}"  class="btn btn-success btn-sm text-white float-end">Add Fees</a> --}}
     <a href="{{ url('admin/customers/create') }}" class="btn btn-primary btn-sm text-white float-end">Add Members</a>
     </h3>
     <hr>
@@ -33,7 +33,11 @@
                 <td>{{ $customer->age }}</td>
                 <td>{{ $customer->height}}</td>
                 <td>{{ $customer->weight}}</td>
-                <td>{{ $customer->address}}</td>
+                <td>
+                    {{ $customer->address->street->township->city->name}},<br>
+                    {{ $customer->address->street->township->name}},<br>
+                    {{ $customer->address->street->name}}
+                </td>
                 <td>{{ $customer->phone_number}}</td>
                 <td>{{ $customer->emergency_phone}}</td>
                 <td>
@@ -50,55 +54,13 @@
     </table>
 </div>
 @endsection
+
 @section('scripts')
 <script>
      $(document).ready( function () {
-        // scrollX: true,
+        $('#myTable').DataTable({
+             scrollX: true,
+        });
     } );
 </script>
 @endsection
-
-<!--Payment Modal -->
-<div class="modal fade" id="paymentModel" tabindex="-1" aria-labelledby="paymentModelLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="paymentModelLabel">Add Payment</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-    <form wire:submit.prevent="storeBrand">
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="">Select Member</label>
-          <select wire:model.defer="member_id" class="form-control" id="">
-          </select>
-        </div>
-        <div class="mb-3">
-            <label for="">Package</label>
-            <input type="text" wire:model.defer="package" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="">Promotion</label>
-            <input type="text" wire:model.defer="promotion" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="">Training Fees</label>
-            <input type="text" wire:model.defer="training_fee" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="">Cash In</label>
-            <input type="text" wire:model.defer="cash_in" class="form-control">
-        </div>
-        <div class="mb-3">
-            <label for="">Remaining Fees</label>
-            <input type="text" wire:model.defer="remaining_fee" class="form-control">
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" wire:click="closeModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </div>
-    </form>
-    </div>
-    </div>
-  </div>

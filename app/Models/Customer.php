@@ -18,6 +18,11 @@ class Customer extends Model
         'weight',
         'phone_number',
         'emergency_phone', 
-        'image'
+        'image',
+        'address_id'
     ];
+    public function address(){
+        return $this->belongsTo(Address::class, 'address_id', 'id');
+    }
+    
 }

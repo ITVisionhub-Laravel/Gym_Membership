@@ -42,10 +42,10 @@
                  <div class="row pt-3">
                 <div class="form-group col-md-4">
                     <label for="">City</label>
-                    <select  id="city" class="form-control" name="city">
+                    <select  id="city" class="form-select" name="city" >
                             <option value="">Select City</option>
                             @foreach ($cities as $data)
-                                <option value="{{$data->id}}">
+                                <option  value="{{$data->id}}">
                                     {{$data->name}}
                                 </option>
                             @endforeach
@@ -54,12 +54,12 @@
                     @error('city')<small class="text-danger">{{ $message }}</small>@enderror
                     <div class="form-group col-md-4">
                         <label for="">Township</label>
-                        <select id="township-dd" class="form-control">
+                        <select id="township-dd" class="form-select" name="township" >
                         </select>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="">Street</label>
-                        <select id="street-dd" class="form-control">
+                        <select id="street-dd" class="form-select" name="street" >
                         </select>
                     </div>
                 </div>
@@ -76,12 +76,12 @@
                 </div>
                 </div>
                 <div class="row pt-3">
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-3">
                     <label for="">Select Packages</label>
-                    <select  id="package-dd" class="form-control">
+                    <select  id="package-dd" class="form-select" name="package" >
                             <option value="">Select Package</option>
                             @foreach ($packages as $data)
-                            <option value="{{ $data->id." ".$data->promotion }}">
+                            <option  value="{{ $data->id." ".$data->promotion." ".$data->original_price }}">
                                 {{$data->package}}
                             </option>
                             @endforeach
@@ -89,11 +89,35 @@
 
                     @error('package')<small class="text-danger">{{ $message }}</small>@enderror 
                 </div>
-                <div class="form-group col-md-2">
+                <div class="form-group col-md-3">
                   <label for="promotion"> Promotion</label>
                   <input type="text" class="form-control" id="promotion" name="promotion"  placeholder="Promotion" required readonly/>
                 </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-3">
+                  <label for="original_price">Original Price</label>
+                  <input type="text" class="form-control" id="original_price" name="original_price"  placeholder="Original Price" required readonly/>
+                </div>
+                <div class="form-group col-md-3">
+                  <label for="price"> Price</label>
+                  <input type="text" class="form-control" id="price" name="price"  placeholder="Original Price" required readonly/>
+                </div>
+                </div>
+                <div class="row pt-3">
+                <div class="form-group col-md-6">
+                <label for="provider" class="form-label">Payment Methods</label>
+                <select name="provider" class="form-select @error('provider') is-invalid @enderror" aria-label=".form-select-lg example">
+                    <option selected>Choose One Payment Method</option>
+                    @foreach($providers as $provider)
+                    <option value="{{$provider->id}}">{{$provider->name}}</option>
+                    @endforeach
+                    
+                </select>
+                
+                @error('provider')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
+            </div>
+                <div class="form-group col-md-6">
                     <label for="">Image</label>
                         <input type="file" name="image" class="form-control">
                     @error('image')<small class="text-danger">{{ $message }}</small>@enderror 
@@ -115,6 +139,7 @@
             $('#city').on('change', function () {
                 var cityId = $(this).val();
                 $("#township-dd").html('');
+                $("#street-dd").html('');
                 $.ajax({
                     url: "{{url('admin/customers/fetch_township')}}",
                     type: "POST",
@@ -155,7 +180,13 @@
             });
              $('#package-dd').on('change', function () {
                 var packageData = $(this).val().split(" ");
-                document.getElementById("promotion").value = packageData[1];
+                var original_price=packageData[2];
+                var promotion=packageData[1];
+                var price=original_price-(original_price*promotion/100);
+                // alert(price);
+                document.getElementById("promotion").value = promotion;
+                document.getElementById("original_price").value = original_price;
+                document.getElementById("price").value = price;
             });
         });
     </script>

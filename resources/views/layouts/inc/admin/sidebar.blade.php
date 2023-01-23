@@ -57,6 +57,19 @@
           </ul>
         </div>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-paymentrecord" aria-expanded="false" aria-controls="ui-paymentrecord">
+        <i class="mdi mdi-currency-usd menu-icon"></i>
+          <span class="menu-title">Payment Record</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="ui-paymentrecord">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.index')}}">View PaymentRecords</a></li>
+          </ul>
+        </div>
+      </li>
       {{--  trainer  --}}
       <li class="nav-item">
         <a class="nav-link" href="{{ url('admin/trainers') }}">

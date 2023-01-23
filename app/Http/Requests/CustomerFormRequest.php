@@ -28,8 +28,16 @@ class CustomerFormRequest extends FormRequest
             'age'=>['required','integer'],
             'height'=>['required','string'],
             'weight'=>['required','string'],
+            'city'=>['required','string'],
+            'township'=>['required','string'],
+            'street'=>['required','string'],
             'phone_number'=>['required','string'],
             'emergency_phone'=>['required','string'],
+            'package'=>['required','string'],
+            'promotion'=>['required','string'],
+            'original_price'=>['required','string'],
+            'price'=>['required','string'],
+            'provider'=>['required','string'],
             'image' => ['nullable', 'mimes:jpg,jpeg,png'],
         ];
     }

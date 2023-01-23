@@ -17,9 +17,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [
+    App\Http\Controllers\Frontend\FrontendController::class,
+    'index',
+]);
 
 Route::get('/dashboard', function () {
     return view('admin');
@@ -68,6 +73,17 @@ Route::controller(App\Http\Controllers\Admin\EquipmentController::class
         Route::get('/equipments/{equipment}/edit', 'edit');
         Route::put('/equipments/{equipment}', 'update');
         Route::get('/equipments/{equipment_id}/delete', 'destroy');
+    });
+
+    Route::controller(
+        App\Http\Controllers\Admin\SliderController::class
+    )->group(function () {
+        Route::get('/sliders', 'index');
+        Route::get('/sliders/create', 'create');
+        Route::post('/sliders', 'store');
+        Route::get('/sliders/{slider}/edit', 'edit');
+        Route::put('/sliders/{slider}', 'update');
+        Route::get('/sliders/{slider}/delete', 'destroy');
     });
 
     Route::controller(App\Http\Controllers\Admin\TrainerController::class

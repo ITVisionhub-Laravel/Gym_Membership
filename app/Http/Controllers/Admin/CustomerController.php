@@ -156,12 +156,13 @@ class CustomerController extends Controller
         if($customer->update()){
             $payment_record=new PaymentRecord();
             $package_info = explode(" ",$request->package);
-            $payment_record->package_id = $package_info[0];
-            $payment_record->price = $request->price;
-            $payment_record->date = date('Y.m.d');
-            $payment_record->provider_id = $request->provider;
-            $payment_record->customer_id = $customer->id;
-            $payment_record->update();
+            PaymentRecord::where('customer_id', $customer->id)->update([
+            'package_id' => $package_info[0],
+            'price' => $request->price,
+            'date' => date('Y.m.d'),
+            'provider_id' => $request->provider,
+            'customer_id' => $customer->id,
+        ]);
         }
         return redirect('admin/customers')->with(
             'message',
@@ -190,8 +191,11 @@ class CustomerController extends Controller
         $data['customers'] = Customer::get(["name", "id"]);
         return view('admin.customers.payment',$data);
     }
-    public function invoice()
+    public function invoice($customer_id)
     {
-        return view('admin.customers.invoice'); 
+        $customers = Customer::where('id',$customer_id)->get();
+        $data['records'] =PaymentRecord::where('customer_id',$customer_id)->get();
+        $data['packages'] =$data['records'][0]->package;
+        return view('admin.customers.invoice',$data,compact('customers'));
     }
 }

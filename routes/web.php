@@ -67,7 +67,7 @@ Route::controller(App\Http\Controllers\Admin\CustomerController::class)->group(f
         Route::post('/customers/fetch_township', 'fetchTownship');
         Route::post('/customers/fetch_street', 'fetchStreet');
         Route::get('/customers/payment', 'payment');
-        Route::get('/customers/invoice', 'invoice');
+        Route::get('/customers/{customer_id}/invoice', 'invoice');
     });
 
 Route::controller(App\Http\Controllers\Admin\EquipmentController::class

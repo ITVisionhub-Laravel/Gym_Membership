@@ -30,7 +30,7 @@
                 <div class="row pt-3">
                 <div class="form-group col-md-6">
                     <label for="">Height</label>
-                    <input type="text" name="height" class="form-control" placeholder="Enter Your Height">
+                    <input type="number" name="height" class="form-control" placeholder="Enter Your Height">
                     @error('height')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 <div class="form-group col-md-6">

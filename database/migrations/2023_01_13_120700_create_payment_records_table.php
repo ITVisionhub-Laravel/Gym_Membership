@@ -14,7 +14,11 @@ return new class extends Migration {
     {
         Schema::create('payment_records', function (Blueprint $table) {
             $table->id();
-            $table->integer('price');
+            $table->date('date');
+            $table->string('price');
+            $table->integer('package_id');
+            $table->integer('provider_id');
+            $table->integer('customer_id');
             $table->timestamps();
         });
     }

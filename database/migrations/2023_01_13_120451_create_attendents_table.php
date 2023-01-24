@@ -14,6 +14,12 @@ return new class extends Migration {
     {
         Schema::create('attendents', function (Blueprint $table) {
             $table->id();
+            $table->integer('customer_id');
+            $table->date('date');
+            $table
+                ->integer('status')
+                ->default('0')
+                ->comment('1=present,0=absent');
             $table->timestamps();
         });
     }

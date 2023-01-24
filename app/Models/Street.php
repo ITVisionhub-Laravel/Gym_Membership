@@ -11,5 +11,9 @@ class Street extends Model
 
     protected $table = 'streets';
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name','township_id'];
+
+    public function township(){
+        return $this->belongsTo(Township::class, 'township_id', 'id');
+    }
 }

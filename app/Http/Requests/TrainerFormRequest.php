@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MemberFormRequest extends FormRequest
+class TrainerFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +25,8 @@ class MemberFormRequest extends FormRequest
     {
         return [
             'name'=>['required','string'],
-            'age'=>['required','integer'],
-            'height'=>['required','string'],
-            'weight'=>['required','string'],
-            'phone_number'=>['required','string'],
-            'emergency_phone'=>['required','string'],
+            'description'=>['required','string'],
+            'image'=>['nullable','mimes:png,jpg,jpeg']
         ];
     }
 }

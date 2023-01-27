@@ -7,19 +7,22 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Attendent;
 use App\Models\Customer;
+use App\Models\PaymentRecord;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        $attendencedMembers = Attendent::where('status', '1')->get();
+        $data['attendencedMembers'] = Attendent::where('status', '1')->get();
+        $data['members'] = Customer::get();
+        $prices = 0;
+        foreach (PaymentRecord::get() as $paymentPrice) {
+            $prices += (int) $paymentPrice->price;
+        }
+        $data['price'] = $prices;
+        $data['paymentRecords'] = PaymentRecord::get();
 
-        $members = Customer::get();
-
-        return view(
-            'admin.dashboard.index',
-            compact('attendencedMembers', 'members')
-        );
+        return view('admin.dashboard.index', $data);
     }
     public function create()
     {

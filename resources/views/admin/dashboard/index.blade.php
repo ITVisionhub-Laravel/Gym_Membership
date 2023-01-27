@@ -21,7 +21,7 @@
 	<li>
 		<i class='bx bxs-dollar-circle' ></i>
 		<span class="text">
-			<h3>$2543</h3>
+			<h3>${{ $price }}</h3>
 			<p>Total Earnings</p>
 		</span>
 	</li>
@@ -29,7 +29,7 @@
 
     <div class="col-md-12 row">
      
-       @include('admin.dashboard.barchart')
+       @include('admin.dashboard.barchart',compact('paymentRecords'))
 
        @include('admin.dashboard.memberlist',compact('attendencedMembers','members'))
       

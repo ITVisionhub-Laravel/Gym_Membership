@@ -23,12 +23,12 @@
                       @if($attendencedMember->customer)
                         <div class="row col-md-12">
                           <div class="item-thumbnail col-md-5">
-                            <img src="images/faces/face4.jpg" alt="image" class="profile-pic" style="border-radius: 100%;">
+                            <img src="{{asset('/uploads/customer/'.$attendencedMember->customer->image)}}" alt="image" class="img-fluid">
                           </div>
                           <div class="col-md-6 my-3">
                             <h5>{{ $attendencedMember->customer->name }}</h5>
-                            <p>Slow Jogging</p>
-                            <p>12-3-2023</p>
+                            <p>Height : {{$attendencedMember->customer->height }}cm</p>
+                            <p>Weight : {{$attendencedMember->customer->weight }}</p>
                           </div>
                         </div> 
                        @else
@@ -44,16 +44,16 @@
                    @forelse ($members as $member)
                         <div class="row col-md-12">
                       <div class="item-thumbnail col-md-5">
-                        <img src="images/faces/face4.jpg" alt="image" class="profile-pic" style="border-radius: 100%;">
+                        <img src="{{asset('/uploads/customer/'.$member->image)}}" alt="image" class="img-fluid">
                       </div>
                       <div class="col-md-6 my-3">
                       <h5>{{ $member->name }}</h5>
-                      <p>Slow Jogging</p>
-                      <p>12-3-2023</p>
+                      <p>Height : {{ $member->height }}cm</p>
+                      <p>Weight : {{ $member->weight }}</p>
                       </div>
                     </div>   
                    @empty
-                       <div>No Attended Member</div>
+                       <div>No Registered Member</div>
                    @endforelse
                   </div>
                 </div>

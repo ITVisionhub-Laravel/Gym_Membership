@@ -31,7 +31,7 @@
                 <td>{{ $customer->id }}</td>
                 <td>{{ $customer->name }}</td>
                 <td>{{ $customer->age }}</td>
-                <td>{{ $customer->height}}</td>
+                <td>{{ $customer->height}} cm</td>
                 <td>{{ $customer->weight}}</td>
                 <td>
                     {{ $customer->address->street->township->city->name}},<br>
@@ -44,7 +44,7 @@
                     <img src="{{asset('/uploads/customer/'.$customer->image)}}" style="width:50px;height:50px" alt="customer">
                 </td>
                 <td>
-                    <a href="{{ url('admin/customers/invoice')}}" class="btn-success btn-sm"><i class="fa-regular fa-eye"></i></a>
+                    <a href="{{ url('admin/customers/'.$customer->id.'/invoice')}}" class="btn-success btn-sm"><i class="fa-regular fa-eye"></i></a>
                     <a href="{{ url('admin/customers/'.$customer->id.'/edit') }}"  class="btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
                     <a href="{{ url('admin/customers/'.$customer->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this data?')" class="btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
                 </td>

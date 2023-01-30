@@ -10,4 +10,11 @@ class Attendent extends Model
     use HasFactory;
 
     protected $table = 'attendents';
+
+    protected $fillable = ['customer_id', 'attendent_date'];
+
+    public function member()
+    {
+        return $this->belongsTo(Customer::class,'customer_id');
+    }
 }

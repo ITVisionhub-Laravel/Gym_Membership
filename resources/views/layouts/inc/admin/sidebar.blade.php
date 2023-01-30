@@ -25,23 +25,49 @@
         </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-paymentpackage" aria-expanded="false" aria-controls="ui-paymentpackage">
           <i class="mdi mdi-chart-pie menu-icon"></i>
           <span class="menu-title">Package</span>
           <i class="menu-arrow"></i>
         </a>
-        <div class="collapse" id="ui-basic">
+        <div class="collapse" id="ui-paymentpackage">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/package/create') }}">Add Packages</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/package') }}">View Packages</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_packages.create') }}">Add Packages</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_packages.index')}}">View Packages</a></li>
+          </ul>
+        </div>
+      </li>
+      <!-- <li class="nav-item">
+        <a class="nav-link" href="{{ route('payment_providers.create') }}">
+          <i class="mdi mdi-currency-usd menu-icon"></i>
+          <span class="menu-title">Payment</span>
+        </a>
+      </li> -->
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-payment" aria-expanded="false" aria-controls="ui-payment">
+        <i class="mdi mdi-currency-usd menu-icon"></i>
+          <span class="menu-title">Payment</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="ui-payment">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_providers.create') }}">Add Payments</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_providers.index')}}">View Payments</a></li>
           </ul>
         </div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{{ url('admin/brands') }}">
-          <i class="mdi mdi-currency-usd menu-icon"></i>
-          <span class="menu-title">Payment</span>
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-paymentrecord" aria-expanded="false" aria-controls="ui-paymentrecord">
+        <i class="mdi mdi-currency-usd menu-icon"></i>
+          <span class="menu-title">Payment Record</span>
+          <i class="menu-arrow"></i>
         </a>
+        <div class="collapse" id="ui-paymentrecord">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.index')}}">View PaymentRecords</a></li>
+          </ul>
+        </div>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
@@ -51,7 +77,7 @@
        
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="documentation/documentation.html">
+        <a class="nav-link" href="{{route('attendents.index')}}">
           <i class="mdi mdi-file-document-box-outline menu-icon"></i>
           <span class="menu-title">Attendent</span>
         </a>

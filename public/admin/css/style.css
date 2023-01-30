@@ -21965,6 +21965,9 @@ dl {
   padding-left: 1rem;
   font-size: 0.875rem;
 }
+.sidebar{
+  background-color:#d5d1e1 !important;
+}
 
 ul li,
 ol li,
@@ -23083,7 +23086,7 @@ dl li {
     display: flex;
     -webkit-align-items: center;
     align-items: center;
-    background: #ffffff;
+    background:  ;
     padding: 0.5rem 1.4rem;
     left: 70px;
     position: absolute;

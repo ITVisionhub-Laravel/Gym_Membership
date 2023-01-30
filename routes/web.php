@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\AttendentController;
+use App\Http\Controllers\Admin\PaymentPackageController;
+use App\Http\Controllers\Admin\PaymentProviderController;
+use App\Http\Controllers\Admin\PaymentRecordController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +38,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
         'profile.destroy'
     );
+
+
+    //PuKit
+    Route::resource('payment_packages', PaymentPackageController::class);
+    Route::resource('payment_providers', PaymentProviderController::class);
+    Route::resource('payment_records', PaymentRecordController::class);
+    Route::resource('attendents', AttendentController::class);
+
+
+
 });
 Route::prefix('admin')->group(function(){
 Route::controller(App\Http\Controllers\Admin\DashboardController::class)->group(function(){

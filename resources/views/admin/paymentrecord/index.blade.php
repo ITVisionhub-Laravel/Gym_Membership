@@ -13,7 +13,7 @@
                 <th>Member Name</th>
                 <th>Package</th>
                 <th>Price</th>
-                <th>Date</th>
+                <th>Record_date</th>
                 <th>Payment Method</th>
                 <th>Action</th>
             </tr>
@@ -47,7 +47,7 @@
     </table>
 </div>
 @endsection
-@section('script')
+@section('scripts')
 <script>
      $(document).ready( function () {
         $('#myTable').DataTable();

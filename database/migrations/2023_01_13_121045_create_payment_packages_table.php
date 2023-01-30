@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->string('package');
             $table->string('promotion');
+            $table->string('original_price');
             $table->timestamps();
         });
     }

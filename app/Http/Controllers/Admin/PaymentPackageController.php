@@ -42,10 +42,12 @@ class PaymentPackageController extends Controller
         $validatedData = $request->validate([
             'package' => ['required'],
             'promotion' => ['required'],
+            'original_price' => ['required'],
         ]);
         $paymentpackage = new PaymentPackage();
         $paymentpackage->package=$request->package;
         $paymentpackage->promotion=$request->promotion;
+        $paymentpackage->original_price=$request->original_price;
         $paymentpackage->save();
 
         return redirect()->route('payment_packages.index');
@@ -86,6 +88,7 @@ class PaymentPackageController extends Controller
         $paymentpackage = PaymentPackage::find($id);
         $paymentpackage->package=$request->package;
         $paymentpackage->promotion=$request->promotion;
+        $paymentpackage->original_price=$request->original_price;
         $paymentpackage->save();
 
         return redirect()->route('payment_packages.index');

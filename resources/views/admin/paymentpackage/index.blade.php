@@ -12,6 +12,7 @@
                 <th>No</th>
                 <th>Package</th>
                 <th>Promotion (%)</th>
+                <th>Original Price</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -23,7 +24,8 @@
             <tr>
                 <td>{{$j++}}</td>
                 <td>{{$paymentpackage->package}}</td>
-                <td>{{$paymentpackage->promotion}}</td>
+                <td>{{$paymentpackage->promotion}}%</td>
+                <td>{{$paymentpackage->original_price}}</td>
                 <td>
                     <a href="{{route('payment_packages.edit', $paymentpackage->id)}}" class="btn btn-info py-2">Edit</a>
 
@@ -40,7 +42,7 @@
     </table>
 </div>
 @endsection
-@section('script')
+@section('scripts')
 <script>
      $(document).ready( function () {
         $('#myTable').DataTable();

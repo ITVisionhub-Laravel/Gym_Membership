@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\AttendentController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PaymentPackageController;
 use App\Http\Controllers\Admin\PaymentProviderController;
 use App\Http\Controllers\Admin\PaymentRecordController;
 use App\Http\Controllers\ProfileController;
+use App\Models\PaymentRecord;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,9 +20,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', [
+    App\Http\Controllers\Frontend\FrontendController::class,
+    'index',
+]);
 
 Route::get('/dashboard', function () {
     return view('admin');
@@ -46,22 +53,58 @@ Route::middleware('auth')->group(function () {
     Route::resource('payment_records', PaymentRecordController::class);
     Route::resource('attendents', AttendentController::class);
 
-
-
 });
+
 Route::prefix('admin')->group(function(){
 Route::controller(App\Http\Controllers\Admin\DashboardController::class)->group(function(){
         Route::get('dashboard','index');
         Route::get('dashboard/create','create');
     });   
-Route::controller(App\Http\Controllers\Admin\MemberControlller::class)->group(function(){
-        Route::get('/members','index');
-        Route::get('/members/create','create');
-        Route::post('/members','store');
-        Route::get('/members/{member}/edit','edit');
-        Route::put('/members/{member}','update');
-        Route::get('/members/{member_id}/delete','destroy');
+
+Route::controller(App\Http\Controllers\Admin\CustomerController::class)->group(function () {
+        Route::get('/customers', 'index');
+        Route::get('/customers/create', 'create');
+        Route::post('/customers', 'store');
+        Route::get('/customers/{customer}/edit', 'edit');
+        Route::put('/customers/{customer}', 'update');
+        Route::get('/customers/{customer_id}/delete', 'destroy');
+        Route::post('/customers/fetch_township', 'fetchTownship');
+        Route::post('/customers/fetch_street', 'fetchStreet');
+        Route::get('/customers/payment', 'payment');
+        Route::get('/customers/{customer_id}/invoice', 'invoice');
     });
+
+Route::controller(App\Http\Controllers\Admin\EquipmentController::class
+    )->group(function () {
+        Route::get('/equipments', 'index');
+        Route::get('/equipments/create', 'create');
+        Route::post('/equipments', 'store');
+        Route::get('/equipments/{equipment}/edit', 'edit');
+        Route::put('/equipments/{equipment}', 'update');
+        Route::get('/equipments/{equipment_id}/delete', 'destroy');
+    });
+
+    Route::controller(
+        App\Http\Controllers\Admin\SliderController::class
+    )->group(function () {
+        Route::get('/sliders', 'index');
+        Route::get('/sliders/create', 'create');
+        Route::post('/sliders', 'store');
+        Route::get('/sliders/{slider}/edit', 'edit');
+        Route::put('/sliders/{slider}', 'update');
+        Route::get('/sliders/{slider}/delete', 'destroy');
+    });
+
+    Route::controller(App\Http\Controllers\Admin\TrainerController::class
+    )->group(function () {
+        Route::get('/trainers', 'index');
+        Route::get('/trainers/create', 'create');
+        Route::post('/trainers', 'store');
+        Route::get('/trainers/{trainer}/edit', 'edit');
+        Route::put('/trainers/{trainer}', 'update');
+        Route::get('/trainers/{trainer_id}/delete', 'destroy');
+    });
+
 });
 
 require __DIR__ . '/auth.php';

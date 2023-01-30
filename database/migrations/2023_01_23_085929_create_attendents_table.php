@@ -18,8 +18,6 @@ return new class extends Migration
             $table->unsignedBigInteger('customer_id');
             $table->date('attendent_date');
             $table->timestamps();
-
-            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }
 

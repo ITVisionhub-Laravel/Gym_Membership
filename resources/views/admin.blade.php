@@ -68,8 +68,6 @@
     <script src="{{asset('admin/js/dataTables.bootstrap4.js')}}"></script>
      {{--  End custom js for this page  --}}
 
-
-     
      <script src="{{asset('assets/js/jquery-3.6.3.min.js')}}"></script>
      <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -80,5 +78,6 @@
     @yield('scripts')
     
     @stack('script')
+    @yield('script')
 </body>
 </html>

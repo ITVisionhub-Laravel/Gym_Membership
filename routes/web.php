@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AttendentController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PaymentPackageController;
 use App\Http\Controllers\Admin\PaymentProviderController;
@@ -44,10 +45,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
         'profile.destroy'
     );
-    
+
+
+    //PuKit
     Route::resource('payment_packages', PaymentPackageController::class);
     Route::resource('payment_providers', PaymentProviderController::class);
     Route::resource('payment_records', PaymentRecordController::class);
+    Route::resource('attendents', AttendentController::class);
 
 });
 

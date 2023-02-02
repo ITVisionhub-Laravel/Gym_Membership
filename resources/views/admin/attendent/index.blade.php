@@ -5,14 +5,19 @@
         @if (session('message'))
             <div class="alert alert-success">{{ session('message') }}</div>
         @endif
-    <h3 class="my-2">Package Lists</h3>
+    <h3 class="my-2">Attendent List</h3>
+    <form action="{{route('attendents.store')}}" method="post" class="my-3">
+        @csrf
+        <input type="text" name="member" class="form-control w-25" style="display: inline-block;" placeholder="Enter member ID">
+        <button type="submit" class="btn btn-outline-success">Check-in</button>
+    </form>
     <table id="myTable" class="display">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Package</th>
-                <th>Promotion (%)</th>
-                <th>Original Price</th>
+                <th>Attendent Date</th>
+                <th>Member Name</th>
+                <th>Phone</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -20,16 +25,15 @@
             @php 
             $j=1;
             @endphp
-            @foreach($paymentpackages as $paymentpackage)
+            @foreach($attendents as $attendent)
             <tr>
-                <td>{{$j++}}</td>
-                <td>{{$paymentpackage->package}}</td>
-                <td>{{$paymentpackage->promotion}}%</td>
-                <td>{{$paymentpackage->original_price}}</td>
-                <td>
-                    <a href="{{route('payment_packages.edit', $paymentpackage->id)}}" class="btn btn-info py-2">Edit</a>
 
-                    <form action="{{route('payment_packages.destroy',$paymentpackage->id)}}" method="POST" class="d-inline">
+                <td>{{$j++}}</td>
+                <td>{{$attendent->attendent_date}}</td>
+                <td>{{$attendent->member->name}}</td>
+                <td>{{$attendent->member->phone_number}}</td>
+                <td>
+                    <form action="{{route('attendents.destroy',$attendent->id)}}" method="POST" class="d-inline">
                         @csrf
                         @method('delete')
                         <button type="submit" class="btn btn-danger py-2">Delete</button>
@@ -42,7 +46,7 @@
     </table>
 </div>
 @endsection
-@section('scripts')
+@section('script')
 <script>
      $(document).ready( function () {
         $('#myTable').DataTable();

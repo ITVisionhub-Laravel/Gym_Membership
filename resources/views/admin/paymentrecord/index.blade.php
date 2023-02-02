@@ -13,8 +13,9 @@
                 <th>Member Name</th>
                 <th>Package</th>
                 <th>Price</th>
-                <th>Date</th>
+                <th>Record_date</th>
                 <th>Payment Method</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -24,11 +25,21 @@
             @foreach($paymentrecords as $paymentrecord)
             <tr>
                 <td>{{$j++}}</td>
-                <td>{{$paymentrecord->customer->name}}</td>
+                <td>{{$paymentrecord->member->name}}</td>
                 <td>{{$paymentrecord->package->package}}</td>
                 <td>{{$paymentrecord->price}}</td>
-                <td>{{$paymentrecord->date}}</td>
+                <td>{{$paymentrecord->record_date}}</td>
                 <td>{{$paymentrecord->paymentprovider->name}}</td>
+                
+                <td>
+                    <a href="{{route('payment_records.edit', $paymentrecord->id)}}" class="btn btn-info py-2">Edit</a>
+
+                    <form action="{{route('payment_records.destroy',$paymentrecord->id)}}" method="POST" class="d-inline">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-danger py-2">Delete</button>
+                    </form>
+                </td>
             </tr>
             @endforeach
            

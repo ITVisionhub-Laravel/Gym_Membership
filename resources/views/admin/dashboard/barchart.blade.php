@@ -8,16 +8,16 @@
     </div>
 </div>
 
- @foreach ($paymentRecords as $paymentRecord)
+ {{--  @foreach ($paymentRecords as $paymentRecord)
     $customers.push($paymentRecord->customer->name)
     $packages.push($paymentRecord->package->name)
-  @endforeach
+  @endforeach  --}}
 
 @section('scripts')
 <script>
   var customers,packages;
 
-  @dd($customers)
+  {{--  @dd($customers)  --}}
      var data = {
         labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         datasets: [

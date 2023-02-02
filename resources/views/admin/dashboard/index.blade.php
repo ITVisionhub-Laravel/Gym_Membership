@@ -3,14 +3,15 @@
 @section('content')
 
 <ul class="box-info">
-	<li>
-		{{--  <i class='bx bxs-calendar-check' ></i>  --}}
-        <i class='bx bxs-group' ></i>
-		<span class="text">
-			<h3>{{ $attendencedMembers->count() }}</h3>
-			<p>Attendented Members</p>
-		</span>
-	</li>
+	<a href="">
+        <li>
+            <i class='bx bxs-group' ></i>
+            <span class="text">
+                <h3>{{ $attendencedMembers->count() }}</h3>
+                <p>Attendented Members</p>
+            </span>
+        </li>
+    </a>
 	<li>
 		<i class='bx bxs-group' ></i>
 		<span class="text">
@@ -18,13 +19,23 @@
 			<p>Register Members</p>
 		</span>
 	</li>
-	<li>
+    {{--  </a>  --}}
+    <a href="" ><li>
+		<i class='bx bxs-calendar-check' ></i>
+		<span class="text">
+			<h3>${{ $price }}</h3>
+			<p>Payment Expired Members</p>
+		</span>
+	</li>
+</a>
+	<a href=""><li>
 		<i class='bx bxs-dollar-circle' ></i>
 		<span class="text">
 			<h3>${{ $price }}</h3>
 			<p>Total Earnings</p>
 		</span>
 	</li>
+    </a>
 </ul>
 
     <div class="col-md-12 row">

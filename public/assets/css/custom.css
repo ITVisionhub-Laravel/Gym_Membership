@@ -211,7 +211,11 @@ section .section-title {
     color: var(--yellow);
 }
 .box-info li:nth-child(3) .bx {
-    background: var(--light-orange);
+    background: var(--yellow);
+    color: var(--light-yellow);
+}
+.box-info li:nth-child(4) .bx {
+    background: var(--light-yellow);
     color: var(--orange);
 }
 .box-info li .text h3 {

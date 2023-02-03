@@ -7,23 +7,18 @@
         </div>
     </div>
 </div>
-
- @foreach ($paymentRecords as $paymentRecord)
-    $customers.push($paymentRecord->customer->name)
-    $packages.push($paymentRecord->package->name)
-  @endforeach
-
+    
 @section('scripts')
 <script>
-  var customers,packages;
-
-  @dd($customers)
+    {{--  @dd($month);  --}}
      var data = {
-        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        labels: @php
+            echo  json_encode($month)
+        @endphp ,
         datasets: [
             {
-                label: "Attended Members",
-                data: [10, 19, 3, 5, 2, 3, 8],
+                label: "Monthly Earnings",
+                data: @php echo json_encode($monthlyEarningMoney) @endphp,
                 backgroundColor: [
                     "rgba(255, 99, 132, 0.2)",
                     "rgba(54, 162, 235, 0.2)",

@@ -12,19 +12,7 @@
           <span class="menu-title">Add Members</span>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#attendance" aria-expanded="false" aria-controls="attendance">
-          <i class="mdi mdi-checkbox-marked-circle menu-icon"></i>
-          <span class="menu-title">Attendance</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="attendance">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="#">CheckIn CheckOut</a></li>
-            <li class="nav-item"> <a class="nav-link" href="#">View Attendance</a></li>
-          </ul>
-        </div>
-      </li>
+      
       <li class="nav-item">
         <a class="nav-link" href="{{ url('admin/equipments') }}">
           <i class="mdi mdi-webhook menu-icon"></i>

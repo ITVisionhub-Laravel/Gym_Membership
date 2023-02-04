@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Admin\Attendee_CheckController;
+use App\Http\Controllers\Admin\Attendence_CheckController;
 use App\Http\Controllers\Admin\AttendentController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PaymentPackageController;
@@ -52,6 +54,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('payment_providers', PaymentProviderController::class);
     Route::resource('payment_records', PaymentRecordController::class);
     Route::resource('attendents', AttendentController::class);
+    Route::resource('attendent_check', Attendence_CheckController::class);
 
 });
 

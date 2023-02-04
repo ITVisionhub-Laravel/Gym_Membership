@@ -59,6 +59,7 @@ class CustomerController extends Controller
         $payment_record=new PaymentRecord();
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
+        $customer->member_card = $request->member_card;
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
         
@@ -89,7 +90,7 @@ class CustomerController extends Controller
             $package_info = explode(" ",$request->package);
             $payment_record->package_id = $package_info[0];
             $payment_record->price = $request->price;
-            $payment_record->date = date('Y.m.d');
+            $payment_record->record_date = date('Y.m.d');
             $payment_record->provider_id = $request->provider;
             $payment_record->customer_id = $customer->id;
             if(!$payment_record->save()){
@@ -159,7 +160,7 @@ class CustomerController extends Controller
             PaymentRecord::where('customer_id', $customer->id)->update([
             'package_id' => $package_info[0],
             'price' => $request->price,
-            'date' => date('Y.m.d'),
+            'record_date' => date('Y.m.d'),
             'provider_id' => $request->provider,
             'customer_id' => $customer->id,
         ]);

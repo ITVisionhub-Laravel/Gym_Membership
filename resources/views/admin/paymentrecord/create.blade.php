@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container py-3 ">
-   <div class="card p-5 bg-secondary">
+   <div class="card p-5">
      <h3 class="text-center my-2">Payment Record Create Form</h3>
      <form action="{{route('payment_records.store')}}" method="POST" >
         @csrf
@@ -65,7 +65,7 @@
             @enderror
         </div>
         
-        <button type="submit" class="btn btn-success float-end mt-3"> Save</button>
+        <button type="submit" class="btn btn-outline-success float-end mt-3"> Save</button>
     </form>
    </div>
 </div>

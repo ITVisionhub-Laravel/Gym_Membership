@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container py-3 ">
-   <div class="card p-5 bg-secondary">
+   <div class="card p-5">
      <h3 class="text-center my-2">Packyment Type Edit Form</h3>
      <form action="{{route('payment_providers.update', $paymentprovider->id)}}" method="POST" >
         @csrf
@@ -16,7 +16,7 @@
             @enderror
         </div>
         
-        <button type="submit" class="btn btn-success float-end mt-3"> Update</button>
+        <button type="submit" class="btn btn-outline-success float-end mt-3"> Update</button>
     </form>
    </div>
 </div>

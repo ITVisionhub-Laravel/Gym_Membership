@@ -28,12 +28,17 @@
                 </div>
                 </div>
                 <div class="row pt-3">
-                <div class="form-group col-md-6">
+                    <div class="form-group col-md-4">
+                    <label for="">Member Card ID</label>
+                    <input type="number" name="member_card" class="form-control" placeholder="Enter Your Member Card Number">
+                    @error('member_card')<small class="text-danger">{{ $message }}</small>@enderror
+                </div>
+                <div class="form-group col-md-4">
                     <label for="">Height</label>
                     <input type="number" name="height" class="form-control" placeholder="Enter Your Height">
                     @error('height')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
-                <div class="form-group col-md-6">
+                <div class="form-group col-md-4">
                     <label for="">Weight</label>
                     <input type="text" name="weight" class="form-control" placeholder="Enter Your Weight">
                     @error('weight')<small class="text-danger">{{ $message }}</small>@enderror

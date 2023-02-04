@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('age');
+            $table->string('member_card');
             $table->string('height');
             $table->string('weight');
             $table->string('phone_number');

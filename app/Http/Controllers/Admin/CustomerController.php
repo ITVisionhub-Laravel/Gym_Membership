@@ -59,6 +59,7 @@ class CustomerController extends Controller
         $payment_record = new PaymentRecord();
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
+        $customer->member_card = $request->member_card;
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
 
@@ -175,12 +176,14 @@ class CustomerController extends Controller
             $payment_record = new PaymentRecord();
             $package_info = explode(' ', $request->package);
             PaymentRecord::where('customer_id', $customer->id)->update([
-                'package_id' => $package_info[0],
-                'price' => $request->price,
-                'date' => date('Y.m.d'),
-                'provider_id' => $request->provider,
-                'customer_id' => $customer->id,
-            ]);
+
+            'package_id' => $package_info[0],
+            'price' => $request->price,
+            'record_date' => date('Y.m.d'),
+            'provider_id' => $request->provider,
+            'customer_id' => $customer->id,
+        ]);
+
         }
         return redirect('admin/customers')->with(
             'message',

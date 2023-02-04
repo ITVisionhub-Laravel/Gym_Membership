@@ -10,7 +10,6 @@
     
 @section('scripts')
 <script>
-    {{--  @dd($month);  --}}
      var data = {
         labels: @php
             echo  json_encode($month)

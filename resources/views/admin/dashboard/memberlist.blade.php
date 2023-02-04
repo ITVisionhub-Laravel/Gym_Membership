@@ -2,7 +2,7 @@
         <div class="card col-md-4">
             <div class="card-header">
                 <h3 class="p-2">Member List
-                    <a href="{{ url('admin/customers') }}" class="btn btn-success btn-sm text-white float-end">View All</a>
+                    <a href="barchart.html" class="btn btn-success btn-sm text-white float-end">View All</a>
                 </h3>
             </div>
 

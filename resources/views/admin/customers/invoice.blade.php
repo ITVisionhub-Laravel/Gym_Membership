@@ -46,7 +46,7 @@
                       <h4>Member:  {{ $customer->name }}</h4>
                       @endforeach
                       @foreach ($records as $record)
-                        <h5>Paid On:  {{ $record->date }}</h5>
+                        <h5>Paid On:  {{ $record->created_at }}</h5>
                       @endforeach
                       <hr>
                       <h5>Package:  {{$packages->package}}</h5>

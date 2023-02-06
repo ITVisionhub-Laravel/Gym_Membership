@@ -77,7 +77,6 @@
 
     @livewireScripts
     @yield('scripts')
-    
     @stack('script')
     @yield('script')
 </body>

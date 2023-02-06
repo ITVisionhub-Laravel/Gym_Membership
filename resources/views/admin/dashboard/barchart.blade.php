@@ -8,8 +8,8 @@
     </div>
 </div>
     
-@section('scripts')
-<script>
+<x-slot name="scripts">
+    <script>
      var data = {
         labels: @php
             echo  json_encode($month)
@@ -70,5 +70,6 @@
         });
     }
 </script>
+</x-slot>
 
-@endsection
+

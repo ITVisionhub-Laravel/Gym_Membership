@@ -82,6 +82,8 @@ class DashboardController extends Controller
                     'id',
                     $paymentRecord->customer_id
                 )->get();
+            }else {
+                $data['expiredPaymentMember'] = false;
             }
         }
         $data['trainers'] = Trainer::get();

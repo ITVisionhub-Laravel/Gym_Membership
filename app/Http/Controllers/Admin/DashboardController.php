@@ -42,7 +42,11 @@ class DashboardController extends Controller
                 //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
                 return Carbon::parse($date->record_date); // grouping by months
             });
+        // if ($monthlyEarnings) {
         $monthlyPrice = 0;
+        $monthlyEarningMoney = false;
+        $month = false;
+
         foreach ($monthlyEarnings as $key => $monthlyEarning) {
             foreach ($monthlyEarning as $earning) {
                 $monthlyPrice += (int) $earning->price;
@@ -53,11 +57,17 @@ class DashboardController extends Controller
             ] = $monthlyPrice;
             $monthlyPrice = 0;
         }
-        $data['monthlyEarningMoney'] = $monthlyEarningMoney;
-        $data['month'] = $month;
+        if ($monthlyEarningMoney) {
+            $data['monthlyEarningMoney'] = $monthlyEarningMoney;
+            $data['month'] = $month;
+        } else {
+            $data['monthlyEarningMoney'] = false;
+            $data['month'] = $month;
+        }
         // End of Bar Chart
 
         // For Expired Payment Member
+        $data['expiredPaymentMember'] = false;
         foreach ($paymentRecords as $paymentRecord) {
             $packageName = $paymentRecord->package->package;
             $packageDate = (int) explode('month', $packageName)[0];
@@ -82,8 +92,14 @@ class DashboardController extends Controller
                     'id',
                     $paymentRecord->customer_id
                 )->get();
+                $data['noExpiredPaymentMember'] = false;
             }
         }
+        // $expiredPaymentMember = $data['expiredPaymentMember'];
+        if (!$data['expiredPaymentMember']) {
+            $data['noExpiredPaymentMember'] = true;
+        }
+
         $data['trainers'] = Trainer::get();
 
         return view('admin.dashboard.index', $data);

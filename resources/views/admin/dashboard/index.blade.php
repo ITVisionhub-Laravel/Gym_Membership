@@ -1,8 +1,5 @@
-@extends('admin')
-
-@section('content')
-
-<ul class="box-info">
+<x-admin>
+    <ul class="box-info">
 	
         <li>
             <i class='bx bxs-group' ></i>
@@ -119,5 +116,6 @@
         </div>
     </div>
 </section>
-
-@endsection
+<x-slot name="scripts">
+</x-slot>
+</x-admin>

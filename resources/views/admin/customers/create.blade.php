@@ -1,11 +1,7 @@
-@extends('admin')
-
-@section('content')
+<x-admin>
 <div class="row">
     <div class="col-md-12">
-        @if (session('message'))
-            <div class="alert alert-success">{{ session('message') }}</div>
-        @endif
+        <x-successmessage/>
         <div class="card">
             <div class="card-header">
                 <h3>Add Member
@@ -17,31 +13,31 @@
                     @csrf
                 <div class="row pt-3">
                     <div class="form-group col-md-6">
-                    <label for="">Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Enter Your Name">
-                    @error('name')<small class="text-danger">{{ $message }}</small>@enderror
+                    <x-forms.formlabel value="Name"/>
+                    <x-forms.forminput name="name" placeholder="Enter Your Name"/>
+                    <x-input-error :messages="$errors->get('name')" class="text-danger" />
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="">Age</label>
-                    <input type="number" name="age" class="form-control" placeholder="Enter Your Age">
-                    @error('age')<small class="text-danger">{{ $message }}</small>@enderror
+                    <x-forms.formlabel value="Age"/>
+                    <x-forms.forminput type="number" name="age" placeholder="Enter Your Age"/>
+                    <x-input-error :messages="$errors->get('age')" class="text-danger" />
                 </div>
                 </div>
                 <div class="row pt-3">
                     <div class="form-group col-md-4">
-                    <label for="">Member Card ID</label>
-                    <input type="number" name="member_card" class="form-control" placeholder="Enter Your Member Card Number">
-                    @error('member_card')<small class="text-danger">{{ $message }}</small>@enderror
+                    <x-forms.formlabel value="Member Card ID"/>
+                    <x-forms.forminput type="number" name="member_card" placeholder="Enter Your Member Card Number"/>
+                    <x-input-error :messages="$errors->get('member_card')" class="text-danger" />
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="">Height</label>
-                    <input type="number" name="height" class="form-control" placeholder="Enter Your Height">
-                    @error('height')<small class="text-danger">{{ $message }}</small>@enderror
+                    <x-forms.formlabel value="Height"/>
+                    <x-forms.forminput type="number" name="height" placeholder="Enter Your Height"/>
+                    <x-input-error :messages="$errors->get('height')" class="text-danger" />
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="">Weight</label>
-                    <input type="text" name="weight" class="form-control" placeholder="Enter Your Weight">
-                    @error('weight')<small class="text-danger">{{ $message }}</small>@enderror
+                    <x-forms.formlabel value="Weight"/>
+                    <x-forms.forminput name="weight" placeholder="Enter Your Weight"/>
+                    <x-input-error :messages="$errors->get('weight')" class="text-danger" />
                 </div>
                 </div>
                  <div class="row pt-3">
@@ -55,8 +51,9 @@
                                 </option>
                             @endforeach
                     </select>
+                    <x-input-error :messages="$errors->get('city')" class="text-danger" />
                     </div>
-                    @error('city')<small class="text-danger">{{ $message }}</small>@enderror
+                    
                     <div class="form-group col-md-4">
                         <label for="">Township</label>
                         <select id="township-dd" class="form-select" name="township" >
@@ -70,14 +67,14 @@
                 </div>
                 <div class="row pt-3">
                 <div class="form-group col-md-6">
-                    <label for="">Mobile</label>
-                    <input type="text" name="phone_number" class="form-control" placeholder="Enter Your Phone Number">
-                    @error('phone_number')<small class="text-danger">{{ $message }}</small>@enderror
+                    <x-forms.formlabel value="Mobile"/>
+                    <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number"/>
+                    <x-input-error :messages="$errors->get('phone_number')" class="text-danger" />
                 </div>
                 <div class="form-group col-md-6">
-                    <label for="">Emergency Mobile</label>
-                    <input type="text" name="emergency_phone" class="form-control" placeholder="Enter Your Emergency Phone Number">
-                    @error('emergency_phone')<small class="text-danger">{{ $message }}</small>@enderror
+                    <x-forms.formlabel value="Emergency Mobile"/>
+                    <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number"/>
+                    <x-input-error :messages="$errors->get('emergency_phone')" class="text-danger" />
                 </div>
                 </div>
                 <div class="row pt-3">
@@ -92,19 +89,19 @@
                             @endforeach
                     </select>
 
-                    @error('package')<small class="text-danger">{{ $message }}</small>@enderror 
+                    <x-input-error :messages="$errors->get('package')" class="text-danger" />
                 </div>
                 <div class="form-group col-md-3">
-                  <label for="promotion"> Promotion</label>
-                  <input type="text" class="form-control" id="promotion" name="promotion"  placeholder="Promotion" required readonly/>
+                    <x-forms.formlabel value="Promotion"/>
+                    <x-forms.forminput name="promotion" id="promotion" placeholder="Promotion" required readonly/>
                 </div>
                 <div class="form-group col-md-3">
-                  <label for="original_price">Original Price</label>
-                  <input type="text" class="form-control" id="original_price" name="original_price"  placeholder="Original Price" required readonly/>
+                    <x-forms.formlabel value="Original Price"/>
+                    <x-forms.forminput name="original_price" id="original_price" placeholder="Original Price" required readonly/>
                 </div>
                 <div class="form-group col-md-3">
-                  <label for="price"> Price</label>
-                  <input type="text" class="form-control" id="price" name="price"  placeholder="Original Price" required readonly/>
+                    <x-forms.formlabel value="Price"/>
+                    <x-forms.forminput type="number" id="price" name="price"  placeholder="Original Price" required readonly/>
                 </div>
                 </div>
                 <div class="row pt-3">
@@ -123,9 +120,9 @@
                 @enderror
             </div>
                 <div class="form-group col-md-6">
-                    <label for="">Image</label>
-                        <input type="file" name="image" class="form-control">
-                    @error('image')<small class="text-danger">{{ $message }}</small>@enderror 
+                    <x-forms.formlabel value="Image"/>
+                    <x-forms.forminput type="file" name="age" placeholder="Enter Your Image"/>
+                    <x-input-error :messages="$errors->get('image')" class="text-danger" />
                 </div>
                 </div>
                 <div class="mb-3">
@@ -136,63 +133,7 @@
         </div>
     </div>
 </div>
-@endsection
-@section('scripts')
-<script  type="text/javascript">
-        $(document).ready(function () {
-        
-            $('#city').on('change', function () {
-                var cityId = $(this).val();
-                $("#township-dd").html('');
-                $("#street-dd").html('');
-                $.ajax({
-                    url: "{{url('admin/customers/fetch_township')}}",
-                    type: "POST",
-                    data: {
-                        city_id: cityId,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (result) {
-                        $('#township-dd').html('<option value="">Select Township</option>');
-                        $.each(result.townships, function (key, value) {
-                            $("#township-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
-                        });
-                        $('#city-dd').html('<option value="">Select City</option>');
-                    }
-                });
-            });
-            $('#township-dd').on('change', function () {
-                var townshipId = $(this).val();
-                $("#street-dd").html('');
-                $.ajax({
-                    url: "{{url('admin/customers/fetch_street')}}",
-                    type: "POST",
-                    data: {
-                        township_id: townshipId,
-                        _token: '{{csrf_token()}}'
-                    },
-                    dataType: 'json',
-                    success: function (res) {
-                        $('#street-dd').html('<option value="">Select Street</option>');
-                        $.each(res.streets, function (key, value) {
-                            $("#street-dd").append('<option value="' + value
-                                .id + '">' + value.name + '</option>');
-                        });
-                    }
-                });
-            });
-             $('#package-dd').on('change', function () {
-                var packageData = $(this).val().split(" ");
-                var original_price=packageData[2];
-                var promotion=packageData[1];
-                var price=original_price-(original_price*promotion/100);
-                // alert(price);
-                document.getElementById("promotion").value = promotion;
-                document.getElementById("original_price").value = original_price;
-                document.getElementById("price").value = price;
-            });
-        });
-    </script>
-    @endsection
+<x-slot name="scripts">
+<x-addressfieldjs></x-addressfieldjs>
+</x-slot>
+</x-admin>

@@ -1,8 +1,4 @@
-@extends('admin')
-@section('content')
-
-
-
+<x-admin>
 <div class="row">
     <div class="col-md-12">
         @if (session('message'))
@@ -48,12 +44,11 @@
         </div>
     </div>
 </div>
-@endsection
-
-@section('scripts')
+<x-slot name="scripts">
 <script>
      $(document).ready( function () {
         $('#myTable').DataTable();
     } );
 </script>
-@endsection
+</x-slot>
+</x-admin>

@@ -24,7 +24,7 @@
 @endif
 
     
-@section('scripts')
+<x-slot name="scripts">
 <script>
       var data = {
         labels: @php
@@ -88,5 +88,6 @@
         });
     }
 </script>
+</x-slot>
 
-@endsection
+

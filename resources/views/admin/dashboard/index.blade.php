@@ -22,8 +22,7 @@
         <li>
             <i class='bx bxs-calendar-check' ></i>
             <span class="text">
-                @if ($expiredPaymentMember)
-                
+                @if (!$noExpiredPaymentMember)
                 <h3>{{ $expiredPaymentMember->count() }}</h3>
                     <a href="{{route('attendents.index')}}"><p>Payment Expired Members</p></a>
                 @else
@@ -45,8 +44,13 @@
 </ul>
 
     <div class="col-md-12 row">
-     
-       @include('admin.dashboard.barchart',compact('monthlyEarningMoney','month'))
+      @if ($monthlyEarningMoney)
+          @include('admin.dashboard.barchart',compact('monthlyEarningMoney','month'))
+      @else
+          @include('admin.dashboard.barchart')
+      @endif
+
+       
 
        @include('admin.dashboard.memberlist',compact('attendencedMembers','members'))
       

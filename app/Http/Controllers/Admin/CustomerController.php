@@ -55,26 +55,35 @@ class CustomerController extends Controller
         // return $request;
         $validatedData = $request->validated();
         $customer = new Customer();
-        $address=new Address();
-        $payment_record=new PaymentRecord();
+        $address = new Address();
+        $payment_record = new PaymentRecord();
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
+        $customer->member_card = $request->member_card;
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
-        
-        if (DB::table('addresses')->where('street_id', $request->street)->exists()) {
-            $addressField = Address::where('street_id',$request->street)->get();
+
+        if (
+            DB::table('addresses')
+                ->where('street_id', $request->street)
+                ->exists()
+        ) {
+            $addressField = Address::where(
+                'street_id',
+                $request->street
+            )->get();
             $customer->address_id = $addressField[0]->id;
             // dd($addressField);
-
-        }else{
+        } else {
             $address->street_id = $request->street;
             $address->save();
-            $addressField = Address::where('street_id',$request->street)->get();
+            $addressField = Address::where(
+                'street_id',
+                $request->street
+            )->get();
             $customer->address_id = $addressField[0]->id;
-
         }
-        
+
         $customer->phone_number = $validatedData['phone_number'];
         $customer->emergency_phone = $validatedData['emergency_phone'];
 
@@ -85,18 +94,17 @@ class CustomerController extends Controller
             $file->move('uploads/customer/', $filename);
             $customer->image = $filename;
         }
-        if($customer->save()){
-            $package_info = explode(" ",$request->package);
+        if ($customer->save()) {
+            $package_info = explode(' ', $request->package);
             $payment_record->package_id = $package_info[0];
             $payment_record->price = $request->price;
-            $payment_record->date = date('Y.m.d');
+            $payment_record->record_date = date('Y.m.d');
             $payment_record->provider_id = $request->provider;
             $payment_record->customer_id = $customer->id;
-            if(!$payment_record->save()){
+            if (!$payment_record->save()) {
                 $customer->delete();
             }
             $payment_record->save();
-
         }
         return redirect('admin/customers')->with(
             'message',
@@ -109,36 +117,47 @@ class CustomerController extends Controller
         $data['cities'] = City::get(['name', 'id']);
         $data['townships'] = Township::get();
         $data['streets'] = Street::get();
-        $data['payment_records'] = PaymentRecord::where('customer_id',$customer->id)->get();
+        $data['payment_records'] = PaymentRecord::where(
+            'customer_id',
+            $customer->id
+        )->get();
         $data['packages'] = PaymentPackage::get();
         $data['providers'] = PaymentProvider::get();
-        return view('admin.customers.edit',$data,compact('customer'));
+        return view('admin.customers.edit', $data, compact('customer'));
     }
     public function update(CustomerFormRequest $request, $customer)
     {
         // dd($customer);
         $validatedData = $request->validated();
         $customer = Customer::findOrFail($customer);
-        $address=new Address();
-        
+        $address = new Address();
+
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
-        
-        if (DB::table('addresses')->where('street_id', $request->street)->exists()) {
-            $addressField = Address::where('street_id',$request->street)->get();
+
+        if (
+            DB::table('addresses')
+                ->where('street_id', $request->street)
+                ->exists()
+        ) {
+            $addressField = Address::where(
+                'street_id',
+                $request->street
+            )->get();
             $customer->address_id = $addressField[0]->id;
             // dd($addressField);
-
-        }else{
+        } else {
             $address->street_id = $request->street;
             $address->save();
-            $addressField = Address::where('street_id',$request->street)->get();
+            $addressField = Address::where(
+                'street_id',
+                $request->street
+            )->get();
             $customer->address_id = $addressField[0]->id;
-
         }
-        
+
         $customer->phone_number = $validatedData['phone_number'];
         $customer->emergency_phone = $validatedData['emergency_phone'];
 
@@ -153,32 +172,33 @@ class CustomerController extends Controller
             $file->move('uploads/customer/', $filename);
             $customer->image = $filename;
         }
-        if($customer->update()){
-            $payment_record=new PaymentRecord();
-            $package_info = explode(" ",$request->package);
+        if ($customer->update()) {
+            $payment_record = new PaymentRecord();
+            $package_info = explode(' ', $request->package);
             PaymentRecord::where('customer_id', $customer->id)->update([
+
             'package_id' => $package_info[0],
             'price' => $request->price,
-            'date' => date('Y.m.d'),
+            'record_date' => date('Y.m.d'),
             'provider_id' => $request->provider,
             'customer_id' => $customer->id,
         ]);
+
         }
         return redirect('admin/customers')->with(
             'message',
             'Customer Updated Successfully'
         );
-    
-}
+    }
     public function destroy($customer_id)
     {
         $customer = Customer::findOrFail($customer_id);
-        $records= PaymentRecord::findOrFail($customer->id);
+        $records = PaymentRecord::findOrFail($customer->id);
         $path = public_path('uploads/customer/' . $customer->image);
         if (File::exists($path)) {
             File::delete($path);
         }
-        if($customer->delete()){
+        if ($customer->delete()) {
             $records->delete();
         }
         return redirect('admin/customers')->with(
@@ -188,14 +208,17 @@ class CustomerController extends Controller
     }
     public function payment()
     {
-        $data['customers'] = Customer::get(["name", "id"]);
-        return view('admin.customers.payment',$data);
+        $data['customers'] = Customer::get(['name', 'id']);
+        return view('admin.customers.payment', $data);
     }
     public function invoice($customer_id)
     {
-        $customers = Customer::where('id',$customer_id)->get();
-        $data['records'] =PaymentRecord::where('customer_id',$customer_id)->get();
-        $data['packages'] =$data['records'][0]->package;
-        return view('admin.customers.invoice',$data,compact('customers'));
+        $customers = Customer::where('id', $customer_id)->get();
+        $data['records'] = PaymentRecord::where(
+            'customer_id',
+            $customer_id
+        )->get();
+        $data['packages'] = $data['records'][0]->package;
+        return view('admin.customers.invoice', $data, compact('customers'));
     }
 }

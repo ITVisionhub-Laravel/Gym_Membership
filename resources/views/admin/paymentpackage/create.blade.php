@@ -1,13 +1,10 @@
-@extends('admin')
-
-@section('content')
-
+<x-admin>
 <div class="container py-3 ">
-   <div class="card p-5 bg-secondary">
+   <div class="card p-5">
      <h3 class="text-center my-2">Package Create Form</h3>
      <form action="{{route('payment_packages.store')}}" method="POST" >
         @csrf
-        <div class="mb-3">
+        <div class="mb-3" style="border:2px;">
             <label for="package" class="form-label">Package</label>
             <input type="text" name="package" id="package" class="form-control @error('package') is-invalid @enderror">
             @error('package')
@@ -28,9 +25,10 @@
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
-        <button type="submit" class="btn btn-success float-end mt-3"> Save</button>
+        <button type="submit" class="btn btn-outline-success float-end mt-3"> Save</button>
     </form>
    </div>
 </div>
-
-@endsection
+<x-slot name="scripts">
+</x-slot>
+</x-admin>

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\Attendee_CheckController;
+use App\Http\Controllers\Admin\Attendence_CheckController;
+use App\Http\Controllers\Admin\AttendentController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PaymentPackageController;
 use App\Http\Controllers\Admin\PaymentProviderController;
@@ -35,6 +38,11 @@ Route::get('/dashboard', function () {
     ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/members/{memberId}', [
+        App\Http\Controllers\Admin\DashboardController::class,
+        'show',
+    ])->name('members.show');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name(
         'profile.edit'
     );
@@ -44,20 +52,30 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
         'profile.destroy'
     );
-    
+
+    //PuKit
     Route::resource('payment_packages', PaymentPackageController::class);
     Route::resource('payment_providers', PaymentProviderController::class);
     Route::resource('payment_records', PaymentRecordController::class);
+    Route::resource('attendents', AttendentController::class);
+
+    Route::resource('attendent_check', Attendence_CheckController::class);
+
 
 });
 
-Route::prefix('admin')->group(function(){
-Route::controller(App\Http\Controllers\Admin\DashboardController::class)->group(function(){
-        Route::get('dashboard','index');
-        Route::get('dashboard/create','create');
-    });   
+Route::prefix('admin')->group(function () {
+    Route::controller(
+        App\Http\Controllers\Admin\DashboardController::class
+    )->group(function () {
+        Route::get('dashboard', 'index');
 
-Route::controller(App\Http\Controllers\Admin\CustomerController::class)->group(function () {
+        // Route::get('members/{memberId}', 'show');
+    });
+
+    Route::controller(
+        App\Http\Controllers\Admin\CustomerController::class
+    )->group(function () {
         Route::get('/customers', 'index');
         Route::get('/customers/create', 'create');
         Route::post('/customers', 'store');
@@ -70,7 +88,8 @@ Route::controller(App\Http\Controllers\Admin\CustomerController::class)->group(f
         Route::get('/customers/{customer_id}/invoice', 'invoice');
     });
 
-Route::controller(App\Http\Controllers\Admin\EquipmentController::class
+    Route::controller(
+        App\Http\Controllers\Admin\EquipmentController::class
     )->group(function () {
         Route::get('/equipments', 'index');
         Route::get('/equipments/create', 'create');
@@ -91,7 +110,8 @@ Route::controller(App\Http\Controllers\Admin\EquipmentController::class
         Route::get('/sliders/{slider}/delete', 'destroy');
     });
 
-    Route::controller(App\Http\Controllers\Admin\TrainerController::class
+    Route::controller(
+        App\Http\Controllers\Admin\TrainerController::class
     )->group(function () {
         Route::get('/trainers', 'index');
         Route::get('/trainers/create', 'create');
@@ -100,7 +120,6 @@ Route::controller(App\Http\Controllers\Admin\EquipmentController::class
         Route::put('/trainers/{trainer}', 'update');
         Route::get('/trainers/{trainer_id}/delete', 'destroy');
     });
-
 });
 
 require __DIR__ . '/auth.php';

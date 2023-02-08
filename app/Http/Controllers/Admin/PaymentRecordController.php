@@ -58,6 +58,7 @@ class PaymentRecordController extends Controller
         $paymentrecord->record_date=$request->record_date;
         $paymentrecord->provider_id=$request->payment_record;
         $paymentrecord->customer_id=$request->member_name;
+        // dd($paymentrecord);
         $paymentrecord->save();
 
         return redirect()->route('payment_records.index');

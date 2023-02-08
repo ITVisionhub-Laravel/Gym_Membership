@@ -1,12 +1,7 @@
-@extends('admin')
-
-@section('content')
+<x-admin>
 <div class="container my-3">
-     @if (session('message'))
-            <div class="alert alert-success">{{ session('message') }}</div>
-    @endif
+    <x-successmessage/>
     <h3 class="my-2">Members List
-    {{-- <a href="{{ url('admin/customers/payment') }}"  class="btn btn-success btn-sm text-white float-end">Add Fees</a> --}}
     <a href="{{ url('admin/customers/create') }}" class="btn btn-primary btn-sm text-white float-end">Add Members</a>
     </h3>
     <hr>
@@ -53,9 +48,7 @@
         </tbody>
     </table>
 </div>
-@endsection
-
-@section('scripts')
+<x-slot name="scripts">
 <script>
      $(document).ready( function () {
         $('#myTable').DataTable({
@@ -63,4 +56,6 @@
         });
     } );
 </script>
-@endsection
+</x-slot>
+</x-admin>
+

@@ -1,14 +1,15 @@
-@extends('admin')
-
-@section('content')
+<x-admin>
 <div class="container my-3">
+        @if (session('message'))
+            <div class="alert alert-success">{{ session('message') }}</div>
+        @endif
     <h3 class="my-2">Package Lists</h3>
     <table id="myTable" class="display">
         <thead>
             <tr>
                 <th>No</th>
                 <th>Package</th>
-                <th>Promotion</th>
+                <th>Promotion (%)</th>
                 <th>Original Price</th>
                 <th>Action</th>
             </tr>
@@ -38,12 +39,13 @@
         </tbody>
     </table>
 </div>
-@endsection
-@section('scripts')
+
+<x-slot name="scripts">
 <script>
      $(document).ready( function () {
         $('#myTable').DataTable();
     } );
 </script>
-@endsection
+</x-slot>
+</x-admin>
    

@@ -4,7 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -14,12 +15,8 @@ return new class extends Migration {
     {
         Schema::create('attendents', function (Blueprint $table) {
             $table->id();
-            $table->integer('customer_id');
-            $table->date('date');
-            $table
-                ->integer('status')
-                ->default('0')
-                ->comment('1=present,0=absent');
+            $table->unsignedBigInteger('customer_id');
+            $table->date('attendent_date');
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
   <link rel="stylesheet" href="{{asset('admin/vendors/mdi/css/materialdesignicons.min.css')}}">
   <link rel="stylesheet" href="{{asset('admin/vendors/base/vendor.bundle.base.css')}}">
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
   <!-- endinject -->
   <!-- plugin css for this page -->
   <link rel="stylesheet" href="{{asset('admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css')}}">
@@ -68,16 +69,15 @@
     <script src="{{asset('admin/js/dataTables.bootstrap4.js')}}"></script>
      {{--  End custom js for this page  --}}
 
-
-     
      <script src="{{asset('assets/js/jquery-3.6.3.min.js')}}"></script>
      <script src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
+     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
      {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
 
     @livewireScripts
     @yield('scripts')
-    
     @stack('script')
+    @yield('script')
 </body>
 </html>

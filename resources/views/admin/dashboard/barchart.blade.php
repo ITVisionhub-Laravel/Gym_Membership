@@ -55,8 +55,6 @@
             },
         ],
     };
-
- 
    
     var options = {
         scales: {

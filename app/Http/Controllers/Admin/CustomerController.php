@@ -25,7 +25,6 @@ class CustomerController extends Controller
     }
     public function create()
     {
-        // dd('hit');
         $data['cities'] = City::get(['name', 'id']);
         $data['packages'] = PaymentPackage::get();
         $data['providers'] = PaymentProvider::get();
@@ -52,6 +51,7 @@ class CustomerController extends Controller
 
     public function store(CustomerFormRequest $request)
     {
+        // dd('hit');
         // return $request;
         $validatedData = $request->validated();
         $customer = new Customer();
@@ -59,7 +59,7 @@ class CustomerController extends Controller
         $payment_record = new PaymentRecord();
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
-        $customer->member_card = $request->member_card;
+        $customer->member_card = $validatedData['member_card_id'];
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
 
@@ -99,7 +99,7 @@ class CustomerController extends Controller
             $payment_record->package_id = $package_info[0];
             $payment_record->price = $request->price;
             $payment_record->record_date = date('Y.m.d');
-            $payment_record->provider_id = $request->provider;
+            $payment_record->provider_id = $request->payment;
             $payment_record->customer_id = $customer->id;
             if (!$payment_record->save()) {
                 $customer->delete();
@@ -176,14 +176,12 @@ class CustomerController extends Controller
             $payment_record = new PaymentRecord();
             $package_info = explode(' ', $request->package);
             PaymentRecord::where('customer_id', $customer->id)->update([
-
-            'package_id' => $package_info[0],
-            'price' => $request->price,
-            'record_date' => date('Y.m.d'),
-            'provider_id' => $request->provider,
-            'customer_id' => $customer->id,
-        ]);
-
+                'package_id' => $package_info[0],
+                'price' => $request->price,
+                'record_date' => date('Y.m.d'),
+                'provider_id' => $request->payment,
+                'customer_id' => $customer->id,
+            ]);
         }
         return redirect('admin/customers')->with(
             'message',
@@ -192,15 +190,18 @@ class CustomerController extends Controller
     }
     public function destroy($customer_id)
     {
+        // return $customer_id;
+
         $customer = Customer::findOrFail($customer_id);
-        $records = PaymentRecord::findOrFail($customer->id);
         $path = public_path('uploads/customer/' . $customer->image);
+
         if (File::exists($path)) {
             File::delete($path);
         }
         if ($customer->delete()) {
-            $records->delete();
+            PaymentRecord::where('customer_id', $customer_id)->delete();
         }
+
         return redirect('admin/customers')->with(
             'message',
             'Customer Deleted Successfully'

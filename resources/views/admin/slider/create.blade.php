@@ -18,8 +18,7 @@
                             @csrf
 
                             <div class="mb-3">
-                                <label for="">Title</label>
-                                <input type="text" name="title" class="form-control">
+                                <x-forms.forminput name="title" placeholder="Enter Title" width="col-md-12" />
                             </div>
 
                              <div class="mb-3">
@@ -28,8 +27,7 @@
                             </div>
 
                             <div class="mb-3">
-                                <label for="">Image </label><br>
-                                <input type="file" name="image" class="form-control">
+                                <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-12"  />
                             </div>
 
                              <div class="mb-3">

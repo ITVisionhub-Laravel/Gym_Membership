@@ -5,25 +5,13 @@
      <form action="{{route('payment_packages.store')}}" method="POST" >
         @csrf
         <div class="mb-3" style="border:2px;">
-            <label for="package" class="form-label">Package</label>
-            <input type="text" name="package" id="package" class="form-control @error('package') is-invalid @enderror">
-            @error('package')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
+            <x-forms.forminput name="package" placeholder="Enter Package" width="col-md-12" />
         </div>
         <div class="mb-3">
-            <label for="promotion" class="form-label">Promotion (%)</label>
-            <input type="text" name="promotion" id="promotion" class="form-control @error('promotion') is-invalid @enderror">
-            @error('promotion')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
+            <x-forms.forminput name="promotion" placeholder="Enter Promotion" width="col-md-12" />
         </div>
         <div class="mb-3">
-            <label for="original_price" class="form-label">Original Price</label>
-            <input type="text" name="original_price" id="original_price" class="form-control @error('original_price') is-invalid @enderror">
-            @error('original_price')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
+            <x-forms.forminput name="original_price" placeholder="Enter Original Price" width="col-md-12" />
         </div>
         <button type="submit" class="btn btn-outline-success float-end mt-3"> Save</button>
     </form>

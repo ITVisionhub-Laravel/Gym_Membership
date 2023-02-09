@@ -15,10 +15,12 @@
                     @csrf
                        @method('PUT')
                 <div class="mb-3">
-                    <label for="">Name</label>
+                    <x-forms.forminput name="name" placeholder="Enter Your Name" width="col-md-12"/>
+               
+                    {{-- <label for="">Name</label>
                     <input type="text" name="name" value="{{$equipment->name}}" class="form-control">
                     @error('name')<small class="text-danger">{{ $message }}</small>@enderror
-                </div>
+                </div> --}}
 
                  <div class="mb-3">
                     <label for="">Image</label>

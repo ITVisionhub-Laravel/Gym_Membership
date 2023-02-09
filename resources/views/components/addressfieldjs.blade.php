@@ -43,7 +43,7 @@
                     }
                 });
             });
-             $('#package-dd').on('change', function () {
+             $('#package').on('change', function () {
                 var packageData = $(this).val().split(" ");
                 var original_price=packageData[2];
                 var promotion=packageData[1];

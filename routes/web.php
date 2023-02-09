@@ -60,8 +60,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('attendents', AttendentController::class);
 
     Route::resource('attendent_check', Attendence_CheckController::class);
-
-
 });
 
 Route::prefix('admin')->group(function () {

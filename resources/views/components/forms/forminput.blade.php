@@ -6,5 +6,5 @@
         @if ($name == 'image' && $value!='')
             <img src="{{asset('/uploads/customer/'.$value)}}" width="50px" height="50px" alt=""/>
         @endif
-        <x-input-error :messages="$errors->get('$name')" class="text-danger" fieldName="$name" />
+        <x-forms.input-error name="{{ $name }}"/>
     </x-forms.field>

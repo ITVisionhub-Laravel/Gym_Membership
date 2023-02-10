@@ -82,7 +82,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer_id}/delete', 'destroy');
         Route::post('/customers/fetch_township', 'fetchTownship');
         Route::post('/customers/fetch_street', 'fetchStreet');
-        Route::get('/customers/payment', 'payment');
+
         Route::get('/customers/{customer_id}/invoice', 'invoice');
         Route::get('/customers/{customer_id}/view', 'viewInvoice');
         Route::get('/customers/{customer_id}/generate', 'generateInvoice');

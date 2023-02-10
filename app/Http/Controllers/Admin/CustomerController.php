@@ -8,13 +8,18 @@ use App\Models\Address;
 use App\Models\Customer;
 use App\Models\Township;
 use Illuminate\Http\Request;
+use App\Models\PaymentRecord;
 use App\Models\PaymentPackage;
+use Illuminate\Support\Carbon;
+use App\Models\PaymentProvider;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\CustomerFormRequest;
-use App\Models\PaymentProvider;
-use App\Models\PaymentRecord;
+use App\Mail\InvoiceMailable;
+
 
 class CustomerController extends Controller
 {
@@ -221,5 +226,49 @@ class CustomerController extends Controller
         )->get();
         $data['packages'] = $data['records'][0]->package;
         return view('admin.customers.invoice', $data, compact('customers'));
+    }
+    public function viewInvoice($customer_id)
+    {
+       $data['records'] = PaymentRecord::where(
+            'customer_id',
+            $customer_id
+        )->with('customer')->get();
+        $data['packages'] = $data['records'][0]->package;
+        return view('admin.customers.viewinvoice',compact('data'));
+    }
+    public function generateInvoice($customer_id)
+    {
+        $data['records'] = PaymentRecord::where(
+                'customer_id',
+                $customer_id
+                )->with('customer')->get();
+        $data['packages'] = $data['records'][0]->package;
+        $data=[
+            'records'=>$data['records'],
+            'packages'=>$data['packages']
+        ];
+        $pdf = Pdf::loadView('admin.customers.viewinvoice', compact('data'));
+        // dd($data);
+        $todayDate=Carbon::now()->format('d-m-Y');
+        return $pdf->download('invoice-'.$customer_id.'-'.$todayDate.'.pdf');
+    }
+    public function mailInvoice($customer_id)
+    {
+        try{
+            $data['customers'] = Customer::where(
+                'id',
+                $customer_id
+            )->get();
+            $data['records'] = PaymentRecord::where(
+                'customer_id',
+                $customer_id
+            )->get();
+            $data['packages'] = $data['records'][0]->package;
+            // dd($data['customers']);
+            Mail::to("eek752000@gmail.com")->send(new InvoiceMailable($data));
+            return redirect('admin/customers')->with('message','Invoice Mail has been sent to'."eek752000@gmail.com");
+        }catch(\Exception $e){
+            return redirect('admin/customers')->with('message','Something Went Wrong.!');
+        }
     }
 }

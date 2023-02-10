@@ -84,6 +84,9 @@ Route::prefix('admin')->group(function () {
         Route::post('/customers/fetch_street', 'fetchStreet');
         Route::get('/customers/payment', 'payment');
         Route::get('/customers/{customer_id}/invoice', 'invoice');
+        Route::get('/customers/{customer_id}/view', 'viewInvoice');
+        Route::get('/customers/{customer_id}/generate', 'generateInvoice');
+        Route::get('/customers/{customer_id}/mail', 'mailInvoice');
     });
 
     Route::controller(

@@ -12,7 +12,7 @@
                 <form action="{{ url('admin/customers') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row pt-3">
-                        <x-forms.forminput name="name" placeholder="Enter Your Name" errors="$errors"/>
+                        <x-forms.forminput name="name" placeholder="Enter Your Name"/>
                         <x-forms.forminput name="age" placeholder="Enter Your Age" type="number"/>
                     </div>
 
@@ -28,11 +28,13 @@
                             <label for="">Township</label>
                             <select id="township-dd" class="form-select" name="township" >
                             </select>
+                            <x-forms.input-error name="township"/>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="">Street</label>
                             <select id="street-dd" class="form-select" name="street" >
                             </select>
+                            <x-forms.input-error name="street"/>
                         </div>
                     </div>
                     

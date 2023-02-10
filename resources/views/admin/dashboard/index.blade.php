@@ -117,5 +117,6 @@
     </div>
 </section>
 <x-slot name="scripts">
+ <x-barchartjs :monthlyEarningMoney=$monthlyEarningMoney :month=$month></x-barchartjs>
 </x-slot>
 </x-admin>

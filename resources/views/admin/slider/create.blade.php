@@ -1,7 +1,4 @@
-@extends('admin')
-
-@section('content')
-
+<x-admin>
 <div class="row">
             <div class="col-md-12">
             @if (session('message'))
@@ -47,5 +44,6 @@
                 </div>
             </div>
 </div>
-
-@endsection
+<x-slot name="scripts">
+</x-slot>
+</x-admin>

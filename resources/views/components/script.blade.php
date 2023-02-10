@@ -22,4 +22,4 @@
      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
      {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> --}}
-    @livewireScripts
+    {{-- @livewireScripts --}}

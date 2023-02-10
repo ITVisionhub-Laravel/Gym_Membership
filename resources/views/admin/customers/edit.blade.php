@@ -14,8 +14,9 @@
                         @method('PUT')
 
                         <div class="row pt-3">
-                            <x-forms.forminput name="name" placeholder="Enter Your Name" value="{{ $customer->name }}"/>
-                            <x-forms.forminput name="age" placeholder="Enter Your Age" type="number" value="{{ $customer->age }}"/>
+                            <x-forms.forminput name="name" placeholder="Enter Your Name" value="{{ $customer->name }}" width="col-md-4"/>
+                            <x-forms.forminput name="age" placeholder="Enter Your Age" type="number" value="{{ $customer->age }}" width="col-md-4"/>
+                            <x-forms.forminput name="email" placeholder="Enter Your Email" type="email" value="{{ $customer->email }}" width="col-md-4"/>
                         </div>
 
                         <div class="row pt-3">

@@ -15,18 +15,11 @@
             <div class="card-body">
                 <form action="{{ url('admin/trainers') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                <div class="mb-3">
-                    <x-forms.forminput name="name" placeholder="Enter Your Name" width="col-md-12" />
-                 </div>
-                <div class="mb-3">
-                    <label for="">Description</label>
-                    <input type="text" name="description" class="form-control">
-                    @error('description')<small class="text-danger">{{ $message }}</small>@enderror
-                </div>
-
-                 <div class="mb-3">
+                
+                    <x-forms.forminput name="name" placeholder="Enter Name" width="col-md-12" />
+                    <x-forms.forminput name="description" type="textarea" width="col-md-12" />
                     <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-12" />
-                </div>
+                
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>

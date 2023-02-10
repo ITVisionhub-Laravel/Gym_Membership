@@ -15,21 +15,11 @@
                     </div>
                     <div class="card-body">
                         <form action="{{url('admin/sliders')}}" method="POST" enctype="multipart/form-data">
-                            @csrf
-
-                            <div class="mb-3">
-                                <x-forms.forminput name="title" placeholder="Enter Title" width="col-md-12" />
-                            </div>
-
-                             <div class="mb-3">
-                                <label for="">Description</label>
-                                <textarea name="description" class="form-control"></textarea>
-                            </div>
-
-                            <div class="mb-3">
-                                <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-12"  />
-                            </div>
-
+                            @csrf                         
+                            <x-forms.forminput name="title" placeholder="Title" width="col-md-12" />
+                            <x-forms.forminput name="description" type="textarea" width="col-md-12" />
+                            <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-12"  />
+                           
                              <div class="mb-3">
                                 <label for="">Status </label><br>
                                 <input type="checkbox" name="status" style="width:30px;height:30px" />Checked=Hidden,Unchecked=Visible

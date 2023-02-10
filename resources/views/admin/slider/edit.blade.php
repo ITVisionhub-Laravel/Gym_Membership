@@ -17,30 +17,17 @@
                         <form action="{{url('admin/sliders/'.$slider->id)}}" method="POST" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
+                    <x-forms.forminput name="title" placeholder="Title" value="{{$slider->title}}" width="col-md-12"/>
+                    <x-forms.forminput type="textarea" name="description" value="{{$slider->description}}" width="col-md-12"/>
+                    <x-forms.forminput name="image" type="file" placeholder="Image" value="{{$slider->image}}" width="col-md-12"/>
 
-                            <div class="mb-3">
-                                <label for="">Title</label>
-                                <input type="text" name="title" value="{{$slider->title}}" class="form-control">
-                            </div>
-
-                             <div class="mb-3">
-                                <label for="">Description</label>
-                                <textarea name="description" class="form-control" rows="3">{{$slider->description}}</textarea>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="">Image </label><br>
-                                <input type="file" name="image" class="form-control">
-                                <img src="{{asset("$slider->image")}}" style="width:50px;height:50px" alt="Slider">
-                            </div>
-
-                             <div class="mb-3">
-                                <label for="">Status </label><br>
-                                <input type="checkbox" name="status" {{$slider->status=='1'?'checked':''}} style="width:30px;height:30px" />Checked=Hidden,Unchecked=Visible
-                            </div>
-                             <div class="mb-3">
-                                <button type="submit" class="btn btn-primary">Update</button>
-                             </div>
+                    <div class="mb-3">
+                    <label for="">Status </label><br>
+                    <input type="checkbox" name="status" {{$slider->status=='1'?'checked':''}} style="width:30px;height:30px" />Checked=Hidden,Unchecked=Visible
+                    </div>
+                    <div class="mb-3">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
 
                         </form>
                   

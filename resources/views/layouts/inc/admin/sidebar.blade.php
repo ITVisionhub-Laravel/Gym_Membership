@@ -74,7 +74,7 @@
         </a>
         <div class="collapse" id="ui-paymentrecord">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li>
+            {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
             <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.index')}}">View PaymentRecords</a></li>
           </ul>
         </div>

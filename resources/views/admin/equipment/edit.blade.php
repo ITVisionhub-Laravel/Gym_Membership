@@ -14,24 +14,11 @@
                 <form action="{{ url('admin/equipments/'.$equipment->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                        @method('PUT')
-                <div class="mb-3">
-                    <x-forms.forminput name="name" placeholder="Enter Your Name" width="col-md-12"/>
-               
-                    {{-- <label for="">Name</label>
-                    <input type="text" name="name" value="{{$equipment->name}}" class="form-control">
-                    @error('name')<small class="text-danger">{{ $message }}</small>@enderror
-                </div> --}}
-
-                 <div class="mb-3">
-                    <label for="">Image</label>
-                    <input type="file" name="image" class="form-control">
-                    <img src="{{asset('/uploads/equipment/'.$equipment->image)}}" width="60px" height="60px" alt="">
-                   
-                    @error('image')<small class="text-danger">{{ $message }}</small>@enderror
-                </div>
-                <div class="mb-3">
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </div>
+                    <x-forms.forminput name="name" placeholder="Enter Name" value="{{$equipment->name}}" width="col-md-12"/>
+                    <x-forms.forminput name="image" type="file" placeholder="Image" value="{{'/uploads/equipment/'.$equipment->image}}" width="col-md-12"/>
+                        <div class="mb-3">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
                 </form>
             </div>
         </div>

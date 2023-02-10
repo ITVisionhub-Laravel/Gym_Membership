@@ -13,13 +13,9 @@
             <div class="card-body">
                 <form action="{{ url('admin/equipments') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                <div class="mb-3">
                     <x-forms.forminput name="name" placeholder="Enter Your Name" width="col-md-12"/>
-                </div> 
-
-                 <div class="mb-3">
                     <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-12"/>
-                </div>
+                
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Save</button>
                 </div>

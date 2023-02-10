@@ -16,24 +16,10 @@
                 <form action="{{ url('admin/trainers/'.$trainer->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                <div class="mb-3">
-                    <label for="">Name</label>
-                    <input type="text" name="name" value="{{ $trainer->name }}" class="form-control">
-                    @error('name')<small class="text-danger">{{ $message }}</small>@enderror
-                </div>
-                <div class="mb-3">
-                    <label for="">Description</label>
-                    <input type="text" name="description" value="{{ $trainer->description }}"  class="form-control">
-                    @error('description')<small class="text-danger">{{ $message }}</small>@enderror
-                </div>
+                    <x-forms.forminput name="name" placeholder="Enter Your Name" value="{{ $trainer->name }}" width="col-md-12"/>
+                    <x-forms.forminput name="description" type="textarea" value="{{$trainer->description}}" width="col-md-12" />
+                    <x-forms.forminput name="image" type="file" placeholder="Image" value="{{'/uploads/trainer/'.$trainer->image}}" width="col-md-12"/>
 
-                 <div class="mb-3">
-                    <label for="">Image</label>
-                    <input type="file" name="image" class="form-control">
-                    <img src="{{asset('/uploads/trainer/'.$trainer->image)}}" width="60px" height="60px" alt="">
-                    
-                    @error('image')<small class="text-danger">{{ $message }}</small>@enderror
-                </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>

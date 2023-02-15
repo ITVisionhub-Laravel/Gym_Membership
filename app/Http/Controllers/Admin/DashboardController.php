@@ -17,6 +17,9 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        if(auth()->guest() || !auth()->user()->role_as=='1'){
+            abort(403);
+    }
         $expiredDate = '';
 
         $data['members'] = Customer::get();

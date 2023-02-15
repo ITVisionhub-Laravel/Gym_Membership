@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\CustomerFormRequest;
 use App\Mail\InvoiceMailable;
-
+use App\Models\Logo;
 
 class CustomerController extends Controller
 {
@@ -221,7 +221,8 @@ class CustomerController extends Controller
             $customer_id
         )->get();
         $data['packages'] = $data['records'][0]->package;
-        return view('admin.customers.invoice', $data, compact('customers'));
+        $logos=Logo::first();
+        return view('admin.customers.invoice', $data, compact('customers','logos'));
     }
     public function viewInvoice($customer_id)
     {
@@ -229,7 +230,8 @@ class CustomerController extends Controller
                 'customer_id',
                 $customer_id
                 )->with('customer')->first();
-        return view('admin.customers.viewinvoice',compact('data'));
+        $logos=Logo::first();
+        return view('admin.customers.viewinvoice',compact('data','logos'));
     }
     public function generateInvoice($customer_id)
     {
@@ -237,7 +239,8 @@ class CustomerController extends Controller
                 'customer_id',
                 $customer_id
                 )->with('customer')->first();
-        $pdf = Pdf::loadView('admin.customers.viewinvoice', compact('data'));
+        $logos=Logo::first();
+        $pdf = Pdf::loadView('admin.customers.viewinvoice', compact('data','logos'));
         $todayDate=Carbon::now()->format('d-m-Y');
         return $pdf->download('invoice-'.$customer_id.'-'.$todayDate.'.pdf');
         exit;
@@ -249,6 +252,7 @@ class CustomerController extends Controller
                 'customer_id',
                 $customer_id
             )->with('customer')->first();
+            $data['logos']=Logo::first();
             Mail::to($data['records']->customer->email)->send(new InvoiceMailable($data));
             return redirect('admin/customers')->with('message','Invoice Mail has been sent to '.$data['records']->customer->email);
         }catch(\Exception $e){

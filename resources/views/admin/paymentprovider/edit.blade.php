@@ -1,7 +1,4 @@
-@extends('admin')
-
-@section('content')
-
+<x-admin>
 <div class="container py-3 ">
    <div class="card p-5">
      <h3 class="text-center my-2">Packyment Type Edit Form</h3>
@@ -20,5 +17,6 @@
     </form>
    </div>
 </div>
-
-@endsection
+<x-slot name="scripts">
+</x-slot>
+</x-admin>

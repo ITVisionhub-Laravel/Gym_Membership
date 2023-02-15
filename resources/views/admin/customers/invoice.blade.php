@@ -43,7 +43,7 @@
                       <h5>{{ $customer->phone_number}}</h5>
                     </div>
                     <div class="col-md-3">
-                      <img src="/admin/images/gymlogo.png" alt="Member" style="width:120px;height:120px;">
+                      <img src="{{asset("$logos->image")}}" alt="Member" style="width:120px;height:120px;">
                     </div>
                     </div>
                   </div>

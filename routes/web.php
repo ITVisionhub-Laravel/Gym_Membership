@@ -32,7 +32,7 @@ Route::get('/', [
 ]);
 
 Route::get('/dashboard', function () {
-    return view('admin');
+    return view('dashboard');
 })
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -82,7 +82,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer_id}/delete', 'destroy');
         Route::post('/customers/fetch_township', 'fetchTownship');
         Route::post('/customers/fetch_street', 'fetchStreet');
-        Route::get('/customers/payment', 'payment');
+
         Route::get('/customers/{customer_id}/invoice', 'invoice');
         Route::get('/customers/{customer_id}/view', 'viewInvoice');
         Route::get('/customers/{customer_id}/generate', 'generateInvoice');
@@ -98,6 +98,17 @@ Route::prefix('admin')->group(function () {
         Route::get('/equipments/{equipment}/edit', 'edit');
         Route::put('/equipments/{equipment}', 'update');
         Route::get('/equipments/{equipment_id}/delete', 'destroy');
+    });
+
+    Route::controller(
+        App\Http\Controllers\Admin\LogoController::class
+    )->group(function () {
+        Route::get('/logo', 'index');
+        Route::get('/logo/create', 'create');
+        Route::post('/logo', 'store');
+        Route::get('/logo/{logo}/edit', 'edit');
+        Route::put('/logo/{logo}', 'update');
+        Route::get('/logo/{logo}/delete', 'destroy');
     });
 
     Route::controller(

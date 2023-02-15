@@ -43,7 +43,7 @@
                       <h5>{{ $customer->phone_number}}</h5>
                     </div>
                     <div class="col-md-3">
-                      <img src="/admin/images/gymlogo.png" alt="Member" style="width:120px;height:120px;">
+                      <img src="{{asset("$logos->image")}}" alt="Member" style="width:120px;height:120px;">
                     </div>
                     </div>
                   </div>
@@ -54,7 +54,7 @@
                       <h4>Member:  {{ $customer->name }}</h4>
                       @endforeach
                       @foreach ($records as $record)
-                        <h5>Paid On:  {{ $record->created_at->diffForHumans() }}</h5>
+                        <h5>Paid On:  {{ $record->created_at->format("F j, Y, g:i a") }}</h5>
                       @endforeach
                       <hr>
                       <h5>Package:  {{$packages->package}}</h5>
@@ -62,9 +62,7 @@
                       <h5>Original Price:  {{ $packages->original_price }}</h5>
                        <hr>
                       <h5>Total Amount: {{ $packages->original_price-($packages->original_price*$packages->promotion/100) }}</h5>
-                      
                   </center>
-                  {{-- <button type="submit" onclick="window.print()" class="btn btn-success btn-lg float-end">Print</button> --}}
                 </div>
               </div>
             </div>

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\CustomerFormRequest;
 use App\Mail\InvoiceMailable;
-
+use App\Models\Logo;
 
 class CustomerController extends Controller
 {
@@ -33,8 +33,6 @@ class CustomerController extends Controller
         $data['cities'] = City::get(['name', 'id']);
         $data['packages'] = PaymentPackage::get();
         $data['providers'] = PaymentProvider::get();
-        // dd($data['packages']);
-        // $packages=PaymentPackage::all();
         return view('admin.customers.create', $data);
     }
     public function fetchTownship(Request $request)
@@ -64,6 +62,7 @@ class CustomerController extends Controller
         $payment_record = new PaymentRecord();
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
+        $customer->email = $validatedData['email'];
         $customer->member_card = $validatedData['member_card_id'];
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
@@ -139,6 +138,7 @@ class CustomerController extends Controller
 
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
+        $customer->email = $validatedData['email'];
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
 
@@ -212,11 +212,7 @@ class CustomerController extends Controller
             'Customer Deleted Successfully'
         );
     }
-    public function payment()
-    {
-        $data['customers'] = Customer::get(['name', 'id']);
-        return view('admin.customers.payment', $data);
-    }
+
     public function invoice($customer_id)
     {
         $customers = Customer::where('id', $customer_id)->get();
@@ -225,48 +221,40 @@ class CustomerController extends Controller
             $customer_id
         )->get();
         $data['packages'] = $data['records'][0]->package;
-        return view('admin.customers.invoice', $data, compact('customers'));
+        $logos=Logo::first();
+        return view('admin.customers.invoice', $data, compact('customers','logos'));
     }
     public function viewInvoice($customer_id)
     {
        $data['records'] = PaymentRecord::where(
-            'customer_id',
-            $customer_id
-        )->with('customer')->get();
-        $data['packages'] = $data['records'][0]->package;
-        return view('admin.customers.viewinvoice',compact('data'));
+                'customer_id',
+                $customer_id
+                )->with('customer')->first();
+        $logos=Logo::first();
+        return view('admin.customers.viewinvoice',compact('data','logos'));
     }
     public function generateInvoice($customer_id)
     {
         $data['records'] = PaymentRecord::where(
                 'customer_id',
                 $customer_id
-                )->with('customer')->get();
-        $data['packages'] = $data['records'][0]->package;
-        $data=[
-            'records'=>$data['records'],
-            'packages'=>$data['packages']
-        ];
-        $pdf = Pdf::loadView('admin.customers.viewinvoice', compact('data'));
-        // dd($data);
+                )->with('customer')->first();
+        $logos=Logo::first();
+        $pdf = Pdf::loadView('admin.customers.viewinvoice', compact('data','logos'));
         $todayDate=Carbon::now()->format('d-m-Y');
         return $pdf->download('invoice-'.$customer_id.'-'.$todayDate.'.pdf');
+        exit;
     }
     public function mailInvoice($customer_id)
     {
         try{
-            $data['customers'] = Customer::where(
-                'id',
-                $customer_id
-            )->get();
             $data['records'] = PaymentRecord::where(
                 'customer_id',
                 $customer_id
-            )->get();
-            $data['packages'] = $data['records'][0]->package;
-            // dd($data['customers']);
-            Mail::to("eek752000@gmail.com")->send(new InvoiceMailable($data));
-            return redirect('admin/customers')->with('message','Invoice Mail has been sent to'."eek752000@gmail.com");
+            )->with('customer')->first();
+            $data['logos']=Logo::first();
+            Mail::to($data['records']->customer->email)->send(new InvoiceMailable($data));
+            return redirect('admin/customers')->with('message','Invoice Mail has been sent to '.$data['records']->customer->email);
         }catch(\Exception $e){
             return redirect('admin/customers')->with('message','Something Went Wrong.!');
         }

@@ -12,8 +12,9 @@
                 <form action="{{ url('admin/customers') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="row pt-3">
-                        <x-forms.forminput name="name" placeholder="Enter Your Name"/>
-                        <x-forms.forminput name="age" placeholder="Enter Your Age" type="number"/>
+                        <x-forms.forminput name="name" placeholder="Enter Your Name" width="col-md-4"/>
+                        <x-forms.forminput name="age" placeholder="Enter Your Age" type="number" width="col-md-4"/>
+                        <x-forms.forminput name="email" placeholder="Enter Your Email" type="email" width="col-md-4"/>
                     </div>
 
                     <div class="row pt-3">

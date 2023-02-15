@@ -94,10 +94,17 @@
           <span class="menu-title">Attendent</span>
         </a>
       </li>
+      <li class="nav-item">
             <a class="nav-link" href="{{url('admin/sliders')}}">
               <i class="mdi mdi-view-carousel menu-icon"></i>
               <span class="menu-title">Home Slider</span>
             </a>
           </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url('admin/logo')}}">
+          <i class="mdi mdi-message-image menu-icon"></i>
+          <span class="menu-title">Logo</span>
+        </a>
+      </li>
     </ul>
   </nav>

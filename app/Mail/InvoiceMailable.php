@@ -43,7 +43,7 @@ class InvoiceMailable extends Mailable
      */
     public function content()
     {
-        return new Content(view: 'admin.customers.viewinvoice',
+        return new Content(view: 'admin.customers.mailinvoice',
         );
     }
 

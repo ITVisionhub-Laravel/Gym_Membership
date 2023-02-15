@@ -26,6 +26,7 @@ class CustomerFormRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'age' => ['required', 'integer'],
+            'email'=>['required','string'],
             'member_card_id' => ['required', 'integer'],
             'height' => ['required', 'string'],
             'weight' => ['required', 'string'],

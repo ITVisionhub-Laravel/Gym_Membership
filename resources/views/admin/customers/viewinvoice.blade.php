@@ -56,7 +56,8 @@ h2{
         </div>
         
         <div class="right">
-        <img src="/admin/images/gymlogo.png" alt="Member" style="width:120px;height:120px;">
+        {{-- @dd($logos->image); --}}
+        {{-- <img src="{{asset("$logos->image")}}" alt="Member" style="width:120px;height:120px;"> --}}
         </div>
         </div>
     <br>

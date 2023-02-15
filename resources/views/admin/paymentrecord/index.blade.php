@@ -13,7 +13,7 @@
                 <th>Price</th>
                 <th>Record_date</th>
                 <th>Payment Method</th>
-                <th>Action</th>
+                {{-- <th>Action</th> --}}
             </tr>
         </thead>
         <tbody>
@@ -29,7 +29,7 @@
                 <td>{{$paymentrecord->record_date}}</td>
                 <td>{{$paymentrecord->paymentprovider->name}}</td>
                 
-                <td>
+                {{-- <td>
                     <a href="{{route('payment_records.edit', $paymentrecord->id)}}" class="btn btn-info py-2">Edit</a>
 
                     <form action="{{route('payment_records.destroy',$paymentrecord->id)}}" method="POST" class="d-inline">
@@ -37,7 +37,7 @@
                         @method('delete')
                         <button type="submit" class="btn btn-danger py-2">Delete</button>
                     </form>
-                </td>
+                </td> --}}
             </tr>
             @endforeach
            

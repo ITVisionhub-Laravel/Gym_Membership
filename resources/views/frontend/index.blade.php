@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="slider.css">
 </head>
 <body>
- 
+  
  <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
   
@@ -48,6 +48,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
 

@@ -44,14 +44,14 @@
                         <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile"/>        
                     </div>
                     <div class="row pt-3">
-                        <x-forms.dropdownfield :dropdownValues="$packages" name="package" width="col-md-3" labelName="Select Packages"></x-forms.dropdownfield>
+                        <x-forms.dropdownfield :dropdownValues="$packages" name="package" width="col-md-3" labelName="Packages"></x-forms.dropdownfield>
                         <x-forms.forminput name="promotion" id="promotion" placeholder="Promotion" width="col-md-3" required readonly/>
                         <x-forms.forminput name="original_price" id="original_price" placeholder="Original Price" width="col-md-3" labelName="original price" required readonly/>     
-                        <x-forms.forminput type="number" id="price" name="price"  placeholder="Original Price" width="col-md-3" required readonly/>
+                        <x-forms.forminput type="number" id="price" name="price"  placeholder=" Price" width="col-md-3" required readonly/>
                         
                     </div>
                     <div class="row pt-3">
-                        <x-forms.dropdownfield :dropdownValues="$providers" name="payment" labelName="Payment Methods" labelName="Choose One Payment Method"></x-forms.dropdownfield>
+                        <x-forms.dropdownfield :dropdownValues="$providers" name="payment" labelName="Payment Methods" ></x-forms.dropdownfield>
                         <x-forms.forminput type="file" name="image" placeholder="Enter Your Image" value=''/>    
                     </div>
                     <div class="mb-3">

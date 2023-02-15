@@ -6,8 +6,8 @@
             @endif
                 <div class="card">
                     <div class="card-header">
-                        <h3>Slider List
-                            <a href="{{url('admin/sliders/create')}}" class="btn btn-primary text-white btn-sm float-end">Add Slider</a>
+                        <h3>Logo Image
+                            <a href="{{url('admin/logo/create')}}" class="btn btn-primary text-white btn-sm float-end">Add Logo</a>
                         </h3>
                     </div>
                     <div class="card-body">
@@ -15,26 +15,20 @@
                             <thead>
                                 <tr>
                                     <td>ID</td>
-                                    <td>Title</td>
-                                    <td>Description</td>
                                     <td>Image</td>
-                                    <td>Status</td>
                                     <td>Action</td>
                                 </tr>
                             </thead>
                             <tbody>
-                               @foreach ($sliders as $slider)
+                               @foreach ($logos as $logo)
                                    <tr>
-                                    <td>{{$slider->id}}</td>
-                                    <td>{{$slider->title}}</td>
-                                    <td>{{$slider->description}}</td>
+                                    <td>{{$logo->id}}</td>
                                     <td>
-                                        <img src="{{asset("$slider->image")}}" style="width:70px;height:70px" alt="Slider">
+                                        <img src="{{asset("$logo->image")}}" style="width:70px;height:70px" alt="logo">
                                     </td>
-                                    <td>{{$slider->status =='0'? 'Visible':'Hidden'}}</td>
                                     <td>
-                                        <a href="{{url('admin/sliders/'.$slider->id.'/edit')}}" class="btn btn-success">Edit</a>
-                                        <a href="{{url('admin/sliders/'.$slider->id.'/delete')}}" 
+                                        <a href="{{url('admin/logo/'.$logo->id.'/edit')}}" class="btn btn-success">Edit</a>
+                                        <a href="{{url('admin/logo/'.$logo->id.'/delete')}}" 
                                             onclick="return confirm('Are you sure you want to delete this data?');"
                                             class="btn btn-danger">Delete</a>
                                     </td>

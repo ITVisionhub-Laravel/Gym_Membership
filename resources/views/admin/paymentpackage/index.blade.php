@@ -30,7 +30,7 @@
                     <form action="{{route('payment_packages.destroy',$paymentpackage->id)}}" method="POST" class="d-inline">
                         @csrf
                         @method('delete')
-                        <button type="submit" class="btn btn-danger py-2">Delete</button>
+                        <button type="submit" onclick="return confirm('Are you sure you want to delete this data?')" class="btn btn-danger py-2">Delete</button>
                     </form>
                 </td>
             </tr>

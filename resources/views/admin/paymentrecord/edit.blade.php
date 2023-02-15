@@ -1,14 +1,13 @@
-@extends('admin')
-
-@section('content')
-
+<x-admin>
 <div class="container py-3 ">
    <div class="card p-5">
      <h3 class="text-center my-2">Payment Record Edit Form</h3>
      <form action="{{route('payment_records.update',$paymentrecord->id)}}" method="POST" >
         @csrf
         @method('PUT')
-        <div class="mb-3">
+        <x-forms.dropdownfield :dropdownValues="$members" name="member_name" width="col-md-12" value="{{$member->name}}" labelName="Members Name"></x-forms.dropdownfield>
+
+        {{-- <div class="mb-3">
             <label for="member_name" class="form-label">Members Name</label>
             <select name="member_name" class="form-select form-select-lg mb-3 @error('customer_name') is-invalid @enderror" aria-label=".form-select-lg example">
                 <option selected>Choose One Member</option>
@@ -21,7 +20,7 @@
             @error('member_name')
                 <div class="alert alert-danger">{{ $message }}</div>
             @enderror
-        </div>
+        </div> --}}
         <div class="mb-3">
             <label for="package" class="form-label">Packages</label>
             <select name="package" class="form-select form-select-lg mb-3 @error('package') is-invalid @enderror" aria-label=".form-select-lg example">
@@ -70,5 +69,6 @@
     </form>
    </div>
 </div>
-
-@endsection
+<x-slot name="scripts">
+</x-slot>
+</x-admin>

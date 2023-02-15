@@ -4,7 +4,7 @@
         @if (session('message'))
             <div class="alert alert-success">{{ session('message') }}</div>
         @endif
-        <div class="card">
+        <div class="card w-50 mx-auto">
             <div class="card-header">
                 <h3>Add Trainer
                     <a href="{{ url('admin/trainers') }}" class="btn btn-danger btn-sm text-white float-end">Back</a>

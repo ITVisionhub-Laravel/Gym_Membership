@@ -15,6 +15,7 @@
                             <thead>
                                 <tr>
                                     <td>ID</td>
+                                    <td>Name</td>
                                     <td>Image</td>
                                     <td>Action</td>
                                 </tr>
@@ -23,6 +24,7 @@
                                @foreach ($logos as $logo)
                                    <tr>
                                     <td>{{$logo->id}}</td>
+                                    <td>{{$logo->name}}</td>
                                     <td>
                                         <img src="{{asset("$logo->image")}}" style="width:70px;height:70px" alt="logo">
                                     </td>

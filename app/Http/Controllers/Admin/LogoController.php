@@ -22,6 +22,7 @@ class LogoController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'name'=>['string'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png']
         ]);
         if ($request->hasFile('image')) {
@@ -32,6 +33,7 @@ class LogoController extends Controller
             $validatedData['image'] = "uploads/logo/$filename";
         }
         Logo::create([
+            'name'=>$validatedData['name'],
             'image' => $validatedData['image']
         ]);
         return redirect('admin/logo')->with(
@@ -47,6 +49,7 @@ class LogoController extends Controller
     public function update(Request $request, Logo $logo)
     {
         $validatedData = $request->validate([
+            'name'=>['string'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png']
         ]);
         if ($request->hasFile('image')) {
@@ -61,6 +64,7 @@ class LogoController extends Controller
             $validatedData['image'] = "uploads/logo/$filename";
         }
     logo::where('id', $logo->id)->update([
+            'name'=>$validatedData['name'],
             'image' => $validatedData['image'] ?? $logo->image
         ]);
         return redirect('admin/logo')->with(

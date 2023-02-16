@@ -2,13 +2,11 @@
 <html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Payment Receipt</title>
 <style>
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  /* font-family: "Poppins", sans-serif; */
   font-family: "Arial", sans-serif;
 }
 body{
@@ -23,7 +21,6 @@ body{
   background: #fff;
   border-radius: 16px;
   padding: 30px;
-  box-shadow:10px 10px 10px 15px rgba(0,0,0,0.05);
 }
 h2{
   padding: 10px;

@@ -68,7 +68,7 @@ Route::prefix('admin')->group(function () {
     )->group(function () {
         Route::get('dashboard', 'index');
 
-        // Route::get('members/{memberId}', 'show');
+        Route::get('members/{memberId}', 'show');
     });
 
     Route::controller(
@@ -87,6 +87,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer_id}/view', 'viewInvoice');
         Route::get('/customers/{customer_id}/generate', 'generateInvoice');
         Route::get('/customers/{customer_id}/mail', 'mailInvoice');
+        Route::get('/customers/{customer_id}/print', 'print');
     });
 
     Route::controller(
@@ -132,6 +133,14 @@ Route::prefix('admin')->group(function () {
         Route::put('/trainers/{trainer}', 'update');
         Route::get('/trainers/{trainer_id}/delete', 'destroy');
     });
+    // Route::controller(
+    //     App\Http\Controllers\Admin\AttendenceController::class
+    // )->group(function () {
+    //     Route::get('/attendent','index');
+    //     Route::get('/attendent/store','store');
+    //     Route::get('/attendent/{attendent}/print','print');
+    //     Route::get('/attendent/{attendent_id}/delete','destroy');
+    // });
 });
 
 require __DIR__ . '/auth.php';

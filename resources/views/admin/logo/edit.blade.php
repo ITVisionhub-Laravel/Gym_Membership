@@ -15,6 +15,10 @@
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
+                    <label for="">Name</label><br>
+                    <input type="text" name="name" class="form-control" value="{{ $logo->name }}">
+                </div>
+                <div class="mb-3">
                     <label for="">Image </label><br>
                     <input type="file" name="image" class="form-control">
                     <img src="{{asset("$logo->image")}}" style="width:50px;height:50px" alt="Logo">

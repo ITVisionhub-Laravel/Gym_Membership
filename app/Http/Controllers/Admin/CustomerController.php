@@ -259,4 +259,13 @@ class CustomerController extends Controller
             return redirect('admin/customers')->with('message','Something Went Wrong.!');
         }
     }
+    public function print($customer_id)
+    {
+       $data['records'] = PaymentRecord::where(
+                'customer_id',
+                $customer_id
+                )->with('customer')->first();
+        $logos=Logo::first();
+        return view('admin.customers.print',compact('data','logos'));
+    }
 }

@@ -9,5 +9,5 @@ class Logo extends Model
 {
     use HasFactory;
      protected $table = 'logos';
-    protected $fillable = ['image'];
+    protected $fillable = ['image','name'];
 }

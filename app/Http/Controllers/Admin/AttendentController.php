@@ -14,12 +14,16 @@ class AttendentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {   
         $todayDate = Carbon::now()->format('Y-m-d');
-        // dd($todayDate);
-        $attendents = Attendent::whereDate('attendent_date' ,$todayDate)->get();
-        // dd ($attendents);
+        // $attendents = Attendent::whereDate('attendent_date' ,$todayDate)->get();
+        $attendents=Attendent::when($request->date !=null,function($q) use ($request){
+                return $q->whereDate('created_at',$request->date);
+            },function($q) use ($todayDate){
+                return $q->whereDate('created_at',$todayDate);
+            })
+            ->paginate(10);
         return view('admin.attendent.index', compact('attendents'));
     }
 
@@ -28,9 +32,11 @@ class AttendentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create( )
+    { 
+        $filter_date = Carbon::parse('2023-02-14')->format('Y-m-d');
+        $attendents = Attendent::whereDate('attendent_date' ,$filter_date)->get();
+        return view('admin.attendent.print', compact('attendents'));
     }
 
     /**
@@ -41,8 +47,6 @@ class AttendentController extends Controller
      */
     public function store(Request $request)
     {
-    //    dd ($request);
-        
         $validatedData = $request->validate([
             'member' => ['required'],            
         

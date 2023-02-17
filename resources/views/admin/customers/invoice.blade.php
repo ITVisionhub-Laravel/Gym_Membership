@@ -19,12 +19,13 @@
           <div class="card centered shadow-lg mt-2 mb-2 bg-white rounded">
             <div class="card-header">
               <h3>
-                Payment Receipt
+                Invoice
                 @foreach ($customers as $customer)
                 <a href="{{ url('admin/customers') }}" class="btn btn-danger btn-sm float-end mx-1">Back</a>
                 <a href="{{ url('admin/customers/'.$customer->id.'/generate') }}" class="btn btn-primary btn-sm float-end mx-1"><i class="fa fa-download"></i></a>
                 <a href="{{ url('admin/customers/'.$customer->id.'/view') }}" target="_blank" class="btn btn-warning btn-sm float-end mx-1"><i class="fa-regular fa-eye"></i></a>
                 <a href="{{ url('admin/customers/'.$customer->id.'/mail') }}"  class="btn btn-info btn-sm float-end mx-1"><i class="fa fa-envelope"></i></a>
+                <a href="{{ url('admin/customers/'.$customer->id.'/print') }}" target="_blank"  class="btnprint btn btn-success btn-sm float-end mx-1"><i class="fa fa-print"></i></a>
               </h3>
             </div>
             <div class="card-body">
@@ -33,36 +34,55 @@
 
                   <div class="col-md-12">
                     <div class="row">
-                    <div class="col-md-9 p-3">
-                      
-                      <h5>
-                        {{ $customer->address->street->township->city->name}},
-                        {{ $customer->address->street->township->name}},
-                        {{ $customer->address->street->name}} 
-                      </h5>
-                      <h5>{{ $customer->phone_number}}</h5>
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <img src="{{asset("$logos->image")}}" alt="Member" style="width:120px;height:120px;">
                     </div>
+                    <div class="col-md-6 p-3">
+                      
+                      <h6 style="line-height: 1.5">
+                        Invoice Number: {{ $customer->id }} <br>
+                        {{ $customer->address->street->township->city->name}},
+                        {{ $customer->address->street->township->name}},<br>
+                        {{ $customer->address->street->name}} 
+                      </h6>
+                      <h6>{{ $customer->phone_number}}</h6>
+                    </div>
+                    
                     </div>
                   </div>
                   
                   <br>
+                  <h5>Member:  {{ $customer->name }}</h5>
+                  @endforeach
+                  @foreach ($records as $record)
+                  <h6>Paid On : {{ $record->created_at->format("F j, Y, g:i a") }}</h6>
+                  @endforeach 
                   <br>
-                  <center>
-                      <h4>Member:  {{ $customer->name }}</h4>
-                      @endforeach
-                      @foreach ($records as $record)
-                        <h5>Paid On:  {{ $record->created_at->format("F j, Y, g:i a") }}</h5>
-                      @endforeach
-                      <hr>
-                      <h5>Package:  {{$packages->package}}</h5>
-                      <h5>Promotion:  {{$packages->promotion}} %</h5>
-                      <h5>Original Price:  {{ $packages->original_price }}</h5>
-                       <hr>
-                      <h5>Total Amount: {{ $packages->original_price-($packages->original_price*$packages->promotion/100) }}</h5>
-                  </center>
+                  <table class="table table-striped table-hover">
+                      <thead class="table-primary">
+                        <tr>
+                          <th scope="col">Package</th>
+                          <th scope="col">Promotion</th>
+                          <th scope="col">Original Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>{{$packages->package}}</td>
+                          <td>{{$packages->promotion}} %</td>
+                          <td>{{ $packages->original_price }}</td>
+                        </tr>
+                        <tr>
+                        <td></td>
+                        <td>Total Amount:</td>
+                        <td>{{ $packages->original_price-($packages->original_price*$packages->promotion/100) }}</td>
+                        </tr>
+                  </tbody>
+                  </table>
+                  <br>
+                    <p class="text-center">
+                        Thank your for joining with {{ $logos->name }}
+                    </p>
                 </div>
               </div>
             </div>
@@ -71,5 +91,12 @@
       </div>
     </div>
   </div>
+  <script src="{{asset('assets/js/jquery-3.6.3.min.js')}}"></script>
+  <script src="http://www.position-absolute.com/creation/print/jquery.printPage.js"></script>
+  <script  type="text/javascript">
+    $(document).ready(function () {
+      $('.btnprint').printPage();
+    });
+  </script>
 </body>
 </html>

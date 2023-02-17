@@ -28,16 +28,6 @@
                 <td>{{$paymentrecord->price}}</td>
                 <td>{{$paymentrecord->record_date}}</td>
                 <td>{{$paymentrecord->paymentprovider->name}}</td>
-                
-                {{-- <td>
-                    <a href="{{route('payment_records.edit', $paymentrecord->id)}}" class="btn btn-info py-2">Edit</a>
-
-                    <form action="{{route('payment_records.destroy',$paymentrecord->id)}}" method="POST" class="d-inline">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-danger py-2">Delete</button>
-                    </form>
-                </td> --}}
             </tr>
             @endforeach
            

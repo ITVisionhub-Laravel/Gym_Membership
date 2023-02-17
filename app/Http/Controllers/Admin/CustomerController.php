@@ -277,6 +277,7 @@ class CustomerController extends Controller
             );
         }
     }
+
     public function showExpiredMembers()
     {
         // $expiredMembers = [];
@@ -293,5 +294,14 @@ class CustomerController extends Controller
             'admin.customers.payment_expired_members',
             compact('payment_expired_members')
         );
+    }
+
+    public function print($customer_id)
+    {
+        $data['records'] = PaymentRecord::where('customer_id', $customer_id)
+            ->with('customer')
+            ->first();
+        $logos = Logo::first();
+        return view('admin.customers.print', compact('data', 'logos'));
     }
 }

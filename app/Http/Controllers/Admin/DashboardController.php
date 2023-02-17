@@ -12,14 +12,15 @@ use Illuminate\Http\Request;
 use App\Models\PaymentRecord;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Models\PaymentExpiredMembers;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        if(auth()->guest() || !auth()->user()->role_as=='1'){
+        if (auth()->guest() || !auth()->user()->role_as == '1') {
             abort(403);
-    }
+        }
         $expiredDate = '';
 
         $data['members'] = Customer::get();
@@ -70,6 +71,7 @@ class DashboardController extends Controller
         // End of Bar Chart
 
         // For Expired Payment Member
+        $expiredPaymentMembers = [];
         $data['expiredPaymentMember'] = false;
         foreach ($paymentRecords as $paymentRecord) {
             $packageName = $paymentRecord->package->package;
@@ -91,14 +93,34 @@ class DashboardController extends Controller
             }
 
             if ($expiredDate <= 3) {
-                $data['expiredPaymentMember'] = Customer::where(
-                    'id',
-                    $paymentRecord->customer_id
-                )->get();
+                // array_push(
+                //     $expiredPaymentMembers,
+                //     Customer::where('id', $paymentRecord->customer_id)->first()
+                // );
+                // dd($expiredDate);
+                // dd((int) str_replace('-', '', $expiredDate));
+
+                $payment_expired_members = new PaymentExpiredMembers();
+
+                // $payment_expired_members->customer_id =
+                //     $paymentRecord->customer_id;
+                // $payment_expired_members->expired_date = $expiredDate;
+                $payment_expired_members->updateOrCreate(
+                    [
+                        'customer_id' => $paymentRecord->customer_id,
+                    ],
+                    [
+                        'expired_date' => $expiredDate,
+                    ]
+                );
+                // $payment_expired_members->expired_date = array_push(
+                //     $expiredPaymentMembers,
+                //     $paymentRecord->customer_id
+                // );
                 $data['noExpiredPaymentMember'] = false;
             }
         }
-        // $expiredPaymentMember = $data['expiredPaymentMember'];
+        $data['expiredPaymentMember'] = $payment_expired_members->count();
         if (!$data['expiredPaymentMember']) {
             $data['noExpiredPaymentMember'] = true;
         }

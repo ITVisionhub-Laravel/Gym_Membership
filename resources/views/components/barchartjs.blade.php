@@ -1,4 +1,5 @@
-  $@props(['month','monthlyEarningMoney'])
+  @props(['month','monthlyEarningMoney'])
+  
  <script type="text/javascript">
       var data = {
         labels: @php

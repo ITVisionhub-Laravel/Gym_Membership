@@ -12,6 +12,12 @@
           <span class="menu-title">Add Members</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('admin/expiredMembers') }}">
+          <i class="mdi mdi-account menu-icon"></i>
+          <span class="menu-title">Payment Expired Members</span>
+        </a>
+      </li>
       
       <li class="nav-item">
         <a class="nav-link" href="{{ url('admin/equipments') }}">

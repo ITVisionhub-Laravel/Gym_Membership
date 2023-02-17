@@ -1,4 +1,4 @@
-@props(['name','placeholder','type'=>'text','width'=>'col-md-6','errors','labelName','value'=>''])
+@props(['name','placeholder','type'=>'text','width'=>'col-md-2','errors','labelName','value'=>''])
  
     <x-forms.field width="{{ $width }}">
         <x-forms.label value="{{ $labelName??$name }}"/>

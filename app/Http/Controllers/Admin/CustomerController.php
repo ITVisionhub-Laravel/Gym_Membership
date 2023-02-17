@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\City;
+use App\Models\Logo;
 use App\Models\Street;
 use App\Models\Address;
 use App\Models\Customer;
 use App\Models\Township;
 use Illuminate\Http\Request;
+use App\Mail\InvoiceMailable;
 use App\Models\PaymentRecord;
 use App\Models\PaymentPackage;
 use Illuminate\Support\Carbon;
@@ -17,9 +19,8 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
+use App\Models\PaymentExpiredMembers;
 use App\Http\Requests\CustomerFormRequest;
-use App\Mail\InvoiceMailable;
-use App\Models\Logo;
 
 class CustomerController extends Controller
 {
@@ -60,6 +61,7 @@ class CustomerController extends Controller
         $customer = new Customer();
         $address = new Address();
         $payment_record = new PaymentRecord();
+        $payment_expired_members = new PaymentExpiredMembers();
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
         $customer->email = $validatedData['email'];
@@ -109,6 +111,7 @@ class CustomerController extends Controller
                 $customer->delete();
             }
             $payment_record->save();
+            // $payment_expired->where()->delete();
         }
         return redirect('admin/customers')->with(
             'message',
@@ -178,7 +181,7 @@ class CustomerController extends Controller
             $customer->image = $filename;
         }
         if ($customer->update()) {
-            $payment_record = new PaymentRecord();
+            // $payment_record = new PaymentRecord();
             $package_info = explode(' ', $request->package);
             PaymentRecord::where('customer_id', $customer->id)->update([
                 'package_id' => $package_info[0],
@@ -221,51 +224,84 @@ class CustomerController extends Controller
             $customer_id
         )->get();
         $data['packages'] = $data['records'][0]->package;
-        $logos=Logo::first();
-        return view('admin.customers.invoice', $data, compact('customers','logos'));
+        $logos = Logo::first();
+        return view(
+            'admin.customers.invoice',
+            $data,
+            compact('customers', 'logos')
+        );
     }
     public function viewInvoice($customer_id)
     {
-       $data['records'] = PaymentRecord::where(
-                'customer_id',
-                $customer_id
-                )->with('customer')->first();
-        $logos=Logo::first();
-        return view('admin.customers.viewinvoice',compact('data','logos'));
+        $data['records'] = PaymentRecord::where('customer_id', $customer_id)
+            ->with('customer')
+            ->first();
+        $logos = Logo::first();
+        return view('admin.customers.viewinvoice', compact('data', 'logos'));
     }
     public function generateInvoice($customer_id)
     {
-        $data['records'] = PaymentRecord::where(
-                'customer_id',
-                $customer_id
-                )->with('customer')->first();
-        $logos=Logo::first();
-        $pdf = Pdf::loadView('admin.customers.viewinvoice', compact('data','logos'));
-        $todayDate=Carbon::now()->format('d-m-Y');
-        return $pdf->download('invoice-'.$customer_id.'-'.$todayDate.'.pdf');
-        exit;
+        $data['records'] = PaymentRecord::where('customer_id', $customer_id)
+            ->with('customer')
+            ->first();
+        $logos = Logo::first();
+        $pdf = Pdf::loadView(
+            'admin.customers.viewinvoice',
+            compact('data', 'logos')
+        );
+        $todayDate = Carbon::now()->format('d-m-Y');
+        return $pdf->download(
+            'invoice-' . $customer_id . '-' . $todayDate . '.pdf'
+        );
+        exit();
     }
     public function mailInvoice($customer_id)
     {
-        try{
-            $data['records'] = PaymentRecord::where(
-                'customer_id',
-                $customer_id
-            )->with('customer')->first();
-            $data['logos']=Logo::first();
-            Mail::to($data['records']->customer->email)->send(new InvoiceMailable($data));
-            return redirect('admin/customers')->with('message','Invoice Mail has been sent to '.$data['records']->customer->email);
-        }catch(\Exception $e){
-            return redirect('admin/customers')->with('message','Something Went Wrong.!');
+        try {
+            $data['records'] = PaymentRecord::where('customer_id', $customer_id)
+                ->with('customer')
+                ->first();
+            $data['logos'] = Logo::first();
+            Mail::to($data['records']->customer->email)->send(
+                new InvoiceMailable($data)
+            );
+            return redirect('admin/customers')->with(
+                'message',
+                'Invoice Mail has been sent to ' .
+                    $data['records']->customer->email
+            );
+        } catch (\Exception $e) {
+            return redirect('admin/customers')->with(
+                'message',
+                'Something Went Wrong.!'
+            );
         }
     }
+
+    public function showExpiredMembers()
+    {
+        // $expiredMembers = [];
+        // foreach (json_decode($expiredPaymentMembers) as $expiredMember) {
+        //     array_push(
+        //         $expiredMembers,
+        //         Customer::where('id', $expiredMember)->first()
+        //     );
+        // }
+
+        $payment_expired_members = PaymentExpiredMembers::all();
+
+        return view(
+            'admin.customers.payment_expired_members',
+            compact('payment_expired_members')
+        );
+    }
+
     public function print($customer_id)
     {
-       $data['records'] = PaymentRecord::where(
-                'customer_id',
-                $customer_id
-                )->with('customer')->first();
-        $logos=Logo::first();
-        return view('admin.customers.print',compact('data','logos'));
+        $data['records'] = PaymentRecord::where('customer_id', $customer_id)
+            ->with('customer')
+            ->first();
+        $logos = Logo::first();
+        return view('admin.customers.print', compact('data', 'logos'));
     }
 }

@@ -134,14 +134,11 @@ Route::prefix('admin')->group(function () {
         Route::put('/trainers/{trainer}', 'update');
         Route::get('/trainers/{trainer_id}/delete', 'destroy');
     });
-    // Route::controller(
-    //     App\Http\Controllers\Admin\AttendenceController::class
-    // )->group(function () {
-    //     Route::get('/attendent','index');
-    //     Route::get('/attendent/store','store');
-    //     Route::get('/attendent/{attendent}/print','print');
-    //     Route::get('/attendent/{attendent_id}/delete','destroy');
-    // });
+    Route::controller(
+        App\Http\Controllers\Admin\PrintController::class
+    )->group(function () {
+        Route::get('/attendent/{attendent}/print', 'print');
+    });
 });
 
 require __DIR__ . '/auth.php';

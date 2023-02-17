@@ -87,6 +87,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer_id}/view', 'viewInvoice');
         Route::get('/customers/{customer_id}/generate', 'generateInvoice');
         Route::get('/customers/{customer_id}/mail', 'mailInvoice');
+        Route::get('/expiredMembers', 'showExpiredMembers');
     });
 
     Route::controller(
@@ -100,16 +101,16 @@ Route::prefix('admin')->group(function () {
         Route::get('/equipments/{equipment_id}/delete', 'destroy');
     });
 
-    Route::controller(
-        App\Http\Controllers\Admin\LogoController::class
-    )->group(function () {
-        Route::get('/logo', 'index');
-        Route::get('/logo/create', 'create');
-        Route::post('/logo', 'store');
-        Route::get('/logo/{logo}/edit', 'edit');
-        Route::put('/logo/{logo}', 'update');
-        Route::get('/logo/{logo}/delete', 'destroy');
-    });
+    Route::controller(App\Http\Controllers\Admin\LogoController::class)->group(
+        function () {
+            Route::get('/logo', 'index');
+            Route::get('/logo/create', 'create');
+            Route::post('/logo', 'store');
+            Route::get('/logo/{logo}/edit', 'edit');
+            Route::put('/logo/{logo}', 'update');
+            Route::get('/logo/{logo}/delete', 'destroy');
+        }
+    );
 
     Route::controller(
         App\Http\Controllers\Admin\SliderController::class

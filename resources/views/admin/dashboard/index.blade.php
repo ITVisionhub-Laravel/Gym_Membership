@@ -23,8 +23,9 @@
             <i class='bx bxs-calendar-check' ></i>
             <span class="text">
                 @if (!$noExpiredPaymentMember)
-                <h3>{{ $expiredPaymentMember->count() }}</h3>
-                    <a href="{{route('attendents.index')}}"><p>Payment Expired Members</p></a>
+                
+                <h3>{{ $expiredPaymentMember }}</h3>
+                    <a href="{{url('admin/expiredMembers')}}"><p>Payment Expired Members</p></a>
                 @else
                     <h3>0</h3>    
                     <p>Payment Expired Members</p>

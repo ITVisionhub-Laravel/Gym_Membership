@@ -11,7 +11,7 @@ class PaymentExpiredMembers extends Model
 
     protected $table = 'payment_expired_members';
 
-    protected $fillable = ['customer_id', 'expired_date'];
+    protected $fillable = ['customer_id', 'expired_date', 'extra_days'];
 
     public function expiredMember()
     {

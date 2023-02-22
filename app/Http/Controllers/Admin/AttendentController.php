@@ -34,9 +34,7 @@ class AttendentController extends Controller
      */
     public function create( )
     { 
-        $filter_date = Carbon::parse('2023-02-14')->format('Y-m-d');
-        $attendents = Attendent::whereDate('attendent_date' ,$filter_date)->get();
-        return view('admin.attendent.print', compact('attendents'));
+        
     }
 
     /**

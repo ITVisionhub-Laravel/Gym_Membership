@@ -4,8 +4,12 @@
         @if (session('message'))
             <div class="alert alert-success">{{ session('message') }}</div>
         @endif
+    @php 
+    $j=1;
+    @endphp
+    @foreach($attendents as $attendent)
     <h3 class="my-2">Attendence List</h3>
-    <a href="{{route('attendents.create')}}" class="btnprint btn btn-success my-2 btn-sm float-end mx-1"><i class="fa fa-print"></i></a>
+    <a href="{{ url('admin/attendent/'.$attendent->attendent_date.'/print') }}" class="btnprint btn btn-success my-2 btn-sm float-end mx-1"><i class="fa fa-print"></i></a>
  
 
     <div class="row my-3">
@@ -45,10 +49,7 @@
             </tr>
         </thead>
         <tbody>
-            @php 
-            $j=1;
-            @endphp
-            @foreach($attendents as $attendent)
+            
             <tr>
 
                 <td>{{$j++}}</td>

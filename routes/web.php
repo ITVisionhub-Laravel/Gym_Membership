@@ -31,6 +31,8 @@ Route::get('/', [
     'index',
 ]);
 
+// Route::get('expiredMembers', App\Http\Livewire\PaymentExpiredMembers::class);
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })
@@ -88,6 +90,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer_id}/generate', 'generateInvoice');
         Route::get('/customers/{customer_id}/mail', 'mailInvoice');
         Route::get('/expiredMembers', 'showExpiredMembers');
+        Route::get('/{member_id}/addPayments', 'addPayments');
+        Route::post('/payFees', 'payFees');
         Route::get('/customers/{customer_id}/print', 'print');
     });
 

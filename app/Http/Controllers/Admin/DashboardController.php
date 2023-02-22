@@ -48,17 +48,28 @@ class DashboardController extends Controller
             });
         // if ($monthlyEarnings) {
         $monthlyPrice = 0;
-        $monthlyEarningMoney = false;
-        $month = false;
+        $monthlyEarningMoney = [];
+        $month = [];
 
         foreach ($monthlyEarnings as $key => $monthlyEarning) {
             foreach ($monthlyEarning as $earning) {
                 $monthlyPrice += (int) $earning->price;
             }
-            $month[] = Carbon::parse($key)->format('F');
-            $monthlyEarningMoney[
-                Carbon::parse($key)->format('F')
-            ] = $monthlyPrice;
+            $arrayKeys = Carbon::parse($key)->format('F');
+
+            if (!in_array($arrayKeys, $month)) {
+                $month[] = $arrayKeys;
+            }
+
+            if (array_key_exists($arrayKeys, $monthlyEarningMoney)) {
+                $monthlyEarningMoney[$arrayKeys] =
+                    $monthlyEarningMoney[$arrayKeys] + $monthlyPrice;
+            } else {
+                $monthlyEarningMoney[$arrayKeys] = $monthlyPrice;
+            }
+
+            // dd($monthlyEarningMoney[$arrayKeys] + $monthlyPrice);
+
             $monthlyPrice = 0;
         }
         if ($monthlyEarningMoney) {
@@ -92,6 +103,8 @@ class DashboardController extends Controller
                 $expiredDate = $interval->days;
             }
 
+            $payment_expired_members = new PaymentExpiredMembers();
+
             if ($expiredDate <= 3) {
                 // array_push(
                 //     $expiredPaymentMembers,
@@ -100,17 +113,17 @@ class DashboardController extends Controller
                 // dd($expiredDate);
                 // dd((int) str_replace('-', '', $expiredDate));
 
-                $payment_expired_members = new PaymentExpiredMembers();
-
                 // $payment_expired_members->customer_id =
                 //     $paymentRecord->customer_id;
                 // $payment_expired_members->expired_date = $expiredDate;
+                // @dd($expiredDate);
                 $payment_expired_members->updateOrCreate(
                     [
                         'customer_id' => $paymentRecord->customer_id,
                     ],
                     [
-                        'expired_date' => $expiredDate,
+                        'expired_date' => $packageExpiredDate->format('Y-m-d'),
+                        'extra_days' => $expiredDate,
                     ]
                 );
                 // $payment_expired_members->expired_date = array_push(
@@ -118,6 +131,10 @@ class DashboardController extends Controller
                 //     $paymentRecord->customer_id
                 // );
                 $data['noExpiredPaymentMember'] = false;
+            } else {
+                $payment_expired_members
+                    ->where('customer_id', $paymentRecord->customer_id)
+                    ->delete();
             }
         }
         $data['expiredPaymentMember'] = $payment_expired_members->count();

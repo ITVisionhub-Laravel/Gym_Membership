@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentExpiredMembers;
 use App\Http\Requests\CustomerFormRequest;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CustomerController extends Controller
 {
@@ -61,7 +62,7 @@ class CustomerController extends Controller
         $customer = new Customer();
         $address = new Address();
         $payment_record = new PaymentRecord();
-        $payment_expired_members = new PaymentExpiredMembers();
+
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
         $customer->email = $validatedData['email'];
@@ -111,7 +112,6 @@ class CustomerController extends Controller
                 $customer->delete();
             }
             $payment_record->save();
-            // $payment_expired->where()->delete();
         }
         return redirect('admin/customers')->with(
             'message',
@@ -182,19 +182,19 @@ class CustomerController extends Controller
         }
         if ($customer->update()) {
             // $payment_record = new PaymentRecord();
-            $package_info = explode(' ', $request->package);
-            PaymentRecord::where('customer_id', $customer->id)->update([
-                'package_id' => $package_info[0],
-                'price' => $request->price,
-                'record_date' => date('Y.m.d'),
-                'provider_id' => $request->payment,
-                'customer_id' => $customer->id,
-            ]);
+            // $package_info = explode(' ', $request->package);
+            // PaymentRecord::where('customer_id', $customer->id)->update([
+            //     'package_id' => $package_info[0],
+            //     'price' => $request->price,
+            //     'record_date' => date('Y.m.d'),
+            //     'provider_id' => $request->payment,
+            //     'customer_id' => $customer->id,
+            // ]);
+            return redirect('admin/customers')->with(
+                'message',
+                'Customer Updated Successfully'
+            );
         }
-        return redirect('admin/customers')->with(
-            'message',
-            'Customer Updated Successfully'
-        );
     }
     public function destroy($customer_id)
     {
@@ -208,6 +208,7 @@ class CustomerController extends Controller
         }
         if ($customer->delete()) {
             PaymentRecord::where('customer_id', $customer_id)->delete();
+            PaymentExpiredMembers::where('customer_id', $customer_id)->delete();
         }
 
         return redirect('admin/customers')->with(
@@ -294,6 +295,45 @@ class CustomerController extends Controller
             'admin.customers.payment_expired_members',
             compact('payment_expired_members')
         );
+    }
+
+    public function addPayments(int $member_id)
+    {
+        $data['packages'] = PaymentPackage::get();
+        $data['providers'] = PaymentProvider::get();
+        return view(
+            'admin.customers.add_payment_form',
+            $data,
+            compact('member_id')
+        );
+    }
+
+    public function payFees(Request $request)
+    {
+        $validatedData = $request->validate([
+            'member_id' => ['required'],
+            'package' => ['required'],
+            'payment' => ['required'],
+        ]);
+
+        $payment_record = new PaymentRecord();
+        $payment_expired_members = new PaymentExpiredMembers();
+
+        $package_info = explode(' ', $validatedData['package']);
+        $payment_record->package_id = $package_info[0];
+        $payment_record->price = $request->price;
+        $payment_record->record_date = date('Y.m.d');
+        $payment_record->provider_id = $validatedData['payment'];
+        $payment_record->customer_id = $validatedData['member_id'];
+        if ($payment_record->save()) {
+            $payment_expired_members
+                ->where('customer_id', $validatedData['member_id'])
+                ->delete();
+            return redirect('payment_records')->with(
+                'message',
+                'Pay Gym Fee Successfully'
+            );
+        }
     }
 
     public function print($customer_id)

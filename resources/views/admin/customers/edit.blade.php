@@ -35,13 +35,13 @@
                             <x-forms.dropdownfield :dropdownValues="$streets" id="street-dd" checkOldValue="{{ $customer->address->street->id }}" name="street" width="col-md-4"></x-forms.dropdownfield>
                         </div>
 
-                        <div class="row">
+                        {{--  <div class="row">
                             <x-forms.dropdownfield :dropdownValues="$providers" checkOldValue="{{ $payment_records[0]->paymentprovider->id }}" name="payment" id="payment" labelName="Payment Methods" width="col-md-3"></x-forms.dropdownfield>
                             <x-forms.dropdownfield :dropdownValues="$packages" checkOldValue="{{ $payment_records[0]->package->id }}" name="package" id="package" width="col-md-3" labelName="Select Packages" ></x-forms.dropdownfield>
                             <x-forms.forminput name="promotion" value="{{ $payment_records[0]->package->promotion }}" id="editPromotion" placeholder="Promotion" width="col-md-2" required readonly/>
                             <x-forms.forminput name="original_price" value="{{ $payment_records[0]->package->original_price }}" id="edit_original_price" placeholder="Original Price" labelName="original price" required readonly/>     
                             <x-forms.forminput type="number" value="{{ $payment_records[0]->price }}" id="editPrice" name="price"  placeholder="Original Price" required readonly/> 
-                        </div>
+                        </div>  --}}
 
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary">Update</button>

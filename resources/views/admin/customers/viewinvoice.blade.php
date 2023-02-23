@@ -71,8 +71,9 @@ h5{
         <h2>Invoice</h2>  <hr>
         <div class="row">
         <div>
+          image
         {{-- @dd($logos->image); --}}
-        <img src="{{asset("$logos->image")}}" alt="Member" style="width:120px;height:120px;">
+        {{-- <img src="{{asset("$logos->image")}}" alt="Member" style="width:120px;height:120px;"> --}}
         </div>
         <div class="right">
         <h5 style="line-height: 2">

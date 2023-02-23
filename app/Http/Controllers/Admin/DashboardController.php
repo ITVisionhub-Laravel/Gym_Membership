@@ -19,7 +19,7 @@ class DashboardController extends Controller
     public function index()
     {
         if (auth()->guest() || !auth()->user()->role_as == '1') {
-            abort(403);
+            return redirect('/')->with('status','Logged In Successfully');
         }
         $expiredDate = '';
 
@@ -137,7 +137,7 @@ class DashboardController extends Controller
                     ->delete();
             }
         }
-        $data['expiredPaymentMember'] = $payment_expired_members->count();
+        // $data['expiredPaymentMember'] = $payment_expired_members->count();
         if (!$data['expiredPaymentMember']) {
             $data['noExpiredPaymentMember'] = true;
         }

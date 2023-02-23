@@ -1,16 +1,13 @@
-{{-- @dd(Request::get('date') ?? date('Y-m-d')); --}}
 <x-admin>
 <div class="container my-3">
         @if (session('message'))
             <div class="alert alert-success">{{ session('message') }}</div>
         @endif
-    @php 
-    $j=1;
-    @endphp
+    
     @foreach($attendents as $attendent)
     <h3 class="my-2">Attendence List</h3>
     <a href="{{ url('admin/attendent/'.$attendent->attendent_date.'/print') }}" class="btnprint btn btn-success my-2 btn-sm float-end mx-1"><i class="fa fa-print"></i></a>
- 
+    @endforeach
 
     <div class="row my-3">
         <div class="col-4">
@@ -40,6 +37,10 @@
     
     <table id="myTable" class="table">
         <thead>
+            @php 
+            $j=1;
+            @endphp
+            @foreach($attendents as $attendent)
             <tr>
                 <th>No</th>
                 <th>Attendence Date</th>
@@ -69,7 +70,6 @@
         </tbody>
     </table>
 </div>
-
 <x-slot name="scripts">
 <script>
      $(document).ready( function () {

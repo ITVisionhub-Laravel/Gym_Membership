@@ -16,7 +16,6 @@
     <title>Majestic Admin</title>
     <x-css />
     @livewireStyles
-    @stack('stylesheets')
 </head>
 <body>
     <div class="container-scroller">

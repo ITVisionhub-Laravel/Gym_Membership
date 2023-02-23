@@ -48,7 +48,6 @@
                 var original_price=packageData[2];
                 var promotion=packageData[1];
                 var price=original_price-(original_price*promotion/100);
-                // alert(price);
                 document.getElementById("promotion").value = promotion;
                 document.getElementById("original_price").value = original_price;
                 document.getElementById("price").value = price;

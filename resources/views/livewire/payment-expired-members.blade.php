@@ -1,5 +1,11 @@
+{{--  @props(['expiredPaymentMembers'])  --}}
+{{--  @dd($payment_expired_members)  --}}
 <x-admin>
-    <div class="container my-3">
+
+
+<div>
+@include('livewire.payment-modal-form')
+<div class="container my-3">
     <x-successmessage/>
     <h3 class="my-2">Payment Expired Members List
     </h3>
@@ -42,13 +48,14 @@
                     
                 </td>
                 <td>
-                    <a href="{{ url('/admin/'.$payment_expired_member->customer_id.'/addPayments') }}" class="btn btn-sm btn-primary">Pay</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#payFeeModal" class="btn btn-sm btn-primary">Pay</a>
                     {{--  <a href="#" wire:click="addPayments({{ $payment_expired_member->customer_id }})" data-bs-toggle="modal" data-bs-target="#payFeeModal" class="btn-primary btn-sm">Pay</a>  --}}
                 </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+</div>
 </div>
 <x-slot name="scripts">
     <script type="text/javascript">
@@ -65,4 +72,16 @@
 
 <x-addressfieldjs></x-addressfieldjs>
 </x-slot>
+{{--  <x-slot>  --}}
+{{--  @push('custom-scripts')
+<script type="text/javascript">  --}}
+    {{--  alert('Bye');  --}}
+    {{--  window.addEventListener('close-modal',event=> {
+        $('#payFeeModal').modal('hide');
+    });
+</script>
+@endpush  --}}
+{{--  </x-slot>  --}}
+
 </x-admin>
+

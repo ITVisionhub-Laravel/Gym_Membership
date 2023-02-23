@@ -54,6 +54,7 @@
         $('#myTable').DataTable({
              scrollX: true,
         });
+       
     } );
 </script>
 </x-slot>

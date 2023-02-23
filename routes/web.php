@@ -33,6 +33,18 @@ Route::middleware(['auth'])->group(function(){
 });
 
 Route::get('/dashboard', function () {return view('dashboard');})
+
+Route::get('/', [
+    App\Http\Controllers\Frontend\FrontendController::class,
+    'index',
+]);
+
+// Route::get('expiredMembers', App\Http\Livewire\PaymentExpiredMembers::class);
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})
+
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -87,6 +99,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer_id}/generate', 'generateInvoice');
         Route::get('/customers/{customer_id}/mail', 'mailInvoice');
         Route::get('/expiredMembers', 'showExpiredMembers');
+        Route::get('/{member_id}/addPayments', 'addPayments');
+        Route::post('/payFees', 'payFees');
         Route::get('/customers/{customer_id}/print', 'print');
     });
 

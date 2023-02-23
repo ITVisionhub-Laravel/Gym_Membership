@@ -32,12 +32,12 @@ Route::middleware(['auth'])->group(function(){
    Route::get('user_register',[App\Http\Controllers\Frontend\UserRegisterController::class,'index']);
 });
 
-Route::get('/dashboard', function () {return view('dashboard');})
+// Route::get('/dashboard', function () {return view('dashboard');})
 
-Route::get('/', [
-    App\Http\Controllers\Frontend\FrontendController::class,
-    'index',
-]);
+// Route::get('/', [
+//     App\Http\Controllers\Frontend\FrontendController::class,
+//     'index',
+// ]);
 
 // Route::get('expiredMembers', App\Http\Livewire\PaymentExpiredMembers::class);
 

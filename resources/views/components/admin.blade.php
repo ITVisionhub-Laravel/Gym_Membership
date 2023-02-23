@@ -15,6 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Majestic Admin</title>
     <x-css />
+    @livewireStyles
 </head>
 <body>
     <div class="container-scroller">
@@ -31,6 +32,7 @@
         </div>
     </div>
     <x-script />
+    @livewireScripts
     {{ $scripts }}
     @stack('script')
     @yield('script')

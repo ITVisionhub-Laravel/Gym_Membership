@@ -74,7 +74,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#ui-paymentrecord" aria-expanded="false" aria-controls="ui-paymentrecord">
-        <i class="mdi mdi-currency-usd menu-icon"></i>
+        <i class="mdi mdi-clipboard-text menu-icon"></i>
           <span class="menu-title">Payment Record</span>
           <i class="menu-arrow"></i>
         </a>
@@ -110,6 +110,12 @@
         <a class="nav-link" href="{{url('admin/logo')}}">
           <i class="mdi mdi-message-image menu-icon"></i>
           <span class="menu-title">Logo</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url('admin/partner')}}">
+          <i class="mdi mdi-food-variant menu-icon"></i>
+          <span class="menu-title">Partner</span>
         </a>
       </li>
     </ul>

@@ -26,14 +26,13 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', [
-    App\Http\Controllers\Frontend\FrontendController::class,
-    'index',
-]);
+Route::get('/', [App\Http\Controllers\Frontend\FrontendController::class,'index',]);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})
+Route::middleware(['auth'])->group(function(){
+   Route::get('user_register',[App\Http\Controllers\Frontend\UserRegisterController::class,'index']);
+});
+
+Route::get('/dashboard', function () {return view('dashboard');})
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -138,6 +137,16 @@ Route::prefix('admin')->group(function () {
         App\Http\Controllers\Admin\PrintController::class
     )->group(function () {
         Route::get('/attendent/{attendent}/print', 'print');
+    });
+    Route::controller(
+        App\Http\Controllers\Admin\PartnerController::class
+    )->group(function () {
+        Route::get('/partner', 'index');
+        Route::get('/partner/create', 'create');
+        Route::post('/partner', 'store');
+        Route::get('/partner/{partner}/edit', 'edit');
+        Route::put('/partner/{partner}', 'update');
+        Route::get('/partner/{partner}/delete', 'destroy');
     });
 });
 

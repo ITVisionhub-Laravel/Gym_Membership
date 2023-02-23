@@ -16,8 +16,8 @@ body{
   padding: 20px;
 }
 .wrapper{
-  width: 550px;
-  height: 550px;
+  width: 250px;
+  height: 250px;
   background: #fff;
   border-radius: 16px;
   padding: 30px;
@@ -25,8 +25,8 @@ body{
 h2{
   padding: 10px;
 }
-h5{
-  font-size: 15px;
+h4{
+  font-size: 13px;
 }
 .row{
   display: flex;
@@ -37,17 +37,18 @@ h5{
 }
 .right{
   padding-top: 20px;
-  padding-right: 40px;
+  padding-right: 10px;
   display: flex;
   justify-content: flex-end;
 }
 .table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 10px;
 }
 .table td, .table th {
   border: 1px solid #ddd;
-  padding: 8px;
+  padding: 6px;
 }
 
 .table tr:nth-child(odd){background-color: #f2f2f2;}
@@ -61,29 +62,32 @@ h5{
   background-color: #bad3f8;
   color: white;
 }
+p{
+  font-size: 11px;
+}
 </style>
 </head>
 <body>
   <div class="wrapper">
-        <h2>Invoice</h2>  <hr>
+        <h4>Invoice</h4>  <hr>
         <div class="row">
         <div>
         {{-- @dd($logos->image); --}}
-        <img src="{{asset("$logos->image")}}" alt="Member" style="width:120px;height:120px;">
+        <img src="{{asset("$logos->image")}}" alt="Member" style="width:80px;height:80px;">
         </div>
         <div class="right">
-        <h5 style="line-height: 2">
-          Invoice Number: {{ $data['records']->customer->id }} <br>
+        <p>
+          Invoice: {{ $data['records']->customer->id }} <br>
           {{ $data['records']->customer->address->street->township->city->name}},
           {{ $data['records']->customer->address->street->township->name}},<br>
           {{ $data['records']->customer->address->street->name}} <br> 
-          {{ $data['records']->customer->phone_number}}</h5>
+          {{ $data['records']->customer->phone_number}}</p>
         </div>
         </div>
         <br>
-        <div style="line-height: 2">
+        <div>
           <h4>Member:  {{ $data['records']->customer->name }}</h4>
-          <h5>Paid On : {{  $data['records']->created_at->format("F j, Y, g:i a") }}</h5>
+          <p>Paid On : {{  $data['records']->created_at->format("j, n, Y") }}</p>
         </div>
         <br>
         <table class="table">
@@ -107,7 +111,6 @@ h5{
             </tr>
           </tbody>
           </table>
-          <br>
           <br>
             <p style="text-align: center">
                 Thank your for joining with {{ $logos->name }}

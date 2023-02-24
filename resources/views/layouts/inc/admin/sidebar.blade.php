@@ -118,5 +118,11 @@
           <span class="menu-title">Partner</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{url('admin/class')}}">
+          <i class="mdi mdi-database menu-icon"></i>
+          <span class="menu-title">Class</span>
+        </a>
+      </li>
     </ul>
   </nav>

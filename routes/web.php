@@ -32,14 +32,6 @@ Route::middleware(['auth'])->group(function(){
    Route::get('user_register',[App\Http\Controllers\Frontend\UserRegisterController::class,'index']);
 });
 
-// Route::get('/dashboard', function () {return view('dashboard');})
-
-// Route::get('/', [
-//     App\Http\Controllers\Frontend\FrontendController::class,
-//     'index',
-// ]);
-
-// Route::get('expiredMembers', App\Http\Livewire\PaymentExpiredMembers::class);
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -161,6 +153,16 @@ Route::prefix('admin')->group(function () {
         Route::get('/partner/{partner}/edit', 'edit');
         Route::put('/partner/{partner}', 'update');
         Route::get('/partner/{partner}/delete', 'destroy');
+    });
+    Route::controller(
+        App\Http\Controllers\Admin\ClassController::class
+    )->group(function () {
+        Route::get('/class', 'index');
+        Route::get('/class/create', 'create');
+        Route::post('/class', 'store');
+        Route::get('/class/{class}/edit', 'edit');
+        Route::put('/class/{class}', 'update');
+        Route::get('/class/{class}/delete', 'destroy');
     });
 });
 

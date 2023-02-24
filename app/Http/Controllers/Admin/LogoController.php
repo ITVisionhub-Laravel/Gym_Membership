@@ -11,8 +11,8 @@ class LogoController extends Controller
 {
     public function index()
     {
-        $logos=Logo::all();
-        return view('admin.logo.index',compact('logos'));
+        $logos = Logo::all();
+        return view('admin.logo.index', compact('logos'));
     }
     public function create()
     {
@@ -22,8 +22,15 @@ class LogoController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name'=>['string'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png']
+            'name' => ['string'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png'],
+            'description' => ['required', 'string'],
+            'location' => ['required', 'string'],
+            'ph_no' => ['required', 'string'],
+            'email' => ['required', 'string'],
+            'open_day' => ['required', 'string'],
+            'open_time' => ['required', 'string'],
+            'close_day' => ['required', 'string'],
         ]);
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -33,8 +40,15 @@ class LogoController extends Controller
             $validatedData['image'] = "uploads/logo/$filename";
         }
         Logo::create([
-            'name'=>$validatedData['name'],
-            'image' => $validatedData['image']
+            'name' => $validatedData['name'],
+            'image' => $validatedData['image'],
+            'description' => $validatedData['description'],
+            'location' => $validatedData['location'],
+            'ph_no' => $validatedData['ph_no'],
+            'email' => $validatedData['email'],
+            'open_day' => $validatedData['open_day'],
+            'open_time' => $validatedData['open_time'],
+            'close_day' => $validatedData['close_day'],
         ]);
         return redirect('admin/logo')->with(
             'message',
@@ -49,8 +63,15 @@ class LogoController extends Controller
     public function update(Request $request, Logo $logo)
     {
         $validatedData = $request->validate([
-            'name'=>['string'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png']
+            'name' => ['string'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png'],
+            'description' => ['required', 'string'],
+            'location' => ['required', 'string'],
+            'ph_no' => ['required', 'string'],
+            'email' => ['required', 'string'],
+            'open_day' => ['required', 'string'],
+            'open_time' => ['required', 'string'],
+            'close_day' => ['required', 'string'],
         ]);
         if ($request->hasFile('image')) {
             $destination = public_path($logo->image);
@@ -63,9 +84,16 @@ class LogoController extends Controller
             $file->move('uploads/logo/', $filename);
             $validatedData['image'] = "uploads/logo/$filename";
         }
-    logo::where('id', $logo->id)->update([
-            'name'=>$validatedData['name'],
-            'image' => $validatedData['image'] ?? $logo->image
+        logo::where('id', $logo->id)->update([
+            'name' => $validatedData['name'],
+            'image' => $validatedData['image'] ?? $logo->image,
+            'description' => $validatedData['description'],
+            'location' => $validatedData['location'],
+            'ph_no' => $validatedData['ph_no'],
+            'email' => $validatedData['email'],
+            'open_day' => $validatedData['open_day'],
+            'open_time' => $validatedData['open_time'],
+            'close_day' => $validatedData['close_day'],
         ]);
         return redirect('admin/logo')->with(
             'message',
@@ -87,9 +115,6 @@ class LogoController extends Controller
                 'Logo Deleted Successfully'
             );
         }
-        return redirect('admin/logo')->with(
-            'message',
-            'Something Went Wrong'
-        );
+        return redirect('admin/logo')->with('message', 'Something Went Wrong');
     }
 }

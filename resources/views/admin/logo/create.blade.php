@@ -13,14 +13,27 @@
                     <div class="card-body">
                         <form action="{{url('admin/logo')}}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <div class="mb-3">
-                                <label for="">Name</label>
-                                <input type="text" name="name" class="form-control">
+                            <div class="row pt-2">
+                                <x-forms.forminput name="name" placeholder="Enter Name" width="col-md-6" />
+                                <x-forms.forminput type="file" name="image" placeholder="Image" width="col-md-6" />
                             </div>
-                            <div class="mb-3">
-                                <label for="">Image </label><br>
-                                <input type="file" name="image" class="form-control">
+                            <div class="row">
+                                <x-forms.forminput name="description" type="textarea" width="col-md-12" />
                             </div>
+                            <div class="row">
+                                <x-forms.forminput name="location" placeholder="Location" width="col-md-6" />
+                                <x-forms.forminput name="ph_no" placeholder="Enter Phone Number" width="col-md-6" />
+                            </div>
+                            <div class="row">
+                                <x-forms.forminput name="email" placeholder="Enter Email" width="col-md-6" />
+                                <x-forms.forminput name="open_day" placeholder="Enter Phone Number" width="col-md-6" />
+                                
+                            </div>
+                            <div class="row">
+                                <x-forms.forminput name="open_time" placeholder="Enter Phone Number" width="col-md-6" />
+                                <x-forms.forminput name="close_day" placeholder="Enter Phone Number" width="col-md-6" />
+                            </div>
+                            
                              <div class="mb-3">
                                 <button type="submit" class="btn btn-primary">Save</button>
                              </div> 

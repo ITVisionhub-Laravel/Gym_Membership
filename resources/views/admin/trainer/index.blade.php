@@ -17,6 +17,9 @@
                             <th>Id</th>
                             <th>Name</th>
                             <th>Description</th>
+                            <th>FbName</th>
+                            <th>TwitterName</th>
+                            <th>LinkIn</th>
                             <th>Image</th>
                             <th>Action</th>
                             
@@ -28,6 +31,9 @@
                             <td>{{ $trainer->id }}</td>
                             <td>{{ $trainer->name }}</td>
                             <td>{{ $trainer->description }}</td>
+                            <td>{{ $trainer->fb_name }}</td>
+                            <td>{{ $trainer->twitter_name }}</td>
+                            <td>{{ $trainer->linkin_name }}</td>
                             <td>
                                 <img src="{{asset('/uploads/trainer/'.$trainer->image)}}" style="width:70px;height:70px" alt="">
                              

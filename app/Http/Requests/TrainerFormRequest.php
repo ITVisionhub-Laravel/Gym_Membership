@@ -24,9 +24,12 @@ class TrainerFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>['required','string'],
-            'description'=>['required','string'],
-            'image'=>['nullable','mimes:png,jpg,jpeg']
+            'name' => ['required', 'string'],
+            'description' => ['required', 'string'],
+            'fb_name' => ['required', 'string'],
+            'twitter_name' => ['required', 'string'],
+            'linkin_name' => ['required', 'string'],
+            'image' => ['nullable', 'mimes:png,jpg,jpeg'],
         ];
     }
 }

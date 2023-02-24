@@ -14,15 +14,27 @@
             <form action="{{url('admin/logo/'.$logo->id)}}" method="POST" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="mb-3">
-                    <label for="">Name</label><br>
-                    <input type="text" name="name" class="form-control" value="{{ $logo->name }}">
-                </div>
-                <div class="mb-3">
-                    <label for="">Image </label><br>
-                    <input type="file" name="image" class="form-control">
-                    <img src="{{asset("$logo->image")}}" style="width:50px;height:50px" alt="Logo">
-                </div>
+                        <div class="row pt-2">
+                            <x-forms.forminput name="name" placeholder="Enter Name"  value="{{ $logo->name }}" width="col-md-6" />
+                            <x-forms.forminput type="file" name="image"  value="{{$logo->image}}" width="col-md-12" placeholder="Image" width="col-md-6" />
+                        </div>
+                        <div class="row">
+                            <x-forms.forminput name="description" value="{{$logo->description}}" type="textarea" width="col-md-12" />
+                        </div>
+                        <div class="row">
+                            <x-forms.forminput name="location" value="{{$logo->location}}" placeholder="Location" width="col-md-6" />
+                            <x-forms.forminput name="ph_no" value="{{$logo->ph_no}}" placeholder="Enter Phone Number" width="col-md-6" />
+                        </div>
+                        <div class="row">
+                            <x-forms.forminput name="email" value="{{$logo->email}}" placeholder="Enter Email" width="col-md-6" />
+
+                            <x-forms.forminput name="open_day" value="{{$logo->open_day}}" placeholder="Enter Phone Number" width="col-md-6" />
+                            
+                        </div>
+                        <div class="row">
+                            <x-forms.forminput name="open_time" value="{{$logo->open_time}}" placeholder="Enter Phone Number" width="col-md-6" />
+                            <x-forms.forminput name="close_day" value="{{$logo->close_day}}" placeholder="Enter Phone Number" width="col-md-6" />
+                        </div>
                     <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Update</button>
                     </div>

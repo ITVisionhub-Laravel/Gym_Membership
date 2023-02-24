@@ -17,7 +17,7 @@
                             <x-forms.forminput name="name" placeholder="Enter Your Name" value="{{ $customer->name }}" width="col-md-3"/>
                             <x-forms.forminput name="age" placeholder="Enter Your Age" type="number" value="{{ $customer->age }}" width="col-md-3"/>
                             <x-forms.forminput name="email" placeholder="Enter Your Email" type="email" value="{{ $customer->email }}" width="col-md-3"/>
-                                <x-forms.forminput type="file" name="image" placeholder="Enter Your Image" value="{{ '/uploads/customer/'.$customer->image }}" width="col-md-3"/>
+                            <x-forms.forminput type="file" name="image" placeholder="Enter Your Image" value="{{ '/uploads/customer/'.$customer->image }}" width="col-md-3"/>
                         </div>
 
                         <div class="row">

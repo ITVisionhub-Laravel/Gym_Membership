@@ -37,7 +37,7 @@
     <div class="col-md-12">
         <x-successmessage/>
         <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="background-color: #334860 ">
                 <h3>User Register form
                     <a href="{{ url('/') }}" class="btn btn-danger btn-sm text-white float-end">Back</a>
                 </h3>
@@ -89,8 +89,9 @@
                         
                         <x-forms.forminput type="file" name="bank_slip" placeholder="Enter Your Online Payment" width="col-md-3"/>
                         
-                        <div class="col-md-3">
-                            <label for="">Class Name</label><br><br>
+                        
+                            <x-forms.dropdownfield :dropdownValues="$packages" name="package" labelName="Packages" width="col-md-3"></x-forms.dropdownfield>
+                            {{--  <label for="">Class Name</label><br><br>
                         <select class="form-select">
                             <option selected>Select Your Class Name</option>
                             <option value="1">Fitness Class</option>
@@ -98,8 +99,8 @@
                             <option value="3">Body Building</option>
                             <option value="4">Yoga Trainging</option>
                             <option value="5">Advance Training</option>
-                        </select>
-                        </div>
+                        </select>  --}}
+                        
                     </div>
 
                     <div class="row">

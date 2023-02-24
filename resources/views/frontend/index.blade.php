@@ -48,6 +48,7 @@
                             <li class="scroll-to-section"><a href="#our-classes">Classes</a></li>
                             <li class="scroll-to-section"><a href="#trainers">Trainers</a></li>
                             <li class="scroll-to-section"><a href="#schedule">Schedules</a></li>
+                            <li class="scroll-to-section"><a href="{{ url('user_register') }}">Submit</a></li>
                             <li class="scroll-to-section"><a href="#contact-us">Contact</a></li> 
                             <li>
                             @guest

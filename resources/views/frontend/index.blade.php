@@ -431,7 +431,7 @@
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-xs-12">
                     <div id="map">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3819.029301247458!2d96.12387911417979!3d16.824902423213253!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x30c1955c583cb175%3A0x3c91bff15a856f63!2sGOLD%20GYM%20HLEDAN!5e0!3m2!1sen!2smm!4v1676540839520!5m2!1sen!2smm" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="{{ $logo->location }}" width="100%" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12">
@@ -479,19 +479,19 @@
             <div class="row">
                 <div class="col-sm-3 col-xs-12">
                     <div id="gymedge_about-2" class="widget widget_gymedge_about">
-                        <h3 class="widgettitle"> 5Heroes Gym</h3><br>			
-                        <p><span class="hero">5Heroes Gym </span>is a fitness center with a modern and contemporary atmosphere. With the best trainers, equipments and fitness programs, 5 Heroes Gym guarantees results.</p>
+                        <h3 class="widgettitle"> {{ $logo->name }}</h3><br>			
+                        <p><span class="hero">{{ $logo->name }} </span>{{ $logo->description }}</p>
                     </div>
                 </div>
             <div class="col-sm-3 col-xs-12">
                 <div id="gymedge_address-2" class="widget widget_gymedge_address">
-                    <h3 class="widgettitle">Corporate Office</h3>
+                    <h3 class="widgettitle">Office Address</h3>
                     <br>			
                 <ul>
-                    <li><i class="fa fa-paper-plane-o" aria-hidden="true" style="color: #13e30c;"></i>&nbsp; &nbsp;1st floor Hledan Township</li>
-                    <li><i class="fa fa-phone" aria-hidden="true" style="color:#13e30c"></i>&nbsp; &nbsp;<a href="tel:022- 2534588">+959 986543572</a></li>
+                    <li><i class="fa fa-paper-plane-o" aria-hidden="true" style="color: #13e30c;"></i>&nbsp; &nbsp;Yangon , Insein</li>
+                    <li><i class="fa fa-phone" aria-hidden="true" style="color:#13e30c"></i>&nbsp; &nbsp;<a href="tel:022- 2534588">{{ $logo->ph_no }}</a></li>
                     <li><i class="fa fa-envelope-o" aria-hidden="true" style="color: #13e30c;"></i> &nbsp;&nbsp;
-                        <a href="mailto:5heroesgym@gmail.com">5heroesgym@gmail.com</a></li>
+                        <a href="mailto:5heroesgym@gmail.com">{{ $logo->email }}</a></li>
                 </ul>
             </div>
         </div>
@@ -499,8 +499,8 @@
                 <div id="text-2" class="widget widget_text">
                     <h3 class="widgettitle">Opening Time</h3><br>			
                         <div class="textwidget">
-                            <p class="hero">Monday To Saturday - 9:00am To 5:00pm</p>
-                            <p class="hero1">Sunday Closed</p>
+                            <p class="hero">{{ $logo->open_day }} - {{ $logo->open_time }}</p>
+                            <p class="hero1">{{ $logo->close_day }} Closed</p>
                         </div>
                 </div>
             </div>
@@ -508,7 +508,7 @@
                 <div id="text-3" class="widget widget_text">
                     <h3 class="widgettitle">Official Partner</h3><br>			
                     <p>Royal D Energy Drink</p>
-                    <img src="assets/images/royad.jpg" alt="energydrink" width="80" height="80">
+                    <img src="{{asset($logo->image)}}" alt="energydrink" width="80" height="80">
                 </div>
             </div>					
         </div>

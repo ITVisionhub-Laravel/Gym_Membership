@@ -17,6 +17,13 @@
                                     <td>ID</td>
                                     <td>Name</td>
                                     <td>Image</td>
+                                    <td>Description</td>
+                                    <td>Location</td>
+                                    <td>PhoneNumber</td>
+                                    <td>Email</td>
+                                    <td>OpenDay</td>
+                                    <td>OpenTime</td>
+                                    <td>CloseDay</td>
                                     <td>Action</td>
                                 </tr>
                             </thead>
@@ -28,6 +35,14 @@
                                     <td>
                                         <img src="{{asset("$logo->image")}}" style="width:70px;height:70px" alt="logo">
                                     </td>
+                                    <td>{{$logo->description}}</td>
+                                    <td>{{$logo->location}}</td>
+                                    <td>{{$logo->ph_no}}</td>
+                                    <td>{{$logo->email}}</td>
+                                    <td>{{$logo->open_day}}</td>
+                                    <td>{{$logo->open_time}}</td>
+                                    <td>{{$logo->close_day}}</td>
+
                                     <td>
                                         <a href="{{url('admin/logo/'.$logo->id.'/edit')}}" class="btn btn-success">Edit</a>
                                         <a href="{{url('admin/logo/'.$logo->id.'/delete')}}" 

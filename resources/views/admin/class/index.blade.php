@@ -17,7 +17,6 @@
                             <th>Id</th>
                             <th>Class Name</th>
                             <th>Description</th>
-                            <th>Day</th>
                             <th>Morning Time</th>
                             <th>Evening Time</th>
                             <th>Trainer Name</th>
@@ -32,7 +31,6 @@
                             <td>{{ $class->id }}</td>
                             <td>{{ $class->name }}</td>
                             <td>{{ $class->description }}</td>
-                            <td>{{ $class->day }}</td>
                             <td>{{ $class->morning_time }}</td>
                             <td>{{ $class->evening_time }}</td>
                             <td>{{ $class->trainer->name }}</td>

@@ -19,10 +19,11 @@
                             <x-forms.forminput type="file" name="image"  value="{{$logo->image}}" width="col-md-12" placeholder="Image" width="col-md-6" />
                         </div>
                         <div class="row">
-                            <x-forms.forminput name="description" value="{{$logo->description}}" type="textarea" width="col-md-12" />
+                            <x-forms.forminput name="description" value="{{$logo->description}}" type="textarea" width="col-md-6" />
+                            <x-forms.forminput name="location" value="{{$logo->location}}" placeholder="Location" width="col-md-6" />
                         </div>
                         <div class="row">
-                            <x-forms.forminput name="location" value="{{$logo->location}}" placeholder="Location" width="col-md-6" />
+                            <x-forms.forminput name="address" value="{{ $logo->address }}" placeholder="Address" width="col-md-6" />
                             <x-forms.forminput name="ph_no" value="{{$logo->ph_no}}" placeholder="Enter Phone Number" width="col-md-6" />
                         </div>
                         <div class="row">

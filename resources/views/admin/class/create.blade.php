@@ -19,14 +19,13 @@
                     </div>
                     <div class="row">
                         <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-6" />
-                        <x-forms.forminput name="day" placeholder="Day" width="col-md-6" />
+                        <x-forms.forminput name="description" type="textarea" width="col-md-6" />
                     </div>
                     <div class="row">
                         <x-forms.forminput name="morning_time"  placeholder="Morning_time" width="col-md-6" />
                         <x-forms.forminput name="evening_time"  placeholder="Evening_time" width="col-md-6" />
                     </div>
                     
-                    <x-forms.forminput name="description" type="textarea" width="col-md-12" />
                 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Save</button>

@@ -19,6 +19,7 @@
                                     <td>Image</td>
                                     <td>Description</td>
                                     <td>Location</td>
+                                    <td>Address</td>
                                     <td>PhoneNumber</td>
                                     <td>Email</td>
                                     <td>OpenDay</td>
@@ -37,6 +38,7 @@
                                     </td>
                                     <td>{{$logo->description}}</td>
                                     <td>{{$logo->location}}</td>
+                                    <td>{{$logo->address}}</td>
                                     <td>{{$logo->ph_no}}</td>
                                     <td>{{$logo->email}}</td>
                                     <td>{{$logo->open_day}}</td>

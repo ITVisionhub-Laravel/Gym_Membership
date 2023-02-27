@@ -18,10 +18,11 @@
                                 <x-forms.forminput type="file" name="image" placeholder="Image" width="col-md-6" />
                             </div>
                             <div class="row">
-                                <x-forms.forminput name="description" type="textarea" width="col-md-12" />
+                                <x-forms.forminput name="description" type="textarea" width="col-md-6" />
+                                <x-forms.forminput name="location" placeholder="Location" width="col-md-6" />
                             </div>
                             <div class="row">
-                                <x-forms.forminput name="location" placeholder="Location" width="col-md-6" />
+                                <x-forms.forminput name="address" placeholder="Address" width="col-md-6" />
                                 <x-forms.forminput name="ph_no" placeholder="Enter Phone Number" width="col-md-6" />
                             </div>
                             <div class="row">

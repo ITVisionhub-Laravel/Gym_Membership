@@ -11,7 +11,7 @@ class GymClass extends Model
     protected $table='gym_classes';
 
     protected $fillable=[
-        'name','description','image','day','morning_time','evening_time','trainer_id'
+        'name','description','image','morning_time','evening_time','trainer_id'
     ];
     public function trainer(){
         return $this->belongsTo(Trainer::class, 'trainer_id', 'id');

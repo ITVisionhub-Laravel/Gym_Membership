@@ -6,8 +6,11 @@ use App\Models\Slider;
 use Illuminate\Http\Request;
 use App\Models\CustomerQRCode;
 use App\Http\Controllers\Controller;
+use App\Models\GymClass;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Logo;
+use App\Models\Partner;
+use App\Models\Trainer;
 
 class FrontendController extends Controller
 {
@@ -23,6 +26,9 @@ class FrontendController extends Controller
         }
 
         $data['logo'] = Logo::first();
+        $data['partner'] = Partner::get();
+        $data['class']=GymClass::get();
+        $data['trainer']=Trainer::get();
         return view('frontend.index', $data);
     }
 }

@@ -26,7 +26,6 @@ class ClassController extends Controller
         $validatedData = $request->validate([
             'name'=>['string'],
             'description'=>['string'],
-            'day'=>['string'],
             'morning_time'=>['string'],
             'evening_time'=>['string'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png']
@@ -43,7 +42,6 @@ class ClassController extends Controller
             'name'=>$validatedData['name'],
             'image' => $validatedData['image'],
             'description' => $validatedData['description'],
-            'day' => $validatedData['day'],
             'morning_time' => $validatedData['morning_time'],
             'evening_time' => $validatedData['evening_time'],
             'trainer_id'=>$request->trainer_id,
@@ -64,7 +62,6 @@ class ClassController extends Controller
         $validatedData = $request->validate([
             'name'=>['string'],
             'description'=>['string'],
-            'day'=>['string'],
             'morning_time'=>['string'],
             'evening_time'=>['string'],
             'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png']
@@ -85,7 +82,6 @@ class ClassController extends Controller
             'name'=>$validatedData['name'],
             'image' => $validatedData['image'] ?? $class->image,
             'description' => $validatedData['description'],
-            'day' => $validatedData['day'],
             'morning_time' => $validatedData['morning_time'],
             'evening_time' => $validatedData['evening_time'],
             'trainer_id'=>$request->trainer_id,

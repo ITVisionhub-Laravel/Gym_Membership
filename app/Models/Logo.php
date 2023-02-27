@@ -13,6 +13,7 @@ class Logo extends Model
         'image',
         'name',
         'description',
+        'address',
         'location',
         'ph_no',
         'email',

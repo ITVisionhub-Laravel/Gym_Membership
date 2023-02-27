@@ -18,16 +18,17 @@ class Customer extends Model
         'height',
         'weight',
         'phone_number',
-        'emergency_phone', 
+        'emergency_phone',
         'image',
-        'address_id'
+        'address_id',
+        'class_id',
     ];
-    public function address(){
+    public function address()
+    {
         return $this->belongsTo(Address::class, 'address_id', 'id');
     }
     public function payment_records()
     {
-        return $this->belongsTo(PaymentRecord::class,'id','customer_id');
+        return $this->belongsTo(PaymentRecord::class, 'id', 'customer_id');
     }
-    
 }

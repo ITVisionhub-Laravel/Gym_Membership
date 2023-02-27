@@ -19,7 +19,7 @@ class DashboardController extends Controller
     public function index()
     {
         if (auth()->guest() || !auth()->user()->role_as == '1') {
-            return redirect('/')->with('status','Logged In Successfully');
+            return redirect('/')->with('status', 'Logged In Successfully');
         }
         $expiredDate = '';
 

@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentExpiredMembers;
 use App\Http\Requests\CustomerFormRequest;
+use App\Models\GymClass;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CustomerController extends Controller
@@ -35,6 +36,7 @@ class CustomerController extends Controller
         $data['cities'] = City::get(['name', 'id']);
         $data['packages'] = PaymentPackage::get();
         $data['providers'] = PaymentProvider::get();
+        $data['gymclasses'] = GymClass::get();
         return view('admin.customers.create', $data);
     }
     public function fetchTownship(Request $request)
@@ -66,7 +68,7 @@ class CustomerController extends Controller
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
         $customer->email = $validatedData['email'];
-        $customer->member_card = $validatedData['member_card_id'];
+        $customer->member_card = time();
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
 
@@ -102,6 +104,13 @@ class CustomerController extends Controller
             $customer->image = $filename;
         }
         if ($customer->save()) {
+            if ($request->hasFile('bank_slip')) {
+                $file = $request->file('bank_slip');
+                $ext = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $ext;
+                $file->move('uploads/bankslip/', $filename);
+                $payment_record->bank_slip = $filename;
+            }
             $package_info = explode(' ', $request->package);
             $payment_record->package_id = $package_info[0];
             $payment_record->price = $request->price;

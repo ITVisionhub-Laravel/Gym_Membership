@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,28 +38,36 @@
     <div class="col-md-12">
         <x-successmessage/>
         <div class="card">
-            <div class="card-header">
-                <h3>User Register form
+            <div class="card-header" style="background-color: #334860 ">
+                <h3 class="text-white">User Register form
                     <a href="{{ url('/') }}" class="btn btn-danger btn-sm text-white float-end">Back</a>
                 </h3>
             </div>
             <div class="card-body">
-                <form action="{{ url('admin/customers') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ url('create_qrcode') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                    <div class="row pt-2">
-                        <x-forms.forminput name="name" placeholder="Enter Your Name" width="col-md-3"/>
-                        <x-forms.forminput name="email" placeholder="Enter Your Email" type="email" width="col-md-3"/>
-                        <x-forms.forminput name="age" placeholder="Enter Your Age" type="number" width="col-md-3"/>
-                        <x-forms.forminput type="file" name="image" width="col-md-3" placeholder="Enter Your Image" value='' width="col-md-3"/>
-                    </div>
-
+                   <div class="pt-1">
+                    <fieldset class="reset">
+                        <legend class="reset">Personal Info:</legend>  
+                        <div class="row pt-2">
+                            <x-forms.forminput name="name" value="{{ $userinfo->name }}" placeholder="Enter Your Name" width="col-md-3"/>
+                            <x-forms.forminput name="email" value="{{ $userinfo->email }}" placeholder="Enter Your Email" type="email" width="col-md-3"/>
+                            <x-forms.forminput name="age" placeholder="Enter Your Age" type="number" width="col-md-3"/>
+                            <x-forms.forminput type="file" name="image" width="col-md-3" placeholder="Enter Your Image" value='' width="col-md-3"/>
+                        </div>
+                   
+                      
                     <div class="row">
                         <x-forms.forminput type="number" name="height" placeholder="Enter Your Height" width="col-md-3"/>
                         <x-forms.forminput name="weight" placeholder="Enter Your Weight" width="col-md-3"/>
                         <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile" width="col-md-3"/>        
                         <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile" width="col-md-3"/> 
                     </div>
-               
+                </fieldset>
+                </div>
+                <div class="pt-3">
+                <fieldset class="reset pt-2">
+                        <legend class="reset">Address:</legend> 
                     <div class="row">
                         <x-forms.dropdownfield :dropdownValues="$cities" name="city" width="col-md-4"></x-forms.dropdownfield>  
                         <div class="form-group col-md-4">
@@ -74,8 +83,13 @@
                             <x-forms.input-error name="street"/>
                         </div>
                     </div>
+                    </fieldset>
+                </div>
+                <div class="pt-3">
+                    <fieldset class="reset pt-2">
+                        <legend class="reset">Payment:</legend> 
                     <div class="row">
-                        <div class="col-md-6">
+                        {{--  <div class="col-md-6">
                         <label for="">Bank Type</label><br><br>
                         <input class="form-check-input" type="radio" name="kbz">
                         <label class="form-check-label">KBZ 0983 0017 21501</label>&nbsp;
@@ -85,12 +99,15 @@
                         <label class="form-check-label">KPay 09451457740</label>&nbsp;&nbsp;&nbsp; &nbsp;
                         <input class="form-check-input" type="radio" name="wavepay">
                         <label class="form-check-label">WavePay 09451457740</label>
-                        </div>
+                        </div>  --}}
+                        {{--  <div class="col-md-4">
+
+                        </div>  --}}
+                        <x-forms.dropdownfield :dropdownValues="$providers" name="payment" labelName="Bank Type" width="col-md-4"></x-forms.dropdownfield>
+                        <x-forms.forminput type="file" name="bank_slip" placeholder="Enter Your Online Payment" width="col-md-4"/>
                         
-                        <x-forms.forminput type="file" name="bank_slip" placeholder="Enter Your Online Payment" width="col-md-3"/>
-                        
-                        <div class="col-md-3">
-                            <label for="">Class Name</label><br><br>
+                        <x-forms.dropdownfield :dropdownValues="$gymclasses" name="gymclass" labelName="Classes" width="col-md-4"></x-forms.dropdownfield>
+                            {{--  <label for="">Class Name</label><br><br>
                         <select class="form-select">
                             <option selected>Select Your Class Name</option>
                             <option value="1">Fitness Class</option>
@@ -98,8 +115,8 @@
                             <option value="3">Body Building</option>
                             <option value="4">Yoga Trainging</option>
                             <option value="5">Advance Training</option>
-                        </select>
-                        </div>
+                        </select>  --}}
+                        
                     </div>
 
                     <div class="row">
@@ -109,11 +126,13 @@
                         <x-forms.forminput type="number" id="price" name="price"  placeholder=" Price" width="col-md-3" required readonly/>
                         
                     </div>
+                    </fieldset>
+                </div>
                     {{--  <div class="row">
                             
                     </div>  --}}
-                    <div class="mb-3">
-                        <button type="submit" class="btn btn-success">Register</button>
+                    <div class="mb-3 pt-3">
+                        <button type="submit" class="btn btn-success">Submit</button>
                     </div>
                 </form>
             </div>

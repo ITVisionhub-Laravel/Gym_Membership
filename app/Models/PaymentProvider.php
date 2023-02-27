@@ -11,5 +11,5 @@ class PaymentProvider extends Model
 
     protected $table = 'payment_providers';
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name','bank_slip'];
 }

@@ -26,12 +26,25 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', [App\Http\Controllers\Frontend\FrontendController::class,'index',]);
+Route::get('/', [
+    App\Http\Controllers\Frontend\FrontendController::class,
+    'index',
+]);
 
-Route::middleware(['auth'])->group(function(){
-   Route::get('user_register',[App\Http\Controllers\Frontend\UserRegisterController::class,'index']);
+Route::middleware(['auth'])->group(function () {
+    Route::get('user_register', [
+        App\Http\Controllers\Frontend\UserRegisterController::class,
+        'index',
+    ]);
+    Route::post('create_qrcode', [
+        App\Http\Controllers\Frontend\UserRegisterController::class,
+        'createQRCode',
+    ]);
+    Route::get('user_qrcode', [
+        App\Http\Controllers\Frontend\UserRegisterController::class,
+        'showQRCode',
+    ]);
 });
-
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -139,11 +152,11 @@ Route::prefix('admin')->group(function () {
         Route::put('/trainers/{trainer}', 'update');
         Route::get('/trainers/{trainer_id}/delete', 'destroy');
     });
-    Route::controller(
-        App\Http\Controllers\Admin\PrintController::class
-    )->group(function () {
-        Route::get('/attendent/{attendent}/print', 'print');
-    });
+    Route::controller(App\Http\Controllers\Admin\PrintController::class)->group(
+        function () {
+            Route::get('/attendent/{attendent}/print', 'print');
+        }
+    );
     Route::controller(
         App\Http\Controllers\Admin\PartnerController::class
     )->group(function () {
@@ -154,16 +167,16 @@ Route::prefix('admin')->group(function () {
         Route::put('/partner/{partner}', 'update');
         Route::get('/partner/{partner}/delete', 'destroy');
     });
-    Route::controller(
-        App\Http\Controllers\Admin\ClassController::class
-    )->group(function () {
-        Route::get('/class', 'index');
-        Route::get('/class/create', 'create');
-        Route::post('/class', 'store');
-        Route::get('/class/{class}/edit', 'edit');
-        Route::put('/class/{class}', 'update');
-        Route::get('/class/{class}/delete', 'destroy');
-    });
+    Route::controller(App\Http\Controllers\Admin\ClassController::class)->group(
+        function () {
+            Route::get('/class', 'index');
+            Route::get('/class/create', 'create');
+            Route::post('/class', 'store');
+            Route::get('/class/{class}/edit', 'edit');
+            Route::put('/class/{class}', 'update');
+            Route::get('/class/{class}/delete', 'destroy');
+        }
+    );
 });
 
 require __DIR__ . '/auth.php';

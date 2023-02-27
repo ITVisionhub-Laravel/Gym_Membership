@@ -21,16 +21,16 @@
                         </div>
 
                         <div class="row">
-                            <x-forms.forminput type="number" name="member_card_id" placeholder="Enter Your Member Card Number" width="col-md-3" labelName="member card id"/>
+                            {{--  <x-forms.forminput type="number" name="member_card_id" placeholder="Enter Your Member Card Number" width="col-md-3" labelName="member card id"/>  --}}
                             <x-forms.forminput type="number" name="height" placeholder="Enter Your Height"/>
                             <x-forms.forminput name="weight" placeholder="Enter Your Weight"/>
-                            <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile"/>        
-                            <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile" width="col-md-3"/> 
+                            <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" width="col-md-4" labelName="mobile"/>        
+                            <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile" width="col-md-4"/> 
                         </div>
                     </fieldset>
                     <div class="pt-3">
                     <fieldset class="reset">
-                        <legend class="reset">Personal Info:</legend> 
+                        <legend class="reset">Address:</legend> 
                         <div class="row">
                             <x-forms.dropdownfield :dropdownValues="$cities" name="city" width="col-md-4"></x-forms.dropdownfield>  
                             <div class="form-group col-md-4">
@@ -51,7 +51,7 @@
                     
                     <div class="pt-3">
                         <fieldset class="reset">
-                            <legend class="reset">Personal Info:</legend>
+                            <legend class="reset">Payment:</legend>
                             <div class="row">
                                 <x-forms.dropdownfield :dropdownValues="$providers" name="payment" labelName="Payment Methods" width="col-md-4"></x-forms.dropdownfield>
                                 <x-forms.forminput type="file" name="bank_slip" placeholder="Enter Your Online Payment" width="col-md-4"/>

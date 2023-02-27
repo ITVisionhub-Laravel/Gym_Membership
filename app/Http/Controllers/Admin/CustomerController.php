@@ -68,7 +68,7 @@ class CustomerController extends Controller
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
         $customer->email = $validatedData['email'];
-        $customer->member_card = $validatedData['member_card_id'];
+        $customer->member_card = time();
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
 
@@ -104,6 +104,13 @@ class CustomerController extends Controller
             $customer->image = $filename;
         }
         if ($customer->save()) {
+            if ($request->hasFile('bank_slip')) {
+                $file = $request->file('bank_slip');
+                $ext = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $ext;
+                $file->move('uploads/bankslip/', $filename);
+                $payment_record->bank_slip = $filename;
+            }
             $package_info = explode(' ', $request->package);
             $payment_record->package_id = $package_info[0];
             $payment_record->price = $request->price;

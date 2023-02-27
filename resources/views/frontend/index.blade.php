@@ -48,7 +48,15 @@
                             <li class="scroll-to-section"><a href="#our-classes">Classes</a></li>
                             <li class="scroll-to-section"><a href="#trainers">Trainers</a></li>
                             <li class="scroll-to-section"><a href="#schedule">Schedules</a></li>
-                            <li class="scroll-to-section"><a href="{{ url('user_register') }}">Submit</a></li>
+                            <li class="scroll-to-section"><a href="@if ($qrcode)
+                                {{ url('user_qrcode') }}
+                            @else
+                                {{ url('user_register') }} 
+                            @endif">@if ($qrcode)
+                                QRCode
+                                @else
+                                Submit
+                            @endif</a></li>
                             <li class="scroll-to-section"><a href="#contact-us">Contact</a></li> 
                             <li>
                             @guest

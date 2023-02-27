@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentExpiredMembers;
 use App\Http\Requests\CustomerFormRequest;
+use App\Models\GymClass;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CustomerController extends Controller
@@ -35,6 +36,7 @@ class CustomerController extends Controller
         $data['cities'] = City::get(['name', 'id']);
         $data['packages'] = PaymentPackage::get();
         $data['providers'] = PaymentProvider::get();
+        $data['gymclasses'] = GymClass::get();
         return view('admin.customers.create', $data);
     }
     public function fetchTownship(Request $request)

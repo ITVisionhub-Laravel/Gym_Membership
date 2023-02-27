@@ -12,14 +12,10 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('payment_records', function (Blueprint $table) {
+        Schema::create('_qrcode', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('package_id');
-            $table->integer('price');
-            $table->string('bank_slip');
-            $table->date('record_date');
-            $table->unsignedBigInteger('provider_id');
-            $table->unsignedBigInteger('customer_id');
+            $table->integer('member_card_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
     }
@@ -31,6 +27,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('payment_records');
+        Schema::dropIfExists('_qrcode');
     }
 };

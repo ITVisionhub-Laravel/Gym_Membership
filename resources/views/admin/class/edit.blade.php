@@ -20,14 +20,14 @@
                     </div>
                     <div class="row">
                         <x-forms.forminput name="image" type="file" placeholder="Image" value="{{$class->image}}" width="col-md-6" />
-                        <x-forms.forminput name="day" placeholder="Day" value="{{$class->day}}" width="col-md-6" />
+                        <x-forms.forminput name="description" type="textarea" value="{{$class->description}}" width="col-md-6" />
                     </div>
                     <div class="row">
                         <x-forms.forminput name="morning_time" value="{{$class->morning_time}}" placeholder="Morning_time" width="col-md-6" />
                         <x-forms.forminput name="evening_time" value="{{$class->evening_time}}" placeholder="Evening_time" width="col-md-6" />
                     </div>
                     
-                    <x-forms.forminput name="description" type="textarea" value="{{$class->description}}" width="col-md-12" />
+                    
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Update</button>
                 </div>

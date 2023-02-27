@@ -40,8 +40,6 @@ class Attendence_CheckController extends Controller
     {
         $validatedData = $request->validate([
             'member_check' => ['required'], 
-
-        
         ]);
 
         $attendent_check = Customer::where('member_card', $request->member_check)->first();

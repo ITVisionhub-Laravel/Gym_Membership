@@ -30,6 +30,7 @@ Route::get('/', [App\Http\Controllers\Frontend\FrontendController::class,'index'
 
 Route::middleware(['auth'])->group(function(){
    Route::get('user_register',[App\Http\Controllers\Frontend\UserRegisterController::class,'index']);
+   Route::get('package-details',[App\Http\Controllers\Frontend\UserRegisterController::class,'show']);
 });
 
 

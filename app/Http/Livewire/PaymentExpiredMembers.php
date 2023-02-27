@@ -65,7 +65,6 @@ class PaymentExpiredMembers extends Component
     }
     public function storePayment()
     {
-        @dd('hello');
         $this->payment_records = PaymentRecord::where(
             'customer_id',
             $this->memberId

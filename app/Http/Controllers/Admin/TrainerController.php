@@ -10,48 +10,53 @@ use App\Http\Requests\TrainerFormRequest;
 
 class TrainerController extends Controller
 {
-        public function index()
-        {
-            $trainers=Trainer::all();
-            return view('admin.trainer.index',compact('trainers'));
-        }
-        public function create()
-        {
-            return view('admin.trainer.create');
-        }
-        public function store(TrainerFormRequest $request)
-        {
-            $validatedData = $request->validated();
-            $trainer = new Trainer();
-            $trainer->name = $validatedData['name'];
-            $trainer->description = $validatedData['description'];
+    public function index()
+    {
+        $trainers = Trainer::all();
+        return view('admin.trainer.index', compact('trainers'));
+    }
+    public function create()
+    {
+        return view('admin.trainer.create');
+    }
+    public function store(TrainerFormRequest $request)
+    {
+        $validatedData = $request->validated();
+        $trainer = new Trainer();
+        $trainer->name = $validatedData['name'];
+        $trainer->description = $validatedData['description'];
+        $trainer->fb_name = $validatedData['fb_name'];
+        $trainer->twitter_name = $validatedData['twitter_name'];
+        $trainer->linkin_name = $validatedData['linkin_name'];
 
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $ext = $file->getClientOriginalExtension();
-                $filename = time() . '.' . $ext;
-                $file->move('uploads/trainer/', $filename);
-                $trainer->image = $filename;
-            }
-            $trainer->save();
-            return redirect('admin/trainers')->with(
-                'message',
-                'Trainer Added Successfully'
-            );
-            
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $ext = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $ext;
+            $file->move('uploads/trainer/', $filename);
+            $trainer->image = $filename;
         }
-        public function edit(Trainer $trainer)
-        {
-            return view('admin.trainer.edit',compact('trainer'));
-        }
+        $trainer->save();
+        return redirect('admin/trainers')->with(
+            'message',
+            'Trainer Added Successfully'
+        );
+    }
+    public function edit(Trainer $trainer)
+    {
+        return view('admin.trainer.edit', compact('trainer'));
+    }
 
-        public function update(TrainerFormRequest $request,$trainer)
-        {
-            $validatedData = $request->validated();
+    public function update(TrainerFormRequest $request, $trainer)
+    {
+        $validatedData = $request->validated();
         $trainer = Trainer::findOrFail($trainer);
 
         $trainer->name = $validatedData['name'];
         $trainer->description = $validatedData['description'];
+        $trainer->fb_name = $validatedData['fb_name'];
+        $trainer->twitter_name = $validatedData['twitter_name'];
+        $trainer->linkin_name = $validatedData['linkin_name'];
 
         if ($request->hasFile('image')) {
             $path = public_path('uploads/trainer/' . $trainer->image);
@@ -69,19 +74,18 @@ class TrainerController extends Controller
             'message',
             'Trainer Updated Successfully'
         );
+    }
+    public function destroy($trainer_id)
+    {
+        $trainer = Trainer::findOrFail($trainer_id);
+        $path = public_path('uploads/trainer/' . $trainer->image);
+        if (File::exists($path)) {
+            File::delete($path);
         }
-        public function destroy($trainer_id)
-        {
-            $trainer = Trainer::findOrFail($trainer_id);
-            $path = public_path('uploads/trainer/' . $trainer->image);
-            if (File::exists($path)) {
-                File::delete($path);
-            }
-            $trainer->delete();
-            return redirect('admin/trainers')->with(
-                'message',
-                'Trainer Deleted Successfully'
-            );
-            
-        }
+        $trainer->delete();
+        return redirect('admin/trainers')->with(
+            'message',
+            'Trainer Deleted Successfully'
+        );
+    }
 }

@@ -13,10 +13,18 @@
             <div class="card-body">
                 <form action="{{ url('admin/trainers') }}" method="POST" enctype="multipart/form-data">
                     @csrf
-                
-                    <x-forms.forminput name="name" placeholder="Enter Name" width="col-md-12" />
-                    <x-forms.forminput name="description" type="textarea" width="col-md-12" />
-                    <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-12" />
+                    <div class="row">
+                        <x-forms.forminput name="name" placeholder="Enter Name" width="col-md-6" />
+                        <x-forms.forminput name="description" type="textarea" width="col-md-6" />
+                    </div>
+                    <div class="row">
+                        <x-forms.forminput name="fb_name" placeholder="Enter fb-name" width="col-md-6" />
+                        <x-forms.forminput name="twitter_name" placeholder="Enter twitter-name" width="col-md-6" />
+                    </div>
+                    <div class="row">
+                        <x-forms.forminput name="linkin_name" placeholder="Enter linkin-name" width="col-md-6" />
+                        <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-6" />
+                    </div>
                 
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Save</button>

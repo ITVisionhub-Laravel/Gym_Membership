@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\CustomerQRCode;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Logo;
 
 class FrontendController extends Controller
 {
@@ -21,6 +22,7 @@ class FrontendController extends Controller
             $data['qrcode'] = false;
         }
 
+        $data['logo'] = Logo::first();
         return view('frontend.index', $data);
     }
 }

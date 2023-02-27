@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -17,6 +16,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->mediumText('description');
+            $table->string('fb_name');
+            $table->string('twitter_name');
+            $table->string('linkin_name');
             $table->string('image')->nullable();
             $table->timestamps();
         });

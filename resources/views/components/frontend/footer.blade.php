@@ -51,18 +51,26 @@
         </div>
     </div>
 </div>
-   
-    
-    <!-- ***** Footer Start ***** -->
+
+<!-- ***** Footer Start ***** -->
     <footer>
         <div class="container">
-            <div class="row">
+            <div class="row pt-3">
                 <div class="col-lg-12">
                         <p>Copyright &copy; February 7, 2023 <span style="color:#13e30c">ITVision Hub Company Ltd</span></p>
                 </div>
             </div>
+
+            <div class="row app-logo pt-2">
+                <div class="col-md-6">
+                    <img src="assets/images/ios_logo.png" alt="app-store" height="50">
+                </div>
+                <div class="col-md-6">
+                    <img src="assets/images/google_logo.png" alt="android-stroe" height="50">
+                </div>
+            </div>
             
-            
+        
             <!--Chat  code begins here -->
 
             <a href="#" class="float">

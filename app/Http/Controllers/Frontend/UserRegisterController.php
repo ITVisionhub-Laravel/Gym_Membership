@@ -145,4 +145,8 @@ class UserRegisterController extends Controller
         $data['partner'] = Partner::get();
         return view('frontend.package-details',$data);
     }
+    public function detail()
+    {
+        return view('frontend.class-detail');
+    }
 }

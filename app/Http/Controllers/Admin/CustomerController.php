@@ -7,21 +7,23 @@ use App\Models\Logo;
 use App\Models\Street;
 use App\Models\Address;
 use App\Models\Customer;
+use App\Models\GymClass;
 use App\Models\Township;
 use Illuminate\Http\Request;
 use App\Mail\InvoiceMailable;
 use App\Models\PaymentRecord;
+use App\Models\CustomerQRCode;
 use App\Models\PaymentPackage;
 use Illuminate\Support\Carbon;
 use App\Models\PaymentProvider;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentExpiredMembers;
 use App\Http\Requests\CustomerFormRequest;
-use App\Models\GymClass;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CustomerController extends Controller
@@ -58,8 +60,7 @@ class CustomerController extends Controller
 
     public function store(CustomerFormRequest $request)
     {
-        // dd('hit');
-        // return $request;
+        // @dd($request);
         $validatedData = $request->validated();
         $customer = new Customer();
         $address = new Address();
@@ -71,6 +72,7 @@ class CustomerController extends Controller
         $customer->member_card = time();
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
+        $customer->class_id = $validatedData['gymclass'];
 
         if (
             DB::table('addresses')
@@ -103,6 +105,7 @@ class CustomerController extends Controller
             $file->move('uploads/customer/', $filename);
             $customer->image = $filename;
         }
+        // @dd($customer);
         if ($customer->save()) {
             if ($request->hasFile('bank_slip')) {
                 $file = $request->file('bank_slip');
@@ -117,15 +120,27 @@ class CustomerController extends Controller
             $payment_record->record_date = date('Y.m.d');
             $payment_record->provider_id = $request->payment;
             $payment_record->customer_id = $customer->id;
+            // @dd($payment_record);
             if (!$payment_record->save()) {
                 $customer->delete();
+            } else {
+                if ($payment_record->save()) {
+                    $customerQRCode = new CustomerQRCode();
+                    $customerQRCode->member_card_id = $customer->member_card;
+                    $customerQRCode->user_id = 0;
+                    // @dd($customerQRCode);
+                    if ($customerQRCode->save()) {
+                        return redirect('admin/customers')->with(
+                            'message',
+                            'Customer Added Successfully'
+                        );
+                    } else {
+                        $customer->delete();
+                        $payment_record->delete();
+                    }
+                }
             }
-            $payment_record->save();
         }
-        return redirect('admin/customers')->with(
-            'message',
-            'Customer Added Successfully'
-        );
     }
     public function edit(Customer $customer)
     {
@@ -133,6 +148,7 @@ class CustomerController extends Controller
         $data['cities'] = City::get(['name', 'id']);
         $data['townships'] = Township::get();
         $data['streets'] = Street::get();
+        $data['gymclasses'] = GymClass::get();
         $data['payment_records'] = PaymentRecord::where(
             'customer_id',
             $customer->id
@@ -141,10 +157,24 @@ class CustomerController extends Controller
         $data['providers'] = PaymentProvider::get();
         return view('admin.customers.edit', $data, compact('customer'));
     }
-    public function update(CustomerFormRequest $request, $customer)
+    public function update(Request $request, $customer)
     {
-        // dd($customer);
-        $validatedData = $request->validated();
+        // dd($request);
+        $validatedData = $request->validate([
+            'name' => ['required', 'string'],
+            'age' => ['required', 'integer'],
+            'email' => ['required', 'string'],
+            'height' => ['required', 'string'],
+            'weight' => ['required', 'string'],
+            'city' => ['required', 'string'],
+            'township' => ['required', 'string'],
+            'street' => ['required', 'string'],
+            'phone_number' => ['required', 'string'],
+            'emergency_phone' => ['required', 'string'],
+            'gymclass' => ['required', 'string'],
+            'image' => ['nullable', 'mimes:jpg,jpeg,png'],
+        ]);
+        // dd($validatedData);
         $customer = Customer::findOrFail($customer);
         $address = new Address();
 
@@ -178,6 +208,8 @@ class CustomerController extends Controller
         $customer->phone_number = $validatedData['phone_number'];
         $customer->emergency_phone = $validatedData['emergency_phone'];
 
+        $customer->class_id = $validatedData['gymclass'];
+        // @dd($customer);
         if ($request->hasFile('image')) {
             $path = public_path('uploads/customer/' . $customer->image);
             if (File::exists($path)) {

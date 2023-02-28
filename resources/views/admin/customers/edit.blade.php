@@ -1,3 +1,4 @@
+{{--  @dd($customer)  --}}
 <x-admin>
     <div class="row">
         <div class="col-md-12">
@@ -23,10 +24,11 @@
 
                             <div class="row">
                                 {{--  <x-forms.forminput type="number" name="member_card_id" placeholder="Enter Your Member Card Number" labelName="member card id" value="{{ $customer->member_card }}" width="col-md-3"/>  --}}
+                                <x-forms.dropdownfield :dropdownValues="$gymclasses" name="gymclass" labelName="Classes" width="col-md-3" checkOldValue="{{ $customer->class_id }}"></x-forms.dropdownfield>
                                 <x-forms.forminput type="number" name="height" placeholder="Enter Your Height" value="{{ $customer->height }}"/>
                                 <x-forms.forminput name="weight" placeholder="Enter Your Weight" value="{{ $customer->weight }}"/>
-                                <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile" value="{{ $customer->phone_number }}" width="col-md-4"/>        
-                                <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile" value="{{ $customer->emergency_phone }}" width="col-md-4"/> 
+                                <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile" value="{{ $customer->phone_number }}" width="col-md-2"/>        
+                                <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile" value="{{ $customer->emergency_phone }}" width="col-md-3"/> 
                             </div>
                         </fieldset>
                         <div class="pt-3">

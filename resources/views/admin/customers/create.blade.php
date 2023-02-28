@@ -55,7 +55,7 @@
                             <div class="row">
                                 <x-forms.dropdownfield :dropdownValues="$providers" name="payment" labelName="Payment Methods" width="col-md-4"></x-forms.dropdownfield>
                                 <x-forms.forminput type="file" name="bank_slip" placeholder="Enter Your Online Payment" width="col-md-4"/>
-                                <x-forms.dropdownfield :dropdownValues="$gymclasses" name="classes" labelName="Classes" width="col-md-4"></x-forms.dropdownfield>
+                                <x-forms.dropdownfield :dropdownValues="$gymclasses" name="gymclass" labelName="Classes" width="col-md-4"></x-forms.dropdownfield>
                             </div>
                             <div class="row">
                     

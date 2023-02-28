@@ -8,8 +8,7 @@
                 <a href="{{route('attendents.index')}}"><p>Attendented Members</p> </a>
             </span>
         </li>
-   
-    
+
         <li>
             <i class='bx bxs-group' ></i>
             <span class="text">
@@ -17,8 +16,7 @@
                 <a href="{{ url('admin/customers') }}"><p>Register Members</p></a>
             </span>
         </li>
-    
-    
+
         <li>
             <i class='bx bxs-calendar-check' ></i>
             <span class="text">
@@ -51,8 +49,6 @@
       @else
           @include('admin.dashboard.barchart')
       @endif
-
-       
 
        @include('admin.dashboard.memberlist',compact('attendencedMembers','members'))
       

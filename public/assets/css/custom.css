@@ -181,9 +181,9 @@ section .section-title {
 
 .box-info {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-gap: 24px;
-    margin-top: 36px;
+    margin-bottom: 30px;
 }
 .box-info li {
     padding: 24px;
@@ -191,11 +191,11 @@ section .section-title {
     border-radius: 20px;
     display: flex;
     align-items: center;
-    grid-gap: 24px;
+    grid-gap: 12px;
 }
 .box-info li .bx {
-    width: 80px;
-    height: 80px;
+    width: 60px;
+    height: 60px;
     border-radius: 10px;
     font-size: 36px;
     display: flex;

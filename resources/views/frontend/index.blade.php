@@ -32,7 +32,7 @@
     </div>
     <!-- ***** Preloader End ***** -->
     
-    <x-frontend.navbar/>
+    <x-frontend.navbar :qrcode="$qrcode"> </x-frontend.navbar>
 
     <!-- ***** Main Banner Area Start ***** -->
     <div class="main-banner" id="top">

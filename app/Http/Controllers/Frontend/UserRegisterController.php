@@ -15,7 +15,6 @@ use App\Models\PaymentProvider;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\CustomerQRCode;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class UserRegisterController extends Controller
@@ -114,16 +113,20 @@ class UserRegisterController extends Controller
             $payment_record->customer_id = $customer->id;
             if (!$payment_record->save()) {
                 $customer->delete();
-            }
-            if ($payment_record->save()) {
-                $customerQRCode = new CustomerQRCode();
-                $customerQRCode->member_card_id = $customer->member_card;
-                $customerQRCode->user_id = Auth::user()->id;
-                if ($customerQRCode->save()) {
-                    return redirect('/')->with(
-                        'message',
-                        'Customer QRCode Generated Successfully'
-                    );
+            } else {
+                if ($payment_record->save()) {
+                    $customerQRCode = new CustomerQRCode();
+                    $customerQRCode->member_card_id = $customer->member_card;
+                    $customerQRCode->user_id = Auth::user()->id;
+                    if ($customerQRCode->save()) {
+                        return redirect('/')->with(
+                            'message',
+                            'Customer QRCode Generated Successfully'
+                        );
+                    } else {
+                        $customer->delete();
+                        $payment_record->delete();
+                    }
                 }
             }
         }

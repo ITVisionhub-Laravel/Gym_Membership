@@ -40,7 +40,9 @@ class CustomerFormRequest extends FormRequest
             'original_price' => ['required', 'string'],
             'price' => ['required', 'string'],
             'payment' => ['required', 'string'],
+            'gymclass' => ['required', 'string'],
             'image' => ['nullable', 'mimes:jpg,jpeg,png'],
+            'bank_slip' => ['nullable', 'mimes:jpg,jpeg,png'],
         ];
     }
 }

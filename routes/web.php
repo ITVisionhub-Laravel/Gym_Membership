@@ -26,24 +26,28 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', [
-    App\Http\Controllers\Frontend\FrontendController::class,
-    'index',
-]);
+
+Route::get('/', [App\Http\Controllers\Frontend\FrontendController::class,'index',]);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('user_register', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'index',
+        'index'
     ]);
     Route::post('create_qrcode', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'createQRCode',
+        'createQRCode'
     ]);
     Route::get('user_qrcode', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'showQRCode',
+        'showQRCode'
     ]);
+    Route::get('package-details',[
+        App\Http\Controllers\Frontend\UserRegisterController::class,
+        'show']);
+    Route::get('class-detail',[
+        App\Http\Controllers\Frontend\UserRegisterController::class,
+        'detail']);
 });
 
 Route::get('/dashboard', function () {

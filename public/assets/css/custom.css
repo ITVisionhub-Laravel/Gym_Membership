@@ -1790,3 +1790,59 @@ a.float:hover + div.label-container {
 .reset {
     all: revert;
 }
+.footer-corporate{
+  color: #7a7a7a;
+}
+.time{
+  padding-right: 20px;
+}
+/* Trainer transform */
+.image-thumb img{
+  transition-duration: .8s;
+}
+.image-thumb{
+  overflow: hidden;
+}
+.image-thumb img:hover{
+  transform: scale(1.2);
+}
+
+.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1.35rem;
+}
+
+.choose-package{
+  margin-left: 95px;
+  padding-top: 130px;
+}
+.invoice{
+  padding-bottom: 25px;
+}
+.pkg-btn{
+  background-color: #13e30c;
+  color: #FFF;
+}
+.mmid{
+  border: hidden;
+}
+.sale-item{
+  margin-left:20px;
+}
+.royal{
+  padding-top: 85px;
+}
+.royal-towel{
+  padding-top: 170px;
+}
+.one-pkg{
+  color: #232d39 !important;
+}
+.shoe{
+  padding-top: 210px;
+}
+.addtocart{
+  background-color: #13e30c;
+  color: #FFF;
+}

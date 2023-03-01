@@ -19,4 +19,7 @@ class Trainer extends Model
         'linkin_name',
         'image',
     ];
+    public function class(){
+        return $this->belongsTo(GymClass::class, 'id', 'trainer_id');
+    }
 }

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->mediumText('description');
-            $table->string('day');
             $table->string('morning_time');
             $table->string('evening_time');
             $table->string('image')->nullable();

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Models\City;
+use App\Models\Logo;
+use App\Models\Partner;
 use App\Models\Address;
 use App\Models\Customer;
 use App\Models\GymClass;
@@ -139,5 +141,15 @@ class UserRegisterController extends Controller
             Auth::user()->id
         )->first();
         return view('frontend.register.qrcode', $data);
+    }
+    public function show()
+    {
+        $data['logo'] = Logo::first();
+        $data['partner'] = Partner::get();
+        return view('frontend.package-details',$data);
+    }
+    public function detail()
+    {
+        return view('frontend.class-detail');
     }
 }

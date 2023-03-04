@@ -26,6 +26,20 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
+          <i class="mdi mdi-chart-pie menu-icon"></i>
+          <span class="menu-title">Products</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="ui-product">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/products/create') }}">Add Products</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/products') }}">View Products</a></li>
+
+          </ul>
+        </div>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#ui-paymentpackage" aria-expanded="false" aria-controls="ui-paymentpackage">
           <i class="mdi mdi-chart-pie menu-icon"></i>
           <span class="menu-title">Package</span>

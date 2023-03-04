@@ -26,28 +26,32 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-
-Route::get('/', [App\Http\Controllers\Frontend\FrontendController::class,'index',]);
+Route::get('/', [
+    App\Http\Controllers\Frontend\FrontendController::class,
+    'index',
+]);
 
 Route::middleware(['auth'])->group(function () {
     Route::get('user_register', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'index'
+        'index',
     ]);
     Route::post('create_qrcode', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'createQRCode'
+        'createQRCode',
     ]);
     Route::get('user_qrcode', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'showQRCode'
+        'showQRCode',
     ]);
-    Route::get('package-details',[
+    Route::get('package-details', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'show']);
-    Route::get('class-detail',[
+        'show',
+    ]);
+    Route::get('class-detail', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'detail']);
+        'detail',
+    ]);
 });
 
 Route::get('/dashboard', function () {
@@ -111,6 +115,18 @@ Route::prefix('admin')->group(function () {
         Route::get('/{member_id}/addPayments', 'addPayments');
         Route::post('/payFees', 'payFees');
         Route::get('/customers/{customer_id}/print', 'print');
+    });
+
+    // Products
+    Route::controller(
+        App\Http\Controllers\Admin\ProductsController::class
+    )->group(function () {
+        Route::get('/products', 'index');
+        Route::get('/products/create', 'create');
+        Route::post('/products', 'store');
+        Route::get('/products/{product}/edit', 'edit');
+        Route::put('/products/{product}', 'update');
+        Route::get('/products/{product_id}/delete', 'destroy');
     });
 
     Route::controller(

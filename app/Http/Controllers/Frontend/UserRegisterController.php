@@ -15,6 +15,7 @@ use App\Models\PaymentProvider;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\CustomerQRCode;
+use App\Models\Products;
 use Illuminate\Support\Facades\Auth;
 
 class UserRegisterController extends Controller
@@ -144,9 +145,14 @@ class UserRegisterController extends Controller
     }
     public function show()
     {
+        $data['qrcode'] = CustomerQRCode::where(
+            'user_id',
+            Auth::user()->id
+        )->first();
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
-        return view('frontend.package-details',$data);
+        $data['products'] = Products::get();
+        return view('frontend.package-details', $data);
     }
     public function detail()
     {

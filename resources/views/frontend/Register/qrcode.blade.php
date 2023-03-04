@@ -30,7 +30,8 @@
                 {{--  http://127.0.0.1:8000/admin/customers/1/invoice  --}}
                 {{--  $qrcode->member_card_id  --}}
                 'http://127.0.0.1:8000/admin/customers/'. $qrcode->memberId->id .'/invoice'
-                {!! QrCode::size(300)->generate($qrcode->member_card_id) !!}
+                {{-- {!! QrCode::size(300)->generate($qrcode->member_card_id) !!} --}}
+                {{ QrCode::size(300)->generate($qrcode->member_card_id) }}
             </div>
         </div>
 

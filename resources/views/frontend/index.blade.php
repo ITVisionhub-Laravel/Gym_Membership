@@ -13,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
-    <link rel="stylesheet" href="assets/css/custom.css">
+    <link rel="stylesheet" href="assets/css/main.css">
     <link rel="icon" type="image/x-icon" href="assets/images/features-1-icon.png">
     </head>
     
@@ -128,46 +128,7 @@
         </div>
     </section>
     <!-- ***** Call to Action End ***** -->
-     
-
-    {{-- <!-- ***** Our Classes Start ***** -->
-    <section class="section" id="our-classes">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 offset-lg-3">
-                    <div class="section-heading">
-                        <h2 class="mb-3">Our <em>Classes</em></h2>
-                       
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero iure, excepturi soluta ducimus nisi ut deleniti? Ipsa, necessitatibus nam, debitis similique, corrupti temporibus iure officiis nobis laboriosam </p>
-                    </div>
-                </div>
-            </div>
-            <div class="row" id="tabs" class="gym-class">
-              <div class="col-lg-4">
-                <ul>
-                  @foreach ($class as $item)
-                  <li><a href="#{{ $item->id }}"><img src="assets/images/gym.png" width="50" height="50" alt="">{{ $item->name }}</a></li>
-                  @endforeach
-                </ul>
-              </div>
-              <div class="col-lg-8">
-                <section class='tabs-content'>
-                @foreach ($class as $item)
-                  <article id='{{ $item->id }}'>
-                    <img src="{{ asset($item->image) ?? 'None'}}" alt="First Class">
-                    <h4>{{ $item->name ?? 'None'}}</h4>
-                    <p>{{ $item->description ?? 'None' }}</p>
-                    <div class="main-button">
-                        <a href="#schedule">View Classes</a>
-                    </div>
-                </article>
-                 @endforeach
-                </section>
-              </div>
-            </div>
-        </div>
-    </section>
-    <!-- ***** Our Classes End ***** --> --}}
+    
     <!-- ***** Our Classes Start ***** -->
     <section class="section" id="our-classes">
         <div class="container">
@@ -181,23 +142,25 @@
                 </div>
             </div>
             <div class="row">
+                @foreach ($class as $item)
                 <div class="col-md-3">
                     <div class="card shadow  image-thumb" >
-                        <img src="assets/images/six-trainer.jpg" class="card-img-top" alt="...">
+                        <img src="{{ asset($item->image) ?? 'None'}}" class="card-img-top" alt="Class">
                         <div class="card-body">
-                          <h5 class="card-title">Body Fintness</h5>
-                          <p class="card-text ">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <h5 class="card-title">{{ $item->name ?? 'None'}}</h5>
+                          <p class="card-text ">{{ $item->description ?? 'None' }}</p>
                           <a href="{{ url('class-detail') }}" class="btn" style="background-color: #6ca12b;color: #fff">View Class</a>
                         </div>
                       </div>
                 </div>
+                @endforeach
             </div>
 
 
         </div>
     </section>
     <!-- ***** Our Classes End ***** -->
-    {{-- <section class="section" id="schedule">
+    <section class="section" id="schedule">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
@@ -238,74 +201,10 @@
                 </div>
             </div>
         </div>
-    </section> --}}
-    <section class="section" id="schedule">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 offset-lg-3">
-                    <div class="section-heading dark-bg">
-                        <h2 class="mb-3">Classes <em>Schedule</em></h2>
-                        
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure a dolore cum quis, voluptas inventore laboriosam hic est quibusdam autem. Sapiente itaque alias ut a sint voluptates animi quod tenetur?</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="filters">
-                        <ul class="schedule-filter">
-                            <li class="active" data-tsfilter="monday">Monday</li>
-                            <li data-tsfilter="tuesday">Tuesday</li>
-                            <li data-tsfilter="wednesday">Wednesday</li>
-                            <li data-tsfilter="thursday">Thursday</li>
-                            <li data-tsfilter="friday">Friday</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-10 offset-lg-1">
-                    <div class="schedule-table filtering">
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td class="day-time">Fitness Class</td>
-                                    <td class="monday ts-item show" data-tsmeta="monday">10:00AM - 11:30AM</td>
-                                    <td class="tuesday ts-item" data-tsmeta="tuesday">2:00PM - 3:30PM</td>
-                                    <td>Htoo Aung</td>
-                                </tr>
-                                <tr>
-                                    <td class="day-time">Muscle Training</td>
-                                    <td class="friday ts-item" data-tsmeta="friday">10:00AM - 11:30AM</td>
-                                    <td class="thursday friday ts-item" data-tsmeta="thursday" data-tsmeta="friday">2:00PM - 3:30PM</td>
-                                    <td>Nay Toe </td>
-                                </tr>
-                                <tr>
-                                    <td class="day-time">Body Building</td>
-                                    <td class="tuesday ts-item" data-tsmeta="tuesday">10:00AM - 11:30AM</td>
-                                    <td class="monday ts-item show" data-tsmeta="monday">2:00PM - 3:30PM</td>
-                                    <td>MYo Pa Pa Aung</td>
-                                </tr>
-                                <tr>
-                                    <td class="day-time">Yoga Training Class</td>
-                                    <td class="wednesday ts-item" data-tsmeta="wednesday">10:00AM - 11:30AM</td>
-                                    <td class="friday ts-item" data-tsmeta="friday">2:00PM - 3:30PM</td>
-                                    <td>Htoo Aung</td>
-                                </tr>
-                                <tr>
-                                    <td class="day-time">Advanced Training</td>
-                                    <td class="thursday ts-item" data-tsmeta="thursday">10:00AM - 11:30AM</td>
-                                    <td class="wednesday ts-item" data-tsmeta="wednesday">2:00PM - 3:30PM</td>
-                                    <td>Jassa</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 
     <!-- ***** Testimonials Starts ***** -->
-    {{-- <section class="section" id="trainers">
+    <section class="section" id="trainers">
         <div class="container">
             <div class="row">
                 <div class="col-lg-6 offset-lg-3">
@@ -341,79 +240,6 @@
                     </div>
                 </div>
                 @endforeach
-            </div>
-        </div>
-    </section> --}}
-    <!-- ***** Testimonials Ends ***** -->
-    <!-- ***** Testimonials Starts ***** -->
-    <section class="section" id="trainers">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 offset-lg-3">
-                    <div class="section-heading">
-                        <h2 class="mb-3">Expert <em>Trainers</em></h2>
-                       
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, ad maxime dolores dolorum repudiandae quod asperiores non eaque expedita sunt, dignissimos itaque minima vel ipsa, eos explicabo perferendis quo ipsum!</p>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-4">
-                    <div class="trainer-item">
-                        <div class="image-thumb">
-                            <img src="assets/images/six-trainer.jpg" alt="">
-                        </div>
-                        <div class="down-content">
-                            <span>Strength Trainer</span>
-                            <h4>Htoo Aung</h4>
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus minus, et molestias harum, distinctio placeat ipsum aspernatur tenetur, adipisci numquam praesentium! Nemo sit nam animi hic officiis totam voluptates voluptate.</p>
-                            <ul class="social-icons">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="trainer-item">
-                        
-                        <div class="image-thumb">
-                            <img src="assets/images/five-trainer.jpg" alt="">
-                        </div>
-                        
-                        <div class="down-content">
-                            <span>Muscle Trainer</span>
-                            <h4>Thu Ya Htet Zaw</h4>
-                            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Placeat nulla maxime alias inventore et possimus commodi, saepe ad! Ducimus amet natus similique rerum doloribus! Eos debitis dolore eaque corrupti incidunt.</p>
-                            <ul class="social-icons">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="trainer-item">
-                        <div class="image-thumb">
-                            <img src="assets/images/fourth-trainer.jpg" alt="">
-                        </div>
-                        <div class="down-content">
-                            <span>Power Trainer</span>
-                            <h4>Myo Pa Pa Aung</h4>
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis recusandae, tenetur consequuntur obcaecati error aperiam vel molestiae odit, distinctio ipsa consequatur debitis quas enim est dolore quam placeat neque ipsam.</p>
-                            <ul class="social-icons">
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

@@ -60,11 +60,9 @@ class CustomerController extends Controller
 
     public function store(CustomerFormRequest $request)
     {
-        // @dd($request);
         $validatedData = $request->validated();
         $customer = new Customer();
         $address = new Address();
-        $payment_record = new PaymentRecord();
 
         $customer->name = $validatedData['name'];
         $customer->age = $validatedData['age'];
@@ -105,42 +103,50 @@ class CustomerController extends Controller
             $file->move('uploads/customer/', $filename);
             $customer->image = $filename;
         }
-        // @dd($customer);
+
+        // $customer->save();
         if ($customer->save()) {
-            if ($request->hasFile('bank_slip')) {
-                $file = $request->file('bank_slip');
-                $ext = $file->getClientOriginalExtension();
-                $filename = time() . '.' . $ext;
-                $file->move('uploads/bankslip/', $filename);
-                $payment_record->bank_slip = $filename;
-            }
-            $package_info = explode(' ', $request->package);
-            $payment_record->package_id = $package_info[0];
-            $payment_record->price = $request->price;
-            $payment_record->record_date = date('Y.m.d');
-            $payment_record->provider_id = $request->payment;
-            $payment_record->customer_id = $customer->id;
-            // @dd($payment_record);
-            if (!$payment_record->save()) {
-                $customer->delete();
-            } else {
-                if ($payment_record->save()) {
-                    $customerQRCode = new CustomerQRCode();
-                    $customerQRCode->member_card_id = $customer->member_card;
-                    $customerQRCode->user_id = 0;
-                    // @dd($customerQRCode);
-                    if ($customerQRCode->save()) {
-                        return redirect('admin/customers')->with(
-                            'message',
-                            'Customer Added Successfully'
-                        );
-                    } else {
-                        $customer->delete();
-                        $payment_record->delete();
-                    }
-                }
-            }
+            return redirect('admin/customers')->with(
+                'message',
+                'Customer Added Successfully'
+            );
         }
+        // @dd($customer);
+        // if ($customer->save()) {
+        //     if ($request->hasFile('bank_slip')) {
+        //         $file = $request->file('bank_slip');
+        //         $ext = $file->getClientOriginalExtension();
+        //         $filename = time() . '.' . $ext;
+        //         $file->move('uploads/bankslip/', $filename);
+        //         $payment_record->bank_slip = $filename;
+        //     }
+        //     $package_info = explode(' ', $request->package);
+        // $payment_record->package_id = $package_info[0];
+        // $payment_record->price = $request->price;
+        // $payment_record->record_date = date('Y.m.d');
+        // $payment_record->provider_id = $request->payment;
+        // $payment_record->customer_id = $customer->id;
+        // // @dd($payment_record);
+        //     if (!$payment_record->save()) {
+        //         $customer->delete();
+        //     } else {
+        // if ($payment_record->save()) {
+        //     $customerQRCode = new CustomerQRCode();
+        //     $customerQRCode->member_card_id = $customer->member_card;
+        //     $customerQRCode->user_id = 0;
+        //     // @dd($customerQRCode);
+        //     if ($customerQRCode->save()) {
+        //         return redirect('admin/customers')->with(
+        //             'message',
+        //             'Customer Added Successfully'
+        //         );
+        //     } else {
+        //         $customer->delete();
+        //         $payment_record->delete();
+        //     }
+        //         }
+        //     }
+        // }
     }
     public function edit(Customer $customer)
     {

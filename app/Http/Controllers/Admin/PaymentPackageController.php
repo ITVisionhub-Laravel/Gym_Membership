@@ -45,9 +45,15 @@ class PaymentPackageController extends Controller
             'original_price' => ['required'],
         ]);
         $paymentpackage = new PaymentPackage();
-        $paymentpackage->package=$request->package;
-        $paymentpackage->promotion=$request->promotion;
-        $paymentpackage->original_price=$request->original_price;
+        $paymentpackage->package = $request->package;
+        $paymentpackage->promotion = $request->promotion;
+        $paymentpackage->original_price = $request->original_price;
+        $promotion_price =
+            (int) $paymentpackage->original_price -
+            ((int) $paymentpackage->original_price *
+                (int) $paymentpackage->promotion) /
+                100;
+        $paymentpackage->promotion_price = $promotion_price;
         $paymentpackage->save();
 
         return redirect()->route('payment_packages.index');
@@ -86,9 +92,9 @@ class PaymentPackageController extends Controller
     public function update(Request $request, $id)
     {
         $paymentpackage = PaymentPackage::find($id);
-        $paymentpackage->package=$request->package;
-        $paymentpackage->promotion=$request->promotion;
-        $paymentpackage->original_price=$request->original_price;
+        $paymentpackage->package = $request->package;
+        $paymentpackage->promotion = $request->promotion;
+        $paymentpackage->original_price = $request->original_price;
         $paymentpackage->save();
 
         return redirect()->route('payment_packages.index');
@@ -105,6 +111,5 @@ class PaymentPackageController extends Controller
         $paymentpackage = PaymentPackage::find($id);
         $paymentpackage->delete();
         return redirect()->route('payment_packages.index');
-
     }
 }

@@ -10,5 +10,10 @@ class PaymentPackage extends Model
     use HasFactory;
     protected $table = 'payment_packages';
 
-    protected $fillable = ['package', 'promotion','original_price'];
+    protected $fillable = [
+        'package',
+        'promotion',
+        'original_price',
+        'promotion_price',
+    ];
 }

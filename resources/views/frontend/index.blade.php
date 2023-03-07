@@ -47,6 +47,9 @@
                 <h2>easy with our <em>gym</em></h2>
                 <div class="main-button scroll-to-section">
                     <a href="{{ url('package-details') }}">View Packages</a>
+                </div><br>
+                 <div class="main-button scroll-to-section">
+                    <a href="{{ url('product-details') }}">View Products</a>
                 </div>
             </div>
         </div>

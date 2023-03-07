@@ -475,7 +475,7 @@
         </div>
     </div>  --}}
 
-    <div class="container">
+    {{-- <div class="container">
         <div class="row">
             <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
                 <h3 class="badge-pill badge-light mt-3 mb-3 p-2">Sale Products</h3>
@@ -503,7 +503,7 @@
             </div>
         </div>
        </div>   
-    
+     --}}
     <!-- ***** Sale Items End *****-->
 
     <x-frontend.footer :logo="$logo" :partner="$partner"/>

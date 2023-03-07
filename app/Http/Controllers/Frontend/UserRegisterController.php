@@ -151,8 +151,19 @@ class UserRegisterController extends Controller
         )->first();
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
-        $data['products'] = Products::get();
+
         return view('frontend.package-details', $data);
+    }
+    public function showproduct()
+    {
+        $data['qrcode'] = CustomerQRCode::where(
+            'user_id',
+            Auth::user()->id
+        )->first();
+        $data['logo'] = Logo::first();
+        $data['partner'] = Partner::get();
+        $data['products'] = Products::get();
+        return view('frontend.product-details', $data);
     }
     public function detail()
     {

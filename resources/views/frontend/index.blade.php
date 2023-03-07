@@ -49,7 +49,7 @@
                     <a href="{{ url('package-details') }}">View Packages</a>
                 </div><br>
                  <div class="main-button scroll-to-section">
-                    <a href="{{ url('product-details') }}">View Products</a>
+                    <a href="{{ url('product-checkout') }}">View Products</a>
                 </div>
             </div>
         </div>

@@ -9,7 +9,7 @@
     
     <div class="container">
         <div class="row">
-            <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
+            <div class="col-sm-12 col-md-12 col-lg-4 col-xs-12">
                 <h3 class="badge-pill badge-light mt-3 mb-3 p-2">Sale Products</h3>
                 <div class="row">
                     @foreach ($data['products'] as $product_item)
@@ -25,7 +25,8 @@
                                     <button type = "button" wire:click = "addToCart({{ $product_item->id }})" class="btn addbadge badge-pill  mt-2 float-end success">
                                          {{--  wire:target="addToCart"  --}}
                                         <span wire:loading.remove wire:target="addToCart({{ $product_item->id }})">
-                                            <i class="fa fa-heart"></i> {{ $cartBtn }}
+                                            <i class="fa fa-heart"></i> Add To Cart
+                                            {{--  {{ $cartBtn }}  --}}
                                         </span>
                                         <span wire:loading wire:target="addToCart({{ $product_item->id }})">
                                             Adding....
@@ -39,7 +40,7 @@
               </div>
               
              
-                <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
+                <div class="col-sm-12 col-md-12 col-lg-4 col-xs-12">
                   <h4 class="badge-pill badge-light mt-3 mb-3 p-2 text-center">Cart</h4>
                   @foreach ($data['Cart'] as $cart_item)
                   <div class="cart">
@@ -82,15 +83,9 @@
                   
               </div>
               
-            
-        </div>
-    </div>  
-
-     <!-- ***** End Sale Items ****** -->
-        
-            <div class="col-md-4 border rounded ">
+              <div class="col-md-4 border rounded ">
                 <h2 class="text-center mt-4 ">Invoice </h2>
-                <form method="post" wire:submit.prevent="checkout(@if ($packageInfo){{ $packageInfo->id }} @endif)">
+                <form method="post" wire:submit.prevent="CheckoutProducts()">
                     @csrf
                     <div class="row mt-3">
                         <div class="offset-1 col-5 my-1">
@@ -108,17 +103,17 @@
                         </div>
                         
                             @foreach ($data['Cart'] as $cart_item)
-                        <div class="row" id="cart_product" style="@if(!$showDiv)  display:none @endif">
-                            <div class="offset-1 col-5 my-1">
-                                <p>{{ $cart_item->products->name }} : {{ $cart_item->quantity }}</p>
+                                <div class="row" style="@if($showDiv) display:flex @else  display:none @endif">
+                                    <div class="offset-1 col-5 my-1">
+                                        <p>{{ $cart_item->products->name }} : {{ $cart_item->quantity }}</p>
+                                    </div>
+                                    <div class="offset-1 col-5 my-1 mx-6">
+                                        <p id="package">{{ $cart_item->total }} MMK.</p>
+                                    </div>
                                 </div>
-                                <div class="offset-1 col-5 my-1 mx-6">
-                                    <p id="package">{{ $cart_item->total }} MMK.</p>
-                                </div>
-                            </div>
-                        @endforeach
+                            @endforeach
                         
-                        
+                    </div>
                        
                     <div class="row">
                         <div class="col-12">
@@ -127,8 +122,8 @@
                         <div class="offset-1 col-5 my-1">
                             <p>Total Amount:</p>
                         </div>
-                        <div class="col-5 my-1">
-                            <p id="total_amount">@if ($packageInfo){{ $packageInfo->original_price }} @endif</p>
+                        <div class="col-5 my-1" >
+                            <p id="total_amount" style="@if($showDiv) display:flex @else  display:none @endif">{{ $totalPrice }}</p>
                         </div>
 
                         <div class="offset-1 col-5 my-1">
@@ -158,7 +153,14 @@
                         <img src="" class="img-fluid loading" style="display: none;">
                     </div>
                 </form>
-            </div>         
+            </div>  
+        
+            </div>
+    </div>  
+
+     <!-- ***** End Sale Items ****** -->
+        
+                 
         </div>
     </div>
     <!-- ***** Packages Banner Area End ******-->
@@ -188,7 +190,7 @@
               document.getElementById("total_amount").innerText = package_price;
               document.getElementById("package_title").innerText = "Package:";
               document.getElementById("invoice_package_name").innerText = packageData.name;
-               document.getElementById("cart_product").style.display = "none";
+               //document.getElementById("cart_product").style.display = "none";
               });
             }); 
 

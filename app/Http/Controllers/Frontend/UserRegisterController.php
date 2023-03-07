@@ -96,20 +96,18 @@ class UserRegisterController extends Controller
     }
     public function show()
     {
-
         return view('frontend.package-details');
-
     }
     public function showproduct()
     {
-        $data['qrcode'] = CustomerQRCode::where(
-            'user_id',
-            Auth::user()->id
+        $data['customer'] = Customer::where(
+            'email',
+            Auth::user()->email
         )->first();
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
         $data['products'] = Products::get();
-        return view('frontend.product-details', $data);
+        return view('frontend.product_checkout', $data);
     }
     public function detail()
     {

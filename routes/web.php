@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'show',
     ]);
-    Route::get('product-details', [
+    Route::get('product-checkout', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'showproduct',
     ]);

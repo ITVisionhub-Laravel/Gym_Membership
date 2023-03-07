@@ -11,8 +11,8 @@
                         </h3>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-striped">
-                            <thead>
+                        <table id="myTable" class="table table-bordered table-striped">
+                            <thead class="table-light">
                                 <tr>
                                     <td>ID</td>
                                     <td>Title</td>
@@ -47,5 +47,10 @@
             </div>
 </div>
 <x-slot name="scripts">
+    <script>
+     $(document).ready( function () {
+        $('#myTable').DataTable();
+    } );
+</script>
 </x-slot>
 </x-admin>

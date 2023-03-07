@@ -58,9 +58,10 @@
                    
                       
                     <div class="row">
-                        <x-forms.forminput type="number" name="height" placeholder="Enter Your Height" width="col-md-3"/>
-                        <x-forms.forminput name="weight" placeholder="Enter Your Weight" width="col-md-3"/>
-                        <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile" width="col-md-3"/>        
+                        <x-forms.dropdownfield :dropdownValues="$gymclasses" name="gymclass" labelName="Classes" width="col-md-3"></x-forms.dropdownfield>
+                        <x-forms.forminput type="number" name="height" placeholder="Enter Your Height"/>
+                        <x-forms.forminput name="weight" placeholder="Enter Your Weight"/>
+                        <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile"/>        
                         <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile" width="col-md-3"/> 
                     </div>
                 </fieldset>
@@ -85,52 +86,23 @@
                     </div>
                     </fieldset>
                 </div>
-                <div class="pt-3">
+                {{--  <div class="pt-3">
                     <fieldset class="reset pt-2">
                         <legend class="reset">Payment:</legend> 
-                    <div class="row">
-                        {{--  <div class="col-md-6">
-                        <label for="">Bank Type</label><br><br>
-                        <input class="form-check-input" type="radio" name="kbz">
-                        <label class="form-check-label">KBZ 0983 0017 21501</label>&nbsp;
-                        <input class="form-check-input" type="radio" name="aya">
-                        <label class="form-check-label">AYA 0983 0017 21501</label><br>
-                        <input class="form-check-input" type="radio" name="kpay">
-                        <label class="form-check-label">KPay 09451457740</label>&nbsp;&nbsp;&nbsp; &nbsp;
-                        <input class="form-check-input" type="radio" name="wavepay">
-                        <label class="form-check-label">WavePay 09451457740</label>
-                        </div>  --}}
-                        {{--  <div class="col-md-4">
-
-                        </div>  --}}
-                        <x-forms.dropdownfield :dropdownValues="$providers" name="payment" labelName="Bank Type" width="col-md-4"></x-forms.dropdownfield>
+                      --}}
+                        {{--<x-forms.dropdownfield :dropdownValues="$providers" name="payment" labelName="Bank Type" width="col-md-4"></x-forms.dropdownfield>
                         <x-forms.forminput type="file" name="bank_slip" placeholder="Enter Your Online Payment" width="col-md-4"/>
+                          --}}
+                    {{--  <div class="row">
                         
-                        <x-forms.dropdownfield :dropdownValues="$gymclasses" name="gymclass" labelName="Classes" width="col-md-4"></x-forms.dropdownfield>
-                            {{--  <label for="">Class Name</label><br><br>
-                        <select class="form-select">
-                            <option selected>Select Your Class Name</option>
-                            <option value="1">Fitness Class</option>
-                            <option value="2">Muscle Trainging</option>
-                            <option value="3">Body Building</option>
-                            <option value="4">Yoga Trainging</option>
-                            <option value="5">Advance Training</option>
-                        </select>  --}}
-                        
-                    </div>
-
-                    <div class="row">
                         <x-forms.dropdownfield :dropdownValues="$packages" name="package" labelName="Packages" width="col-md-3"></x-forms.dropdownfield>
-                        <x-forms.forminput name="promotion" id="promotion" placeholder="Promotion" width="col-md-3" required readonly/>
-                        <x-forms.forminput name="original_price" id="original_price" placeholder="Original Price" labelName="original price" width="col-md-3" required readonly/>     
-                        <x-forms.forminput type="number" id="price" name="price"  placeholder=" Price" width="col-md-3" required readonly/>
+                        <x-forms.forminput name="promotion" id="promotion" placeholder="Promotion" required readonly/>
+                        <x-forms.forminput name="original_price" id="original_price" placeholder="Original Price" labelName="original price" required readonly/>     
+                        <x-forms.forminput type="number" id="price" name="price"  placeholder=" Price" required readonly/>
                         
                     </div>
                     </fieldset>
-                </div>
-                    {{--  <div class="row">
-                            
-                    </div>  --}}
+                </div>  --}}
                     <div class="mb-3 pt-3">
                         <button type="submit" class="btn btn-success">Submit</button>
                     </div>

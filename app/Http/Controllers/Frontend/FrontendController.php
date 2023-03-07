@@ -25,36 +25,36 @@ class FrontendController extends Controller
             if (Auth::user()->role_as == 1) {
                 return redirect('admin/customers');
             } else {
-                $member_card_id = Customer::where(
+                $customer = Customer::where(
                     'email',
                     Auth::user()->email
                 )->first();
 
-                if ($member_card_id) {
-                    $member = CustomerQRCode::where(
-                        'member_card_id',
-                        $member_card_id->member_card
-                    )->first();
+                // if ($member_card_id) {
+                //     $member = CustomerQRCode::where(
+                //         'member_card_id',
+                //         $member_card_id->member_card
+                //     )->first();
 
-                    if ($member->user_id == 0) {
-                        CustomerQRCode::where(
-                            'member_card_id',
-                            $member_card_id->member_card
-                        )->update(['user_id' => Auth::user()->id]);
-                        $data['qrcode'] = CustomerQRCode::where(
-                            'member_card_id',
-                            $member_card_id->member_card
-                        )->first();
-                    } else {
-                        $data['qrcode'] = $member;
-                    }
-                } else {
-                    $data['qrcode'] = false;
-                }
+                //     if ($member->user_id == 0) {
+                //         CustomerQRCode::where(
+                //             'member_card_id',
+                //             $member_card_id->member_card
+                //         )->update(['user_id' => Auth::user()->id]);
+                //         $data['qrcode'] = CustomerQRCode::where(
+                //             'member_card_id',
+                //             $member_card_id->member_card
+                //         )->first();
+                //     } else {
+                // $data['qrcode'] = $member;
+                // }
+                // } else {
+                $data['customer'] = $customer;
+                // }
                 return view('frontend.index', $data);
             }
         } else {
-            $data['qrcode'] = false;
+            $data['customer'] = false;
             return view('frontend.index', $data);
         }
     }

@@ -16,7 +16,7 @@
                             <li class="scroll-to-section"><a href="#our-classes">Classes</a></li>
                             <li class="scroll-to-section"><a href="#trainers">Trainers</a></li>
                             <li class="scroll-to-section"><a href="#schedule">Schedules</a></li>
-                             @if (!$customer)
+                             @if (Auth::user() && !$customer)
                                 <li class="scroll-to-section">
                                     <a href="{{ url('user_register') }}">
                                         Submit

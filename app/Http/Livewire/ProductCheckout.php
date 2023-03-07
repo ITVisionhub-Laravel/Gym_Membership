@@ -8,16 +8,31 @@ use App\Models\Partner;
 use Livewire\Component;
 use App\Models\Customer;
 use App\Models\Products;
+use App\Models\PaymentProvider;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ProductPaymentRecords;
 
 class ProductCheckout extends Component
 {
     public $cart,
         $products,
         $customer,
+        $provider_id,
         $invoiceProducts,
         $totalPrice = 0;
     public $showDiv = false;
+
+    public function rules()
+    {
+        return [
+            'provider_id' => 'nullable|integer',
+        ];
+    }
+
+    public function resetInput()
+    {
+        $this->provider_id = null;
+    }
 
     public function addToCart($productId)
     {
@@ -169,6 +184,7 @@ class ProductCheckout extends Component
             auth()->user()->customers->id
         )->delete();
         if ($cartRemoveData) {
+            $this->showDiv = false;
             // $this->emit('cartAddedUpdated');
             $this->dispatchBrowserEvent('message', [
                 'text' => 'The Whole Cart is Removed Successfully',
@@ -176,6 +192,7 @@ class ProductCheckout extends Component
                 'status' => 200,
             ]);
         } else {
+            $this->showDiv = false;
             $this->dispatchBrowserEvent('message', [
                 'text' => 'Something Went Wrong',
                 'type' => 'error',
@@ -187,6 +204,35 @@ class ProductCheckout extends Component
     public function openDiv(bool $showDiv)
     {
         $this->showDiv = $showDiv;
+    }
+
+    public function CheckoutProducts()
+    {
+        $validatedData = $this->validate([
+            'provider_id' => 'nullable',
+        ]);
+
+        $products = Cart::where(
+            'customer_id',
+            auth()->user()->customers->id
+        )->get();
+
+        if ($validatedData['provider_id'] == null) {
+            $provider_id = '0';
+        } else {
+            $provider_id = $validatedData['provider_id'];
+        }
+        foreach ($products as $product) {
+            ProductPaymentRecords::create([
+                'customer_id' => $product->customer_id,
+                'product_id' => $product->product_id,
+                'provider_id' => $provider_id,
+                'quantity' => $product->quantity,
+                'total' => $product->total,
+            ]);
+        }
+        Cart::where('customer_id', auth()->user()->customers->id)->delete();
+        $this->showDiv = false;
     }
 
     public function checkInvoiceProductlist()
@@ -204,6 +250,7 @@ class ProductCheckout extends Component
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
         $data['products'] = Products::get();
+        $data['providers'] = PaymentProvider::get();
         $data['Cart'] = Cart::where(
             'customer_id',
             auth()->user()->customers->id
@@ -212,6 +259,6 @@ class ProductCheckout extends Component
         foreach ($data['Cart'] as $cartItem) {
             $this->totalPrice += (int) $cartItem->total;
         }
-        return view('livewire.product-checkout');
+        return view('livewire.product-checkout', ['data' => $data]);
     }
 }

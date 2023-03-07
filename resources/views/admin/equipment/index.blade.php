@@ -11,8 +11,8 @@
                 </h3>
             </div>
             <div class="card-body">
-                <table id="myTable" class="display">
-                    <thead>
+                <table id="myTable" class="display table table-bordered table-striped">
+                    <thead class="table-light">
                         <tr>
                             <th>Id</th>
                             <th>Name</th>

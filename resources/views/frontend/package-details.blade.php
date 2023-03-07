@@ -25,7 +25,7 @@
     
     @livewireStyles
     </head>
-    
+
     <livewire:cart-show/>
     
     <script src="{{ asset('assets/js/jquery-3.6.3.min.js') }}"></script>
@@ -36,6 +36,7 @@
     window.addEventListener('message', event => {
         alertify.set('notifier','position', 'top-right');
         alertify.success(event.detail.text,event.detail.type);
+
         });
   </script>
    @yield('script')

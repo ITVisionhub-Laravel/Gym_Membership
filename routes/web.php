@@ -48,6 +48,10 @@ Route::middleware(['auth'])->group(function () {
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'show',
     ]);
+    Route::get('product-details', [
+        App\Http\Controllers\Frontend\UserRegisterController::class,
+        'showproduct',
+    ]);
     Route::get('class-detail', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'detail',

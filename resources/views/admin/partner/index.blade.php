@@ -20,9 +20,7 @@
                 <td>{{ $partner->id }}</td>
                 <td>{{ $partner->name }}</td>
                 <td>
-                    {{-- @dd($partner->image); --}}
                     <img src="{{asset($partner->image)}}" style="width:70px;height:70px" alt="">
-                    
                 </td>
                 
                 <td>

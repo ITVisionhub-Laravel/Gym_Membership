@@ -1,34 +1,29 @@
 <x-admin>
-<div class="row">
-            <div class="col-md-12">
-            @if (session('message'))
-                <div class="alert alert-success">{{session('message')}}</div>
-            @endif
-                <div class="card">
-                    <div class="card-header">
+     <div class="container my-3">
+             <x-successmessage/>
                         <h3>Logo Image
                             <a href="{{url('admin/logo/create')}}" class="btn btn-primary text-white btn-sm float-end">Add Logo</a>
                         </h3>
-                    </div>
-                    <div class="card-body">
-                        <table id="myTable" class="table table-bordered table-striped">
-                    <thead class="table-light">
-                                <tr>
-                                    <td>ID</td>
-                                    <td>Name</td>
-                                    <td>Image</td>
-                                    <td>Description</td>
-                                    <td>Location</td>
-                                    <td>Address</td>
-                                    <td>PhoneNumber</td>
-                                    <td>Email</td>
-                                    <td>OpenDay</td>
-                                    <td>OpenTime</td>
-                                    <td>CloseDay</td>
-                                    <td>Action</td>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <hr>
+                <table id="myTable" class="display">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Image</th>
+                            <th>Description</th>
+                            <th>Location</th>
+                            <th>Address</th>
+                            <th>PhoneNumber</th>
+                            <th>Email</th>
+                            <th>OpenDay</th>
+                            <th>OpenTime</th>
+                            <th>CloseDay</th>
+                            <th>Action</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
                                @foreach ($logos as $logo)
                                    <tr>
                                     <td>{{$logo->id}}</td>
@@ -53,12 +48,9 @@
                                     </td>
                                    </tr>
                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-</div>
+                    </tbody>
+                </table>
+     </div>
 <x-slot name="scripts">
   
 <script>

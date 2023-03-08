@@ -32,11 +32,11 @@
           <i class="menu-arrow"></i>
         </a>
         <div class="collapse" id="ui-product">
-          <div class="nav row sub-menu">
+          <ul class="nav flex-column sub-menu">
             <li class="nav-item"> <a class="nav-link" href="{{ url('admin/products/create') }}">Add Products</a></li>
             <li class="nav-item"> <a class="nav-link" href="{{ url('admin/products') }}">View Products</a></li>
 
-          </div>
+          </ul>
         </div>
       </li>
       <li class="nav-item">

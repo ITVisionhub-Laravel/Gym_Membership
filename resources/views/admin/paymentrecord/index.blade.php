@@ -1,8 +1,6 @@
 <x-admin>
 <div class="container my-3">
-        @if (session('message'))
-            <div class="alert alert-success">{{ session('message') }}</div>
-        @endif
+     <x-successmessage/>
     <h3 class="my-2">Payment Record List</h3>
     <table id="myTable" class="display">
         <thead>

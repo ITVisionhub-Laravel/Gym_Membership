@@ -1,18 +1,12 @@
 <x-admin>
-<div class="row">
-    <div class="col-md-12">
-        @if (session('message'))
-            <div class="alert alert-success">{{ session('message') }}</div>
-        @endif
-        <div class="card">
-            <div class="card-header">
+    <div class="container my-3">
+         <x-successmessage/>
                 <h3>Gym Classes
                     <a href="{{ url('admin/class/create') }}" class="btn btn-primary btn-sm text-white float-end">Add Class</a>
                 </h3>
-            </div>
-            <div class="card-body">
-                <table id="myTable" class="table table-bordered table-striped">
-                    <thead class="table-light">
+                <hr>
+                <table id="myTable" class="display">
+                    <thead>
                         <tr>
                             <th>Id</th>
                             <th>Class Name</th>
@@ -48,10 +42,7 @@
                         
                     </tbody>
                 </table>
-            </div>
-        </div>
     </div>
-</div>
 <x-slot name="scripts">
     <script>
      $(document).ready( function () {

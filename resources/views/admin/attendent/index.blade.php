@@ -1,8 +1,6 @@
 <x-admin>
 <div class="container my-3">
-        @if (session('message'))
-            <div class="alert alert-success">{{ session('message') }}</div>
-        @endif
+     <x-successmessage/>
     
     @foreach($attendents as $attendent)
     <h3 class="my-2">Attendence List</h3>

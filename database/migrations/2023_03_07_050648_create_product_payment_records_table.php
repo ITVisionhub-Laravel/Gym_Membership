@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->id();
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('provider_id');
+            $table->integer('provider_id');
             $table->integer('quantity');
             $table->integer('total');
             $table
@@ -29,11 +29,11 @@ return new class extends Migration {
                 ->references('id')
                 ->on('products')
                 ->onDelete('cascade');
-            $table
-                ->foreign('provider_id')
-                ->references('id')
-                ->on('payment_providers')
-                ->onDelete('cascade');
+            // $table
+            //     ->foreign('provider_id')
+            //     ->references('id')
+            //     ->on('payment_providers')
+            //     ->onDelete('cascade');
             $table->timestamps();
         });
     }

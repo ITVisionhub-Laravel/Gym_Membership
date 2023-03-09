@@ -18,7 +18,7 @@ class ProductCheckout extends Component
         $products,
         $customer,
         $provider_id,
-        $invoiceProducts,
+        $showInvoiceProducts,
         $totalPrice = 0;
     public $showDiv = false;
 
@@ -206,22 +206,28 @@ class ProductCheckout extends Component
         $this->showDiv = $showDiv;
     }
 
+    public function ClearInvoice(bool $showInvoiceProducts)
+    {
+        $this->showInvoiceProducts = $showInvoiceProducts;
+    }
+
     public function CheckoutProducts()
     {
         $validatedData = $this->validate([
             'provider_id' => 'nullable',
         ]);
 
+        if ($validatedData['provider_id'] === null) {
+            $provider_id = '0';
+        } else {
+            $provider_id = $validatedData['provider_id'];
+        }
+
         $products = Cart::where(
             'customer_id',
             auth()->user()->customers->id
         )->get();
 
-        if ($validatedData['provider_id'] == null) {
-            $provider_id = '0';
-        } else {
-            $provider_id = $validatedData['provider_id'];
-        }
         foreach ($products as $product) {
             ProductPaymentRecords::create([
                 'customer_id' => $product->customer_id,
@@ -235,14 +241,14 @@ class ProductCheckout extends Component
         $this->showDiv = false;
     }
 
-    public function checkInvoiceProductlist()
-    {
-        $this->invoiceProducts = Cart::where(
-            'customer_id',
-            auth()->user()->customers->id
-        )->get();
-        $this->emit('cartAddedUpdated');
-    }
+    // public function checkInvoiceProductlist()
+    // {
+    //     $this->invoiceProducts = Cart::where(
+    //         'customer_id',
+    //         auth()->user()->customers->id
+    //     )->get();
+    //     $this->emit('cartAddedUpdated');
+    // }
 
     public function render()
     {

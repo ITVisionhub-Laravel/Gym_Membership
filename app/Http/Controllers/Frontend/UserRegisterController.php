@@ -96,18 +96,30 @@ class UserRegisterController extends Controller
     }
     public function show()
     {
-        return view('frontend.package-details');
+        if (Auth::user()) {
+            if (Auth::user()->role_as == 1) {
+                return redirect('admin/customers');
+            } else {
+                return view('frontend.package-details');
+            }
+        }
     }
     public function showproduct()
     {
-        $data['customer'] = Customer::where(
-            'email',
-            Auth::user()->email
-        )->first();
-        $data['logo'] = Logo::first();
-        $data['partner'] = Partner::get();
-        $data['products'] = Products::get();
-        return view('frontend.product_checkout', $data);
+        if (Auth::user()) {
+            if (Auth::user()->role_as == 1) {
+                return redirect('admin/customers');
+            } else {
+                $data['customer'] = Customer::where(
+                    'email',
+                    Auth::user()->email
+                )->first();
+                $data['logo'] = Logo::first();
+                $data['partner'] = Partner::get();
+                $data['products'] = Products::get();
+                return view('frontend.product_checkout', $data);
+            }
+        }
     }
     public function detail()
     {

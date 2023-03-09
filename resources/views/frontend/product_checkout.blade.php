@@ -29,7 +29,7 @@
     
             <script src="{{ asset('assets/js/jquery-3.6.3.min.js') }}"></script>
             <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
-            //In order to show Alert Message
+            {{--  //In order to show Alert Message  --}}
             <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
             <script>
                 window.addEventListener('message', event => {

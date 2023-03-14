@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Auth;
 
 class CartShow extends Component
 {
-    public $provider_id, $packageInfo;
+    public $provider_id, $packageInfo, $chooseOnePackage, $userChoosePackage;
 
     public function rules()
     {
@@ -33,7 +33,8 @@ class CartShow extends Component
 
     public function choosePackage(PaymentPackage $package)
     {
-        return $this->packageInfo = $package;
+        $this->chooseOnePackage = $package->id;
+        $this->packageInfo = $package;
     }
 
     public function checkout(PaymentPackage $package)
@@ -65,6 +66,13 @@ class CartShow extends Component
                     'type' => 'success',
                     'status' => 200,
                 ]);
+                $this->chooseOnePackage = 0;
+                // $this->userChoosePackage = PaymentRecord::where(
+                //     'customer_id',
+                //     auth()->user()->customers->id
+                // )
+                //     ->where('package_id', $package->id)
+                //     ->first();
             } else {
                 $gymfee_payment_record->delete();
                 $this->dispatchBrowserEvent('message', [
@@ -83,11 +91,16 @@ class CartShow extends Component
         $data['partner'] = Partner::get();
         $data['packages'] = PaymentPackage::get();
         $data['providers'] = PaymentProvider::get();
-        $data['qrcode'] = CustomerQRCode::where(
-            'user_id',
-            Auth::user()->customers->id
-        )->first();
 
+        if ($data['customerInfo']) {
+            $data['qrcode'] = CustomerQRCode::where(
+                'user_id',
+                $data['customerInfo']->id
+            )->first();
+        }
         return view('livewire.cart-show', ['data' => $data]);
+        // } else {
+        //     return redirect('/');
+        // }
     }
 }

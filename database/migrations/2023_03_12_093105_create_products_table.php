@@ -12,27 +12,28 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('product_payment_records', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('provider_id');
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('brand_id');
+            $table->string('name');
+            $table->string('slug');
+            $table->mediumText('small_description')->nullable();
+            $table->longText('description')->nullable();
+
+            $table->integer('buying_price');
+            $table->integer('selling_price');
             $table->integer('quantity');
-            $table->integer('total');
+            $table->string('image')->nullable();
             $table
-                ->foreign('customer_id')
+                ->foreign('category_id')
                 ->references('id')
-                ->on('customers')
+                ->on('categories')
                 ->onDelete('cascade');
             $table
-                ->foreign('product_id')
+                ->foreign('brand_id')
                 ->references('id')
-                ->on('products')
-                ->onDelete('cascade');
-            $table
-                ->foreign('provider_id')
-                ->references('id')
-                ->on('payment_providers')
+                ->on('brands')
                 ->onDelete('cascade');
             $table->timestamps();
         });
@@ -45,6 +46,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('product_payment_records');
+        Schema::dropIfExists('products');
     }
 };

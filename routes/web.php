@@ -52,6 +52,10 @@ Route::middleware(['auth'])->group(function () {
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'showproduct',
     ]);
+    Route::get('product-invoice', [
+        App\Http\Controllers\Frontend\UserRegisterController::class,
+        'showProductInvoice',
+    ]);
     Route::get('class-detail', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'detail',
@@ -91,6 +95,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
+    Route::get('/brands', App\Http\Livewire\Admin\Brands\Index::class);
     Route::controller(
         App\Http\Controllers\Admin\DashboardController::class
     )->group(function () {
@@ -131,6 +136,30 @@ Route::prefix('admin')->group(function () {
         Route::get('/products/{product}/edit', 'edit');
         Route::put('/products/{product}', 'update');
         Route::get('/products/{product_id}/delete', 'destroy');
+    });
+
+    // Brands
+    Route::controller(
+        App\Http\Controllers\Admin\BrandsController::class
+    )->group(function () {
+        Route::get('/brands', 'index');
+        Route::get('/brands/create', 'create');
+        Route::post('/brands', 'store');
+        Route::get('/brands/{brand}/edit', 'edit');
+        Route::put('/brands/{brand}', 'update');
+        Route::get('/brands/{brand_id}/delete', 'destroy');
+    });
+
+    // Categories
+    Route::controller(
+        App\Http\Controllers\Admin\CategoryController::class
+    )->group(function () {
+        Route::get('/categories', 'index');
+        Route::get('/categories/create', 'create');
+        Route::post('/categories', 'store');
+        Route::get('/categories/{category}/edit', 'edit');
+        Route::put('/categories/{category}', 'update');
+        Route::get('/categories/{category_id}/delete', 'destroy');
     });
 
     Route::controller(

@@ -1790,59 +1790,62 @@ a.float:hover + div.label-container {
 .reset {
     all: revert;
 }
-.footer-corporate{
-  color: #7a7a7a;
+.footer-corporate {
+    color: #7a7a7a;
 }
-.time{
-  padding-right: 20px;
+.time {
+    padding-right: 20px;
 }
 /* Trainer transform */
-.image-thumb img{
-  transition-duration: .8s;
+.image-thumb img {
+    transition-duration: 0.8s;
 }
-.image-thumb{
-  overflow: hidden;
+.image-thumb {
+    overflow: hidden;
 }
-.image-thumb img:hover{
-  transform: scale(1.2);
+.image-thumb img:hover {
+    transform: scale(1.2);
 }
 
 .card-body {
-  flex: 1 1 auto;
-  min-height: 1px;
-  padding: 1.35rem;
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.35rem;
 }
 
-.choose-package{
-  margin-left: 95px;
-  padding-top: 130px;
+.choose-product {
+    padding-top: 30px;
 }
-.invoice{
-  padding-bottom: 25px;
+.choose-package {
+    margin-left: 95px;
+    padding-top: 130px;
 }
-.pkg-btn{
-  background-color: #13e30c;
-  color: #FFF;
+.invoice {
+    padding-bottom: 25px;
 }
-.mmid{
-  border: hidden;
+.pkg-btn {
+    background-color: #13e30c;
+    color: #fff;
 }
-.sale-item{
-  margin-left:20px;
+.mmid {
+    border: hidden;
 }
-.royal{
-  padding-top: 85px;
+.sale-item {
+    margin-left: 20px;
 }
-.royal-towel{
-  padding-top: 170px;
+.royal {
+    padding-top: 85px;
 }
-.one-pkg{
-  color: #232d39 !important;
+.royal-towel {
+    padding-top: 170px;
 }
-.shoe{
-  padding-top: 210px;
+.one-pkg {
+    color: #232d39 !important;
 }
-.addtocart{
-  background-color: #13e30c;
-  color: #FFF;
+.shoe {
+    padding-top: 210px;
+}
+.addtocart {
+    background-color: #13e30c;
+    color: #fff;
 }

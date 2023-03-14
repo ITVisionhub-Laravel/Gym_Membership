@@ -7,8 +7,9 @@
             <tr>
                 <th>No</th>
                 <th>Name</th>
-                <th>image</th>
-                <th>Price</th>
+                <th>Image</th>
+                <th>Buying Price</th>
+                <th>Selling Price</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -23,7 +24,8 @@
                 <td>
                     <img src="{{asset($product->image)}}" style="width:70px;height:70px" alt="">
                 </td>
-                <td>{{$product->price}}</td>
+                <td>${{$product->buying_price}}</td>
+                <td>${{$product->selling_price}}</td>
                 <td>
                     <a href="{{url('admin/products/'.$product->id.'/edit')}}" class="btn btn-info py-2">Edit</a>
                     <a href="{{ url('admin/products/'.$product->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this data?')" class="btn btn-danger py-2">Delete</a>

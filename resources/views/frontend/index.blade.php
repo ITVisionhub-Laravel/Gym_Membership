@@ -45,12 +45,25 @@
             <div class="caption">
                 <h6>work harder, get stronger</h6>
                 <h2>easy with our <em>gym</em></h2>
-                <div class="main-button scroll-to-section">
-                    <a href="{{ url('package-details') }}">View Packages</a>
-                </div><br>
-                 <div class="main-button scroll-to-section">
-                    <a href="{{ url('product-checkout') }}">View Products</a>
+                <div class="row">
+                    {{--   style="pointer-events: none; opacity: 0.4;"  --}}
+                    <div class="col-md-6">
+                        <div class="float-end main-button scroll-to-section">
+                            {{--  onclick="return confirm('Please Fill Up Your Information')"  --}}
+                        <a href="{{ url('package-details') }}" >View Packages</a>
+                    </div>
+                    </div>
+                    
+                     {{--  style="pointer-events: none; opacity: 0.4;"  --}}
+                    <div class="col-md-6">
+                        <div class="col-md-4 main-button scroll-to-section">
+                            {{--  onclick="return confirm('Please Fill Up Your Information')"  --}}
+                            <a href="{{ url('product-checkout') }}" >View Products</a>
+                        </div>
+                    </div>
+                    
                 </div>
+                <x-forms.input-error name="township"/>
             </div>
         </div>
     </div>

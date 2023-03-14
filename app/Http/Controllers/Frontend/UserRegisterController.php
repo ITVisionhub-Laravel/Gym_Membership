@@ -17,6 +17,7 @@ use App\Models\PaymentProvider;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ProductPaymentRecords;
 use App\Http\Requests\CustomerFormRequest;
 
 class UserRegisterController extends Controller
@@ -96,18 +97,50 @@ class UserRegisterController extends Controller
     }
     public function show()
     {
-        return view('frontend.package-details');
+        if (Auth::user()) {
+            if (Auth::user()->role_as == 1) {
+                return redirect('admin/customers');
+            } else {
+                // if (Customer::find(Auth::user()->email)) {
+                return view('frontend.package-details');
+                // } else {
+                //     return redirect('/');
+                // }
+            }
+        }
     }
     public function showproduct()
     {
-        $data['customer'] = Customer::where(
-            'email',
-            Auth::user()->email
-        )->first();
-        $data['logo'] = Logo::first();
-        $data['partner'] = Partner::get();
-        $data['products'] = Products::get();
-        return view('frontend.product_checkout', $data);
+        if (Auth::user()) {
+            if (Auth::user()->role_as == 1) {
+                return redirect('admin/customers');
+            } else {
+                // if (Customer::find(Auth::user()->email)) {
+                //     $data['customer'] = Customer::where(
+                //         'email',
+                //         Auth::user()->email
+                //     )->first();
+                // }
+                // $data['customer'] = false;
+                $data['logo'] = Logo::first();
+                $data['partner'] = Partner::get();
+                $data['products'] = Products::get();
+                return view('frontend.product_checkout', $data);
+            }
+        }
+    }
+
+    public function showProductInvoice()
+    {
+        $data['product_invoice_list'] = ProductPaymentRecords::where(
+            'customer_id',
+            Auth::user()->customers->id
+        )
+
+            ->get()
+            ->groupBy('created_at')
+            ->last();
+        return view('frontend.product.invoice', $data);
     }
     public function detail()
     {

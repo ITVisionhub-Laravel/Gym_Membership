@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use DateTime;
 use DateTimeImmutable;
-use App\Models\Product;
 use App\Models\Trainer;
 use App\Models\Customer;
 use App\Models\Attendent;
-use Illuminate\Http\Request;
 use App\Models\PaymentRecord;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;

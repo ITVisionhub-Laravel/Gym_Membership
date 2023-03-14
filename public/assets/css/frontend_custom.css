@@ -16,6 +16,7 @@
 
 .product-img {
     max-width: 140px;
+    height: 150px;
     margin: 0 auto;
 }
 
@@ -47,6 +48,11 @@
     letter-spacing: 0.05em;
     text-shadow: 4px 4px 0px #e80b0b, #6ca12b;
 }
+
+/* .overlay #disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+} */
 
 .paypal {
     display: none;

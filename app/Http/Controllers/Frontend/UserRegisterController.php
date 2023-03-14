@@ -17,6 +17,7 @@ use App\Models\PaymentProvider;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\ProductPaymentRecords;
 use App\Http\Requests\CustomerFormRequest;
 
 class UserRegisterController extends Controller
@@ -100,7 +101,11 @@ class UserRegisterController extends Controller
             if (Auth::user()->role_as == 1) {
                 return redirect('admin/customers');
             } else {
+                // if (Customer::find(Auth::user()->email)) {
                 return view('frontend.package-details');
+                // } else {
+                //     return redirect('/');
+                // }
             }
         }
     }
@@ -110,16 +115,32 @@ class UserRegisterController extends Controller
             if (Auth::user()->role_as == 1) {
                 return redirect('admin/customers');
             } else {
-                $data['customer'] = Customer::where(
-                    'email',
-                    Auth::user()->email
-                )->first();
+                // if (Customer::find(Auth::user()->email)) {
+                //     $data['customer'] = Customer::where(
+                //         'email',
+                //         Auth::user()->email
+                //     )->first();
+                // }
+                // $data['customer'] = false;
                 $data['logo'] = Logo::first();
                 $data['partner'] = Partner::get();
                 $data['products'] = Products::get();
                 return view('frontend.product_checkout', $data);
             }
         }
+    }
+
+    public function showProductInvoice()
+    {
+        $data['product_invoice_list'] = ProductPaymentRecords::where(
+            'customer_id',
+            Auth::user()->customers->id
+        )
+
+            ->get()
+            ->groupBy('created_at')
+            ->last();
+        return view('frontend.product.invoice', $data);
     }
     public function detail()
     {

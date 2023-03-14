@@ -92,10 +92,12 @@ class CartShow extends Component
         $data['packages'] = PaymentPackage::get();
         $data['providers'] = PaymentProvider::get();
 
-        $data['qrcode'] = CustomerQRCode::where(
-            'user_id',
-            Auth::user()->customers->id
-        )->first();
+        if ($data['customerInfo']) {
+            $data['qrcode'] = CustomerQRCode::where(
+                'user_id',
+                $data['customerInfo']->id
+            )->first();
+        }
         return view('livewire.cart-show', ['data' => $data]);
         // } else {
         //     return redirect('/');

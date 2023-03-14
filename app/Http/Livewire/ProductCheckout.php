@@ -237,8 +237,13 @@ class ProductCheckout extends Component
                 'total' => $product->total,
             ]);
         }
-        Cart::where('customer_id', auth()->user()->customers->id)->delete();
-        $this->showDiv = false;
+        if (
+            Cart::where('customer_id', auth()->user()->customers->id)->delete()
+        ) {
+            $this->showDiv = false;
+
+            return redirect('product-invoice');
+        }
     }
 
     // public function checkInvoiceProductlist()
@@ -257,14 +262,19 @@ class ProductCheckout extends Component
         $data['partner'] = Partner::get();
         $data['products'] = Products::get();
         $data['providers'] = PaymentProvider::get();
-        $data['Cart'] = Cart::where(
-            'customer_id',
-            auth()->user()->customers->id
-        )->get();
-        $this->totalPrice = 0;
-        foreach ($data['Cart'] as $cartItem) {
-            $this->totalPrice += (int) $cartItem->total;
+        // dd($data['customerInfo']);
+        if ($data['customerInfo']) {
+            $data['Cart'] = Cart::where(
+                'customer_id',
+                auth()->user()->customers->id
+            )->get();
+
+            $this->totalPrice = 0;
+            foreach ($data['Cart'] as $cartItem) {
+                $this->totalPrice += (int) $cartItem->total;
+            }
         }
+
         return view('livewire.product-checkout', ['data' => $data]);
     }
 }

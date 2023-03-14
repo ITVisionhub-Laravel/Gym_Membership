@@ -33,8 +33,8 @@
     </div>
     <x-script />
     {{-- @livewireScripts --}}
-    {{ $scripts }}
-    @stack('custom-scripts')
+    {{ $scripts?? '' }}
+    @stack('script')
     @yield('script')
 </body>
 

@@ -49,6 +49,11 @@
     text-shadow: 4px 4px 0px #e80b0b, #6ca12b;
 }
 
+/* .overlay #disabledbutton {
+    pointer-events: none;
+    opacity: 0.4;
+} */
+
 .paypal {
     display: none;
 }

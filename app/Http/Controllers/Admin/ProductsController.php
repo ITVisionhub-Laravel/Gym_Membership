@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Products;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\ProductFormRequest;
-use App\Models\Brand;
-use App\Models\Category;
 
 class ProductsController extends Controller
 {
@@ -20,25 +17,16 @@ class ProductsController extends Controller
 
     public function create()
     {
-        $data['brands'] = Brand::get();
-        $data['categories'] = Category::get();
-
-        return view('admin.products.create', $data);
+        return view('admin.products.create');
     }
 
     public function store(ProductFormRequest $request)
     {
         $validatedData = $request->validated();
         $product = new Products();
-        $product->brand_id = $validatedData['brand_id'];
-        $product->category_id = $validatedData['category_id'];
         $product->name = $validatedData['name'];
-        $product->slug = $validatedData['slug'];
-        $product->buying_price = $validatedData['buying_price'];
-        $product->selling_price = $validatedData['selling_price'];
+        $product->price = $validatedData['price'];
         $product->quantity = $validatedData['quantity'];
-        $product->small_description = $validatedData['small_description'];
-        $product->description = $validatedData['description'];
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');
@@ -57,24 +45,16 @@ class ProductsController extends Controller
 
     public function edit(Products $product)
     {
-        $data['brands'] = Brand::get();
-        $data['categories'] = Category::get();
-        return view('admin.products.edit', compact('product'), $data);
+        return view('admin.products.edit', compact('product'));
     }
 
     public function update(ProductFormRequest $request, $product)
     {
         $validatedData = $request->validated();
         $product = Products::findOrFail($product);
-        $product->brand_id = $validatedData['brand_id'];
-        $product->category_id = $validatedData['category_id'];
         $product->name = $validatedData['name'];
-        $product->slug = $validatedData['slug'];
-        $product->buying_price = $validatedData['buying_price'];
-        $product->selling_price = $validatedData['selling_price'];
+        $product->price = $validatedData['price'];
         $product->quantity = $validatedData['quantity'];
-        $product->small_description = $validatedData['small_description'];
-        $product->description = $validatedData['description'];
 
         if ($request->hasFile('image')) {
             $path = public_path($product->image);

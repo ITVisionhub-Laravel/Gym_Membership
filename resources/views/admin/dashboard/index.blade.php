@@ -43,6 +43,69 @@
         </li>
 </ul>
 
+<hr>
+<div class="container mt-3 mb-3">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card p-3 mb-2" style="border-radius:10px; background-color: lightgreen">
+                <div class="d-flex">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="icon"> <i class="fa fa-line-chart" aria-hidden="true"></i> </div>
+                    </div>
+                     <div class=" mt-2 px-3">
+                    <h5 class="heading">Total Revenue</h5>
+                    <p>$70.00</p>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 mb-2" style="border-radius:10px; background-color: rgb(228, 228, 100)">
+                <div class="d-flex">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="icon1"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> </div>
+                    </div>
+                     <div class=" mt-2 px-3">
+                    <h5 class="heading">Sale Product</h5>
+                    <p>$50.00</p>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 mb-2" style="border-radius:10px; background-color: #cfe8ff">
+                <div class="d-flex">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="icon2"> <i class="fa fa-usd" aria-hidden="true"></i> </div>
+                    </div>
+                     <div class=" mt-2 px-3">
+                    <h5 class="heading">Profit</h5>
+                    <p>$30.00</p>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 mb-2" style="border-radius:10px; background-color: #fff2c6">
+                <div class="d-flex">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="icon3"> <i class="fa fa-times" aria-hidden="true"></i> </div>
+                    </div>
+                     <div class=" mt-2 px-3">
+                    <h5 class="heading">Faulty Items</h5>
+                    <p>$70.00</p>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <div class="col-md-12 row">
       @if ($monthlyEarningMoney)
           @include('admin.dashboard.barchart',compact('monthlyEarningMoney','month'))

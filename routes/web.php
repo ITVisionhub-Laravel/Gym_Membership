@@ -162,6 +162,18 @@ Route::prefix('admin')->group(function () {
         Route::get('/categories/{category_id}/delete', 'destroy');
     });
 
+    // shop types
+    Route::controller(
+        App\Http\Controllers\Admin\Shop\ShopTypeController::class
+    )->group(function () {
+        Route::get('/shoptypes', 'index');
+        Route::get('/shoptypes/create', 'create');
+        Route::post('/shoptypes', 'store');
+        Route::get('/shoptypes/{shopttype}/edit', 'edit');
+        Route::put('/shoptypes/{shopttype}', 'update');
+        Route::get('/shoptypes/{shopttype_id}/delete', 'destroy');
+    });
+
     Route::controller(
         App\Http\Controllers\Admin\EquipmentController::class
     )->group(function () {

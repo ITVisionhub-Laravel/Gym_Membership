@@ -13,7 +13,7 @@ class ShopTypeFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,6 +29,7 @@ class ShopTypeFormRequest extends FormRequest
             'address' => ['required', 'string'],
             'phone' => ['required', 'string'],
             'hot_line' => ['required', 'string'],
+            'image' => ['nullable', 'mimes:png,jpg,jpeg'],
         ];
     }
 }

@@ -180,6 +180,18 @@ Route::prefix('admin')->group(function () {
         Route::get('/shoptypes/{shoptype_id}/delete', 'destroy');
     });
 
+    // shops
+    Route::controller(
+        App\Http\Controllers\Admin\Shop\ShopController::class
+    )->group(function () {
+        Route::get('/shops', 'index');
+        Route::get('/shops/create', 'create');
+        Route::post('/shops', 'store');
+        Route::get('/shops/{shop}/edit', 'edit');
+        Route::put('/shops/{shop}', 'update');
+        Route::get('/shops/{shop_id}/delete', 'destroy');
+    });
+
     Route::controller(
         App\Http\Controllers\Admin\EquipmentController::class
     )->group(function () {

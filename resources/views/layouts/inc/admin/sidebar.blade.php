@@ -141,9 +141,23 @@
         <div class="collapse" id="ui-shop">
           <ul class="nav flex-column sub-menu">
             {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shop_types/create') }}">Add Shop Type</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shoptypes/create') }}">Add Shop Type</a></li>
             <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops/create') }}">Add Shop</a></li>
             <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops') }}">View Shop</a></li>
+          </ul>
+        </div>
+      </li>
+      {{--  Deliver --}}
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-delivery" aria-expanded="false" aria-controls="ui-delivery">
+        <i class="mdi mdi-clipboard-text menu-icon"></i>
+          <span class="menu-title">Delivery</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="ui-delivery">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shop_types/create') }}">Add Delivery</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops/create') }}">View Delivery</a></li>
           </ul>
         </div>
       </li>

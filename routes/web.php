@@ -175,9 +175,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/shoptypes', 'index');
         Route::get('/shoptypes/create', 'create');
         Route::post('/shoptypes', 'store');
-        Route::get('/shoptypes/{shopttype}/edit', 'edit');
-        Route::put('/shoptypes/{shopttype}', 'update');
-        Route::get('/shoptypes/{shopttype_id}/delete', 'destroy');
+        Route::get('/shoptypes/{shoptype}/edit', 'edit');
+        Route::put('/shoptypes/{shoptype}', 'update');
+        Route::get('/shoptypes/{shoptype_id}/delete', 'destroy');
     });
 
     // shops

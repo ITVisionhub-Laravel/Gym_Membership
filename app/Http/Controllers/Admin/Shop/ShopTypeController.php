@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Shop;
 use App\Models\ShopType;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use App\Http\Requests\BrandFormRequest;
 use App\Http\Requests\Shop\ShopTypeFormRequest;
 use App\Http\Requests\Shop\ShopType as ShopShopType;
@@ -25,42 +26,65 @@ class ShopTypeController extends Controller
     public function store(ShopTypeFormRequest $request)
     {
         $validatedData = $request->validated();
-        $brand = new ShopType();
-        $brand->name = $validatedData['name'];
-        $brand->slug = $validatedData['slug'];
+        $shoptype = new ShopType();
+        $shoptype->name = $validatedData['name'];
+        $shoptype->email = $validatedData['email'];
+        $shoptype->address = $validatedData['address'];
+        $shoptype->phone = $validatedData['phone'];
+        $shoptype->hot_line = $validatedData['hot_line'];
 
-        $brand->save();
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $ext = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $ext;
+            $file->move('uploads/shoptypes/', $filename);
+            $shoptype->image = "uploads/shoptypes/$filename";
+        }
+        $shoptype->save();
 
         return redirect('admin/shoptypes')->with(
             'message',
-            'Brand Added Successfully'
+            'Shoptype Added Successfully'
         );
     }
 
-    public function edit(ShopType $brand)
+    public function edit(ShopType $shoptype)
     {
-        return view('admin.shoptypes.edit', compact('brand'));
+        return view('admin.shoptypes.edit', compact('shoptype'));
     }
 
-    public function update(BrandFormRequest $request, $brand)
+    public function update(ShopTypeFormRequest $request, $shoptype)
     {
         $validatedData = $request->validated();
-        $brand = ShopType::findOrFail($brand);
+        $shoptype = ShopType::findOrFail($shoptype);
 
-        $brand->name = $validatedData['name'];
-        $brand->slug = $validatedData['slug'];
-
-        $brand->update();
+        $shoptype->name = $validatedData['name'];
+        $shoptype->email = $validatedData['email'];
+        $shoptype->address = $validatedData['address'];
+        $shoptype->phone = $validatedData['phone'];
+        $shoptype->hot_line = $validatedData['hot_line'];
+        if ($request->hasFile('image')) {
+            $path = public_path('uploads/shoptypes/' . $shoptype->image);
+            if (File::exists($path)) {
+                File::delete($path);
+            }
+            $file = $request->file('image');
+            $ext = $file->getClientOriginalExtension();
+            $filename = time() . '.' . $ext;
+            $file->move('uploads/shoptypes/', $filename);
+            $shoptype->image = $filename;
+        }
+        $shoptype->update();
         return redirect('admin/shoptypes')->with(
             'message',
-            'Brands Updated Successfully'
+            'ShopType Updated Successfully'
         );
     }
 
-    public function destroy($brand_id)
+    public function destroy($shoptype_id)
     {
-        $brand = ShopType::findOrFail($brand_id);
-        $brand->delete();
+        $shoptype = ShopType::findOrFail($shoptype_id);
+        $shoptype->delete();
         return redirect('admin/shoptypes')->with(
             'message',
             'Brand Deleted Successfully'

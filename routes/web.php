@@ -105,6 +105,12 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::controller(
+        App\Http\Controllers\Admin\RequestController::class
+    )->group(function () {
+        Route::get('/requests', 'index');
+    });
+
+    Route::controller(
         App\Http\Controllers\Admin\CustomerController::class
     )->group(function () {
         Route::get('/customers', 'index');

@@ -7,6 +7,13 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="{{ url('admin/requests') }}">
+          <i class="mdi mdi-home menu-icon"></i>
+          <span class="menu-title">Request</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
         <a class="nav-link" href="{{ url('admin/customers') }}">
           <i class="mdi mdi-account menu-icon"></i>
           <span class="menu-title">Add Members</span>

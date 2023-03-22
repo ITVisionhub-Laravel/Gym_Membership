@@ -144,6 +144,7 @@ class DashboardController extends Controller
 
         return view('admin.dashboard.index', $data);
     }
+
     public function show(int $memberId)
     {
         $memberDetails = Customer::where('id', $memberId)->get();

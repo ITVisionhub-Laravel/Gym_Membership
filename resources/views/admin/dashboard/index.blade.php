@@ -23,7 +23,6 @@
                 @if (!$noExpiredPaymentMember)
                 
                 <h3>{{ $expiredPaymentMember }}</h3>
-                {{--  <a href="<livewire:payment_expired_members>"><p>Payment Expired Members</p></a>  --}}
                 <a href="{{url('admin/expiredMembers')}}"><p>Payment Expired Members</p></a>
                 @else
                     <h3>0</h3>    

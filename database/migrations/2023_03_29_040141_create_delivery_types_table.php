@@ -12,19 +12,18 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('shop_keeper_request', function (Blueprint $table) {
+        Schema::create('delivery_types', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('shop_type_id');
-            $table->integer('quantity');
-            $table->integer('product_id');
+            $table->string('name');
+            $table->string('image')->nullable();
+            $table->integer('kg');
+            $table->unsignedBigInteger('township_id');
+            $table->integer('cost');
+            $table->string('waiting_time');
             $table
-                ->integer('status')
-                ->default('0')
-                ->comment('1=approved,0=pending,3=finished');
-            $table
-                ->foreign('shop_type_id')
+                ->foreign('township_id')
                 ->references('id')
-                ->on('shop_types')
+                ->on('townships')
                 ->onDelete('cascade');
             $table->timestamps();
         });
@@ -37,6 +36,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('shop_keeper_request');
+        Schema::dropIfExists('delivery_types');
     }
 };

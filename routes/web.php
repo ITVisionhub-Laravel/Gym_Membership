@@ -105,12 +105,6 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::controller(
-        App\Http\Controllers\Admin\RequestController::class
-    )->group(function () {
-        Route::get('/requests', 'index');
-    });
-
-    Route::controller(
         App\Http\Controllers\Admin\CustomerController::class
     )->group(function () {
         Route::get('/customers', 'index');
@@ -186,11 +180,31 @@ Route::prefix('admin')->group(function () {
     )->group(function () {
         Route::get('/shops', 'index');
         Route::get('/shops/create', 'create');
+        // Route::post('/shopkeepers', 'store');
         Route::post('/shops', 'store');
         Route::get('/shops/{shop}/edit', 'edit');
         Route::put('/shops/{shop}', 'update');
         Route::get('/shops/{shop_id}/delete', 'destroy');
     });
+
+    // shopkeepers
+    Route::controller(
+        App\Http\Controllers\Admin\RequestController::class
+    )->group(function () {
+        Route::post('/shopkeepers', 'store');
+        Route::get('/requests', 'index');
+    });
+
+    // Route::controller(
+    //     App\Http\Controllers\Admin\Shop\ShopController::class
+    // )->group(function () {
+    //     Route::get('/shops', 'index');
+    //     Route::get('/shops/create', 'create');
+    //     Route::post('/shops', 'store');
+    //     Route::get('/shops/{shop}/edit', 'edit');
+    //     Route::put('/shops/{shop}', 'update');
+    //     Route::get('/shops/{shop_id}/delete', 'destroy');
+    // });
 
     Route::controller(
         App\Http\Controllers\Admin\EquipmentController::class

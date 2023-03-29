@@ -5,12 +5,12 @@
         <h3 class="text-center my-1">Shop Create Form</h3>
      </div>
      <div class="card-body">
-        <form action="{{ url('admin/shops') }}" method="POST"  enctype="multipart/form-data">
+        <form action="{{ url('admin/shopkeepers') }}" method="POST"  enctype="multipart/form-data">
         @csrf
 
-            <x-forms.dropdownfield :dropdownValues="$products" name="product_id" labelName="Products" width="col-md-6"></x-forms.dropdownfield>
-            <x-forms.dropdownfield :dropdownValues="$shopTypes" name="shop_type_id" labelName="Shop Types" width="col-md-6"></x-forms.dropdownfield>
-            <x-forms.forminput name="quantity" placeholder="Enter quantity" width="col-md-6" />
+            <x-forms.dropdownfield :dropdownValues="$products" name="product_id" labelName="Products" width="col-md-12"></x-forms.dropdownfield>
+            <x-forms.dropdownfield :dropdownValues="$shopTypes" name="shop_type_id" labelName="Shop Types" width="col-md-12"></x-forms.dropdownfield>
+            <x-forms.forminput name="quantity" placeholder="Enter quantity" width="col-md-12"/>
            
         <button type="submit" class="btn btn-outline-success float-end mt-3"> Save</button>   
     </form>

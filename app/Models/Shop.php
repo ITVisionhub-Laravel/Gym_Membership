@@ -14,10 +14,10 @@ class Shop extends Model
 
     public function products()
     {
-        return $this->belongsTo(Products::class, 'id', 'product_id');
+        return $this->belongsTo(Products::class, 'product_id', 'id');
     }
     public function shoptype()
     {
-        return $this->belongsTo(ShopType::class, 'id', 'shop_type_id');
+        return $this->belongsTo(ShopType::class, 'shop_type_id', 'id');
     }
 }

@@ -27,7 +27,7 @@
                 </td>
                 <td>${{$shop->products->buying_price}}</td>
                 <td>${{$shop->products->selling_price}}</td>
-                <td>${{$shop->products->quantity}}</td>
+                <td>{{$shop->quantity}}</td>
                 <td>
                     <a href="{{url('admin/shops/'.$shop->id.'/edit')}}" class="btn btn-info py-2">Edit</a>
                     <a href="{{ url('admin/shops/'.$shop->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this data?')" class="btn btn-danger py-2">Delete</a>

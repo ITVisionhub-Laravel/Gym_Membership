@@ -15,9 +15,9 @@
                     @csrf
                     @method('PUT')
 
-                    <x-forms.dropdownfield :dropdownValues="$products" checkOldValue="{{ $product->id }}" name="product_id" labelName="Products" width="col-md-6"></x-forms.dropdownfield>
-                    <x-forms.dropdownfield :dropdownValues="$shopTypes" checkOldValue="{{ $shopType->id }}" name="shop_type_id" labelName="Shop Types" width="col-md-6"></x-forms.dropdownfield>
-                    <x-forms.forminput name="quantity"  value="{{$shop->quantity}}" placeholder="Enter quantity" width="col-md-6" />
+                    <x-forms.dropdownfield :dropdownValues="$products" checkOldValue="{{ $shop->products->id }}" name="product_id" labelName="Products" width="col-md-12"></x-forms.dropdownfield>
+                    <x-forms.dropdownfield :dropdownValues="$shopTypes" checkOldValue="{{ $shop->shoptype->id }}" name="shop_type_id" labelName="Shop Types" width="col-md-12"></x-forms.dropdownfield>
+                    <x-forms.forminput name="quantity"  value="{{$shop->quantity}}" placeholder="Enter quantity" width="col-md-12" />
                     
                     <div class="mb-3">
                         <button type="submit" class="btn btn-primary">Update</button>

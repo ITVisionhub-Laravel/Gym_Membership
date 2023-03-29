@@ -24,8 +24,10 @@ class ShopKeeperRequest extends FormRequest
     public function rules()
     {
         return [
-            'shop_id' => ['required', 'integer'],
-            'status' => ['required', 'integer'],
+            'product_id' => ['required', 'integer'],
+            'shop_type_id' => ['required', 'integer'],
+            'quantity' => ['required', 'integer'],
+            'status' => ['nullable'],
         ];
     }
 }

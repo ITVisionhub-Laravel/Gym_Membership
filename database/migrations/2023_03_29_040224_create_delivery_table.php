@@ -12,19 +12,17 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('shop_keeper_request', function (Blueprint $table) {
+        Schema::create('delivery', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('shop_type_id');
-            $table->integer('quantity');
-            $table->integer('product_id');
+            $table->string('start_date');
+            $table->string('end_date');
+            $table->string('description');
+            $table->integer('deli_cost');
+            $table->unsignedBigInteger('deli_type_id');
             $table
-                ->integer('status')
-                ->default('0')
-                ->comment('1=approved,0=pending,3=finished');
-            $table
-                ->foreign('shop_type_id')
+                ->foreign('deli_type_id')
                 ->references('id')
-                ->on('shop_types')
+                ->on('delivery_types')
                 ->onDelete('cascade');
             $table->timestamps();
         });
@@ -37,6 +35,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('shop_keeper_request');
+        Schema::dropIfExists('delivery');
     }
 };

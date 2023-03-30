@@ -174,6 +174,18 @@ Route::prefix('admin')->group(function () {
         Route::get('/shoptypes/{shoptype_id}/delete', 'destroy');
     });
 
+    // delivery types
+    Route::controller(
+        App\Http\Controllers\Admin\Delivery\DeliveryTypeController::class
+    )->group(function () {
+        Route::get('/deliverytypes', 'index');
+        Route::get('/deliverytypes/create', 'create');
+        Route::post('/deliverytypes', 'store');
+        Route::get('/deliverytypes/{deliver}/edit', 'edit');
+        Route::put('/deliverytypes/{deliver}', 'update');
+        Route::get('/deliverytypes/{deliver_id}/delete', 'destroy');
+    });
+
     // shops
     Route::controller(
         App\Http\Controllers\Admin\Shop\ShopController::class

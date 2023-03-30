@@ -15,12 +15,11 @@
                     @csrf
                     @method('PUT')
                     
-        <div class="row">
-          <x-forms.dropdownfield :dropdownValues="$categories" name="category_id" labelName="Trainer Category" width="col-md-6"></x-forms.dropdownfield>
-         <x-forms.dropdownfield :dropdownValues="$brands" name="brand_id" labelName="Trainer Brand" width="col-md-6"></x-forms.dropdownfield>        
-        </div>
-
-                  <div class="row">
+            <div class="row">
+            <x-forms.dropdownfield :dropdownValues="$categories" checkOldValue="{{ $product->category_id }}" name="category_id" labelName="Trainer Category" width="col-md-6"></x-forms.dropdownfield>
+                <x-forms.dropdownfield :dropdownValues="$brands" name="brand_id" checkOldValue="{{ $product->brand_id }}" labelName="Trainer Brand" width="col-md-6"></x-forms.dropdownfield>        
+            </div>
+            <div class="row">
                 <x-forms.forminput name="name" placeholder="Enter Name" value="{{ $product->name }}" width="col-md-6" />
                 <x-forms.forminput name="slug" placeholder="Enter Slug"  value="{{ $product->slug }}" width="col-md-6" />
             </div>

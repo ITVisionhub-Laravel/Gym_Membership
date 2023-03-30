@@ -12,11 +12,14 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('delivery', function (Blueprint $table) {
+        Schema::create('delivery_request', function (Blueprint $table) {
             $table->id();
             $table->string('start_date');
             $table->string('end_date');
             $table->string('description');
+            $table->integer('product_id');
+            $table->integer('quantity');
+            $table->integer('kg');
             $table->integer('deli_cost');
             $table->unsignedBigInteger('deli_type_id');
             $table

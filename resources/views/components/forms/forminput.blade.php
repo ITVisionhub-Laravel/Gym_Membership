@@ -1,11 +1,11 @@
-@props(['name','placeholder','type'=>'text','width'=>'col-md-2','errors','labelName','value'=>''])
+@props(['name','placeholder','type'=>'text','width'=>'col-md-2','errors','labelName','value'=>'','wireValue'=>false])
  
     <x-forms.field width="{{ $width }}">
         <x-forms.label value="{{ $labelName??$name }}"/>
         @if ($type == 'textarea')
             <x-forms.textarea-field name="{{ $name }}" value="{{ $value }}"/>
         @else
-            <x-forms.input name="{{ $name }}" id="{{ $id??$name }}" placeholder="{{ $placeholder }}" type="{{ $type }}" value="{{ $value??'' }}"/>
+            <x-forms.input wireValue="{{ $wireValue }}" name="{{ $name }}" id="{{ $id??$name }}" placeholder="{{ $placeholder }}" type="{{ $type }}" value="{{ $value??'' }}"/>
         @endif
         @if ($name == 'image' && $value!='')
             <img src="{{asset($value)}}" width="50px" height="50px" alt=""/>

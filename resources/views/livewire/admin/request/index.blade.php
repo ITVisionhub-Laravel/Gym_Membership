@@ -1,6 +1,7 @@
 
 <div>
      <div class="container my-1">
+        @include('livewire.admin.request.modal-form',['products'=>$products,'deli_types'=>$deliTypes])
     <x-successmessage/>
      <div class="container mb-4">
         <div class="row">
@@ -86,9 +87,10 @@
                             {{ $request->status }}
                             </td>  --}}
                             <td>
-                                <div wire:loading.attr="disabled" wire:click="">
-                                    <a href="#" wire:target = "" class="btn btn-sm btn-success">Approved</a>
-                                </div>
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#addDeliveryRequest" class="btn btn-primary btn-sm float-end">Approve</a>
+                                {{--  <div wire:loading.attr="disabled" wire:click="addDeliveryRequest">
+                                    <a href="#" wire:target = "addDeliveryRequest" class="btn btn-sm btn-success">Approve</a>
+                                </div>  --}}
                             </td>
                         </tr>
                         @endforeach

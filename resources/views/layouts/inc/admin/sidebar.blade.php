@@ -160,13 +160,13 @@
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#ui-delivery" aria-expanded="false" aria-controls="ui-delivery">
         <i class="mdi mdi-clipboard-text menu-icon"></i>
-          <span class="menu-title">Delivery</span>
+          <span class="menu-title">DeliveryType</span>
           <i class="menu-arrow"></i>
         </a>
         <div class="collapse" id="ui-delivery">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shop_types/create') }}">Add Delivery</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops/create') }}">View Delivery</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/deliverytypes/create') }}">Add DeliveryType</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/deliverytypes') }}">View DeliveryType</a></li>
           </ul>
         </div>
       </li>

@@ -26,7 +26,6 @@ class ShopController extends Controller
 
     public function store(ShopFormRequest $request)
     {
-        dd($request);
         $validatedData = $request->validated();
         $shop = new Shop();
         $product_id = $validatedData['product_id'];

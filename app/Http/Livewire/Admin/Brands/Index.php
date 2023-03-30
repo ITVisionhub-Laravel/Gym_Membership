@@ -15,7 +15,6 @@ class Index extends Component
 
     public function rules()
     {
-        @dd('rule');
         return [
             'name' => 'required|string',
             'slug' => 'required|string',

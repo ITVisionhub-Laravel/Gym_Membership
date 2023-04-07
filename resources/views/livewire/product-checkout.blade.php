@@ -13,21 +13,21 @@
                         <div class="col-sm-12 col-md-12 col-lg-6 col-xs-12">
                             <h3 class="badge-pill badge-light mt-2 mb-3 p-2">Sale Products</h3>
                             <div class="row">
-                                @foreach ($data['products'] as $product_item)
+                                @foreach ($data['shops'] as $product_item)
                                 {{-- col-sm-6  col-lg-6 col-xs-6  --}}
                                     <div class="col-md-6  col-lg-6">
                                         <div class="shadow-sm card mb-3 product">
-                                            <img class="product-img" src="{{ $product_item->image }}" alt="prd1" onmouseover="animateImg(this)"
+                                            <img class="product-img" src="{{ $product_item->products->image }}" alt="prd1" onmouseover="animateImg(this)"
                                             onmouseout="normalImg(this)"/>
                                             <div class="card-body sale-product">
-                                                <h5 class="card-title  bold product-name text-center">{{ $product_item->name }}</h5>
-                                                <p class="card-text text-success product-price text-center">{{ $product_item->price }} MMK.</p>
+                                                <h5 class="card-title  bold product-name text-center">{{ $product_item->products->name }}</h5>
+                                                <p class="card-text text-success product-price text-center">{{ $product_item->products->selling_price }} MMK.</p>
                                             
-                                                <button type = "button" wire:click = "addToCart({{ $product_item->id }})" class="btn addbadge badge-pill  mt-2 float-end success"> 
-                                                    <span wire:loading.remove wire:target="addToCart({{ $product_item->id }})">
+                                                <button type = "button" wire:click = "addToCart({{ $product_item->products->id }})" class="btn addbadge badge-pill  mt-2 float-end success"> 
+                                                    <span wire:loading.remove wire:target="addToCart({{ $product_item->products->id }})">
                                                         Add To Cart
                                                     </span>
-                                                    <span wire:loading wire:target="addToCart({{ $product_item->id }})">
+                                                    <span wire:loading wire:target="addToCart({{ $product_item->products->id }})">
                                                         Adding....
                                                     </span>
                                                 </button>

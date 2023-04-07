@@ -11,6 +11,7 @@ use App\Models\Products;
 use App\Models\PaymentProvider;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProductPaymentRecords;
+use App\Models\Shop;
 
 class ProductCheckout extends Component
 {
@@ -61,7 +62,7 @@ class ProductCheckout extends Component
                     'customer_id' => $this->customer->id,
                     'product_id' => $productId,
                     'quantity' => 1,
-                    'total' => $this->products->price,
+                    'total' => $this->products->selling_price,
                 ]);
                 // $this->emit('cartAddedUpdated');
 
@@ -92,7 +93,7 @@ class ProductCheckout extends Component
             if ($cartData->quantity > 1) {
                 $cartData->decrement('quantity');
                 $cartData->update([
-                    'total' => $cartData->quantity * $cartData->products->price,
+                    'total' => $cartData->quantity * $cartData->products->selling_price,
                 ]);
                 // $this->emit('cartAddedUpdated');
                 $this->dispatchBrowserEvent('message', [
@@ -122,10 +123,10 @@ class ProductCheckout extends Component
             ->where('customer_id', auth()->user()->customers->id)
             ->first();
         if ($cartData) {
-            if ($cartData->products->quantity > $cartData->quantity) {
+            if ($cartData->shopProducts->quantity > $cartData->quantity) {
                 $cartData->increment('quantity');
                 $cartData->update([
-                    'total' => $cartData->quantity * $cartData->products->price,
+                    'total' => $cartData->quantity * $cartData->products->selling_price,
                 ]);
                 // $this->emit('cartAddedUpdated');
                 $this->dispatchBrowserEvent('message', [
@@ -137,7 +138,7 @@ class ProductCheckout extends Component
                 $this->dispatchBrowserEvent('message', [
                     'text' =>
                         'Only ' .
-                        $cartData->products->quantity .
+                        $cartData->shopProducts->quantity .
                         ' Quantity Available',
                     'type' => 'success',
                     'status' => 200,
@@ -262,6 +263,7 @@ class ProductCheckout extends Component
         $data['partner'] = Partner::get();
         $data['products'] = Products::get();
         $data['providers'] = PaymentProvider::get();
+        $data['shops'] = Shop::get();
         // dd($data['customerInfo']);
         if ($data['customerInfo']) {
             $data['Cart'] = Cart::where(

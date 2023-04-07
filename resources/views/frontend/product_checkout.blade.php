@@ -24,9 +24,9 @@
             
             @livewireStyles
         </head>
-    
+        <div>
             <livewire:product-checkout/>
-    
+        </div>
             <script src="{{ asset('assets/js/jquery-3.6.3.min.js') }}"></script>
             <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
             {{--  //In order to show Alert Message  --}}

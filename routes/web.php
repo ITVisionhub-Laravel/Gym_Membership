@@ -95,7 +95,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->group(function () {
-    Route::get('/brands', App\Http\Livewire\Admin\Brands\Index::class);
+    // Route::get('/brands', App\Http\Livewire\Admin\Brands\Index::class);
     Route::controller(
         App\Http\Controllers\Admin\DashboardController::class
     )->group(function () {

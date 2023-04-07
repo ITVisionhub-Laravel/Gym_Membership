@@ -1,5 +1,4 @@
- 
-<div>
+ <div>
   <x-frontend.navbar :customer="$data['customerInfo']"/>
     <!-- ***** Main Banner Area End ***** -->
 

@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+// namespace App\Http\Controllers;
 
-use App\Models\PaymentExpiredMembers;
-use App\Http\Requests\StorePaymentExpiredMembersRequest;
-use App\Http\Requests\UpdatePaymentExpiredMembersRequest;
+// use App\Models\PaymentExpiredMembers;
+// use App\Http\Requests\StorePaymentExpiredMembersRequest;
+// use App\Http\Requests\UpdatePaymentExpiredMembersRequest;
 
-class PaymentExpiredMembersController extends Controller
-{
+// class PaymentExpiredMembersController extends Controller
+// {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    // public function index()
     {
         //
     }
@@ -23,7 +23,7 @@ class PaymentExpiredMembersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    // public function create()
     {
         //
     }
@@ -34,7 +34,7 @@ class PaymentExpiredMembersController extends Controller
      * @param  \App\Http\Requests\StorePaymentExpiredMembersRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePaymentExpiredMembersRequest $request)
+    // public function store(StorePaymentExpiredMembersRequest $request)
     {
         //
     }
@@ -45,7 +45,7 @@ class PaymentExpiredMembersController extends Controller
      * @param  \App\Models\PaymentExpiredMembers  $paymentExpiredMembers
      * @return \Illuminate\Http\Response
      */
-    public function show(PaymentExpiredMembers $paymentExpiredMembers)
+    // public function show(PaymentExpiredMembers $paymentExpiredMembers)
     {
         //
     }
@@ -56,7 +56,7 @@ class PaymentExpiredMembersController extends Controller
      * @param  \App\Models\PaymentExpiredMembers  $paymentExpiredMembers
      * @return \Illuminate\Http\Response
      */
-    public function edit(PaymentExpiredMembers $paymentExpiredMembers)
+    // public function edit(PaymentExpiredMembers $paymentExpiredMembers)
     {
         //
     }
@@ -68,7 +68,7 @@ class PaymentExpiredMembersController extends Controller
      * @param  \App\Models\PaymentExpiredMembers  $paymentExpiredMembers
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePaymentExpiredMembersRequest $request, PaymentExpiredMembers $paymentExpiredMembers)
+    // public function update(UpdatePaymentExpiredMembersRequest $request, PaymentExpiredMembers $paymentExpiredMembers)
     {
         //
     }
@@ -79,8 +79,8 @@ class PaymentExpiredMembersController extends Controller
      * @param  \App\Models\PaymentExpiredMembers  $paymentExpiredMembers
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PaymentExpiredMembers $paymentExpiredMembers)
+    // public function destroy(PaymentExpiredMembers $paymentExpiredMembers)
     {
         //
     }
-}
+// }

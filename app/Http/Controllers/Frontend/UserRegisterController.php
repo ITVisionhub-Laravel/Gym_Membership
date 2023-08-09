@@ -19,6 +19,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProductPaymentRecords;
 use App\Http\Requests\CustomerFormRequest;
+use App\Models\Shop;
 
 class UserRegisterController extends Controller
 {
@@ -122,10 +123,11 @@ class UserRegisterController extends Controller
                 //     )->first();
                 // }
                 // $data['customer'] = false;
-                $data['logo'] = Logo::first();
-                $data['partner'] = Partner::get();
-                $data['products'] = Products::get();
-                return view('frontend.product_checkout', $data);
+                // $data['logo'] = Logo::first();
+                // $data['partner'] = Partner::get();
+                // $data['products'] = Products::get();
+                // $data['shops'] = Shop::get();
+                return view('frontend.product_checkout');
             }
         }
     }

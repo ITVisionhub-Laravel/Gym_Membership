@@ -1956,3 +1956,60 @@ a.float:hover + div.label-container {
     background-color: #13e30c;
     color: #fff;
 }
+
+/* Styles for the popup container */
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+/* Styles for the popup content */
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    max-width: 400px;
+}
+
+/* Styles for the popup text content */
+#popupContent {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Styles for the close button */
+#closeButton {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+#closeButton:hover {
+    background-color: #0056b3;
+}
+
+.btn-history {
+    background-color: brown;
+}
+.btn-invoice {
+    background-color: rgb(152, 152, 13);
+}
+.btn-edit {
+    background-color: rgb(21, 21, 146);
+}

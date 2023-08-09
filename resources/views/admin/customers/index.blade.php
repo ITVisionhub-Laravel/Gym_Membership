@@ -39,24 +39,37 @@
                     <img src="{{asset('/uploads/customer/'.$customer->image)}}" style="width:50px;height:50px" alt="customer">
                 </td>
                 <td>
-                    <a href="{{ url('admin/customers/'.$customer->id.'/invoice')}}" class="btn-success btn-sm"><i class="fa-regular fa-eye"></i></a>
-                    <a href="{{ url('admin/customers/'.$customer->id.'/edit') }}"  class="btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
-                    <a href="{{ url('admin/customers/'.$customer->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this data?')" class="btn-danger btn-sm"><i class="fa-solid fa-trash"></i></a>
+                    <a href="{{ url('admin/customers/'.$customer->id.'/history')}}" class="btn-history btn-sm"><i class="fa-solid fa-clock-rotate-left text-white"></i></a>
+                    <a href="{{ url('admin/customers/'.$customer->id.'/invoice')}}" class="btn-invoice btn-sm"><i class="fa-solid fa-file-invoice text-white"></i></a>
+                    <a href="{{ url('admin/customers/'.$customer->id.'/edit') }}"  class="btn-edit btn-sm"><i class="fa-solid fa-pen-to-square text-white"></i></a>
+                    <a href="{{ url('admin/customers/'.$customer->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this data?')" class="btn-danger btn-sm"><i class="fa-solid fa-trash text-white"></i></a>
                 </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
 </div>
+
+<!-- The popup container -->
+    <div id="customPopup" class="popup-container">
+        <!-- The popup content -->
+        <div class="popup-content">
+            <p>Sorry, there are no payment records for this customer.</p>
+            <button id="closeButton">Close</button>
+        </div>
+    </div>
+
 <x-slot name="scripts">
-<script>
-     $(document).ready( function () {
-        $('#myTable').DataTable({
-             scrollX: true,
-        });
-       
-    } );
-</script>
+    
+    <script>
+        $(document).ready( function () {
+            $('#myTable').DataTable({
+                scrollX: true,
+            });
+        
+        } );
+    </script>
+
 </x-slot>
 </x-admin>
 

@@ -58,7 +58,7 @@ h5{
   padding-bottom: 12px;
   text-align: left;
   background-color: #bad3f8;
-  color: white;
+  color: rgb(62, 57, 57);
 }
 </style>
 </head>

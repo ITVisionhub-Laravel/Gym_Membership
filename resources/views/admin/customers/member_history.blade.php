@@ -19,43 +19,35 @@
           <div class="card centered shadow-lg mt-2 mb-2 bg-white rounded">
             <div class="card-header">
               <h3>
-                Invoice 
-                <a href="{{ url('admin/customers') }}" class="btn btn-danger btn-sm float-end mx-1">Back</a>
-                <a href="{{ url('admin/customers/'.$records->customer->id.'/generate') }}" class="btn btn-primary btn-sm float-end mx-1"><i class="fa fa-download"></i></a>
-                <a href="{{ url('admin/customers/'.$records->customer->id.'/view') }}" target="_blank" class="btn btn-warning btn-sm float-end mx-1"><i class="fa-regular fa-eye"></i></a>
-                <a href="{{ url('admin/customers/'.$records->customer->id.'/mail') }}"  class="btn btn-info btn-sm float-end mx-1"><i class="fa fa-envelope"></i></a>
-                <a href="{{ url('admin/customers/'.$records->customer->id.'/print') }}" target="_blank"  class="btnprint btn btn-success btn-sm float-end mx-1"><i class="fa fa-print"></i></a>
-              </h3>
+                History 
+                 <a href="{{ url('admin/customers') }}" class="btn btn-danger btn-sm float-end mx-1">Back</a>
+               </h3>
             </div>
             <div class="card-body">
               <div class="row form-group">
                 <div class="col-12">
-
+                     
                   <div class="col-md-12">
                     <div class="row">
-                    <div class="col-md-4"> 
-                        <img src="{{asset('/uploads/customer/'.$records->customer->image)}}" alt="Member" style="width:120px;height:120px;">
-                      
-                    </div>
-                    <div class="col-md-8">
-                      
-                      <h6>Member Name: {{ $records->customer->name }}</h5> 
-                      <h6>Phone Number: {{ $records->customer->phone_number}}</h6>
-                      <h6 style="line-height: 1.5">
-                        Member ID Number: {{ $records->customer->member_card }} <br>
-                        {{ $records->customer->address->street->township->city->name}},
-                        {{ $records->customer->address->street->township->name}},<br>
-                        {{ $records->customer->address->street->name}} 
-                      </h6>
-                      
-                    </div>
+                      <div class="col-md-4"> 
+                          <img src="{{asset('/uploads/customer/'.$records[0]->customer->image)}}" alt="Member" style="width:120px;height:120px;">
+                       
+                      </div>
+                      <div class="col-md-8">
+                        <h6> Member Name: {{ $records[0]->customer->name}}</h6>
+                        <h6>Phone Number:{{ $records[0]->customer->phone_number}}</h6>
+                        <h6 style="line-height: 1.5">
+                          Member ID Number: {{ $records[0]->customer->member_card }} <br>
+                          {{ $records[0]->customer->address->street->township->city->name}},
+                          {{ $records[0]->customer->address->street->township->name}},<br>
+                          {{ $records[0]->customer->address->street->name}} 
+                        </h6>
+                        
+                      </div>
                     
                     </div>
                   </div>
-                  
                   <br>
-                  
-                 
                       <table class="table table-striped table-hover">
                       <thead class="table-primary">
                         <tr>
@@ -65,33 +57,35 @@
                           <th scope="col">Original Fee</th>
                           <th scope="col">Discounted Fee</th>
                         </tr>
-                      </thead> 
+                      </thead>
+                       @if ($records)
+                    @foreach ($records as $record)
                       <tbody>
                         <tr>
-                          <td>{{$records->package->package}}</td>
-                          <td>{{$records->package->promotion}} %</td>
-                          <td>{{ $records->created_at->format("F j, Y, g:i a") }}</td>
-                          <td>{{ $records->package->original_price }} MMK</td>
-                          <td>{{ $records->package->promotion_price }} MMK</td>
+                          <td>{{$record->package->package}}</td>
+                          <td>{{$record->package->promotion}} %</td>
+                          <td>{{ $record->created_at->format("F j, Y, g:i a") }}</td>
+                          <td>{{ $record->package->original_price }} MMK</td>
+                          <td>{{ $record->package->promotion_price }} MMK</td>
                         </tr>
-                        {{--  @endforeach
+                        @endforeach
                   
-                  @endif  --}}
+                  @endif
                         <tr>
                         <td></td>
                         <td></td>
                         <td></td>
                         <td>Total Fee:</td>
-                        <td> {{ $records->package->promotion_price }} MMK </td>
+                        <td> {{ $totalAmount }} MMK </td>
                         </tr>
                   </tbody>
                   
                     
                   </table>
                   <br>
-                  @if ($logos) 
+                  @if ($logos)
                     <p class="text-center">
-                        Thank you for joining with {{ $logos->name }}
+                        Thank your for joining with {{ $logos->name }}
                     </p>
                   @endif
                     

@@ -1,63 +1,50 @@
- 
+
 <div>
   <x-frontend.navbar :customer="$data['customerInfo']"/>
     <!-- ***** Main Banner Area End ***** -->
 
-    {{--  @if ()
-        
-    @endif      --}}
         <!-- ***** Packages Banner Area Start***** -->
         <div class="choose-package">
         <div class="card-body row py-5 me-5">
             <div class="col-md-8">
                 <h3 class="one-pkg">Choose One Package </h3>
-                <div class="row">
+                <div class="row"> 
                     @foreach ($data['packages'] as $package)
-                    {{--  data-action = "choose_package"  --}}
-                    {{--  @dd($userChoosePackage->package_id)  --}}
-                    @if ($chooseOnePackage == $package->id)
-                            <div type="button" class="col-4 col-md-3 p-3 pkg_monthly pointer" disabled>
-                            <div class="card h-80 shadow">
-                                <div class="card-body text-center">
-                                    My
-                                    Package <span>({{ $package->package }})</span>
-                                </div>
+                   @if ($chooseOnePackage == $package->id)
+                    <div type="button" class="col-4 col-md-3 p-3 pkg_monthly">
+                        <div class="card h-80 shadow">
+                            <div class="card-body text-center">
+                                My Package <span>({{ $package->package }})</span>
                             </div>
-                            </div>
-                    {{--  @endif
-                        @if($userChoosePackage && $userChoosePackage->package_id == $package->id)
-                            <div type="button" class="col-4 col-md-3 p-3 pkg_monthly pointer" disabled>
-                            <div class="card h-80 shadow">
-                                <div class="card-body text-center">
-                                    My
-                                    Package <span>({{ $package->package }})</span>
-                                </div>
-                            </div>
-                            </div>  --}}
+                        </div>
+                    </div>
+                   
                         @else
-                            <div type="button" class="col-4 col-md-3 p-3 pkg_monthly pointer" wire:loading.attr="disabled" wire:click="choosePackage({{ $package->id }})" @if ($data['qrcode'])
-                                @if ($data['qrcode']->user_id == $data['customerInfo']->id)
-                                    disabled
-                                @endif
-                            @endif>
-                            <div class="card h-80 shadow" wire:target="choosePackage({{ $package->id}})" >
-                                <div class="card-body text-center">		
-                                    <h6 class="package_name text-dark">					
-                                        {{ $package->package }}	
-                                    </h6>
-                                    <h6 class="package_promotion">
-                                        {{ $package->promotion }} %	
-                                    </h6>          				   
-                                    <h6 class="package_original_price">
-                                        {{ $package->original_price }}
-                                    </h6>          				   
-                                </div>
-                            </div>
+                       <div type="button" class="col-4 col-md-3 p-3 pkg_monthly"
+                            @if (!$data['customerInfo']) style="pointer-events: none;" @endif
+                             @if ($data['customerInfo'] && $data['qrcode'] && $data['qrcode']->user_id == $data['customerInfo']->id)  
+                            style="pointer-events: none;" @endif
+                            wire:loading.attr="disabled" wire:click="choosePackage({{ $package->id }})">
+
+                                    <div class="card h-80 shadow" wire:target="choosePackage({{ $package->id}})" >
+                                        <div class="card-body text-center">		
+                                            <h6 class="package_name text-dark">					
+                                                {{ $package->package }}	
+                                            </h6>
+                                            <h6 class="package_promotion">
+                                                {{ $package->promotion }} %	
+                                            </h6>          				   
+                                            <h6 class="package_original_price">
+                                                {{ $package->original_price }}
+                                            </h6>          				   
+                                        </div>
+                                    </div>
                             </div>
                         @endif
                     @endforeach
                 </div>
             </div>
+            @if ($data['customerInfo']) 
             @if ($data['qrcode'])
             <div class="mt-5 col-md-4 border rounded card">
                 <div class="card-header">
@@ -146,7 +133,8 @@
                 </div>
                 
             @endif
-                
+                   
+            @endif 
         </div>
         </div>
         <!-- ***** Packages Banner Area End ******-->

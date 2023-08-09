@@ -6,51 +6,39 @@
           <span class="menu-title">Dashboard</span>
         </a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url('admin/requests') }}">
-          <i class="mdi mdi-home menu-icon"></i>
-          <span class="menu-title">Request</span>
-        </a>
-      </li>
+     
 
       <li class="nav-item">
         <a class="nav-link" href="{{ url('admin/customers') }}">
-          <i class="mdi mdi-account menu-icon"></i>
+          <i class="mdi mdi-account-multiple-plus menu-icon"></i>
           <span class="menu-title">Add Members</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="{{ url('admin/expiredMembers') }}">
-          <i class="mdi mdi-account menu-icon"></i>
+          <i class="mdi mdi-account-alert menu-icon"></i>
           <span class="menu-title">Payment Expired Members</span>
         </a>
       </li>
       
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url('admin/equipments') }}">
-          <i class="mdi mdi-webhook menu-icon"></i>
-          <span class="menu-title">Equipments</span>
-        </a>
-      </li>
-       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#ui-brand" aria-expanded="false" aria-controls="ui-brand">
-          <i class="mdi mdi-chart-pie menu-icon"></i>
-          <span class="menu-title">Brands</span>
-          <i class="menu-arrow"></i>
-        </a>
-            <div class="collapse" id="ui-brand">
-              <ul class="nav flex-column sub-menu">
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#collapse-brands" aria-expanded="false" aria-controls="collapse-brands">
+              <i class="mdi mdi-lumx menu-icon"></i>
+              <span class="menu-title">Brands</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse show" id="collapse-brands">
+                <ul class="nav flex-column sub-menu">
+
                  <li class="nav-item"> <a class="nav-link" href="{{ url('admin/brands/create') }}">Add Brand</a></li>
                  <li class="nav-item"> <a class="nav-link" href="{{ url('admin/brands') }}">View Brands</a></li>
-                {{--  <li class="nav-item"> <a class="nav-link" href="{{ url('admin/brands') }}">Add Brand</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ url('admin/brands') }}">View Brands</a></li>  --}}
 
-              </ul>
+                </ul>
             </div>
-      </li>
+        </li>
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#ui-category" aria-expanded="false" aria-controls="ui-category">
-          <i class="mdi mdi-chart-pie menu-icon"></i>
+          <i class="mdi mdi-google-circles-extended menu-icon"></i>
           <span class="menu-title">Categories</span>
           <i class="menu-arrow"></i>
         </a>
@@ -64,9 +52,11 @@
               </ul>
             </div>
       </li>
+
+      {{--  For Products  --}}
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#ui-product" aria-expanded="false" aria-controls="ui-product">
-          <i class="mdi mdi-chart-pie menu-icon"></i>
+          <i class="mdi mdi-package-variant menu-icon"></i>
           <span class="menu-title">Products</span>
           <i class="menu-arrow"></i>
         </a>
@@ -79,9 +69,19 @@
           </ul>
         </div>
       </li>
+       {{--  Products End  --}}
+
+        {{--  For Requeset  --}}
+       <li class="nav-item">
+        <a class="nav-link" href="{{ url('admin/requests') }}">
+          <i class="mdi mdi-truck menu-icon"></i>
+          <span class="menu-title">Request</span>
+        </a>
+      </li>
+      {{--  Request End  --}}
       <li class="nav-item">
         <a class="nav-link" data-bs-toggle="collapse" href="#ui-paymentpackage" aria-expanded="false" aria-controls="ui-paymentpackage">
-          <i class="mdi mdi-chart-pie menu-icon"></i>
+          <i class="mdi mdi-dumbbell menu-icon"></i>
           <span class="menu-title">Package</span>
           <i class="menu-arrow"></i>
         </a>
@@ -139,37 +139,23 @@
           </ul>
         </div>
       </li>
+
+      {{--  For Equipments  --}}
       <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#ui-shop" aria-expanded="false" aria-controls="ui-shop">
-        <i class="mdi mdi-clipboard-text menu-icon"></i>
-          <span class="menu-title">Shop</span>
-          <i class="menu-arrow"></i>
+        <a class="nav-link" href="{{ url('admin/equipments') }}">
+          <i class="mdi mdi-webhook menu-icon"></i>
+          <span class="menu-title">Equipments</span>
         </a>
-        <div class="collapse" id="ui-shop">
-          <ul class="nav flex-column sub-menu">
-            {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shoptypes/create') }}">Add Shop Type</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shoptypes') }}">View Shop Type</a></li>
-           
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops/create') }}">Add Shop</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops') }}">View Shop</a></li>
-          </ul>
-        </div>
       </li>
-      {{--  Deliver --}}
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#ui-delivery" aria-expanded="false" aria-controls="ui-delivery">
-        <i class="mdi mdi-clipboard-text menu-icon"></i>
-          <span class="menu-title">DeliveryType</span>
-          <i class="menu-arrow"></i>
+
+      {{--  For Gym Classes  --}}
+       <li class="nav-item">
+        <a class="nav-link" href="{{url('admin/class')}}">
+          <i class="mdi mdi-database menu-icon"></i>
+          <span class="menu-title">Class</span>
         </a>
-        <div class="collapse" id="ui-delivery">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/deliverytypes/create') }}">Add DeliveryType</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/deliverytypes') }}">View DeliveryType</a></li>
-          </ul>
-        </div>
       </li>
+      
       {{--  trainer  --}}
       
       <li class="nav-item">
@@ -203,11 +189,37 @@
           <span class="menu-title">Partner</span>
         </a>
       </li>
+     
+      {{--  For shop  --}}
       <li class="nav-item">
-        <a class="nav-link" href="{{url('admin/class')}}">
-          <i class="mdi mdi-database menu-icon"></i>
-          <span class="menu-title">Class</span>
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-shop" aria-expanded="false" aria-controls="ui-shop">
+        <i class="mdi mdi-clipboard-text menu-icon"></i>
+          <span class="menu-title">Shop</span>
+          <i class="menu-arrow"></i>
         </a>
+        <div class="collapse" id="ui-shop">
+          <ul class="nav flex-column sub-menu"> 
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shoptypes/create') }}">Add Shop Type</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shoptypes') }}">View Shop Type</a></li>
+           
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops/create') }}">Add Shop</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops') }}">View Shop</a></li>
+          </ul>
+        </div>
+      </li>
+      {{--  Deliver --}}
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="collapse" href="#ui-delivery" aria-expanded="false" aria-controls="ui-delivery">
+        <i class="mdi mdi-clipboard-text menu-icon"></i>
+          <span class="menu-title">DeliveryType</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="ui-delivery">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/deliverytypes/create') }}">Add DeliveryType</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/deliverytypes') }}">View DeliveryType</a></li>
+          </ul>
+        </div>
       </li>
     </ul>
   </nav>

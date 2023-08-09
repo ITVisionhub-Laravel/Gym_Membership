@@ -32,10 +32,12 @@
         </div>
     </div>
     <x-script />
-    {{ $scripts?? '' }}
+   
     @livewireScripts
-    @stack('script')
-    @yield('script')
+     {{ $scripts?? '' }}
+        @stack('scripts')
+        @yield('scripts')
+    
 </body>
 
 </html>

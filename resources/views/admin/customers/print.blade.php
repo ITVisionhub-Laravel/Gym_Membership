@@ -9,19 +9,19 @@
   box-sizing: border-box;
   font-family: "Arial", sans-serif;
 }
-body{
+ body{ 
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
-.wrapper{
+{{-- .wrapper{
   width: 250px;
   height: 250px;
-  background: #fff;
+  background: #c60707;
   border-radius: 16px;
   padding: 30px;
-}
+}  --}}
 h2{
   padding: 10px;
 }
@@ -60,7 +60,10 @@ h4{
   padding-bottom: 12px;
   text-align: left;
   background-color: #bad3f8;
-  color: white;
+  color: rgb(62, 57, 57);
+}
+hr{
+  size: 100%;
 }
 p{
   font-size: 11px;
@@ -68,53 +71,63 @@ p{
 </style>
 </head>
 <body>
-  <div class="wrapper">
-        <h4>Invoice</h4>  <hr>
+  <div >
+        <h4>Invoice</h4>  
+        <br>
+        <hr>
+        <br>
         <div class="row">
-        <div>
-        {{-- @dd($logos->image); --}}
-        <img src="{{asset("$logos->image")}}" alt="Member" style="width:80px;height:80px;">
-        </div>
-        <div class="right">
+       
+          <div class="col-md-4"> 
+          <img src="{{asset('/uploads/customer/'.$records->customer->image)}}" alt="Member" style="width:120px;height:120px;">
+          </div> 
+        <div class="col-md-8">
         <p>
-          Invoice: {{ $data['records']->customer->id }} <br>
-          {{ $data['records']->customer->address->street->township->city->name}},
-          {{ $data['records']->customer->address->street->township->name}},<br>
-          {{ $data['records']->customer->address->street->name}} <br> 
-          {{ $data['records']->customer->phone_number}}</p>
+          
+          Member Name:  {{ $records->customer->name }} <br>
+          Phone Number: {{ $records->customer->phone_number}} <br>
+          Member ID Number: {{ $records->customer->member_card }} <br>
+          {{ $records->customer->address->street->township->city->name}},
+          {{ $records->customer->address->street->township->name}},<br>
+          {{ $records->customer->address->street->name}} <br> 
+          </p>
         </div>
         </div>
-        <br>
-        <div>
-          <h4>Member:  {{ $data['records']->customer->name }}</h4>
-          <p>Paid On : {{  $data['records']->created_at->format("j, n, Y") }}</p>
-        </div>
-        <br>
+        <br> 
         <table class="table">
           <thead style="background: rgb(165, 221, 244)">
             <tr>
               <th>Package</th>
               <th>Promotion</th>
-              <th>Original Price</th>
+              <th>Paid On</th>
+              <th>Original Fee</th>
+              <th>Discounted Fee</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>{{$data['records']->package->package}}</td>
-              <td>{{$data['records']->package->promotion}} %</td>
-              <td>{{ $data['records']->package->original_price }}</td>
-            </tr>
+               <tr>
+              <td>{{$records->package->package}}</td>
+              <td>{{$records->package->promotion}} %</td>
+              <td>{{ $records->created_at->format("F j, Y, g:i a") }}</td>
+              <td>{{ $records->package->original_price }}</td>
+              <td>{{ $records->package->promotion_price }}</td>
+            </tr> 
+            
             <tr>
             <td></td>
+            <td></td>
+            <td></td>
             <td>Total Amount:</td>
-            <td>{{ $data['records']->package->original_price - ($data['records']->package->original_price*$data['records']->package->promotion/100) }}</td>
+            <td>{{ $records->package->promotion_price }}</td>
             </tr>
           </tbody>
           </table>
           <br>
+          @if ($logos) 
             <p style="text-align: center">
                 Thank your for joining with {{ $logos->name }}
             </p>
+          @endif
   </div>
 </body>
 </html>

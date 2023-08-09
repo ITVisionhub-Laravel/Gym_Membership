@@ -20,7 +20,7 @@
 
             <div class="row">
                 <x-forms.forminput name="cost" labelName="cost" placeholder="Enter cost" width="col-md-6" />
-               <x-forms.forminput name="waiting_time" placeholder="Enter waiting-time" width="col-md-6" />
+               <x-forms.forminput name="waiting-time" placeholder="Enter waiting-time" width="col-md-6" />
             </div> 
             
         <button type="submit" class="btn btn-outline-success float-end mt-3"> Save</button>   

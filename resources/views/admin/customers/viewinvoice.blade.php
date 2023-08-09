@@ -30,6 +30,7 @@ h2{
 }
 h5{
   font-size: 15px;
+  color: #434447
 }
 .row{
   display: flex;
@@ -42,7 +43,7 @@ h5{
   padding-top: 20px;
   padding-right: 40px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-between;
 }
 .table {
   width: 100%;
@@ -62,52 +63,56 @@ h5{
   padding-bottom: 12px;
   text-align: left;
   background-color: #bad3f8;
-  color: white;
+  color: rgb(62, 57, 57);
 }
 </style>
 </head>
 <body>
   <div class="wrapper">
-        <h2>Invoice</h2>  <hr>
+        <h2>Invoice</h2>
+          <hr>
+          <br>
         <div class="row">
-        <div>
-          image
-        {{-- @dd($logos->image); --}}
-        {{-- <img src="{{asset("$logos->image")}}" alt="Member" style="width:120px;height:120px;"> --}}
-        </div>
-        <div class="right">
-        <h5 style="line-height: 2">
-          Invoice Number: {{ $data['records']->customer->id }} <br>
-          {{ $data['records']->customer->address->street->township->city->name}},
-          {{ $data['records']->customer->address->street->township->name}},<br>
-          {{ $data['records']->customer->address->street->name}} <br> 
-          {{ $data['records']->customer->phone_number}}</h5>
-        </div>
-        </div>
-        <br>
-        <div style="line-height: 2">
-          <h4>Member:  {{ $data['records']->customer->name }}</h4>
-          <h5>Paid On : {{  $data['records']->created_at->format("F j, Y, g:i a") }}</h5>
+        
+          <div class="col-md-4"> 
+            <img src="{{asset('/uploads/customer/'.$records->customer->image)}}" alt="Member" style="width:120px;height:120px;">
+          </div> 
+          <div  class="col-md-8">
+            <h5 style="line-height: 2">
+              Member Name: {{ $records->customer->name}} <br>
+              Phone Number: {{ $records->customer->phone_number}} <br>
+              Member ID Number: {{ $records->customer->member_card }} <br>
+              {{ $records->customer->address->street->township->city->name}},
+              {{ $records->customer->address->street->township->name}},<br>
+              {{ $records->customer->address->street->name}} <br> 
+            </h5>
+          </div>
         </div>
         <br>
-        <table class="table">
-          <thead style="background: rgb(165, 221, 244)">
+         <table class="table table-striped table-hover">
+                      <thead class="table-primary">
             <tr>
-              <th>Package</th>
-              <th>Promotion</th>
-              <th>Original Price</th>
+              <th scope="col">Package</th>
+              <th scope="col">Promotion</th>
+              <th scope="col">Paid On</th>
+              <th scope="col">Original Fee</th>
+              <th scope="col">Discounted Fee</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>{{$data['records']->package->package}}</td>
-              <td>{{$data['records']->package->promotion}} %</td>
-              <td>{{ $data['records']->package->original_price }}</td>
+              <td>{{$records->package->package}}</td>
+              <td>{{$records->package->promotion}} %</td>
+              <td>{{  $records->created_at->format("F j, Y, g:i a") }}</td>
+              <td>{{ $records->package->original_price }} MMK</td>
+              <td>{{ $records->package->promotion_price }} MMK</td>
             </tr>
             <tr>
             <td></td>
+            <td></td>
+            <td></td>
             <td>Total Amount:</td>
-            <td>{{ $data['records']->package->original_price - ($data['records']->package->original_price*$data['records']->package->promotion/100) }}</td>
+            <td>{{ $records->package->promotion_price }} MMK</td>
             </tr>
           </tbody>
           </table>

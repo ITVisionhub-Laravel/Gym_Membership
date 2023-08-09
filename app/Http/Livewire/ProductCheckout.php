@@ -61,7 +61,7 @@ class ProductCheckout extends Component
                     'customer_id' => $this->customer->id,
                     'product_id' => $productId,
                     'quantity' => 1,
-                    'total' => $this->products->price,
+                    'total' => $this->products->selling_price,
                 ]);
                 // $this->emit('cartAddedUpdated');
 
@@ -92,7 +92,9 @@ class ProductCheckout extends Component
             if ($cartData->quantity > 1) {
                 $cartData->decrement('quantity');
                 $cartData->update([
-                    'total' => $cartData->quantity * $cartData->products->price,
+                    'total' =>
+                        $cartData->quantity *
+                        $cartData->products->selling_price,
                 ]);
                 // $this->emit('cartAddedUpdated');
                 $this->dispatchBrowserEvent('message', [
@@ -125,7 +127,9 @@ class ProductCheckout extends Component
             if ($cartData->products->quantity > $cartData->quantity) {
                 $cartData->increment('quantity');
                 $cartData->update([
-                    'total' => $cartData->quantity * $cartData->products->price,
+                    'total' =>
+                        $cartData->quantity *
+                        $cartData->products->selling_price,
                 ]);
                 // $this->emit('cartAddedUpdated');
                 $this->dispatchBrowserEvent('message', [
@@ -241,7 +245,6 @@ class ProductCheckout extends Component
             Cart::where('customer_id', auth()->user()->customers->id)->delete()
         ) {
             $this->showDiv = false;
-
             return redirect('product-invoice');
         }
     }

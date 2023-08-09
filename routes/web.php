@@ -90,12 +90,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('payment_providers', PaymentProviderController::class);
     Route::resource('payment_records', PaymentRecordController::class);
     Route::resource('attendents', AttendentController::class);
-
-    Route::resource('attendent_check', Attendence_CheckController::class);
 });
 
 Route::prefix('admin')->group(function () {
-    // Route::get('/brands', App\Http\Livewire\Admin\Brands\Index::class);
+    Route::resource('attendent_check', Attendence_CheckController::class);
+    Route::get('/brands', App\Http\Livewire\Admin\Brands\Index::class);
     Route::controller(
         App\Http\Controllers\Admin\DashboardController::class
     )->group(function () {
@@ -116,6 +115,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/customers/fetch_township', 'fetchTownship');
         Route::post('/customers/fetch_street', 'fetchStreet');
 
+        Route::get('/customers/{customer_id}/history', 'history');
         Route::get('/customers/{customer_id}/invoice', 'invoice');
         Route::get('/customers/{customer_id}/view', 'viewInvoice');
         Route::get('/customers/{customer_id}/generate', 'generateInvoice');
@@ -263,7 +263,7 @@ Route::prefix('admin')->group(function () {
     });
     Route::controller(App\Http\Controllers\Admin\PrintController::class)->group(
         function () {
-            Route::get('/attendent/{attendent}/print', 'print');
+            Route::get('/attendent/print', 'print');
         }
     );
     Route::controller(

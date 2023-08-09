@@ -50,7 +50,9 @@
                     <div class="col-md-6">
                         <div class="float-end main-button scroll-to-section">
                             {{--  onclick="return confirm('Please Fill Up Your Information')"  --}}
-                        <a href="{{ url('package-details') }}" >View Packages</a>
+                        <a href="{{ url('package-details') }}" @if (!$customer)
+                            disabled
+                        @endif >View Packages</a>
                     </div>
                     </div>
                     

@@ -134,15 +134,23 @@ class UserRegisterController extends Controller
 
     public function showProductInvoice()
     {
-        $data['product_invoice_list'] = ProductPaymentRecords::where(
+        $logos = Logo::first();
+        $checkoutProducts = ProductPaymentRecords::where(
             'customer_id',
-            Auth::user()->customers->id
+            auth()->user()->customers->id
         )
-
             ->get()
             ->groupBy('created_at')
             ->last();
-        return view('frontend.product.invoice', $data);
+        $total = ProductPaymentRecords::get()
+            ->where('customer_id', auth()->user()->customers->id)
+            ->groupBy('created_at')
+            ->last()
+            ->sum('total');
+        return view(
+            'frontend.product.invoice',
+            compact('checkoutProducts', 'total', 'logos')
+        );
     }
     public function detail()
     {

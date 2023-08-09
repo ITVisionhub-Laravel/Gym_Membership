@@ -20,8 +20,8 @@
                                             <img class="product-img" src="{{ $product_item->products->image }}" alt="prd1" onmouseover="animateImg(this)"
                                             onmouseout="normalImg(this)"/>
                                             <div class="card-body sale-product">
-                                                <h5 class="card-title  bold product-name text-center">{{ $product_item->products->name }}</h5>
-                                                <p class="card-text text-success product-price text-center">{{ $product_item->products->selling_price }} MMK.</p>
+                                                <h5 class="card-title  bold product-name text-center">{{ $product_item->name }}</h5>
+                                                <p class="card-text text-success product-price text-center">{{ $product_item->selling_price }} MMK.</p>
                                             
                                                 <button type = "button" wire:click = "addToCart({{ $product_item->products->id }})" class="btn addbadge badge-pill  mt-2 float-end success"> 
                                                     <span wire:loading.remove wire:target="addToCart({{ $product_item->products->id }})">
@@ -185,7 +185,7 @@
                                         onmouseout="normalImg(this)"/>
                                         <div class="card-body sale-product">
                                             <h5 class="card-title  bold product-name text-center">{{ $product_item->name }}</h5>
-                                            <p class="card-text text-success product-price text-center">{{ $product_item->price }} MMK.</p>
+                                            <p class="card-text text-success product-price text-center">{{ $product_item->selling_price }} MMK.</p>
                                         
                                             <button type = "button" class="btn addbadge badge-pill disabled mt-2 float-end success"> 
                                                      Add To Cart 

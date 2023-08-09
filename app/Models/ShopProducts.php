@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ShopKeeper extends Model
+class ShopProducts extends Model
 {
     use HasFactory;
-    protected $table = 'shop_keeper_request';
+    protected $table = 'shop_products';
 
-    protected $fillable = ['shop_type_id', 'product_id', 'status', 'quantity'];
+    protected $fillable = ['product_id', 'product_name', 'quantity'];
 
     /**
      * Get the user that owns the ShopKeeperRequest
@@ -28,8 +28,8 @@ class ShopKeeper extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function shops(): BelongsTo
-    {
-        return $this->belongsTo(ShopType::class, 'shop_type_id', 'id');
-    }
+    // public function shops(): BelongsTo
+    // {
+    //     return $this->belongsTo(ShopType::class, 'shop_type_id', 'id');
+    // }
 }

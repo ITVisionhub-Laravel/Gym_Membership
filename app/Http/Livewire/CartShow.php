@@ -2,22 +2,26 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\Cart;
 use App\Models\Logo;
-use Livewire\Request;
 use App\Models\Partner;
 use Livewire\Component;
-use App\Models\Customer;
-use App\Models\Products;
 use App\Models\PaymentRecord;
 use App\Models\CustomerQRCode;
 use App\Models\PaymentPackage;
 use App\Models\PaymentProvider;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CartShow extends Component
 {
     public $provider_id, $packageInfo, $chooseOnePackage, $userChoosePackage;
+
+    public function mount()
+    {
+        $chosenPackageId = Session::get('chosen_package_id');
+        if ($chosenPackageId) {
+            $this->chooseOnePackage = $chosenPackageId;
+        }
+    }
 
     public function rules()
     {
@@ -35,6 +39,8 @@ class CartShow extends Component
     {
         $this->chooseOnePackage = $package->id;
         $this->packageInfo = $package;
+
+        Session::put('chosen_package_id', $package->id);
     }
 
     public function checkout(PaymentPackage $package)
@@ -66,13 +72,6 @@ class CartShow extends Component
                     'type' => 'success',
                     'status' => 200,
                 ]);
-                $this->chooseOnePackage = 0;
-                // $this->userChoosePackage = PaymentRecord::where(
-                //     'customer_id',
-                //     auth()->user()->customers->id
-                // )
-                //     ->where('package_id', $package->id)
-                //     ->first();
             } else {
                 $gymfee_payment_record->delete();
                 $this->dispatchBrowserEvent('message', [
@@ -99,8 +98,5 @@ class CartShow extends Component
             )->first();
         }
         return view('livewire.cart-show', ['data' => $data]);
-        // } else {
-        //     return redirect('/');
-        // }
     }
 }

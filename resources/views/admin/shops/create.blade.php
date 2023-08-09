@@ -10,7 +10,7 @@
 
             <x-forms.dropdownfield :dropdownValues="$products" name="product_id" labelName="Products" width="col-md-12"></x-forms.dropdownfield>
             <x-forms.dropdownfield :dropdownValues="$shopTypes" name="shop_type_id" labelName="Shop Types" width="col-md-12"></x-forms.dropdownfield>
-            <x-forms.forminput name="quantity" placeholder="Enter quantity" width="col-md-12"/>
+            <x-forms.forminput wireClick=true wireFunction="checkExtraQuantity" wireValue=true name="quantity" type="number" placeholder="Enter quantity" width="col-md-12" />
            
         <button type="submit" class="btn btn-outline-success float-end mt-3"> Save</button>   
     </form>

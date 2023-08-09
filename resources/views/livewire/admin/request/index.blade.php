@@ -1,7 +1,6 @@
-
-<div>
-     <div class="container my-1">
-        @include('livewire.admin.request.modal-form',['products'=>$products,'deli_types'=>$deliTypes])
+<div class="container my-1">
+    {{--  ,['products'=>$products,'deli_types'=>$deliTypes]  --}}
+    @include('livewire.admin.request.modal-form')
     <x-successmessage/>
      <div class="container mb-4">
         <div class="row">
@@ -52,64 +51,15 @@
      </div> 
 
      <hr>
-     
-     <table id="myTable" class="display">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Shop Name</th>
-                            <th>Product Name</th>
-                            <th>Quantity</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                       @php 
-                        $j=1;
-                        @endphp
-                        @foreach($requests as $request)
-                        <tr>
-                            <td>{{$j++}}</td>
-                            @if ($request->shops)
-                                <td>{{$request->shops->name}}</td>
-                                @else
-                                <td> - </td>
-                            @endif
+    {{--  @dd($clickEvent)  --}}
+     @if ($clickEvent == 1)
+        @include('livewire.admin.request.shopkeeper_table',['requests'=>$requests])
+     @elseif ($clickEvent == 2)
+        @include('livewire.admin.request.warehouse_table',['requests'=>$requests])
+     @else
+        @include('livewire.admin.request.delivery_man_table',['requests'=>$requests])
+     @endif
+        
+</div>
 
-                             @if ($request->name)
-                                <td>{{$request->name}}</td>
-                                @else
-                                <td>{{$request->products->name}}</td>
-                            @endif
-                            
-                            <td>{{$request->quantity}}</td>
-                            {{--  <td>
-                            {{ $request->status }}
-                            </td>  --}}
-                            <td>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#addDeliveryRequest" class="btn btn-primary btn-sm float-end">Approve</a>
-                                {{--  <div wire:loading.attr="disabled" wire:click="addDeliveryRequest">
-                                    <a href="#" wire:target = "addDeliveryRequest" class="btn btn-sm btn-success">Approve</a>
-                                </div>  --}}
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
 
-            </div>
-
-<x-slot name="scripts">
-    
-    <script>
-        $(document).ready( function () {
-            $('#myTable').DataTable();      
-    });
-
-    </script>
-   
-</x-slot> 
-        </div>
-   
-
- 

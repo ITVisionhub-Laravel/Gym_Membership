@@ -36,7 +36,7 @@ class DeliveryTypeController extends Controller
         $deliver->kg = $validatedData['kg'];
         $deliver->township_id = $validatedData['township_id'];
         $deliver->cost = $validatedData['cost'];
-        $deliver->waiting_time = $validatedData['waiting_time'];
+        $deliver->waiting_time = $validatedData['waiting-time'];
         $deliver->save();
         return redirect('admin/deliverytypes')->with(
             'message',

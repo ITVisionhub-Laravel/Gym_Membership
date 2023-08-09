@@ -8,6 +8,7 @@ use App\Models\Trainer;
 use App\Models\Customer;
 use App\Models\Attendent;
 use App\Models\PaymentRecord;
+use App\Models\CustomerQRCode;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentExpiredMembers;
@@ -80,20 +81,43 @@ class DashboardController extends Controller
         // End of Bar Chart
 
         // For Expired Payment Member
-        $expiredPaymentMembers = [];
+
         $data['expiredPaymentMember'] = false;
         foreach ($paymentRecords as $paymentRecord) {
             $packageName = $paymentRecord->package->package;
-            $packageDate = (int) explode('month', $packageName)[0];
-            $packageExpiredDate = new DateTimeImmutable(
-                Carbon::parse($paymentRecord->record_date)->addMonths(
-                    $packageDate
-                )
-            );
+            if (stripos($packageName, 'month') !== false) {
+                // It represents months
+                $packageDate = (int) explode('month', $packageName)[0];
+                $packageExpiredDate = new DateTimeImmutable(
+                    Carbon::parse($paymentRecord->record_date)->addMonths(
+                        $packageDate
+                    )
+                );
+            } elseif (stripos($packageName, 'week') !== false) {
+                // It represents weeks
+                $packageDate = (int) explode('week', $packageName)[0];
+                $packageExpiredDate = new DateTimeImmutable(
+                    Carbon::parse($paymentRecord->record_date)->addWeeks(
+                        $packageDate
+                    )
+                );
+            } elseif (stripos($packageName, 'year') !== false) {
+                // It represents years
+                $packageDate = (int) explode('year', $packageName)[0];
+                $packageExpiredDate = new DateTimeImmutable(
+                    Carbon::parse($paymentRecord->record_date)->addYears(
+                        $packageDate
+                    )
+                );
+            } else {
+                $packageDate = (int) explode('week', $packageName)[0];
+                $packageExpiredDate = new DateTimeImmutable(
+                    Carbon::parse($paymentRecord->record_date)->addWeeks(
+                        $packageDate
+                    )
+                );
+            }
 
-            // $paymentDate = new DateTimeImmutable($paymentRecord->record_date);
-            // @dd($packageExpiredDate);
-            // @dd($todayDate);
             $interval = date_diff($todayDate, $packageExpiredDate);
             if ($interval->invert) {
                 $expiredDate = -$interval->days;
@@ -104,17 +128,6 @@ class DashboardController extends Controller
             $payment_expired_members = new PaymentExpiredMembers();
 
             if ($expiredDate <= 3) {
-                // array_push(
-                //     $expiredPaymentMembers,
-                //     Customer::where('id', $paymentRecord->customer_id)->first()
-                // );
-                // dd($expiredDate);
-                // dd((int) str_replace('-', '', $expiredDate));
-
-                // $payment_expired_members->customer_id =
-                //     $paymentRecord->customer_id;
-                // $payment_expired_members->expired_date = $expiredDate;
-                // @dd($expiredDate);
                 $payment_expired_members->updateOrCreate(
                     [
                         'customer_id' => $paymentRecord->customer_id,
@@ -124,20 +137,21 @@ class DashboardController extends Controller
                         'extra_days' => $expiredDate,
                     ]
                 );
-                // $payment_expired_members->expired_date = array_push(
-                //     $expiredPaymentMembers,
-                //     $paymentRecord->customer_id
-                // );
-                $data['noExpiredPaymentMember'] = false;
+
+                $data['ExpiredPaymentMember'] = true;
+                CustomerQRCode::where(
+                    'user_id',
+                    $paymentRecord->customer_id
+                )->delete();
             } else {
                 $payment_expired_members
                     ->where('customer_id', $paymentRecord->customer_id)
                     ->delete();
             }
         }
-        // $data['expiredPaymentMember'] = $payment_expired_members->count();
-        if (!$data['expiredPaymentMember']) {
-            $data['noExpiredPaymentMember'] = true;
+        $data['payment'] = $payment_expired_members->get()->count();
+        if (!$data['payment']) {
+            $data['ExpiredPaymentMember'] = false;
         }
 
         $data['trainers'] = Trainer::get();

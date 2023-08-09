@@ -264,38 +264,70 @@ class CustomerController extends Controller
         );
     }
 
-    public function invoice($customer_id)
+    public function history($customer_id)
     {
-        $customers = Customer::where('id', $customer_id)->get();
-        $data['records'] = PaymentRecord::where(
-            'customer_id',
-            $customer_id
-        )->get();
-        $data['packages'] = $data['records'][0]->package;
+        $records = PaymentRecord::where('customer_id', $customer_id)
+            ->with('customer')
+            ->get();
+
         $logos = Logo::first();
+
+        if ($records->isEmpty()) {
+            return response()->json(['no_records' => 'No records found']);
+        }
+
+        $packages = [];
+        foreach ($records as $paymentRecord) {
+            $packages[] = $paymentRecord->package;
+        }
+
+        $totalAmount = 0;
+        foreach ($packages as $package) {
+            $totalAmount += $package->promotion_price;
+        }
+
         return view(
-            'admin.customers.invoice',
-            $data,
-            compact('customers', 'logos')
+            'admin.customers.member_history',
+            compact('logos', 'records', 'packages', 'totalAmount')
         );
     }
+
+    public function invoice($customer_id)
+    {
+        $records = PaymentRecord::where('customer_id', $customer_id)
+            ->with('customer')
+            ->latest()
+            ->first();
+
+        $logos = Logo::first();
+
+        if (!$records) {
+            return response()->json(['no_records' => 'No records found']);
+        }
+
+        return view('admin.customers.invoice', compact('logos', 'records'));
+    }
+
     public function viewInvoice($customer_id)
     {
-        $data['records'] = PaymentRecord::where('customer_id', $customer_id)
+        $records = PaymentRecord::where('customer_id', $customer_id)
             ->with('customer')
+            ->latest()
             ->first();
         $logos = Logo::first();
-        return view('admin.customers.viewinvoice', compact('data', 'logos'));
+        return view('admin.customers.viewinvoice', compact('records', 'logos'));
     }
+
     public function generateInvoice($customer_id)
     {
-        $data['records'] = PaymentRecord::where('customer_id', $customer_id)
+        $records = PaymentRecord::where('customer_id', $customer_id)
             ->with('customer')
+            ->latest()
             ->first();
         $logos = Logo::first();
         $pdf = Pdf::loadView(
             'admin.customers.viewinvoice',
-            compact('data', 'logos')
+            compact('records', 'logos')
         );
         $todayDate = Carbon::now()->format('d-m-Y');
         return $pdf->download(
@@ -303,6 +335,7 @@ class CustomerController extends Controller
         );
         exit();
     }
+
     public function mailInvoice($customer_id)
     {
         try {
@@ -385,10 +418,13 @@ class CustomerController extends Controller
 
     public function print($customer_id)
     {
-        $data['records'] = PaymentRecord::where('customer_id', $customer_id)
+        $records = PaymentRecord::where('customer_id', $customer_id)
             ->with('customer')
+            ->latest()
             ->first();
+
         $logos = Logo::first();
-        return view('admin.customers.print', compact('data', 'logos'));
+
+        return view('admin.customers.print', compact('records', 'logos'));
     }
 }

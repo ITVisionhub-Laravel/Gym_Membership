@@ -20,9 +20,8 @@
         <li>
             <i class='bx bxs-calendar-check' ></i>
             <span class="text">
-                @if (!$noExpiredPaymentMember)
-                
-                <h3>{{ $expiredPaymentMember }}</h3>
+                @if ($ExpiredPaymentMember) 
+                <h3>{{ $payment }}</h3>
                 <a href="{{url('admin/expiredMembers')}}"><p>Payment Expired Members</p></a>
                 @else
                     <h3>0</h3>    

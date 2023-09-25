@@ -74,7 +74,6 @@ class Attendence_CheckController extends Controller
             // Member is new, return JSON response indicating success
             $data = ['success' => true];
             return response()->json($data);
-            // return new JsonResponse();
         }
         $data = ['memberExists' => true];
         return response()->json($data);

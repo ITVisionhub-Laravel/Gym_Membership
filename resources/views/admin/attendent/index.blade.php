@@ -72,8 +72,7 @@
         </tbody>
     </table>
 </div>
-   <!-- Custom popup box -->
-   <!-- The popup container -->
+   <!-- Custom popup box --> 
 <div id="customPopup" class="popup-container">
     <!-- The popup content -->
     <div class="popup-content">

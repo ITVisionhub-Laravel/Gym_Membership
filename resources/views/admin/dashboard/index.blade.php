@@ -147,7 +147,7 @@
                                             </a>
                                         </li>
                                         <li class="list-inline-item">
-                                            <a class="social-icon text-xs-center" target="_blank" href="https://www.fiverr.com/share/qb8D02">
+                                            <a class="social-icon text-xs-center" target="_blank" href="https://x.com/PannPoem?t=Mj7Q0WC-O_TUZqlKvnJyXA&s=35">
                                                 <i class="uil uil-twitter"></i>
                                             </a>
                                         </li>

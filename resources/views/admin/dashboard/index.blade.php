@@ -39,6 +39,13 @@
                 <p>Total Earnings</p>
             </span>
         </li>
+        {{-- <li>
+            <i class='bx bxs-dollar-circle' ></i>
+            <span class="text">
+                <h3>${{ $buying_price }}</h3>
+                <p>Total Expenses</p>
+            </span>
+        </li> --}}
 
 </ul>
 

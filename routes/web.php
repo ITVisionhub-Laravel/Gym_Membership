@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\PaymentPackageController;
 use App\Http\Controllers\Admin\PaymentProviderController;
 use App\Http\Controllers\Admin\PaymentRecordController;
 use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\SaleRecordController;
 use App\Http\Controllers\ProfileController;
 use App\Models\PaymentRecord;
 use Illuminate\Support\Facades\Route;
@@ -96,6 +97,8 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::resource('attendent_check', Attendence_CheckController::class);
+    Route::resource('salerecord', SaleRecordController::class);
+    Route::resource('shareholders', SaleRecordController::class);
     Route::get('/brands', App\Http\Livewire\Admin\Brands\Index::class);
     // Route::resource('/debit-credit', DebitAndCreditController::class);
     // Route::resource('/transaction', TransactionController::class);

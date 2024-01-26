@@ -153,7 +153,7 @@ class DashboardController extends Controller
             }
         }
         $payment_expired_members = new PaymentExpiredMembers();
-        // dd($payment_expired_members);
+
         $data['payment'] = $payment_expired_members->get()->count();
         if (!$data['payment']) {
             $data['ExpiredPaymentMember'] = false;

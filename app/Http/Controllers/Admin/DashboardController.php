@@ -149,6 +149,8 @@ class DashboardController extends Controller
                     ->delete();
             }
         }
+        $payment_expired_members = new PaymentExpiredMembers();
+
         $data['payment'] = $payment_expired_members->get()->count();
         if (!$data['payment']) {
             $data['ExpiredPaymentMember'] = false;

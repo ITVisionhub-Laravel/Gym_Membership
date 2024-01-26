@@ -164,7 +164,21 @@
             <div class="collapse" id="ui-shareholder">
                 <ul class="nav flex-column sub-menu">
                     {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.index') }}">View
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('shareholders.index') }}">View
+                            Share Holders</a></li>
+                </ul>
+            </div>
+            <div class="collapse" id="ui-shareholder">
+                <ul class="nav flex-column sub-menu">
+                    {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('shareholders.create') }}">Create
+                            Share Holders</a></li>
+                </ul>
+            </div>
+            <div class="collapse" id="ui-shareholder">
+                <ul class="nav flex-column sub-menu">
+                    {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
+                    <li class="nav-item"> <a class="nav-link" href="#">Update
                             Share Holders</a></li>
                 </ul>
             </div>
@@ -174,14 +188,22 @@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-salerecord" aria-expanded="false"
                 aria-controls="ui-salerecord">
-                <i class="mdi mdi-clipboard-text menu-icon"></i>
+                <i class="mdi mdi-book-open-variant
+                menu-icon"></i>
                 <span class="menu-title">Sales Record</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-salerecord">
                 <ul class="nav flex-column sub-menu">
                     {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.index') }}">View
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('salerecord.index') }}">View
+                            Sales Record</a></li>
+                </ul>
+            </div>
+            <div class="collapse" id="ui-salerecord">
+                <ul class="nav flex-column sub-menu">
+                    {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('salerecord.create') }}">Create
                             Sales Record</a></li>
                 </ul>
             </div>

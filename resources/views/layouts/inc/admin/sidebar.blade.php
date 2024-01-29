@@ -266,7 +266,7 @@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-shop" aria-expanded="false"
                 aria-controls="ui-shop">
-                <i class="mdi mdi-clipboard-text menu-icon"></i>
+                <i class="mdi mdi-shopify menu-icon"></i>
                 <span class="menu-title">Shop</span>
                 <i class="menu-arrow"></i>
             </a>
@@ -287,7 +287,7 @@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-delivery" aria-expanded="false"
                 aria-controls="ui-delivery">
-                <i class="mdi mdi-clipboard-text menu-icon"></i>
+                <i class="mdi mdi-truck-delivery menu-icon"></i>
                 <span class="menu-title">DeliveryType</span>
                 <i class="menu-arrow"></i>
             </a>

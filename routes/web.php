@@ -4,9 +4,12 @@ use App\Http\Controllers\Admin\Attendee_CheckController;
 use App\Http\Controllers\Admin\Attendence_CheckController;
 use App\Http\Controllers\Admin\AttendentController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\DebitAndCreditController;
 use App\Http\Controllers\Admin\PaymentPackageController;
 use App\Http\Controllers\Admin\PaymentProviderController;
 use App\Http\Controllers\Admin\PaymentRecordController;
+use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\SaleRecordController;
 use App\Http\Controllers\ProfileController;
 use App\Models\PaymentRecord;
 use Illuminate\Support\Facades\Route;
@@ -75,15 +78,15 @@ Route::middleware('auth')->group(function () {
         'show',
     ])->name('members.show');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name(
-        'profile.edit'
-    );
-    Route::patch('/profile', [ProfileController::class, 'update'])->name(
-        'profile.update'
-    );
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
-        'profile.destroy'
-    );
+    // Route::get('/profile', [ProfileController::class, 'edit'])->name(
+    //     'profile.edit'
+    // );
+    // Route::patch('/profile', [ProfileController::class, 'update'])->name(
+    //     'profile.update'
+    // );
+    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name(
+    //     'profile.destroy'
+    // );
 
     //PuKit
     Route::resource('payment_packages', PaymentPackageController::class);
@@ -94,7 +97,11 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('admin')->group(function () {
     Route::resource('attendent_check', Attendence_CheckController::class);
+    Route::resource('salerecord', SaleRecordController::class);
+    Route::resource('shareholders', SaleRecordController::class);
     Route::get('/brands', App\Http\Livewire\Admin\Brands\Index::class);
+    // Route::resource('/debit-credit', DebitAndCreditController::class);
+    // Route::resource('/transaction', TransactionController::class);
     Route::controller(
         App\Http\Controllers\Admin\DashboardController::class
     )->group(function () {

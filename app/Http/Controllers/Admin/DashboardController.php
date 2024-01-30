@@ -12,6 +12,7 @@ use App\Models\CustomerQRCode;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentExpiredMembers;
+use App\Models\Products;
 
 class DashboardController extends Controller
 {
@@ -23,6 +24,8 @@ class DashboardController extends Controller
         $expiredDate = '';
 
         $data['members'] = Customer::get();
+        $data['buying_price'] = Products::sum('buying_price');
+        // dd($data['buying_price']);
         $prices = 0;
         foreach (PaymentRecord::get() as $paymentPrice) {
             $prices += (int) $paymentPrice->price;
@@ -149,13 +152,15 @@ class DashboardController extends Controller
                     ->delete();
             }
         }
+        $payment_expired_members = new PaymentExpiredMembers();
+
         $data['payment'] = $payment_expired_members->get()->count();
         if (!$data['payment']) {
             $data['ExpiredPaymentMember'] = false;
         }
 
         $data['trainers'] = Trainer::get();
-
+        // dd($data);
         return view('admin.dashboard.index', $data);
     }
 

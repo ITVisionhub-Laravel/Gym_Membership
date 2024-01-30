@@ -30,6 +30,20 @@
                         </div>
                     </fieldset>
                     <div class="pt-3">
+                        <fieldset class="reset">
+                            <legend class="reset">Social Info:</legend> 
+                        
+                            <div class="row">   
+                                <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile" width="col-md-3"/>
+                                <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number"
+                                    labelName="emergency mobile" width="col-md-3" />
+                                <x-forms.forminput name="facebook" placeholder="Your Facebook" />
+                                <x-forms.forminput name="twitter" placeholder="Your Twitter" />    
+                                <x-forms.forminput name="linkedIn" placeholder="Your LinkedIn" />    
+                            </div>
+                        </fieldset>
+                    </div>
+                    <div class="pt-3">
                     <fieldset class="reset">
                         <legend class="reset">Address:</legend> 
                         <div class="row">

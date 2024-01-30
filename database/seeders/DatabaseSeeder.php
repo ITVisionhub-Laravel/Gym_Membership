@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         // Township::truncate();
         // Street::truncate();
 
-            $this->call([
+        $this->call([
             CityTableData::class,
             TownshipTableData::class,
             StreetTableData::class,

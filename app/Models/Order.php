@@ -17,13 +17,22 @@ class Order extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
-    public function user(): BelongsTo
+    public function customer(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Customer::class);
     }
 
-    public function address(): BelongsTo
+    public function status() :BelongsTo
     {
-        return $this->belongsTo(Address::class);
+        return $this->belongsTo(Status::class);
+    }
+
+    public function deliveryType() :BelongsTo
+    {
+        return $this->belongsTo(DeliveryType::class);
+    }
+    public function paymentType() : BelongsTo
+    {
+        return $this->belongsTo(PaymentProvider::class, 'provider_id', 'id');
     }
 }

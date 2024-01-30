@@ -47,9 +47,4 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Customer::class, 'email', 'email');
     }
-
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
 }

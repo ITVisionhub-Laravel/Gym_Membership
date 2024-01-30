@@ -6,15 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class PaymentProvider extends Model
+class Status extends Model
 {
     use HasFactory;
+    protected $guarded = ['id'];
 
-    protected $table = 'payment_providers';
-
-    protected $fillable = ['name','bank_slip'];
-
-    public function orders(): HasMany
+    public function order() : HasMany
     {
         return $this->hasMany(Order::class);
     }

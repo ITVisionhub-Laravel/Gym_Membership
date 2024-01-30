@@ -262,6 +262,7 @@ Route::prefix('admin')->group(function () {
         App\Http\Controllers\Admin\TrainerController::class
     )->group(function () {
         Route::get('/trainers', 'index');
+        Route::get('/organizationchart', 'organizationChart');
         Route::get('/trainers/create', 'create');
         Route::post('/trainers', 'store');
         Route::get('/trainers/{trainer}/edit', 'edit');

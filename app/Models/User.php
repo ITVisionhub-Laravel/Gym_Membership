@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Customer;
+use App\Models\Position;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +20,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password','role_as', 'position_id', 'image', 'reporting_to'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -45,5 +46,10 @@ class User extends Authenticatable
     public function customers(): BelongsTo
     {
         return $this->belongsTo(Customer::class, 'email', 'email');
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position_id', 'id');
     }
 }

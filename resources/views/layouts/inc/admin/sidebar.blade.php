@@ -165,6 +165,14 @@
         </a>
        
       </li>
+      {{--  Organization Chart  --}}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('admin/organizationchart') }}">
+          <i class="mdi mdi-account menu-icon"></i>
+          <span class="menu-title">Organization Chart</span>
+        </a>
+       
+      </li>
       <li class="nav-item">
         <a class="nav-link" href="{{route('attendents.index')}}">
           <i class="mdi mdi-file-document-box-outline menu-icon"></i>

@@ -10,6 +10,11 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->integer('amount');
+            $table->enum('status',[0,1]);
+            $table->foreignId('order_id')->nullable()->constrained('orders')->cascadeOnDelete();
+
             $table->timestamps();
         });
     }

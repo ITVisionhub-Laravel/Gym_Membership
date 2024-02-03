@@ -139,6 +139,34 @@
             </div>
         </li>
         <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-transaction" aria-expanded="false"
+                aria-controls="ui-transaction">
+                <i class="mdi mdi-currency-usd menu-icon"></i>
+                <span class="menu-title">Transactions</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-transaction">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('transactions.create') }}">Add Transactions</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('transactions.index') }}">View Transactions</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-debitcredit" aria-expanded="false"
+                aria-controls="ui-debitcredit">
+                <i class="fa-regular fa-credit-card"></i>
+                <span class="menu-title" style="margin-left: 16px">DebitAndCredit</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-debitcredit">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('debit-credit.create') }}">Add DebitAndCredit</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('debit-credit.index') }}">View DebitAndCredit</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-paymentrecord" aria-expanded="false"
                 aria-controls="ui-paymentrecord">
                 <i class="mdi mdi-clipboard-text menu-icon"></i>

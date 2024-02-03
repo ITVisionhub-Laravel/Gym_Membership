@@ -9,10 +9,12 @@ use App\Models\Customer;
 use App\Models\Attendent;
 use App\Models\PaymentRecord;
 use App\Models\CustomerQRCode;
-use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Models\DebitAndCredit;
 use App\Models\PaymentExpiredMembers;
 use App\Models\Products;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 
 class DashboardController extends Controller
 {
@@ -160,7 +162,29 @@ class DashboardController extends Controller
         }
 
         $data['trainers'] = Trainer::get();
-        // dd($data);
+
+        // $results = DebitAndCredit::select('name', DB::raw('SUM(amount) as total_amount'), DB::raw('COUNT(name) as name_count'))
+        // ->groupBy('name')
+        //     ->havingRaw('COUNT(name) = (SELECT MAX(name_count) FROM (SELECT COUNT(name) as name_count FROM debit_and_credits GROUP BY name) AS subquery)')
+        //     ->get();
+        $now = now();
+        
+        $variablesOneData = Config::get('variables.ONE');
+        $variablesTwoData = Config::get('variables.TWO');
+        
+        $monthlyData = DebitAndCredit::whereYear('date', '=', $now->year)
+                        ->whereMonth('date', '=', $now->month)
+                        ->get();
+                        
+        $expense = $monthlyData->where('transaction_type_id', $variablesOneData)->sum('amount');
+        
+        $income = $monthlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
+        
+        $profit = $income - $expense;
+        
+        $data['expenses'] = $expense;
+        $data['incomes'] = $income;
+        $data['profits'] = $profit;
         return view('admin.dashboard.index', $data);
     }
 

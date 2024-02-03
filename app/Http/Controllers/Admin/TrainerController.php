@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\TrainerFormRequest;
+use App\Models\User;
 
 class TrainerController extends Controller
 {
@@ -87,5 +88,11 @@ class TrainerController extends Controller
             'message',
             'Trainer Deleted Successfully'
         );
+    }
+
+    public function organizationChart()
+    {
+        $staffs = User::where('role_as', 5)->with('position')->get();
+        return view('admin.dashboard.organization_chart',['staffs'=> $staffs]);
     }
 }

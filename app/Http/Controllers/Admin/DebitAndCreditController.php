@@ -7,8 +7,6 @@ use App\Http\Requests\DebitAndCreditRequest;
 use App\Models\DebitAndCredit;
 use App\Models\Transaction;
 use App\Models\TransactionType;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 
 class DebitAndCreditController extends Controller
 {
@@ -20,13 +18,7 @@ class DebitAndCreditController extends Controller
 
     public function create()
     {
-        $transactionTypes = TransactionType::all();
-        $variablesData = Config::get('variables.ONE');
-        
-        $transactions = Transaction::where('status','!=', $variablesData)->get();
-        
-        // You may need to pass necessary data to the create view
-        return view('debit_credit.create', compact('transactionTypes', 'transactions'));
+        return view('debit_credit.create');
     }
 
     public function store(DebitAndCreditRequest $request)
@@ -60,11 +52,4 @@ class DebitAndCreditController extends Controller
         return redirect()->route('debit-credit.index')->with('message', 'Debit/Credit deleted successfully!');
     }
 
-    private function getCommonData()
-    {
-        return [
-            'transactionTypes' => TransactionType::all(),
-            'transactions' => Transaction::all(),
-        ];
-    }
 }

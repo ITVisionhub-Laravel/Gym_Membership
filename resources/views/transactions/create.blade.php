@@ -23,10 +23,6 @@
                     <option value="1">Completed</option>
                 </select>
             </div>
-            {{-- <div class="mb-3">
-                <label for="order_id" class="form-label">Order ID</label>
-                <input type="text" class="form-control" id="order_id" name="order_id">
-            </div> --}}
             <button type="submit" class="btn btn-success">Create</button>
         </form>
      </div>

@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('debit_and_credits', function (Blueprint $table) {
             $table->id();
-            $table->string('item_name');
+            $table->string('name');
             $table->integer('amount');
             $table->date('date');
             $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnDelete();

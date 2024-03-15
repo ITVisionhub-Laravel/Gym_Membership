@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             // TownshipTableData::class,
             // StreetTableData::class,
             // StatusSeeder::class
+            TransactionTypesSeeder::class,
         ]);
     }
 }

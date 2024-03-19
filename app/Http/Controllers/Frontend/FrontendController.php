@@ -12,11 +12,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Logo;
 use App\Models\Partner;
 use App\Models\Trainer;
+use App\Models\User;
 
 class FrontendController extends Controller
 {
     public function index()
     {
+        // dd(isset(Auth::user()->member_card));
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
         $data['class'] = GymClass::get();
@@ -25,10 +27,7 @@ class FrontendController extends Controller
             if (Auth::user()->role_as == 1) {
                 return redirect('admin/customers');
             } else {
-                $customer = Customer::where(
-                    'email',
-                    Auth::user()->email
-                )->first();
+                // $customer = false;
 
                 // if ($member_card_id) {
                 //     $member = CustomerQRCode::where(
@@ -49,7 +48,7 @@ class FrontendController extends Controller
                 // $data['qrcode'] = $member;
                 // }
                 // } else {
-                $data['customer'] = $customer;
+                $data['customer'] = isset(Auth::user()->member_card);
                 // }
                 return view('frontend.index', $data);
             }

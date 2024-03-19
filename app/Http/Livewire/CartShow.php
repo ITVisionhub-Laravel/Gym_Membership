@@ -9,6 +9,7 @@ use App\Models\PaymentRecord;
 use App\Models\CustomerQRCode;
 use App\Models\PaymentPackage;
 use App\Models\PaymentProvider;
+use App\Models\User;
 use Illuminate\Support\Facades\Session;
 
 class CartShow extends Component
@@ -59,12 +60,12 @@ class CartShow extends Component
         $gymfee_payment_record->price = $package->promotion_price;
         $gymfee_payment_record->record_date = date('Y.m.d');
         $gymfee_payment_record->bank_slip = '';
-        $gymfee_payment_record->customer_id = auth()->user()->customers->id;
+        $gymfee_payment_record->user_id = auth()->user()->id;
 
         if ($gymfee_payment_record->save()) {
             $customerQRCode = new CustomerQRCode();
-            $customerQRCode->member_card_id = auth()->user()->customers->member_card;
-            $customerQRCode->user_id = auth()->user()->customers->id;
+            $customerQRCode->member_card_id = auth()->user()->member_card;
+            $customerQRCode->user_id = auth()->user()->id;
 
             if ($customerQRCode->save()) {
                 $this->dispatchBrowserEvent('message', [
@@ -85,7 +86,7 @@ class CartShow extends Component
 
     public function render()
     {
-        $data['customerInfo'] = auth()->user()->customers;
+        $data['customerInfo'] = User::where('id', auth()->user()->id)->whereNotNull('member_card')->first();
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
         $data['packages'] = PaymentPackage::get();

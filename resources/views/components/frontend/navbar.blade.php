@@ -1,6 +1,5 @@
 <!-- ***** Header Area Start ***** -->
 @props(['customer'])
-
 <header class="header-area header-sticky" style="background-color:#232d39">
     <div class="container">
         <div class="row">
@@ -11,7 +10,9 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+                        <li class="scroll-to-section">
+                            <a href="{{route('home')}}" class="active">Home</a>
+                        </li>
                         <li class="scroll-to-section"><a href="#features">About</a></li>
                         <li class="scroll-to-section"><a href="#our-classes">Classes</a></li>
                         <li class="scroll-to-section"><a href="#trainers">Trainers</a></li>
@@ -35,7 +36,7 @@
                                 </li>
                             @endif
                         @else
-                            <li class="scroll-to-section"><a href="{{ route('login') }}">{{ __(Auth::user()->name) }}</a>
+                            <li class="scroll-to-section"><a href="#">{{ __(Auth::user()->name) }}</a>
                             </li>
                             <li>
                                 <a href="{{ route('logout') }}"

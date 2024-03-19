@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('position_id');
-            $table->string('reporting_to');
-            $table->string('image');
+            $table->string('position_id')->nullable();
+            $table->string('reporting_to')->nullable();
+            $table->string('image')->nullable()->default('sample.png');
         });
     }
 

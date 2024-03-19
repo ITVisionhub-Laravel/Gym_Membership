@@ -24,13 +24,15 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentExpiredMembers;
 use App\Http\Requests\CustomerFormRequest;
+use App\Models\ProductPaymentRecords;
+use App\Models\User;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::all();
+        $customers = User::all();
         return view('admin.customers.index', compact('customers'));
     }
     public function create()
@@ -418,13 +420,16 @@ class CustomerController extends Controller
 
     public function print($customer_id)
     {
-        $records = PaymentRecord::where('customer_id', $customer_id)
-            ->with('customer')
-            ->latest()
-            ->first();
-
+        $records = ProductPaymentRecords::with('user')->get()
+            ->where('user_id', $customer_id)
+            ->groupBy('created_at')
+            ->last();
         $logos = Logo::first();
 
-        return view('admin.customers.print', compact('records', 'logos'));
+        $total = 0;
+        foreach ($records as $record) {
+            $total += $record->total;
+        }
+        return view('admin.customers.print', compact('records', 'logos','total'));
     }
 }

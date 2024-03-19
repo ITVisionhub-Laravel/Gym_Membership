@@ -9,7 +9,7 @@
   box-sizing: border-box;
   font-family: "Arial", sans-serif;
 }
- body{ 
+ body{
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,63 +71,59 @@ p{
 </style>
 </head>
 <body>
-  <div >
-        <h4>Invoice</h4>  
+    <div>
+        <h4>Invoice</h4>
         <br>
         <hr>
         <br>
         <div class="row">
-       
-          <div class="col-md-4"> 
-          <img src="{{asset('/uploads/customer/'.$records->customer->image)}}" alt="Member" style="width:120px;height:120px;">
-          </div> 
-        <div class="col-md-8">
-        <p>
-          
-          Member Name:  {{ $records->customer->name }} <br>
-          Phone Number: {{ $records->customer->phone_number}} <br>
-          Member ID Number: {{ $records->customer->member_card }} <br>
-          {{ $records->customer->address->street->township->city->name}},
-          {{ $records->customer->address->street->township->name}},<br>
-          {{ $records->customer->address->street->name}} <br> 
-          </p>
+            <div class="col-md-4">
+                <img src="{{asset('/uploads/customer/'.$records[0]->user->image)}}" alt="Member" style="width:120px;height:120px;">
+            </div>
+            <div class="col-md-8">
+                <p>
+                Member Name:  {{ $records[0]->user->name }} <br>
+                Phone Number: {{ $records[0]->user->phone_number}} <br>
+                Member ID Number: {{ $records[0]->user->member_card }} <br>
+                {{ $records[0]->user->address->street->township->city->name}},
+                {{ $records[0]->user->address->street->township->name}},<br>
+                {{ $records[0]->user->address->street->name}} <br>
+                </p>
+            </div>
         </div>
-        </div>
-        <br> 
+        <br>
         <table class="table">
-          <thead style="background: rgb(165, 221, 244)">
-            <tr>
-              <th>Package</th>
-              <th>Promotion</th>
-              <th>Paid On</th>
-              <th>Original Fee</th>
-              <th>Discounted Fee</th>
-            </tr>
-          </thead>
-          <tbody>
-               <tr>
-              <td>{{$records->package->package}}</td>
-              <td>{{$records->package->promotion}} %</td>
-              <td>{{ $records->created_at->format("F j, Y, g:i a") }}</td>
-              <td>{{ $records->package->original_price }}</td>
-              <td>{{ $records->package->promotion_price }}</td>
-            </tr> 
-            
-            <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Total Amount:</td>
-            <td>{{ $records->package->promotion_price }}</td>
-            </tr>
-          </tbody>
-          </table>
-          <br>
-          @if ($logos) 
+            <thead style="background: rgb(165, 221, 244)">
+                <tr>
+                    <th>Items</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Sub Total Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($records as $record)
+                    <tr>
+                        <td>{{$record->products->name}}</td>
+                        <td>$ {{$record->products->selling_price}} </td>
+                        <td>{{ $record->quantity }}</td>
+                        <td>{{ $record->total }}</td>
+                    </tr>
+                @endforeach
+                    <tr>
+                        <td class="rowspan-3"></td>
+                        <td></td>
+                        <td>Total Amount</td>
+                        <td>{{ $total}}</td>
+                    </tr>
+            </tbody>
+        </table>
+        <br>
+        @if ($logos)
             <p style="text-align: center">
                 Thank your for joining with {{ $logos->name }}
             </p>
-          @endif
-  </div>
+        @endif
+    </div>
 </body>
 </html>

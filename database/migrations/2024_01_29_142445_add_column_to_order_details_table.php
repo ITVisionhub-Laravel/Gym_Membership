@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('quantity')->after('id');
             $table->double('total')->default(0.0)->after('quantity');
             $table->foreignId('order_id')->constrained()->cascadeOnDelete()->after('total');
-            $table->foreignId('product_id')->constrained()->cascadeOnDelete()->after('url');
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete()->after('order_id');
         });
     }
 

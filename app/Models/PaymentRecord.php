@@ -9,7 +9,7 @@ class PaymentRecord extends Model
 {
     use HasFactory;
     protected $table = 'payment_records';
-    protected $fillable = ['package_id','price', 'record_date', 'provider_id', 'customer_id'];
+    protected $guarded = ['id'];
 
     public function member()
     {
@@ -24,9 +24,9 @@ class PaymentRecord extends Model
     //     return $this->belongsTo(PaymentProvider::class, 'provider_id');
     // }
 
-    public function customer()
+    public function user()
     {
-        return $this->belongsTo(Customer::class,'customer_id','id');
+        return $this->belongsTo(User::class);
     }
     public function package()
     {

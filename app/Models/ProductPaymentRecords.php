@@ -10,7 +10,7 @@ class ProductPaymentRecords extends Model
     use HasFactory;
     protected $table = 'product_payment_records';
     protected $fillable = [
-        'customer_id',
+        'user_id',
         'product_id',
         'provider_id',
         'quantity',
@@ -21,9 +21,9 @@ class ProductPaymentRecords extends Model
     {
         return $this->belongsTo(Products::class, 'product_id', 'id');
     }
-    public function customers()
+    public function user()
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+        return $this->belongsTo(User::class);
     }
     public function paymentType()
     {

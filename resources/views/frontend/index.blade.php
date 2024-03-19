@@ -16,9 +16,9 @@
     <link rel="stylesheet" href="assets/css/main.css">
     <link rel="icon" type="image/x-icon" href="assets/images/features-1-icon.png">
     </head>
-    
+
     <body>
-    
+
     <!-- ***** Preloader Start ***** -->
     <div id="js-preloader" class="js-preloader">
       <div class="preloader-inner">
@@ -31,15 +31,14 @@
       </div>
     </div>
     <!-- ***** Preloader End ***** -->
-    
+
     <x-frontend.navbar :customer="$customer"> </x-frontend.navbar>
 
     <!-- ***** Main Banner Area Start ***** -->
     <div class="main-banner" id="top">
-        <video autoplay muted loop id="bg-video"> 
+        <video autoplay muted loop id="bg-video">
             <source src="assets/images/gym-vdo.mp4" type="video/mp4" />
-        </video> 
-        
+        </video>
 
         <div class="video-overlay header-text">
             <div class="caption">
@@ -50,12 +49,13 @@
                     <div class="col-md-6">
                         <div class="float-end main-button scroll-to-section">
                             {{--  onclick="return confirm('Please Fill Up Your Information')"  --}}
-                        <a href="{{ url('package-details') }}" @if (!$customer)
+
+                        <a href="{{ url('package-details') }}" @if ($customer)
                             disabled
                         @endif >View Packages</a>
                     </div>
                     </div>
-                    
+
                      {{--  style="pointer-events: none; opacity: 0.4;"  --}}
                     <div class="col-md-6">
                         <div class="col-md-4 main-button scroll-to-section">
@@ -63,7 +63,7 @@
                             <a href="{{ url('product-checkout') }}" >View Products</a>
                         </div>
                     </div>
-                    
+
                 </div>
                 <x-forms.input-error name="township"/>
             </div>
@@ -78,7 +78,7 @@
                 <div class="col-lg-6 offset-lg-3">
                     <div class="section-heading">
                         <h2 class="mb-3">Our<em>About</em></h2>
-                        
+
                         <p>Training Studio for gyms and fitness centers. You are allowed to play this 5 heroes gym for your aims.</p>
                     </div>
                 </div>
@@ -111,7 +111,7 @@
                         </p>
                       </div>
                     </div>
-            
+
                     <div class="card mt-3 card-logo shadow">
                       <div class="card-body">
                         <h5>Our Value</h5>
@@ -122,7 +122,7 @@
                     </div>
                     </div>
                     </div>
-                   
+
                 </div>
             </div>
         </div>
@@ -146,7 +146,7 @@
         </div>
     </section>
     <!-- ***** Call to Action End ***** -->
-    
+
     <!-- ***** Our Classes Start ***** -->
     <section class="section" id="our-classes">
         <div class="container">
@@ -154,7 +154,7 @@
                 <div class="col-lg-6 offset-lg-3">
                     <div class="section-heading">
                         <h2 class="mb-3">Our <em>Classes</em></h2>
-                       
+
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero iure, excepturi soluta ducimus nisi ut deleniti? Ipsa, necessitatibus nam, debitis similique, corrupti temporibus iure officiis nobis laboriosam </p>
                     </div>
                 </div>
@@ -184,7 +184,7 @@
                 <div class="col-lg-6 offset-lg-3">
                     <div class="section-heading dark-bg">
                         <h2 class="mb-3">Classes <em>Schedule</em></h2>
-                        
+
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure a dolore cum quis, voluptas inventore laboriosam hic est quibusdam autem. Sapiente itaque alias ut a sint voluptates animi quod tenetur?</p>
                     </div>
                 </div>
@@ -228,7 +228,7 @@
                 <div class="col-lg-6 offset-lg-3">
                     <div class="section-heading">
                         <h2 class="mb-3">Expert <em>Trainers</em></h2>
-                       
+
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt, ad maxime dolores dolorum repudiandae quod asperiores non eaque expedita sunt, dignissimos itaque minima vel ipsa, eos explicabo perferendis quo ipsum!</p>
                     </div>
                 </div>
@@ -262,9 +262,9 @@
         </div>
     </section>
     <!-- ***** Testimonials Ends ***** -->
-    
 
-    
+
+
     <!-- ***** Contact Us Area Starts ***** -->
     <section class="section" id="contact-us">
         <div class="container-fluid">
@@ -312,10 +312,10 @@
         </div>
     </section>
     <!-- ***** Contact Us Area Ends ***** -->
-    
+
     <x-frontend.footer :logo="$logo" :partner="$partner"/>
 
-    
+
     <!-- jQuery -->
     <script src="assets/js/jquery-2.1.0.min.js"></script>
 
@@ -327,10 +327,10 @@
     <script src="assets/js/scrollreveal.min.js"></script>
     <script src="assets/js/waypoints.min.js"></script>
     <script src="assets/js/jquery.counterup.min.js"></script>
-    <script src="assets/js/imgfix.min.js"></script> 
-    <script src="assets/js/mixitup.js"></script> 
+    <script src="assets/js/imgfix.min.js"></script>
+    <script src="assets/js/mixitup.js"></script>
     <script src="assets/js/accordions.js"></script>
-    
+
     <!-- Global Init -->
     <script src="assets/js/custom.js"></script>
 

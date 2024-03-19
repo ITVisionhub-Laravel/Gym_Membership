@@ -20,14 +20,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\ProductPaymentRecords;
 use App\Http\Requests\CustomerFormRequest;
 use App\Models\Shop;
+use App\Models\User;
 
 class UserRegisterController extends Controller
 {
     public function index()
     {
         $data['cities'] = City::get(['name', 'id']);
-        // $data['packages'] = PaymentPackage::get();
-        // $data['providers'] = PaymentProvider::get();
         $data['gymclasses'] = GymClass::get();
         $data['userinfo'] = Auth::user();
         return view('frontend.register.index', $data);
@@ -36,16 +35,19 @@ class UserRegisterController extends Controller
     public function createQRCode(CustomerFormRequest $request)
     {
         $validatedData = $request->validated();
-        $customer = new Customer();
+        // dd($validatedData);
+        $customer = User::find(Auth::user()->id);
         $address = new Address();
 
-        $customer->name = $validatedData['name'];
+        // $customer->name = $validatedData['name'];
+        // $customer->email = $validatedData['email'];
         $customer->age = $validatedData['age'];
-        $customer->email = $validatedData['email'];
         $customer->member_card = time();
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
         $customer->class_id = $validatedData['gymclass'];
+        $customer->phone_number = $validatedData['phone_number'];
+        $customer->emergency_phone = $validatedData['emergency_phone'];
 
         if (
             DB::table('addresses')
@@ -68,9 +70,6 @@ class UserRegisterController extends Controller
             $customer->address_id = $addressField[0]->id;
         }
 
-        $customer->phone_number = $validatedData['phone_number'];
-        $customer->emergency_phone = $validatedData['emergency_phone'];
-
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $ext = $file->getClientOriginalExtension();
@@ -79,7 +78,6 @@ class UserRegisterController extends Controller
             $customer->image = $filename;
         }
 
-        // $customer->save();
         if ($customer->save()) {
             return redirect('/')->with(
                 'message',
@@ -136,14 +134,14 @@ class UserRegisterController extends Controller
     {
         $logos = Logo::first();
         $checkoutProducts = ProductPaymentRecords::where(
-            'customer_id',
-            auth()->user()->customers->id
+            'user_id',
+            auth()->user()->id
         )
             ->get()
             ->groupBy('created_at')
             ->last();
         $total = ProductPaymentRecords::get()
-            ->where('customer_id', auth()->user()->customers->id)
+            ->where('user_id', auth()->user()->id)
             ->groupBy('created_at')
             ->last()
             ->sum('total');

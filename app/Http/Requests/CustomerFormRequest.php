@@ -24,15 +24,15 @@ class CustomerFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string'],
+            // 'name' => ['required', 'string'],
             'age' => ['required', 'integer'],
-            'email' => ['required', 'string'],
+            // 'email' => ['required', 'string'],
             // 'member_card_id' => ['required', 'integer'],
             'height' => ['required', 'string'],
             'weight' => ['required', 'string'],
-            'city' => ['required', 'string'],
-            'township' => ['required', 'string'],
-            'street' => ['required', 'string'],
+            // 'city' => ['required', 'string'],
+            // 'township' => ['required', 'string'],
+            // 'street' => ['required', 'string'],
             'phone_number' => ['required', 'string'],
             'emergency_phone' => ['required', 'string'],
             // 'package' => ['required', 'string'],

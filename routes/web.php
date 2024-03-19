@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [
     App\Http\Controllers\Frontend\FrontendController::class,
     'index',
-]);
+])->name('home');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('user_register', [
@@ -100,10 +100,10 @@ Route::prefix('admin')->group(function () {
     Route::resource('salerecord', SaleRecordController::class);
     Route::resource('shareholders', SaleRecordController::class);
     Route::get('/brands', App\Http\Livewire\Admin\Brands\Index::class);
-    
+
     Route::resource('debit-credit', DebitAndCreditController::class);
     Route::resource('transactions', TransactionController::class);
-    
+
     Route::controller(
         App\Http\Controllers\Admin\DashboardController::class
     )->group(function () {

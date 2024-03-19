@@ -1,5 +1,3 @@
-
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -48,29 +46,29 @@
                     @csrf
                    <div class="pt-1">
                     <fieldset class="reset">
-                        <legend class="reset">Personal Info:</legend>  
+                        <legend class="reset">Personal Info:</legend>
                         <div class="row pt-2">
                             <x-forms.forminput name="name" value="{{ $userinfo->name }}" placeholder="Enter Your Name" width="col-md-3"/>
                             <x-forms.forminput name="email" value="{{ $userinfo->email }}" placeholder="Enter Your Email" type="email" width="col-md-3"/>
                             <x-forms.forminput name="age" placeholder="Enter Your Age" type="number" width="col-md-3"/>
                             <x-forms.forminput type="file" name="image" width="col-md-3" placeholder="Enter Your Image" value='' width="col-md-3"/>
                         </div>
-                   
-                      
+
+
                     <div class="row">
                         <x-forms.dropdownfield :dropdownValues="$gymclasses" name="gymclass" labelName="Classes" width="col-md-3"></x-forms.dropdownfield>
                         <x-forms.forminput type="number" name="height" placeholder="Enter Your Height"/>
                         <x-forms.forminput name="weight" placeholder="Enter Your Weight"/>
-                        <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile"/>        
-                        <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile" width="col-md-3"/> 
+                        <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile"/>
+                        <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile" width="col-md-3"/>
                     </div>
                 </fieldset>
                 </div>
                 <div class="pt-3">
                 <fieldset class="reset pt-2">
-                        <legend class="reset">Address:</legend> 
+                        <legend class="reset">Address:</legend>
                     <div class="row">
-                        <x-forms.dropdownfield :dropdownValues="$cities" name="city" width="col-md-4"></x-forms.dropdownfield>  
+                        <x-forms.dropdownfield :dropdownValues="$cities" name="city" width="col-md-4"></x-forms.dropdownfield>
                         <div class="form-group col-md-4">
                             <label for="">Township</label>
                             <select id="township-dd" class="form-select" name="township" >
@@ -88,18 +86,18 @@
                 </div>
                 {{--  <div class="pt-3">
                     <fieldset class="reset pt-2">
-                        <legend class="reset">Payment:</legend> 
+                        <legend class="reset">Payment:</legend>
                       --}}
                         {{--<x-forms.dropdownfield :dropdownValues="$providers" name="payment" labelName="Bank Type" width="col-md-4"></x-forms.dropdownfield>
                         <x-forms.forminput type="file" name="bank_slip" placeholder="Enter Your Online Payment" width="col-md-4"/>
                           --}}
                     {{--  <div class="row">
-                        
+
                         <x-forms.dropdownfield :dropdownValues="$packages" name="package" labelName="Packages" width="col-md-3"></x-forms.dropdownfield>
                         <x-forms.forminput name="promotion" id="promotion" placeholder="Promotion" required readonly/>
-                        <x-forms.forminput name="original_price" id="original_price" placeholder="Original Price" labelName="original price" required readonly/>     
+                        <x-forms.forminput name="original_price" id="original_price" placeholder="Original Price" labelName="original price" required readonly/>
                         <x-forms.forminput type="number" id="price" name="price"  placeholder=" Price" required readonly/>
-                        
+
                     </div>
                     </fieldset>
                 </div>  --}}

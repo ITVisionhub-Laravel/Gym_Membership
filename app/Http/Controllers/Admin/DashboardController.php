@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use DateTime;
+use Carbon\Carbon;
+use App\Models\User;
 use DateTimeImmutable;
 use App\Models\Trainer;
 use App\Models\Customer;
+use App\Models\Products;
 use App\Models\Attendent;
 use App\Models\PaymentRecord;
 use App\Models\CustomerQRCode;
-use App\Http\Controllers\Controller;
 use App\Models\DebitAndCredit;
+use App\Http\Controllers\Controller;
 use App\Models\PaymentExpiredMembers;
-use App\Models\Products;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 
 class DashboardController extends Controller
@@ -190,7 +191,7 @@ class DashboardController extends Controller
 
     public function show(int $memberId)
     {
-        $memberDetails = Customer::where('id', $memberId)->get();
+        $memberDetails = User::where('id', $memberId)->get();
         return view('members.profile', compact('memberDetails'));
     }
 }

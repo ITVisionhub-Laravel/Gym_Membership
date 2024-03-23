@@ -96,14 +96,13 @@
                 $('#scanQrCode').on('keydown', function (event) {
                     if (event.key === 'Enter') {
                         event.preventDefault(); // Prevent default form submission
-                        const memberId = $(this).val();
-
+                        const memberId = $(this).val(); 
                         // Make an AJAX request to check if the member exists
                         $.ajax({
                             url: "{{ url('admin/attendent_check') }}", // Replace with the correct URL endpoint
                             method: 'POST',
                             data: {
-                                member_check: memberId,
+                                memberId: memberId,
                                 _token: '{{csrf_token()}}'
                             },
 

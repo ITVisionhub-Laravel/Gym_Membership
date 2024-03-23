@@ -15,6 +15,6 @@ class PaymentExpiredMembers extends Model
 
     public function expiredMember()
     {
-        return $this->belongsTo(Customer::class, 'customer_id', 'id');
+        return $this->belongsTo(User::class, 'customer_id', 'id');
     }
 }

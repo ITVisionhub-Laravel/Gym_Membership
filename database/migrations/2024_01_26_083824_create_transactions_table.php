@@ -13,8 +13,8 @@ return new class extends Migration
             $table->string('name');
             $table->integer('amount');
             $table->enum('status',[0,1]);
-            $table->foreignId('order_id')->nullable()->constrained('orders')->cascadeOnDelete();
-
+            $table->unsignedBigInteger('order_id')->nullable();
+            $table->foreignId('transaction_type_id')->nullable()->constrained('orders')->cascadeOnDelete();
             $table->timestamps();
         });
     }

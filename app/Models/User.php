@@ -66,4 +66,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(PaymentRecord::class);
     }
+
+    public function debitCreditInfo(){
+        return $this->morphMany(DebitAndCredit::class, 'related_info');
+    }
 }

@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::controller(
+    App\Http\Controllers\Admin\CustomerController::class
+)->group(function () {
+    Route::get('/add_member_info', 'store')->name('add_member_info');
+});    

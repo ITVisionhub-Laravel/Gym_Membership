@@ -61,14 +61,14 @@ class CustomerController extends Controller
     }
 
     public function store(CustomerFormRequest $request)
-    {
+    { 
         $validatedData = $request->validated();
-        $customer = new Customer();
+        $customer = new User();
         $address = new Address();
 
-        $customer->name = $validatedData['name'];
+        $customer->name = Auth::user()->name;
+        $customer->email = Auth::user()->email;
         $customer->age = $validatedData['age'];
-        $customer->email = $validatedData['email'];
         $customer->member_card = time();
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
@@ -84,7 +84,7 @@ class CustomerController extends Controller
                 $request->street
             )->get();
             $customer->address_id = $addressField[0]->id;
-            // dd($addressField);
+           
         } else {
             $address->street_id = $request->street;
             $address->save();
@@ -106,8 +106,8 @@ class CustomerController extends Controller
             $customer->image = $filename;
         }
 
-        // $customer->save();
         if ($customer->save()) {
+            return $customer;
             return redirect('admin/customers')->with(
                 'message',
                 'Customer Added Successfully'

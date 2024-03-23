@@ -19,32 +19,32 @@
           <div class="card centered shadow-lg mt-2 mb-2 bg-white rounded">
             <div class="card-header">
               <h3>
-                History 
+                History
                  <a href="{{ url('admin/customers') }}" class="btn btn-danger btn-sm float-end mx-1">Back</a>
                </h3>
             </div>
             <div class="card-body">
               <div class="row form-group">
                 <div class="col-12">
-                     
+
                   <div class="col-md-12">
                     <div class="row">
-                      <div class="col-md-4"> 
-                          <img src="{{asset('/uploads/customer/'.$records[0]->customer->image)}}" alt="Member" style="width:120px;height:120px;">
-                       
+                      <div class="col-md-4">
+                          <img src="{{asset('/uploads/customer/'.$records[0]->user->image)}}" alt="Member" style="width:120px;height:120px;">
+
                       </div>
                       <div class="col-md-8">
-                        <h6> Member Name: {{ $records[0]->customer->name}}</h6>
-                        <h6>Phone Number:{{ $records[0]->customer->phone_number}}</h6>
+                        <h6> Member Name: {{ $records[0]->user->name}}</h6>
+                        <h6>Phone Number:{{ $records[0]->user->phone_number}}</h6>
                         <h6 style="line-height: 1.5">
-                          Member ID Number: {{ $records[0]->customer->member_card }} <br>
-                          {{ $records[0]->customer->address->street->township->city->name}},
-                          {{ $records[0]->customer->address->street->township->name}},<br>
-                          {{ $records[0]->customer->address->street->name}} 
+                          Member ID Number: {{ $records[0]->user->member_card }} <br>
+                          {{ $records[0]->user->address->street->township->city->name}},
+                          {{ $records[0]->user->address->street->township->name}},<br>
+                          {{ $records[0]->user->address->street->name}}
                         </h6>
-                        
+
                       </div>
-                    
+
                     </div>
                   </div>
                   <br>
@@ -69,7 +69,7 @@
                           <td>{{ $record->package->promotion_price }} MMK</td>
                         </tr>
                         @endforeach
-                  
+
                   @endif
                         <tr>
                         <td></td>
@@ -79,8 +79,8 @@
                         <td> {{ $totalAmount }} MMK </td>
                         </tr>
                   </tbody>
-                  
-                    
+
+
                   </table>
                   <br>
                   @if ($logos)
@@ -88,7 +88,7 @@
                         Thank your for joining with {{ $logos->name }}
                     </p>
                   @endif
-                    
+
                 </div>
               </div>
             </div>
@@ -104,6 +104,6 @@
       $('.btnprint').printPage();
     });
   </script>
-  
+
 </body>
 </html>

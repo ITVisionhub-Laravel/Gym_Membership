@@ -73,18 +73,18 @@ h5{
           <hr>
           <br>
         <div class="row">
-        
-          <div class="col-md-4"> 
-            <img src="{{asset('/uploads/customer/'.$records->customer->image)}}" alt="Member" style="width:120px;height:120px;">
-          </div> 
+
+          <div class="col-md-4">
+            <img src="{{asset('/uploads/customer/'.$records->user->image)}}" alt="Member" style="width:120px;height:120px;">
+          </div>
           <div  class="col-md-8">
             <h5 style="line-height: 2">
-              Member Name: {{ $records->customer->name}} <br>
-              Phone Number: {{ $records->customer->phone_number}} <br>
-              Member ID Number: {{ $records->customer->member_card }} <br>
-              {{ $records->customer->address->street->township->city->name}},
-              {{ $records->customer->address->street->township->name}},<br>
-              {{ $records->customer->address->street->name}} <br> 
+              Member Name: {{ $records->user->name}} <br>
+              Phone Number: {{ $records->user->phone_number}} <br>
+              Member ID Number: {{ $records->user->member_card }} <br>
+              {{ $records->user->address->street->township->city->name}},
+              {{ $records->user->address->street->township->name}},<br>
+              {{ $records->user->address->street->name}} <br>
             </h5>
           </div>
         </div>
@@ -118,9 +118,11 @@ h5{
           </table>
           <br>
           <br>
+        @if($logos)
             <p style="text-align: center">
                 Thank your for joining with {{ $logos->name }}
             </p>
+        @endif
   </div>
 </body>
 </html>

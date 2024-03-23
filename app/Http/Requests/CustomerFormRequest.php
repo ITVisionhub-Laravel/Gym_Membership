@@ -24,24 +24,24 @@ class CustomerFormRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => ['required', 'string'],
             'age' => ['required', 'integer'],
-            // 'email' => ['required', 'string'],
-            // 'member_card_id' => ['required', 'integer'],
             'height' => ['required', 'string'],
             'weight' => ['required', 'string'],
+            'phone_number' => ['required', 'string'],
+            'emergency_phone' => ['required', 'string'],
+            'gymclass' => ['required', 'string'],
+            'image' => ['nullable', 'mimes:jpg,jpeg,png'],
+            // 'name' => ['required', 'string'],
+            // 'email' => ['required', 'string'],
+            // 'member_card_id' => ['required', 'integer'],
             // 'city' => ['required', 'string'],
             // 'township' => ['required', 'string'],
             // 'street' => ['required', 'string'],
-            'phone_number' => ['required', 'string'],
-            'emergency_phone' => ['required', 'string'],
             // 'package' => ['required', 'string'],
             // 'promotion' => ['required', 'string'],
             // 'original_price' => ['required', 'string'],
             // 'price' => ['required', 'string'],
             // 'payment' => ['required', 'string'],
-            'gymclass' => ['required', 'string'],
-            'image' => ['nullable', 'mimes:jpg,jpeg,png'],
             // 'bank_slip' => ['nullable', 'mimes:jpg,jpeg,png'],
         ];
     }

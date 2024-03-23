@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\PaymentRecordController;
 use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\SaleRecordController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfitSharingController;
 use App\Models\PaymentRecord;
 use Illuminate\Support\Facades\Route;
 
@@ -103,6 +104,7 @@ Route::prefix('admin')->group(function () {
 
     Route::resource('debit-credit', DebitAndCreditController::class);
     Route::resource('transactions', TransactionController::class);
+    Route::resource('profitsharing', ProfitSharingController::class);
 
     Route::controller(
         App\Http\Controllers\Admin\DashboardController::class
@@ -133,6 +135,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/{member_id}/addPayments', 'addPayments');
         Route::post('/payFees', 'payFees');
         Route::get('/customers/{customer_id}/print', 'print');
+        Route::get('/customers/{customer_id}/print/package', 'printPackage');
     });
 
     // Products

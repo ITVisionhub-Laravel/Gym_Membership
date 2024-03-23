@@ -5,7 +5,7 @@
      <div class="container mb-4">
         <div class="row">
             <div type="button" wire:loading.attr="disabled" wire:click="clickEvt(1)" class="col-md-3">
-                
+
                 <div class="card p-3 mb-2" style="border-radius:10px; background-color: lightyellow">
                     <div class="d-flex">
                         <div class="d-flex flex-row align-items-center">
@@ -16,7 +16,7 @@
                             <p>$50.00</p>
                         </div>
                     </div>
-                
+
                 </div>
             </div>
             <div type="button" wire:loading.attr="disabled" wire:click="clickEvt(2)" class="col-md-3">
@@ -30,7 +30,7 @@
                             <p>dkf</p>
                         </div>
                     </div>
-                
+
                 </div>
             </div>
             <div type="button" wire:loading.attr="disabled" wire:click="clickEvt(3)" class="col-md-3">
@@ -44,11 +44,11 @@
                             <p>dkf</p>
                         </div>
                     </div>
-                
+
                 </div>
             </div>
         </div>
-     </div> 
+    </div>
 
      <hr>
     {{--  @dd($clickEvent)  --}}
@@ -59,7 +59,7 @@
      @else
         @include('livewire.admin.request.delivery_man_table',['requests'=>$requests])
      @endif
-        
+
 </div>
 
 

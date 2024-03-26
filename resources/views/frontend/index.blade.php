@@ -277,34 +277,64 @@
                 <div class="col-lg-6 col-md-6 col-xs-12">
                     <div class="contact-form">
                         {{-- <h5 style="background-color: rgba(104, 110, 118, 0.8)">Suggestion Form</h5> --}}
-                        <form id="contact" action="" method="post">
-                          <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                              <fieldset>
-                                <input name="name" type="text" id="name" placeholder="Your Name*" required="">
-                              </fieldset>
+                        <form id="contact" action="create" method="post">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <fieldset>
+                                        <input name="name" type="text" id="name" placeholder="Your Name*">
+                                    </fieldset>
+                                    {{-- @if ($errors->has('name'))
+                                        <span class="text-danger">{{$errors->first('name')}}</span>
+                                    @endif --}}
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <fieldset>
+                                        <input name="email" type="text" id="email" placeholder="Your Email*">
+                                    </fieldset>
+                                    {{-- @if ($errors->has('email'))
+                                        <span class="text-danger">{{$errors->first('email')}}</span>
+                                    @endif --}}
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <fieldset>
+                                        <input name="subject" type="text" id="subject" placeholder="Subject">
+                                        {{-- @if ($errors->has('subject'))
+                                            <span class="text-danger">{{$errors->first('subject')}}</span>
+                                        @endif --}}
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-12">
+                                    <fieldset>
+                                        <textarea name="message" rows="6" id="message" placeholder="Message" ></textarea>
+                                        {{-- @if ($errors->has('message'))
+                                            <span class="text-danger">{{$errors->first('message')}}</span>
+                                        @endif --}}
+                                    </fieldset>
+                                </div>
+                                @if(config('services.recaptcha.key'))
+                                    <div class="g-recaptcha"
+                                        data-sitekey="{{config('services.recaptcha.key')}}">
+                                    </div>
+                                    {{-- @if ($errors->has('message'))
+                                        <span class="text-danger">{{$errors->first('message')}}</span>
+                                    @endif --}}
+                                @endif
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mt-3">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                                <div class="col-lg-12 mt-5">
+                                    <fieldset>
+                                        <button type="submit" id="form-submit" class="main-button">Send Message</button>
+                                    </fieldset>
+                                </div>
                             </div>
-                            <div class="col-md-6 col-sm-12">
-                              <fieldset>
-                                <input name="email" type="text" id="email" pattern="" placeholder="Your Email*" required="">
-                              </fieldset>
-                            </div>
-                            <div class="col-md-12 col-sm-12">
-                              <fieldset>
-                                <input name="subject" type="text" id="subject" placeholder="Subject">
-                              </fieldset>
-                            </div>
-                            <div class="col-lg-12">
-                              <fieldset>
-                                <textarea name="message" rows="6" id="message" placeholder="Message" required=""></textarea>
-                              </fieldset>
-                            </div>
-                            <div class="col-lg-12">
-                              <fieldset>
-                                <button type="submit" id="form-submit" class="main-button">Send Message</button>
-                              </fieldset>
-                            </div>
-                          </div>
                         </form>
                     </div>
                 </div>
@@ -333,6 +363,8 @@
 
     <!-- Global Init -->
     <script src="assets/js/custom.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
   </body>
 </html>

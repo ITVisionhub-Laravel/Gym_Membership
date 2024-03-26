@@ -14,19 +14,9 @@ return new class extends Migration {
     {
         Schema::create('shop', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('shop_type_id')->constrained()->cascadeOnDelete();
             $table->integer('quantity');
-            $table->unsignedBigInteger('shop_type_id');
-            $table
-                ->foreign('product_id')
-                ->references('id')
-                ->on('products')
-                ->onDelete('cascade');
-            $table
-                ->foreign('shop_type_id')
-                ->references('id')
-                ->on('shop_types')
-                ->onDelete('cascade');
             $table->timestamps();
         });
     }

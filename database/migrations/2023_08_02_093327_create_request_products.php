@@ -14,15 +14,10 @@ return new class extends Migration {
     {
         Schema::create('request_products', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id')->unsigned();
-            $table
-                ->foreign('product_id')
-                ->references('id')
-                ->on('products')
-                ->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('status_id')->constrained()->cascadeOnDelete();
             $table->string('product_name');
             $table->integer('quantity');
-            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

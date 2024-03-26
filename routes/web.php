@@ -35,6 +35,11 @@ Route::get('/', [
     'index',
 ])->name('home');
 
+Route::post('/create', [
+    App\Http\Controllers\Frontend\FrontendController::class,
+    'create',
+])->name('create');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('user_register', [
         App\Http\Controllers\Frontend\UserRegisterController::class,

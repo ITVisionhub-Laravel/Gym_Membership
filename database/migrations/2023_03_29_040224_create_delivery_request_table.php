@@ -14,19 +14,16 @@ return new class extends Migration {
     {
         Schema::create('delivery_request', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('deli_type_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('status_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('shop_type_id')->constrained()->cascadeOnDelete();
             $table->string('start_date');
             $table->string('end_date');
             $table->string('description');
-            $table->integer('product_id');
             $table->integer('quantity');
             $table->integer('kg');
             $table->integer('deli_cost');
-            $table->unsignedBigInteger('deli_type_id');
-            $table
-                ->foreign('deli_type_id')
-                ->references('id')
-                ->on('delivery_types')
-                ->onDelete('cascade');
             $table->timestamps();
         });
     }

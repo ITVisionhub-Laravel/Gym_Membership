@@ -14,18 +14,10 @@ return new class extends Migration {
     {
         Schema::create('shop_keeper_request', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('shop_type_id');
-            $table->integer('quantity');
             $table->integer('product_id');
-            $table
-                ->integer('status')
-                ->default('0')
-                ->comment('1=approved,0=pending,3=finished');
-            $table
-                ->foreign('shop_type_id')
-                ->references('id')
-                ->on('shop_types')
-                ->onDelete('cascade');
+            $table->foreignId('shop_type_id')->constrained()->cascadeOnDelete();
+            $table->integer('quantity');
+            $table->foreignId('status_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

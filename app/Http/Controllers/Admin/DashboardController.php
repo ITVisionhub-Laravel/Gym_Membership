@@ -13,6 +13,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DebitAndCredit;
 use App\Models\PaymentExpiredMembers;
 use App\Models\Products;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 
@@ -25,7 +26,7 @@ class DashboardController extends Controller
         }
         $expiredDate = '';
 
-        $data['members'] = Customer::get();
+        $data['members'] = User::get();
         $data['buying_price'] = Products::sum('buying_price');
         // dd($data['buying_price']);
         $prices = 0;

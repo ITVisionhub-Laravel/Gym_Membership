@@ -57,4 +57,26 @@ class FrontendController extends Controller
             return view('frontend.index', $data);
         }
     }
+
+    public function create(Request $request)
+    {
+        $rules = [
+            'name' => 'required',
+            'email' => 'required|email',
+            'subject' => 'required',
+            'message' => 'required',
+            'g-recaptcha-response' => 'required|recaptcha'
+        ];
+
+        $this->validate($request,$rules,[
+            'name.required' => 'User Name is required',
+            'email.required' => 'Email is required',
+            'subject.required' => 'Subject is required',
+            'message.required' => 'You have to put some message',
+            'g-recaptcha-response.recaptcha' => 'Captcha verification failed',
+            'g-recaptcha-response.required' => "Please complete the captcha"
+        ]);
+
+
+    }
 }

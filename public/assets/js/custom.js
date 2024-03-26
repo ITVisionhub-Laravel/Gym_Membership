@@ -17,23 +17,16 @@
         }
     });
 
-    $(".schedule-filter li").on("click", function () {
-        var tsfilter = $(this).data("tsfilter");
-        $(".schedule-filter li").removeClass("active");
-        $(this).addClass("active");
-        if (tsfilter == "all") {
-            $(".schedule-table").removeClass("filtering");
-            $(".ts-item").removeClass("show");
-        } else {
-            $(".schedule-table").addClass("filtering");
-        }
-        $(".ts-item").each(function () {
-            $(this).removeClass("show");
-            if ($(this).data("tsmeta") == tsfilter) {
-                $(this).addClass("show");
-            }
-        });
-    });
+$(".schedule-filter li").on("click", function () {
+    var tsfilter = $(this).data("tsfilter"); 
+    $(".schedule-filter li").removeClass("active");
+    $(this).addClass("active");
+    
+    $(".ts-item").hide(); // Hide all rows
+   
+    $(".ts-item[data-tsmeta='" + tsfilter + "']").show(); // Show rows with matching data-tsmeta
+});
+
 
     // Window Resize Mobile Menu Fix
     mobileNav();
@@ -50,6 +43,8 @@
     }
 
     $(document).ready(function () {
+        $(".schedule-filter li[data-tsfilter='Monday']").click();
+
         $(document).on("scroll", onScroll);
 
         //smoothscroll
@@ -81,22 +76,60 @@
         });
     });
 
-    function onScroll(event) {
-        var scrollPos = $(document).scrollTop();
-        $(".nav a").each(function () {
-            var currLink = $(this);
-            var refElement = $(currLink.attr("href"));
-            if (
-                refElement.position().top <= scrollPos &&
-                refElement.position().top + refElement.height() > scrollPos
-            ) {
+    // function onScroll(event) {
+    //     var scrollPos = $(document).scrollTop();
+    //     $(".nav a").each(function () {
+    //         var currLink = $(this);
+    //         var refElement = $(currLink.attr("href"));
+    //         if (
+    //             refElement.position().top <= scrollPos &&
+    //             refElement.position().top + refElement.height() > scrollPos
+    //         ) {
+    //             $(".nav ul li a").removeClass("active");
+    //             currLink.addClass("active");
+    //         } else {
+    //             currLink.removeClass("active");
+    //         }
+    //     });
+    // }
+
+ function onScroll(event) {
+    var scrollPos = $(document).scrollTop();
+    var activeLinkFound = false;
+
+    $(".nav a").each(function () {
+        var currLink = $(this);
+        var targetId = currLink.attr("href");
+
+        // Check if targetId is a valid ID (starts with '#')
+        if (targetId && targetId.charAt(0) === '#') {
+            // Smooth scrolling to the target section
+            var targetSection = $(targetId);
+            var targetTop = targetSection.offset().top;
+            var targetBottom = targetTop + targetSection.outerHeight();
+
+            if (targetTop <= scrollPos && targetBottom > scrollPos) {
                 $(".nav ul li a").removeClass("active");
                 currLink.addClass("active");
+
+                // Update the URL with the target ID
+                history.pushState(null, '', targetId);
+
+                // Set flag to indicate that an active link was found
+                activeLinkFound = true;
             } else {
                 currLink.removeClass("active");
+                history.pushState(null, '', window.location.pathname);
             }
-        });
-    }
+        }
+    });
+
+    // If no active link was found, reset the URL to remove the target ID
+    // if (!activeLinkFound) {
+    //     history.pushState(null, '', window.location.pathname);
+    // }
+}
+
 
     // Page loading animation
     $(window).on("load", function () {

@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\CustomerQRCode;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\DaysOfWeek;
 use App\Models\GymClass;
+use App\Models\GymClassCategory;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Logo;
 use App\Models\Partner;
@@ -22,6 +24,8 @@ class FrontendController extends Controller
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
         $data['class'] = GymClass::get();
+        $data['days_of_week'] = DaysOfWeek::get();
+        $data['class_categories'] = GymClassCategory::get();
         $data['trainer'] = Trainer::get();
         if (Auth::user()) {
             if (Auth::user()->role_as == 1) {

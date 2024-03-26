@@ -2,12 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
+use App\Models\User;
 use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Models\PaymentRecord;
+use App\Models\CustomerQRCode;
+use App\Models\DebitAndCredit;
 use App\Models\PaymentPackage;
-use App\Http\Controllers\Controller;
 use App\Models\PaymentProvider;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class PaymentRecordController extends Controller
 {
@@ -83,11 +88,10 @@ class PaymentRecordController extends Controller
      */
     public function edit($id)
     {
-        $paymentrecord = PaymentRecord::find($id);
-        $members = Customer::all();
+        $paymentrecord = PaymentRecord::find($id); 
         $packages = PaymentPackage::all();
         $payments = PaymentProvider::all();
-        return view('admin.paymentrecord.edit', compact('paymentrecord','members','packages','payments'));
+        return view('admin.paymentrecord.edit', compact('paymentrecord','packages','payments'));
     }
 
     /**
@@ -98,16 +102,54 @@ class PaymentRecordController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
-        $paymentrecord = PaymentRecord::find($id);
-        $paymentrecord->package_id=$request->package;
+    { 
+        $paymentrecord = PaymentRecord::find($id); 
+        $paymentrecord->package_id=$request->package[0];
         $paymentrecord->price=$request->price;
-        $paymentrecord->record_date=$request->record_date;
-        $paymentrecord->provider_id=$request->payment_record;
-        $paymentrecord->customer_id=$request->member_name;
-        $paymentrecord->save();
+        $paymentrecord->bank_slip=$request->image;
+        $paymentrecord->record_date=$request->date;
+        $paymentrecord->provider_id=$request->payment_type;
+        $paymentrecord->user_id=$paymentrecord->user_id;
+        DB::beginTransaction();
+        try{            
+            if ($paymentrecord->save()) {  
+                $debitCredit = DebitAndCredit::where('related_info_id', $paymentrecord->user->member_card)->first();
+                $debitCredit->update([
+                    'amount' => $request->price,
+                    'date' => $request->date,
+                    'status' => 'success'
+                ]);
+                $this->storeCustomerQR();
+                return redirect()->route('payment_records.index');
+            }
+            DB::commit();
+        }catch(Exception $e){
+            DB::rollback();
+            dd("Exception occurred: " . $e->getMessage());
+        }
+        
+    }
 
-        return redirect()->route('payment_records.index');
+
+    public function storeCustomerQR()
+    {
+        $customerQRCode = new CustomerQRCode();
+        $customerQRCode->member_card_id = auth()->user()->member_card;
+        $customerQRCode->user_id = auth()->user()->id;
+
+        if ($customerQRCode->save()) {
+            $this->dispatchBrowserEvent('message', [
+                'text' => 'Pay GymFee Successfully',
+                'type' => 'success',
+                'status' => 200,
+            ]);
+        } else {
+            $this->dispatchBrowserEvent('message', [
+                'text' => 'Fail GymFee Payment',
+                'type' => 'error',
+                'status' => 404,
+            ]);
+        }
     }
 
     /**

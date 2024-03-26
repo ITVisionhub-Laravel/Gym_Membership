@@ -58,7 +58,7 @@ class CartShow extends Component
         try{
             $this->storePayment(); 
             $this->debitCreditInfos();
-            $this->storeCustomerQR();
+            // $this->storeCustomerQR();
             // Commit the transaction if all operations succeed
             DB::commit();
         } catch (Exception $e) {
@@ -124,29 +124,32 @@ class CartShow extends Component
         } 
     }
 
-    public function storeCustomerQR(){
-        $customerQRCode = new CustomerQRCode();
-        $customerQRCode->member_card_id = auth()->user()->member_card;
-        $customerQRCode->user_id = auth()->user()->id;
 
-        if ($customerQRCode->save()) {
-            $this->dispatchBrowserEvent('message', [
-                'text' => 'Pay GymFee Successfully',
-                'type' => 'success',
-                'status' => 200,
-            ]);
-        } else {
-            $this->dispatchBrowserEvent('message', [
-                'text' => 'Fail GymFee Payment',
-                'type' => 'error',
-                'status' => 404,
-            ]);
-        }
-    }
+    // public function storeCustomerQR()
+    // {
+    //     $customerQRCode = new CustomerQRCode();
+    //     $customerQRCode->member_card_id = auth()->user()->member_card;
+    //     $customerQRCode->user_id = auth()->user()->id;
+
+    //     if ($customerQRCode->save()) {
+    //         $this->dispatchBrowserEvent('message', [
+    //             'text' => 'Pay GymFee Successfully',
+    //             'type' => 'success',
+    //             'status' => 200,
+    //         ]);
+    //     } else {
+    //         $this->dispatchBrowserEvent('message', [
+    //             'text' => 'Fail GymFee Payment',
+    //             'type' => 'error',
+    //             'status' => 404,
+    //         ]);
+    //     }
+    // }
 
     public function render()
     {
         $data['customerInfo'] = User::where('id', auth()->user()->id)->whereNotNull('member_card')->first();
+        // $data['paymentExpired'] = PaymentExpire
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
         $data['packages'] = PaymentPackage::get();

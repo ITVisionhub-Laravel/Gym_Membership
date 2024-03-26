@@ -20,6 +20,6 @@ class Trainer extends Model
         'image',
     ];
     public function class(){
-        return $this->belongsTo(GymClass::class, 'id', 'trainer_id');
+        return $this->hasMany(GymClass::class, 'trainer_id', 'id');
     }
 }

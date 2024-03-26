@@ -78,16 +78,16 @@ p{
         <br>
         <div class="row">
             <div class="col-md-4">
-                <img src="{{asset('/uploads/customer/'.$records[0]->image)}}" alt="Member" style="width:120px;height:120px;">
+                <img src="{{asset('/uploads/customer/'.$records->user->image)}}" alt="Member" style="width:120px;height:120px;">
             </div>
             <div class="col-md-8">
                 <p>
-                Member Name:  {{ $records[0]->user->name }} <br>
-                Phone Number: {{ $records[0]->user->phone_number}} <br>
-                Member ID Number: {{ $records[0]->user->member_card }} <br>
-                {{ $records[0]->user->address->street->township->city->name}},
-                {{ $records[0]->user->address->street->township->name}},<br>
-                {{ $records[0]->user->address->street->name}} <br>
+                Member Name:  {{ $records->user->name }} <br>
+                Phone Number: {{ $records->user->phone_number}} <br>
+                Member ID Number: {{ $records->user->member_card }} <br>
+                {{ $records->user->address->street->township->city->name}},
+                {{ $records->user->address->street->township->name}},<br>
+                {{ $records->user->address->street->name}} <br>
                 </p>
             </div>
         </div>
@@ -95,26 +95,29 @@ p{
         <table class="table">
             <thead style="background: rgb(165, 221, 244)">
                 <tr>
-                    <th>Items</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Sub Total Cost</th>
+                    <th>Package</th>
+                    <th>Promotion</th>
+                    <th>Paid On</th>
+                    <th>Original Fee</th>
+                    <th>Discounted Fee</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($records as $record)
+                {{-- @foreach($records as $record) --}}
                     <tr>
-                        <td>{{$record->products->name}}</td>
-                        <td>$ {{$record->products->selling_price}} </td>
-                        <td>{{ $record->quantity }}</td>
-                        <td>{{ $record->total }}</td>
+                        <td>{{$records->package->package}}</td>
+                        <td>$ {{$records->package->promotion}} % </td>
+                        <td>{{ $records->created_at }}</td>
+                        <td>{{ $records->package->original_price }}</td>
+                        <td>{{ $records->package->promotion_price }}</td>
                     </tr>
-                @endforeach
+                {{-- @endforeach --}}
                     <tr>
-                        <td class="rowspan-3"></td>
+                        <td class="rowspan-4"></td>
+                        <td></td>
                         <td></td>
                         <td>Total Amount</td>
-                        <td>{{ $total}}</td>
+                        <td>{{ $records->package->promotion_price}}</td>
                     </tr>
             </tbody>
         </table>

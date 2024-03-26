@@ -26,7 +26,7 @@ class DashboardController extends Controller
         }
         $expiredDate = '';
 
-        $data['members'] = Customer::get();
+        $data['members'] = User::get();
         $data['buying_price'] = Products::sum('buying_price');
         // dd($data['buying_price']);
         $prices = 0;
@@ -136,7 +136,7 @@ class DashboardController extends Controller
             if ($expiredDate <= 3) {
                 $payment_expired_members->updateOrCreate(
                     [
-                        'customer_id' => $paymentRecord->customer_id,
+                        'customer_id' => $paymentRecord->user_id,
                     ],
                     [
                         'expired_date' => $packageExpiredDate->format('Y-m-d'),
@@ -147,11 +147,11 @@ class DashboardController extends Controller
                 $data['ExpiredPaymentMember'] = true;
                 CustomerQRCode::where(
                     'user_id',
-                    $paymentRecord->customer_id
+                    $paymentRecord->user_id
                 )->delete();
             } else {
                 $payment_expired_members
-                    ->where('customer_id', $paymentRecord->customer_id)
+                    ->where('customer_id', $paymentRecord->user_id)
                     ->delete();
             }
         }
@@ -169,20 +169,20 @@ class DashboardController extends Controller
         //     ->havingRaw('COUNT(name) = (SELECT MAX(name_count) FROM (SELECT COUNT(name) as name_count FROM debit_and_credits GROUP BY name) AS subquery)')
         //     ->get();
         $now = now();
-        
+
         $variablesOneData = Config::get('variables.ONE');
         $variablesTwoData = Config::get('variables.TWO');
-        
+
         $monthlyData = DebitAndCredit::whereYear('date', '=', $now->year)
                         ->whereMonth('date', '=', $now->month)
                         ->get();
-                        
+
         $expense = $monthlyData->where('transaction_type_id', $variablesOneData)->sum('amount');
-        
+
         $income = $monthlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
-        
+
         $profit = $income - $expense;
-        
+
         $data['expenses'] = $expense;
         $data['incomes'] = $income;
         $data['profits'] = $profit;

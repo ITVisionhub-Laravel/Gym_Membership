@@ -12,7 +12,7 @@
                 <form action="{{ url('admin/customers') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <fieldset class="reset">
-                        <legend class="reset">Personal Info:</legend> 
+                        <legend class="reset">Personal Info:</legend>
                         <div class="row pt-2">
                             <x-forms.forminput name="name" placeholder="Enter Your Name" width="col-md-3"/>
                             <x-forms.forminput name="email" placeholder="Enter Your Email" type="email" width="col-md-3"/>
@@ -21,33 +21,28 @@
                         </div>
 
                         <div class="row">
-                            {{--  <x-forms.forminput type="number" name="member_card_id" placeholder="Enter Your Member Card Number" width="col-md-3" labelName="member card id"/>  --}}
                             <x-forms.dropdownfield :dropdownValues="$gymclasses" name="gymclass" labelName="Classes" width="col-md-3"></x-forms.dropdownfield>
                             <x-forms.forminput type="number" name="height" placeholder="Enter Your Height"/>
                             <x-forms.forminput name="weight" placeholder="Enter Your Weight"/>
-                            <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile"/>        
-                            <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile" width="col-md-3"/> 
+                            <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile"/>
+                            <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number" labelName="emergency mobile" width="col-md-3"/>
                         </div>
                     </fieldset>
                     <div class="pt-3">
                         <fieldset class="reset">
-                            <legend class="reset">Social Info:</legend> 
-                        
-                            <div class="row">   
-                                <x-forms.forminput name="phone_number" placeholder="Enter Your Phone Number" labelName="mobile" width="col-md-3"/>
-                                <x-forms.forminput name="emergency_phone" placeholder="Enter Your Emergency Phone Number"
-                                    labelName="emergency mobile" width="col-md-3" />
+                            <legend class="reset">Social Info:</legend>
+                            <div class="row">
                                 <x-forms.forminput name="facebook" placeholder="Your Facebook" />
-                                <x-forms.forminput name="twitter" placeholder="Your Twitter" />    
-                                <x-forms.forminput name="linkedIn" placeholder="Your LinkedIn" />    
+                                <x-forms.forminput name="twitter" placeholder="Your Twitter" />
+                                <x-forms.forminput name="linkedIn" placeholder="Your LinkedIn" />
                             </div>
                         </fieldset>
                     </div>
                     <div class="pt-3">
                     <fieldset class="reset">
-                        <legend class="reset">Address:</legend> 
+                        <legend class="reset">Address:</legend>
                         <div class="row">
-                            <x-forms.dropdownfield :dropdownValues="$cities" name="city" width="col-md-4"></x-forms.dropdownfield>  
+                            <x-forms.dropdownfield :dropdownValues="$cities" name="city" width="col-md-4"></x-forms.dropdownfield>
                             <div class="form-group col-md-4">
                                 <label for="">Township</label>
                                 <select id="township-dd" class="form-select" name="township" >
@@ -63,7 +58,7 @@
                         </div>
                     </fieldset>
                     </div>
-                    
+
                     {{--  <div class="pt-3">
                         <fieldset class="reset">
                             <legend class="reset">Payment:</legend>
@@ -73,17 +68,17 @@
                                 <x-forms.dropdownfield :dropdownValues="$gymclasses" name="gymclass" labelName="Classes" width="col-md-4"></x-forms.dropdownfield>
                             </div>
                             <div class="row">
-                    
+
                                 <x-forms.dropdownfield :dropdownValues="$packages" name="package" labelName="Packages" width="col-md-3"></x-forms.dropdownfield>
                                 <x-forms.forminput name="promotion" id="promotion" width="col-md-3" placeholder="Promotion" required readonly/>
-                                <x-forms.forminput name="original_price" id="original_price" width="col-md-3" placeholder="Original Price" labelName="original price" required readonly/>     
+                                <x-forms.forminput name="original_price" id="original_price" width="col-md-3" placeholder="Original Price" labelName="original price" required readonly/>
                                 <x-forms.forminput type="number" id="price" name="price" width="col-md-3" placeholder=" Price" required readonly/>
-                                
+
                             </div>
                         </fieldset>
                     </div>  --}}
                     {{--  <div class="row">
-                            
+
                     </div>  --}}
                     <div class="mb-3 pt-3">
                         <button type="submit" class="btn btn-primary">Register</button>

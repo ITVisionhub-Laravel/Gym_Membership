@@ -11,19 +11,6 @@ class PaymentRecord extends Model
     protected $table = 'payment_records';
     protected $guarded = ['id'];
 
-    public function member()
-    {
-        return $this->belongsTo(Customer::class,'customer_id');
-    }
-    // public function package()
-    // {
-    //     return $this->belongsTo(PaymentPackage::class, 'package_id');
-    // }
-    // public function paymentprovider()
-    // {
-    //     return $this->belongsTo(PaymentProvider::class, 'provider_id');
-    // }
-
     public function user()
     {
         return $this->belongsTo(User::class);

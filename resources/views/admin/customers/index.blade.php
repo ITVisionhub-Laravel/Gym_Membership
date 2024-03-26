@@ -29,9 +29,9 @@
                 <td>{{ $customer->height}} cm</td>
                 <td>{{ $customer->weight}}</td>
                 <td>
-                    {{ $customer->address->street->township->city->name}},<br>
-                    {{ $customer->address->street->township->name}},<br>
-                    {{ $customer->address->street->name}}
+                    {{ $customer->address?->street->township->city->name}},<br>
+                    {{ $customer->address?->street->township->name}},<br>
+                    {{ $customer->address?->street->name}}
                 </td>
                 <td>{{ $customer->phone_number}}</td>
                 <td>{{ $customer->emergency_phone}}</td>

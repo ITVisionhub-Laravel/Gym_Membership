@@ -11,7 +11,7 @@
                 <th>Price</th>
                 <th>Record_date</th>
                 <th>Payment Method</th>
-                {{-- <th>Action</th> --}}
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +26,10 @@
                 <td>{{$paymentrecord->price}}</td>
                 <td>{{$paymentrecord->record_date}}</td>
                 <td>{{$paymentrecord->paymentprovider->name}}</td>
+                <td> 
+                    <a href="{{ route('payment_records.edit', $paymentrecord) }}" class="btn-edit btn-sm"><i
+                            class="fa-solid fa-pen-to-square text-white"></i></a>
+                </td>
             </tr>
             @endforeach
 

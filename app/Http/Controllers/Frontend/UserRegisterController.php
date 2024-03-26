@@ -150,9 +150,10 @@ class UserRegisterController extends Controller
             compact('checkoutProducts', 'total', 'logos')
         );
     }
-    public function detail()
+    public function detail($classCategoryId)
     {
-        return view('frontend.class-detail');
+        $gymClasses = GymClass::where('category_id', $classCategoryId)->get();
+        return view('frontend.class-detail', compact('gymClasses'));
     }
 
     public function userDetails(){

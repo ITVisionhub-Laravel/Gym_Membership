@@ -14,7 +14,7 @@
                             <a href="{{ route('home') }}" class="active">Home</a>
                         </li>
                         <li class="scroll-to-section"><a href="#features">About</a></li>
-                        <li class="scroll-to-section"><a href="#our-classes">Classes</a></li>
+                        <li class="scroll-to-section"><a href="#+">Classes</a></li>
                         <li class="scroll-to-section"><a href="#trainers">Trainers</a></li>
                         <li class="scroll-to-section"><a href="#schedule">Schedules</a></li>
                         {{-- @if (Auth::user() && !$customer)

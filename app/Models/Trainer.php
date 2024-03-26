@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\GymClass;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Trainer extends Model
 {
@@ -19,7 +20,8 @@ class Trainer extends Model
         'linkin_name',
         'image',
     ];
-    public function class(){
-        return $this->belongsTo(GymClass::class, 'id', 'trainer_id');
+    public function gymClasses()
+    {
+        return $this->belongsToMany(GymClass::class, 'gym_class_trainer', 'trainer_id', 'gym_class_id')->withPivot('schedule_id');
     }
 }

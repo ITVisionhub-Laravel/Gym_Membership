@@ -11,80 +11,36 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container mt-4"> <!-- Added mt-4 for margin-top -->
         <div class="row">
-            <div class="col-md-3">
-
+            <div class="col-md-4">
                 @if (empty(Auth::user()->image))
                     <img src="" alt="{{ Auth::user()->name }}">
                 @else
-                    <img src="{{ asset('uploads/customer/' . Auth::user()->image) }}" width="100" style="width:100%">
+                    <img src="{{ asset('uploads/customer/' . Auth::user()->image) }}" width="70" style="width:70%">
                 @endif
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-6">
                 <div class="card">
-
-                    <div class="card-header">User Details</div>
+                    <div class="card-header">User Details </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            <label for="">Name</label>
-                            <input type="text" class="form-control" name="name" value="{{ Auth::user()->name }}"
-                                readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Phone</label>
-                            <input type="text" class="form-control" name="phone"
-                                value="{{ Auth::user()->phone_number }}" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Emergency Phone</label>
-                            <input type="text" class="form-control" name="emergency_phone"
-                                value="{{ Auth::user()->emergency_phone }}" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Age</label>
-                            <input type="text" class="form-control" name="age"
-                                value="{{ Auth::user()->age }} Years" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Height</label>
-                            <input type="text" class="form-control" name="height"
-                                value="{{ Auth::user()->height }} cm" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="">Weight</label>
-                            <input type="text" class="form-control" name="weight"
-                                value="{{ Auth::user()->weight }} kg" readonly>
-                        </div>
+                        <p>Name : {{ Auth::user()->name }}</p>
+                        <p>Email : {{ Auth::user()->email }}</p>
+                        <p>Phone : {{ Auth::user()->phone_number }}</p>
+                        <p>Emergency Number: {{ Auth::user()->emergency_phone }}</p>
+                        <p>Age : {{ Auth::user()->age }} Years</p>
+                        <p>Height : {{ Auth::user()->height }} cm</p>
+                        <p>Weight : {{ Auth::user()->weight }} kg</p>
                     </div>
-                </div>
+                </div><br>
+
+                <a href="{{ url('user_register') }}" class="btn btn-primary btn-sm col-md-2">Edit</a>
             </div>
-
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">Address</div>
-                    <div class="card-body">
-                        {{-- <p>Street: {{ Auth::user()->address->street->name }}</p> --}}
-                        {{-- <p>Township : {{ Auth::user()->address->street->township }}</p> --}}
-                    </div>
-                    <div>
-                        <a href="{{ url('user_register') }}" class="btn btn-danger btn-sm ">Back</a>
-                    </div>
-                </div>
-            </div>
-
         </div>
-
     </div>
-
-
 </body>
+
 
 
 </html>

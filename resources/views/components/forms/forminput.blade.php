@@ -1,5 +1,5 @@
 @props(['name','placeholder','type'=>'text','width'=>'col-md-2','errors','labelName','value'=>'','wireValue'=>false,'wireClick'=>false,'wireFunction'=>""])
- 
+
     <x-forms.field width="{{ $width }}">
         <x-forms.label value="{{ $labelName??$name }}"/>
         @if ($type == 'textarea')

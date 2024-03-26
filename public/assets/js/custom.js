@@ -27,7 +27,6 @@ $(".schedule-filter li").on("click", function () {
     $(".ts-item[data-tsmeta='" + tsfilter + "']").show(); // Show rows with matching data-tsmeta
 });
 
-
     // Window Resize Mobile Menu Fix
     mobileNav();
 
@@ -93,9 +92,16 @@ $(".schedule-filter li").on("click", function () {
     //     });
     // }
 
+    
+$(".nav a").on("click", function () { 
+    var currLink = $(this);
+    var targetId = currLink.attr("href");
+    history.pushState(null, '', targetId);
+});
+
  function onScroll(event) {
     var scrollPos = $(document).scrollTop();
-    var activeLinkFound = false;
+    // var activeLinkFound = false;
 
     $(".nav a").each(function () {
         var currLink = $(this);
@@ -110,16 +116,15 @@ $(".schedule-filter li").on("click", function () {
 
             if (targetTop <= scrollPos && targetBottom > scrollPos) {
                 $(".nav ul li a").removeClass("active");
-                currLink.addClass("active");
-
+                currLink.addClass("active"); 
+                
                 // Update the URL with the target ID
-                history.pushState(null, '', targetId);
+                // history.pushState(null, '', targetId);
 
-                // Set flag to indicate that an active link was found
-                activeLinkFound = true;
+                // // Set flag to indicate that an active link was found
+                // activeLinkFound = true;
             } else {
                 currLink.removeClass("active");
-                history.pushState(null, '', window.location.pathname);
             }
         }
     });

@@ -14,6 +14,7 @@
 
     <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
     <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/class-detail.css">
     <link rel="icon" type="image/x-icon" href="assets/images/features-1-icon.png">
     </head>
 
@@ -170,7 +171,7 @@
                         <div class="card-body">
                           <h5 class="card-title">{{ $class_category->name ?? 'None'}}</h5>
                           <p class="card-text mb-4 paragraph-container">{{ $class_category->description ?? 'None' }}</p>
-                          <a href="{{ url('class-detail') }}" class="btn" style="background-color: #6ca12b;color: #fff">View Class</a>
+                          <a href="{{ url('class-detail/'.$class_category->id) }}" class="btn" style="background-color: #6ca12b;color: #fff">View Class</a>
                         </div>
                       </div>
                 </div>

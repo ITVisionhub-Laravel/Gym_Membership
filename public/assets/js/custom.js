@@ -75,66 +75,61 @@ $(".schedule-filter li").on("click", function () {
         });
     });
 
-    // function onScroll(event) {
-    //     var scrollPos = $(document).scrollTop();
-    //     $(".nav a").each(function () {
-    //         var currLink = $(this);
-    //         var refElement = $(currLink.attr("href"));
-    //         if (
-    //             refElement.position().top <= scrollPos &&
-    //             refElement.position().top + refElement.height() > scrollPos
-    //         ) {
-    //             $(".nav ul li a").removeClass("active");
-    //             currLink.addClass("active");
-    //         } else {
-    //             currLink.removeClass("active");
-    //         }
-    //     });
-    // }
+    function onScroll() {
+    var scrollPos = $(window).scrollTop();
 
-    
-$(".nav a").on("click", function () { 
-    var currLink = $(this);
-    var targetId = currLink.attr("href");
-    history.pushState(null, '', targetId);
-});
-
- function onScroll(event) {
-    var scrollPos = $(document).scrollTop();
-    // var activeLinkFound = false;
+    // Check if we are at the top of the page
+    if (scrollPos === 0) {
+        $(".nav a").removeClass("active"); // Remove active class from all links
+        $(".nav a[href='#home']").addClass("active"); // Add active class to the home link
+        
+        // Remove hash fragment from the URL
+        history.replaceState(null, document.title, window.location.pathname);
+        
+        return;
+    }
 
     $(".nav a").each(function () {
         var currLink = $(this);
         var targetId = currLink.attr("href");
 
-        // Check if targetId is a valid ID (starts with '#')
         if (targetId && targetId.charAt(0) === '#') {
-            // Smooth scrolling to the target section
             var targetSection = $(targetId);
             var targetTop = targetSection.offset().top;
             var targetBottom = targetTop + targetSection.outerHeight();
 
             if (targetTop <= scrollPos && targetBottom > scrollPos) {
                 $(".nav ul li a").removeClass("active");
-                currLink.addClass("active"); 
-                
-                // Update the URL with the target ID
-                // history.pushState(null, '', targetId);
+                currLink.addClass("active");
 
-                // // Set flag to indicate that an active link was found
-                // activeLinkFound = true;
+                // Update URL
+                history.pushState(null, '', targetId);
             } else {
                 currLink.removeClass("active");
             }
         }
     });
-
-    // If no active link was found, reset the URL to remove the target ID
-    // if (!activeLinkFound) {
-    //     history.pushState(null, '', window.location.pathname);
-    // }
 }
 
+// Click event handler for navigation links
+$(".nav a").on("click", function (event) {
+    event.preventDefault();
+
+    var currLink = $(this);
+    var targetId = currLink.attr("href");
+
+    // Update URL
+    history.pushState(null, '', targetId);
+
+    // Update active navigation link
+    $(".nav a").removeClass("active");
+    currLink.addClass("active");
+
+    // Scroll to target section smoothly
+    $('html, body').animate({
+        scrollTop: $(targetId).offset().top
+    }, 800);
+});
 
     // Page loading animation
     $(window).on("load", function () {

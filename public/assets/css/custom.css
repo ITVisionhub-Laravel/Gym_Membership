@@ -245,27 +245,53 @@ body {
     font-size: 13px;
 }
 
-.icon {
+.expense {
     color: white;
     width: 50px;
     height: 50px;
-    background-color: rgb(13, 221, 13);
+    background-color: rgb(123, 111, 55);
     border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 25px;
+    opacity: 0.5;
+}
+.profitshare{
+    color: white;
+    width: 50px;
+    height: 50px;
+    background-color: rgb(186, 85, 178);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    opacity: 0.5;
+}
+.icon {
+    color: white;
+    width: 50px;
+    height: 50px;
+    background-color: rgb(44, 164, 44);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    opacity: 0.5;
 }
 .icon1 {
     color: white;
     width: 50px;
     height: 50px;
-    background-color: rgb(137, 137, 5);
+    background-color: rgb(188, 176, 11);
     border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 25px;
+    opacity: 0.5;
 }
 .icon2 {
     color: white;
@@ -277,6 +303,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 25px;
+    opacity: 0.5;
 }
 .icon3 {
     color: white;
@@ -288,6 +315,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 25px;
+    opacity: 0.5;
 }
 .icon4 {
     color: white;
@@ -299,6 +327,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 25px;
+    opacity: 0.5;
 }
 .icon5 {
     color: white;
@@ -310,6 +339,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 25px;
+    opacity: 0.5;
 }
 .icon6 {
     color: white;
@@ -321,6 +351,7 @@ body {
     align-items: center;
     justify-content: center;
     font-size: 25px;
+    opacity: 0.5;
 }
 /* .badge span {
   background-color: #fffbec;
@@ -494,16 +525,16 @@ Table of contents
 12. portfolio
 
 --------------------------------------------- */
-/* 
+/*
 ---------------------------------------------
 font & reset css
---------------------------------------------- 
+---------------------------------------------
 */
 @import url("https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
-/* 
+/*
 ---------------------------------------------
 reset
---------------------------------------------- 
+---------------------------------------------
 */
 html,
 body,
@@ -646,10 +677,10 @@ p {
     color: #7a7a7a;
 }
 
-/* 
+/*
 ---------------------------------------------
 global styles
---------------------------------------------- 
+---------------------------------------------
 */
 html,
 body {
@@ -734,10 +765,10 @@ body {
     color: #13e30c;
 }
 
-/* 
+/*
 ---------------------------------------------
 header
---------------------------------------------- 
+---------------------------------------------
 */
 
 .background-header {
@@ -1135,10 +1166,10 @@ header
     }
 }
 
-/* 
+/*
 ---------------------------------------------
 banner
---------------------------------------------- 
+---------------------------------------------
 */
 
 .main-banner {
@@ -1374,10 +1405,10 @@ Our Classes
     margin-bottom: 28px;
 }
 
-/* 
+/*
 ---------------------------------------------
 schedule
---------------------------------------------- 
+---------------------------------------------
 */
 
 #schedule {
@@ -1477,10 +1508,10 @@ schedule
     transition: all 350ms;
 }
 
-/* 
+/*
 ---------------------------------------------
 trainers
---------------------------------------------- 
+---------------------------------------------
 */
 
 #trainers .trainer-item {
@@ -1534,10 +1565,10 @@ trainers
     color: #13e30c;
 }
 
-/* 
+/*
 ---------------------------------------------
 contact
---------------------------------------------- 
+---------------------------------------------
 */
 
 #contact-us {
@@ -1617,10 +1648,10 @@ contact
     background-color: #13e30c;
 }
 
-/* 
+/*
 ---------------------------------------------
 footer
---------------------------------------------- 
+---------------------------------------------
 */
 footer {
     text-align: center;
@@ -1641,10 +1672,10 @@ footer p a:hover {
     color: #13e30c;
 }
 
-/* 
+/*
 ---------------------------------------------
 preloader
---------------------------------------------- 
+---------------------------------------------
 */
 
 .js-preloader {
@@ -1741,10 +1772,10 @@ preloader
     border-radius: 50%;
 }
 
-/* 
+/*
 ---------------------------------------------
 responsive
---------------------------------------------- 
+---------------------------------------------
 */
 
 @media (max-width: 992px) {
@@ -2012,4 +2043,11 @@ a.float:hover + div.label-container {
 }
 .btn-edit {
     background-color: rgb(21, 21, 146);
+}
+
+select.form-control, .dataTables_wrapper select {
+    padding: 1rem 0.75rem !important;
+    border: 0;
+    outline: 1px solid #f3f3f3;
+    color: black !important;
 }

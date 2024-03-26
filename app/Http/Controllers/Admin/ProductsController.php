@@ -19,10 +19,11 @@ class ProductsController extends Controller
 
     public function create()
     {
-        $data['brands'] = Brand::get();
-        $data['categories'] = Category::get();
+        // $data['brands'] = Brand::get();
+        // $data['categories'] = Category::get();
 
-        return view('admin.products.create', $data);
+        return view('admin.products.create');
+        // return view('admin.products.create', $data);
     }
 
     public function store(ProductFormRequest $request)

@@ -15,20 +15,20 @@
             </tr>
         </thead>
         <tbody>
-            @php 
+            @php
             $j=1;
             @endphp
             @foreach($paymentrecords as $paymentrecord)
             <tr>
                 <td>{{$j++}}</td>
-                <td>{{$paymentrecord->member->name}}</td>
+                <td>{{$paymentrecord->user->name}}</td>
                 <td>{{$paymentrecord->package->package}}</td>
                 <td>{{$paymentrecord->price}}</td>
                 <td>{{$paymentrecord->record_date}}</td>
                 <td>{{$paymentrecord->paymentprovider->name}}</td>
             </tr>
             @endforeach
-           
+
         </tbody>
     </table>
 </div>
@@ -40,4 +40,3 @@
 </script>
 </x-slot>
 </x-admin>
-   

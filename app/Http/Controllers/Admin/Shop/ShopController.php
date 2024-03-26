@@ -19,9 +19,7 @@ class ShopController extends Controller
 
     public function create()
     {
-        $data['shopTypes'] = ShopType::get();
-        $data['products'] = Products::get();
-        return view('admin.shops.create', $data);
+        return view('admin.shops.create');
     }
 
     public function store(ShopFormRequest $request)

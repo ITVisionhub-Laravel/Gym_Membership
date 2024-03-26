@@ -9,9 +9,12 @@ use App\Models\Customer;
 use App\Models\Attendent;
 use App\Models\PaymentRecord;
 use App\Models\CustomerQRCode;
-use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Models\DebitAndCredit;
 use App\Models\PaymentExpiredMembers;
+use App\Models\Products;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Config;
 
 class DashboardController extends Controller
 {
@@ -23,6 +26,8 @@ class DashboardController extends Controller
         $expiredDate = '';
 
         $data['members'] = Customer::get();
+        $data['buying_price'] = Products::sum('buying_price');
+        // dd($data['buying_price']);
         $prices = 0;
         foreach (PaymentRecord::get() as $paymentPrice) {
             $prices += (int) $paymentPrice->price;
@@ -130,7 +135,7 @@ class DashboardController extends Controller
             if ($expiredDate <= 3) {
                 $payment_expired_members->updateOrCreate(
                     [
-                        'customer_id' => $paymentRecord->customer_id,
+                        'user_id' => $paymentRecord->customer_id,
                     ],
                     [
                         'expired_date' => $packageExpiredDate->format('Y-m-d'),
@@ -145,10 +150,12 @@ class DashboardController extends Controller
                 )->delete();
             } else {
                 $payment_expired_members
-                    ->where('customer_id', $paymentRecord->customer_id)
+                    ->where('user_id', $paymentRecord->customer_id)
                     ->delete();
             }
         }
+        $payment_expired_members = new PaymentExpiredMembers();
+
         $data['payment'] = $payment_expired_members->get()->count();
         if (!$data['payment']) {
             $data['ExpiredPaymentMember'] = false;
@@ -156,6 +163,28 @@ class DashboardController extends Controller
 
         $data['trainers'] = Trainer::get();
 
+        // $results = DebitAndCredit::select('name', DB::raw('SUM(amount) as total_amount'), DB::raw('COUNT(name) as name_count'))
+        // ->groupBy('name')
+        //     ->havingRaw('COUNT(name) = (SELECT MAX(name_count) FROM (SELECT COUNT(name) as name_count FROM debit_and_credits GROUP BY name) AS subquery)')
+        //     ->get();
+        $now = now();
+
+        $variablesOneData = Config::get('variables.ONE');
+        $variablesTwoData = Config::get('variables.TWO');
+
+        $monthlyData = DebitAndCredit::whereYear('date', '=', $now->year)
+                        ->whereMonth('date', '=', $now->month)
+                        ->get();
+
+        $expense = $monthlyData->where('transaction_type_id', $variablesOneData)->sum('amount');
+
+        $income = $monthlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
+
+        $profit = $income - $expense;
+
+        $data['expenses'] = $expense;
+        $data['incomes'] = $income;
+        $data['profits'] = $profit;
         return view('admin.dashboard.index', $data);
     }
 

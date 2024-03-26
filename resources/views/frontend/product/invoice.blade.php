@@ -19,40 +19,33 @@
           <div class="card centered shadow-lg mt-2 mb-2 bg-white rounded">
             <div class="card-header">
               <h3>
-                Invoice 
-                <a href="{{ url('admin/customers') }}" class="btn btn-danger btn-sm float-end mx-1">Back</a> 
-                <a href="{{ url('admin/customers/'.$checkoutProducts[0]->customers->id.'/print') }}" target="_blank"  class="btnprint btn btn-success btn-sm float-end mx-1"><i class="fa fa-print"></i></a>
+                Invoice
+                <a href="{{ url('product-checkout') }}" class="btn btn-danger btn-sm float-end mx-1">Back</a>
+                <a href="{{ url('admin/customers/'.$checkoutProducts[0]->user->id.'/print') }}" target="_blank"  class="btnprint btn btn-success btn-sm float-end mx-1"><i class="fa fa-print"></i></a>
               </h3>
             </div>
             <div class="card-body">
-              <div class="row form-group">
-                <div class="col-12">
-
-                  <div class="col-md-12">
-                    <div class="row">
-                    <div class="col-md-4"> 
-                        <img src="{{asset('/uploads/customer/'.$checkoutProducts[0]->customers->image)}}" alt="Member" style="width:120px;height:120px;">
-                      
-                    </div>
-                    <div class="col-md-8">
-                      
-                      <h6>Member Name: {{ $checkoutProducts[0]->customers->name }}</h5> 
-                      <h6>Phone Number: {{ $checkoutProducts[0]->customers->phone_number}}</h6>
-                      <h6 style="line-height: 1.5">
-                        Member ID Number: {{ $checkoutProducts[0]->customers->member_card }} <br>
-                        {{ $checkoutProducts[0]->customers->address->street->township->city->name}},
-                        {{ $checkoutProducts[0]->customers->address->street->township->name}},<br>
-                        {{ $checkoutProducts[0]->customers->address->street->name}} 
-                      </h6>
-                      
-                    </div>
-                    
-                    </div>
-                  </div>
-                  
-                  <br>
-                  					<div class="invoice-body">
-    
+                <div class="row form-group">
+                    <div class="col-12">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img src="{{asset('/uploads/customer/'.$checkoutProducts[0]->user->image)}}" alt="Member" style="width:120px;height:120px;">
+                                </div>
+                                <div class="col-md-8">
+                                    <h6>Member Name: {{ $checkoutProducts[0]->user->name }}</h6>
+                                    <h6>Phone Number: {{ $checkoutProducts[0]->user->phone_number}}</h6>
+                                    <h6 style="line-height: 1.5">
+                                        Member ID Number: {{ $checkoutProducts[0]->user->member_card }} <br>
+                                        {{ $checkoutProducts[0]->user->address->street->name}},
+                                        {{ $checkoutProducts[0]->user->address->street->township->name}},
+                                        {{ $checkoutProducts[0]->user->address->street->township->city->name}}
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="invoice-body">
     						<!-- Row start -->
     						<div class="row gutters">
     							<div class="col-lg-12 col-md-12 col-sm-12">
@@ -66,7 +59,7 @@
     												<th>Sub Total Cost</th>
     											</tr>
     										</thead>
-    										<tbody> 
+    										<tbody>
     											 @foreach ($checkoutProducts as $checkoutProduct)
 												 <tr>
 													<td>{{ $checkoutProduct->products->name }}</td>
@@ -79,8 +72,8 @@
     												<td>&nbsp;</td>
     												<td colspan="2">
     												 <strong>Grand Total</strong>
-    												</td>			
-    												<td> 
+    												</td>
+    												<td>
     													<strong class="text-success">{{ $total }} MMK</strong>
     												</td>
     											</tr>
@@ -90,27 +83,22 @@
     							</div>
     						</div>
     						<!-- Row end -->
-    
     					</div>
-    
     				</div>
-				 
-				  <p class="text-center">
-                        Paid On @if ($checkoutProducts[0]->paymentType == 0)
-							<strong class="text-success">Cash</strong>
-							@else
-							<strong class="text-success">{{ $checkoutProducts[0]->paymentType->name }}</strong>
-						@endif
+                    <p class="text-center">Paid On
+                        @if ($checkoutProducts[0]->paymentType == 0)
+                            <strong class="text-success">Cash</strong>
+                        @else
+                            <strong class="text-success">{{ $checkoutProducts[0]->paymentType->name }}</strong>
+                        @endif
                     </p>
-                  @if ($logos) 
-                    <p class="text-center">
-						
-                        Thank you for joining with <strong class="text-danger">{{ $logos->name }}</strong>
-                    </p>
-                  @endif
-                    
+                    @if ($logos)
+                        <p class="text-center">
+                            Thank you for joining with <strong class="text-danger">{{ $logos->name }}</strong>
+                        </p>
+                    @endif
                 </div>
-              </div>
+            </div>
             </div>
           </div>
         </div>
@@ -124,6 +112,6 @@
       $('.btnprint').printPage();
     });
   </script>
-  
+
 </body>
 </html>

@@ -19,15 +19,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Street::truncate();
-        City::truncate();
-        Township::truncate();
-        Street::truncate();
+        // Street::truncate();
+        // City::truncate();
+        // Township::truncate();
+        // Street::truncate();
 
-        $this->call([
-        CityTableData::class,
-        TownshipTableData::class,
-        StreetTableData::class,
-    ]);
+            $this->call([
+            // CityTableData::class,
+            // TownshipTableData::class,
+            // StreetTableData::class,
+            // StatusSeeder::class
+            TransactionTypesSeeder::class,
+        ]);
     }
 }

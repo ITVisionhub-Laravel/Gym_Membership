@@ -14,9 +14,9 @@ return new class extends Migration
             $table->integer('amount');
             $table->date('date');
             $table->string('related_info_type');
-            $table->foreignId('related_info_id');
-            $table->foreignId('transaction_type_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('status_id')->constrained()->cascadeOnDelete();
+            $table->unsignedBigInteger('related_info_id');
+            $table->foreignId('transaction_type_id')->references('id')->on('transaction_type')->onDelete('cascade');
+            $table->foreignId('status_id')->references('id')->on('statuses')->onDelete('cascade');
             $table->timestamps();
         });
     }

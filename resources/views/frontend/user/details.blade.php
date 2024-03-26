@@ -17,7 +17,8 @@
                 @if (empty(Auth::user()->image))
                     <img src="" alt="{{ Auth::user()->name }}">
                 @else
-                    <img src="{{ asset('uploads/customer/' . Auth::user()->image) }}" width="70" style="width:70%">
+                    <img src="{{ asset('uploads/customer/' . Auth::user()->image) }}" width="70" style="width:70%"
+                        class="d-inline-block bg-transparent border-0 rounded-circle">
                 @endif
             </div>
 

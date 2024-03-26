@@ -154,4 +154,9 @@ class UserRegisterController extends Controller
     {
         return view('frontend.class-detail');
     }
+
+    public function userDetails(){
+      
+        return view('frontend.user.details');
+    }
 }

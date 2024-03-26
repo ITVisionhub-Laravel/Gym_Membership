@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use DateTime;
 use Carbon\Carbon;
 use App\Models\User;
 use DateTimeImmutable;
 use App\Models\Trainer;
-use App\Models\Customer;
 use App\Models\Products;
 use App\Models\Attendent;
 use App\Models\PaymentRecord;

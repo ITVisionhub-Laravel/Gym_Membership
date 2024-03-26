@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Trainer;
 use App\Models\GymSchedule;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,11 +15,15 @@ class GymClass extends Model
     protected $guard=[
         'id'
     ];
-    public function gymSchedules()
+    public function trainers()
     {
-        return $this->belongsTo(GymSchedule::class, 'schedule_id', 'id');
+        return $this->belongsToMany(Trainer::class, 'gym_class_trainer', 'gym_class_id', 'trainer_id')->withPivot('schedule_id');
     }
-    public function trainer(){
-        return $this->belongsTo(Trainer::class, 'trainer_id', 'id');
+
+    public function schedules()
+    {
+        return $this->belongsToMany(GymSchedule::class, 'gym_class_trainer', 'gym_class_id', 'schedule_id')
+        ->withPivot('trainer_id');
     }
+
 }

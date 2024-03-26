@@ -36,13 +36,19 @@
                                 </li>
                             @endif
                         @else
+                            @php
+                                $nameWords = explode(' ', __(Auth::user()->name));
+                                $shortenedName = implode(' ', array_slice($nameWords, 0, 2));
+                                if (count($nameWords) > 2) {
+                                    $shortenedName .= '...';
+                                }
+                            @endphp
                             @if (Auth::user()->phone_number)
                                 <li class="scroll-to-section"><img
                                         src="{{ asset('uploads/customer/' . Auth::user()->image) }}" width="30"
                                         height="30" class="d-inline-block bg-transparent border-0 rounded-circle"
                                         alt="{{ __(Auth::user()->name) }}">
-                                    <a href="{{ route('user.details') }}"
-                                        class="d-inline-block">{{ __(Auth::user()->name) }}</a>
+                                    <a href="{{ route('user.details') }}" class="d-inline-block">{{ $shortenedName }}</a>
                                 </li>
                             @else
                                 @if (Auth::user()->age)
@@ -51,14 +57,24 @@
                                             height="30" class="d-inline-block bg-transparent border-0 rounded-circle"
                                             alt="{{ __(Auth::user()->name) }}">
                                         <a href="{{ url('user_register') }}"
-                                            class="d-inline-block">{{ __(Auth::user()->name) }}</a>
+                                            class="d-inline-block">{{ $shortenedName }}</a>
                                     </li>
                                 @else
                                     <li class="scroll-to-section"><img src="{{ asset('uploads/customer/sample.png') }}"
                                             width="30" height="30" class="d-inline-block bg-transparent border-0"
                                             alt="{{ __(Auth::user()->name) }}">
+
+                                        {{-- @php
+                                            $nameWords = explode(' ', __(Auth::user()->name));
+                                            $shortenedName = implode(' ', array_slice($nameWords, 0, 2));
+                                            if (count($nameWords) > 2) {
+                                                $shortenedName .= '...';
+                                            }
+                                        @endphp --}}
                                         <a href="{{ url('user_register') }}"
-                                            class="d-inline-block">{{ __(Auth::user()->name) }}</a>
+                                            class="d-inline-block">{{ $shortenedName }}</a>
+                                        {{-- <a href="{{ url('user_register') }}"
+                                            class="d-inline-block">{{ __(Auth::user()->name) }}</a> --}}
                                     </li>
                                 @endif
                             @endif

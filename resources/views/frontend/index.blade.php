@@ -210,13 +210,16 @@
                         <table>
                             <tbody>
                                 
-                                @foreach ($class as $class)
-                                <tr class="{{ $class->gymSchedules->daysOfWeek->name }} ts-item show" data-tsmeta="{{ $class->gymSchedules->daysOfWeek->name }}">
-                                    <td>{{ $class->name }}</td>
-                                    <td>{{ $class->gymSchedules->hours_from }}</td>
-                                    <td>{{ $class->gymSchedules->hours_to }}</td>
-                                    <td>{{ $class->trainer->name }}</td>
-                                </tr>
+                                @foreach ($gymClasses as $gymClass)
+                                    @foreach ($gymClass->schedules as $index => $gymSchedule)
+                                    <tr class="{{ $gymSchedule->daysOfWeek->name }} ts-item show" data-tsmeta="{{ $gymSchedule->daysOfWeek->name }}">
+                                        <td>{{ $gymClass->name }}</td>
+                                        <td>{{ $gymSchedule->hours_From }}</td>
+                                        <td>{{ $gymSchedule->hours_To }}</td>
+                                        <td>{{ $gymClass->trainers[$index]->name }}</td>
+                                    </tr>
+                                    @endforeach
+                                
                                 @endforeach
                             </tbody>
                         </table>
@@ -240,23 +243,23 @@
                 </div>
             </div>
             <div class="row">
-                @foreach ($trainer as $trainer)
+                @foreach ($gymTrainers as $gymTrainer)
                 <div class="mb-4 col-lg-4">
                     <div class="trainer-item">
                         <div class="image-thumb">
-                            <img src="{{ asset('/uploads/trainer/'.$trainer->image) }}" alt="Trainer">
+                            <img src="{{ asset('/uploads/trainer/'.$gymTrainer->image) }}" alt="Trainer">
                         </div>
                         <div class="down-content">
-                            @foreach ($trainer->class as $gymClass)
+                            @foreach ($gymTrainer->gymClasses as $gymClass)
                                 <span>{{ $gymClass->name ?? '' }}, </span>
                             @endforeach
-                            <h4 class="{{ count($trainer->class) > 0 ? '' : 'trainer-name' }}">{{ $trainer->name ?? '' }}</h4>
-                            <p class="paragraph-container">{{ $trainer->description ?? '' }}</p>
+                            <h4 class="{{ count($gymTrainer->gymClasses) > 0 ? '' : 'trainer-name' }}">{{ $gymTrainer->name ?? '' }}</h4>
+                            <p class="paragraph-container">{{ $gymTrainer->description ?? '' }}</p>
                             <ul class="social-icons">
-                                <li><a href="http://www.facebook.com/{{ $trainer->fb_name ?? 'None' }}"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="http://www.facebook.com/{{ $trainer->twitter_name ?? 'None' }}"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="http://www.facebook.com/{{ $trainer->linkin_name ?? 'None' }}"><i class="fa fa-linkedin"></i></a></li>
-                                <li><a href="http://www.facebook.com/{{ $trainer->fb_name ?? 'None' }}"><i class="fa fa-behance"></i></a></li>
+                                <li><a href="http://www.facebook.com/{{ $gymTrainer->fb_name ?? 'None' }}"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="http://www.facebook.com/{{ $gymTrainer->twitter_name ?? 'None' }}"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="http://www.facebook.com/{{ $gymTrainer->linkin_name ?? 'None' }}"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="http://www.facebook.com/{{ $gymTrainer->fb_name ?? 'None' }}"><i class="fa fa-behance"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -281,34 +284,64 @@
                 <div class="col-lg-6 col-md-6 col-xs-12">
                     <div class="contact-form">
                         {{-- <h5 style="background-color: rgba(104, 110, 118, 0.8)">Suggestion Form</h5> --}}
-                        <form id="contact" action="" method="post">
-                          <div class="row">
-                            <div class="col-md-6 col-sm-12">
-                              <fieldset>
-                                <input name="name" type="text" id="name" placeholder="Your Name*" required="">
-                              </fieldset>
+                        <form id="contact" action="create" method="post">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <fieldset>
+                                        <input name="name" type="text" id="name" placeholder="Your Name*">
+                                    </fieldset>
+                                    {{-- @if ($errors->has('name'))
+                                        <span class="text-danger">{{$errors->first('name')}}</span>
+                                    @endif --}}
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <fieldset>
+                                        <input name="email" type="text" id="email" placeholder="Your Email*">
+                                    </fieldset>
+                                    {{-- @if ($errors->has('email'))
+                                        <span class="text-danger">{{$errors->first('email')}}</span>
+                                    @endif --}}
+                                </div>
+                                <div class="col-md-12 col-sm-12">
+                                    <fieldset>
+                                        <input name="subject" type="text" id="subject" placeholder="Subject">
+                                        {{-- @if ($errors->has('subject'))
+                                            <span class="text-danger">{{$errors->first('subject')}}</span>
+                                        @endif --}}
+                                    </fieldset>
+                                </div>
+                                <div class="col-lg-12">
+                                    <fieldset>
+                                        <textarea name="message" rows="6" id="message" placeholder="Message" ></textarea>
+                                        {{-- @if ($errors->has('message'))
+                                            <span class="text-danger">{{$errors->first('message')}}</span>
+                                        @endif --}}
+                                    </fieldset>
+                                </div>
+                                @if(config('services.recaptcha.key'))
+                                    <div class="g-recaptcha"
+                                        data-sitekey="{{config('services.recaptcha.key')}}">
+                                    </div>
+                                    {{-- @if ($errors->has('message'))
+                                        <span class="text-danger">{{$errors->first('message')}}</span>
+                                    @endif --}}
+                                @endif
+                                @if ($errors->any())
+                                    <div class="alert alert-danger mt-3">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
+                                <div class="col-lg-12 mt-5">
+                                    <fieldset>
+                                        <button type="submit" id="form-submit" class="main-button">Send Message</button>
+                                    </fieldset>
+                                </div>
                             </div>
-                            <div class="col-md-6 col-sm-12">
-                              <fieldset>
-                                <input name="email" type="text" id="email" pattern="" placeholder="Your Email*" required="">
-                              </fieldset>
-                            </div>
-                            <div class="col-md-12 col-sm-12">
-                              <fieldset>
-                                <input name="subject" type="text" id="subject" placeholder="Subject">
-                              </fieldset>
-                            </div>
-                            <div class="col-lg-12">
-                              <fieldset>
-                                <textarea name="message" rows="6" id="message" placeholder="Message" required=""></textarea>
-                              </fieldset>
-                            </div>
-                            <div class="col-lg-12">
-                              <fieldset>
-                                <button type="submit" id="form-submit" class="main-button">Send Message</button>
-                              </fieldset>
-                            </div>
-                          </div>
                         </form>
                     </div>
                 </div>
@@ -337,6 +370,8 @@
 
     <!-- Global Init -->
     <script src="assets/js/custom.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
   </body>
 </html>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class GymSchedule extends Model
 {
     use HasFactory;
-    protected $table = 'schedules';
+    protected $table = 'gym_schedule';
 
     protected $guard = [
         'id'

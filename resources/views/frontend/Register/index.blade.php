@@ -58,8 +58,8 @@
                                         placeholder="Enter Your Name" width="col-md-3" />
                                     <x-forms.forminput name="email" value="{{ $userinfo->email }}"
                                         placeholder="Enter Your Email" type="email" width="col-md-3" />
-                                    <x-forms.forminput name="age" placeholder="Enter Your Age" type="number"
-                                        width="col-md-3" />
+                                    <x-forms.forminput name="age" value="{{ $userinfo->age }}"
+                                        placeholder="Enter Your Age" type="number" width="col-md-3" />
                                     <x-forms.forminput type="file" name="image" width="col-md-3"
                                         placeholder="Enter Your Image" value='' width="col-md-3" />
                                 </div>

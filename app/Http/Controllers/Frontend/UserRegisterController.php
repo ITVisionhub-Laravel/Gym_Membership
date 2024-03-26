@@ -79,7 +79,7 @@ class UserRegisterController extends Controller
         }
 
         if ($customer->save()) {
-            return redirect('/')->with(
+            return redirect(route('user.details'))->with(
                 'message',
                 'Registered Information Successfully'
             );
@@ -156,7 +156,7 @@ class UserRegisterController extends Controller
     }
 
     public function userDetails(){
-      
+
         return view('frontend.user.details');
     }
 }

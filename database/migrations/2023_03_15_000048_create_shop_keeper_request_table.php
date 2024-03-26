@@ -14,10 +14,10 @@ return new class extends Migration {
     {
         Schema::create('shop_keeper_request', function (Blueprint $table) {
             $table->id();
-            $table->integer('product_id');
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->foreignId('shop_type_id')->constrained()->cascadeOnDelete();
-            $table->integer('quantity');
             $table->foreignId('status_id')->constrained()->cascadeOnDelete();
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

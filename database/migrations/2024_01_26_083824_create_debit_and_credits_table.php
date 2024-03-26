@@ -13,8 +13,10 @@ return new class extends Migration
             $table->string('name');
             $table->integer('amount');
             $table->date('date');
-            $table->foreignId('transaction_id')->constrained('transactions')->cascadeOnDelete();
-            $table->foreignId('transaction_type_id')->constrained('transaction_types')->cascadeOnDelete();
+            $table->string('related_info_type');
+            $table->foreignId('related_info_id');
+            $table->foreignId('transaction_type_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('status_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

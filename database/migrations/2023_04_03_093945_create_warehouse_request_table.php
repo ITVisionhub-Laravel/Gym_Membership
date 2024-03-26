@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('warehouse_request', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('deli_type_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('delivery_type_id')->constrained()->cascadeOnDelete();
             $table->foreignId('shop_type_id')->constrained()->cascadeOnDelete();
             $table->foreignId('status_id')->constrained()->cascadeOnDelete();
             $table->string('description');

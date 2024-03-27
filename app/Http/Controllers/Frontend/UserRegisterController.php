@@ -152,8 +152,9 @@ class UserRegisterController extends Controller
     }
     public function detail($classCategoryId)
     {
-        $gymClasses = GymClass::where('category_id', $classCategoryId)->get();
-        return view('frontend.class-detail', compact('gymClasses'));
+        $gymClasses = GymClass::where('gym_class_category_id', $classCategoryId)->get();
+        $gymClassType = $gymClasses->first()->category->name;
+        return view('frontend.class-detail', compact('gymClasses', 'gymClassType'));
     }
 
     public function userDetails(){

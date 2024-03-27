@@ -112,24 +112,24 @@ $(".schedule-filter li").on("click", function () {
 }
 
 // Click event handler for navigation links
-$(".nav a").on("click", function (event) {
-    event.preventDefault();
+// $(".nav a").on("click", function (event) {
+//     event.preventDefault();
 
-    var currLink = $(this);
-    var targetId = currLink.attr("href");
+//     var currLink = $(this);
+//     var targetId = currLink.attr("href");
 
-    // Update URL
-    history.pushState(null, '', targetId);
+//     // Update URL
+//     history.pushState(null, '', targetId);
 
-    // Update active navigation link
-    $(".nav a").removeClass("active");
-    currLink.addClass("active");
+//     // Update active navigation link
+//     $(".nav a").removeClass("active");
+//     currLink.addClass("active");
 
-    // Scroll to target section smoothly
-    $('html, body').animate({
-        scrollTop: $(targetId).offset().top
-    }, 800);
-});
+//     // Scroll to target section smoothly
+//     $('html, body').animate({
+//         scrollTop: $(targetId).offset().top
+//     }, 800);
+// });
 
     // Page loading animation
     $(window).on("load", function () {

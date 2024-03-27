@@ -57,18 +57,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('package-details', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'show',
-    ]);
+    ])->name('package.details');
     Route::get('product-checkout', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'showproduct',
-    ]);
+        'show',
+    ])->name('product.checkout');
     Route::get('product-invoice', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'showProductInvoice',
     ]);
     Route::get('class-detail/{classCategoryId}', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'detail',
+        'show',
     ])->name('class.detail');
     Route::get('user_details',[UserRegisterController::class,'userDetails'])->name('user.details');
 });

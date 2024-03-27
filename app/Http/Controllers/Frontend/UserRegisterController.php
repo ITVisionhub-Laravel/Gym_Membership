@@ -93,35 +93,36 @@ class UserRegisterController extends Controller
             if (Auth::user()->role_as == 1) {
                 return redirect('admin/customers');
             } else {
+                $gymClassCategoryId = request()->classCategoryId;
                 // if (Customer::find(Auth::user()->email)) {
-                return view('frontend.package-details');
+                return view('frontend.package-details', compact('gymClassCategoryId'));
                 // } else {
                 //     return redirect('/');
                 // }
             }
         }
     }
-    public function showproduct()
-    {
-        if (Auth::user()) {
-            if (Auth::user()->role_as == 1) {
-                return redirect('admin/customers');
-            } else {
-                // if (Customer::find(Auth::user()->email)) {
-                //     $data['customer'] = Customer::where(
-                //         'email',
-                //         Auth::user()->email
-                //     )->first();
-                // }
-                // $data['customer'] = false;
-                // $data['logo'] = Logo::first();
-                // $data['partner'] = Partner::get();
-                // $data['products'] = Products::get();
-                // $data['shops'] = Shop::get();
-                return view('frontend.product_checkout');
-            }
-        }
-    }
+    // public function showproduct()
+    // {
+    //     if (Auth::user()) {
+    //         if (Auth::user()->role_as == 1) {
+    //             return redirect('admin/customers');
+    //         } else {
+    //             // if (Customer::find(Auth::user()->email)) {
+    //             //     $data['customer'] = Customer::where(
+    //             //         'email',
+    //             //         Auth::user()->email
+    //             //     )->first();
+    //             // }
+    //             // $data['customer'] = false;
+    //             // $data['logo'] = Logo::first();
+    //             // $data['partner'] = Partner::get();
+    //             // $data['products'] = Products::get();
+    //             // $data['shops'] = Shop::get();
+    //             return view('frontend.product_checkout');
+    //         }
+    //     }
+    // }
 
     public function showProductInvoice()
     {
@@ -143,12 +144,13 @@ class UserRegisterController extends Controller
             compact('checkoutProducts', 'total', 'logos')
         );
     }
-    public function detail($classCategoryId)
-    {
-        $gymClasses = GymClass::where('gym_class_category_id', $classCategoryId)->get();
-        $gymClassType = $gymClasses->first()->category->name;
-        return view('frontend.class-detail', compact('gymClasses', 'gymClassType'));
-    }
+    // public function detail()
+    // {
+    //     $gymClassCategoryId = request()->classCategoryId;
+    //     // $gymClasses = GymClass::where('gym_class_category_id', $classCategoryId)->get();
+    //     // $gymClassType = $gymClasses->first()->category->name;
+    //     return view('frontend.class-detail', compact('gymClassCategoryId'));
+    // }
 
     public function userDetails(){
 

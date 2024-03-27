@@ -10,4 +10,14 @@ class City extends Model
     use HasFactory;
     protected $table = 'cities';
     protected $fillable = ['name'];
+
+    public function townships()
+    {
+        return $this->hasMany(Township::class);
+    }
+
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
 }

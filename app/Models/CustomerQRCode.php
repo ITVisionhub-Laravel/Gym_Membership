@@ -15,7 +15,7 @@ class CustomerQRCode extends Model
     public function memberId()
     {
         return $this->belongsTo(
-            Customer::class,
+            User::class,
             'member_card_id',
             'member_card'
         );

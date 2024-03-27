@@ -58,12 +58,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
-    public function address(): BelongsTo
+    public function address(): HasMany
     {
-        return $this->belongsTo(Address::class, 'address_id', 'id');
+        return $this->hasMany(Address::class);
     }
     public function payment_records() : HasMany
     {
         return $this->hasMany(PaymentRecord::class);
+    }
+
+    public function debitCreditInfo(){
+        return $this->morphMany(DebitAndCredit::class, 'related_info');
     }
 }

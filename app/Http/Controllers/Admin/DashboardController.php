@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use DateTime;
+use Carbon\Carbon;
+use App\Models\User;
 use DateTimeImmutable;
 use App\Models\Trainer;
-use App\Models\Customer;
+use App\Models\Products;
 use App\Models\Attendent;
 use App\Models\PaymentRecord;
 use App\Models\CustomerQRCode;
-use App\Http\Controllers\Controller;
 use App\Models\DebitAndCredit;
+use App\Http\Controllers\Controller;
 use App\Models\PaymentExpiredMembers;
-use App\Models\Products;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 
 class DashboardController extends Controller
@@ -25,7 +24,7 @@ class DashboardController extends Controller
         }
         $expiredDate = '';
 
-        $data['members'] = Customer::get();
+        $data['members'] = User::get();
         $data['buying_price'] = Products::sum('buying_price');
         // dd($data['buying_price']);
         $prices = 0;
@@ -135,7 +134,7 @@ class DashboardController extends Controller
             if ($expiredDate <= 3) {
                 $payment_expired_members->updateOrCreate(
                     [
-                        'user_id' => $paymentRecord->customer_id,
+                        'customer_id' => $paymentRecord->user_id,
                     ],
                     [
                         'expired_date' => $packageExpiredDate->format('Y-m-d'),
@@ -146,11 +145,11 @@ class DashboardController extends Controller
                 $data['ExpiredPaymentMember'] = true;
                 CustomerQRCode::where(
                     'user_id',
-                    $paymentRecord->customer_id
+                    $paymentRecord->user_id
                 )->delete();
             } else {
                 $payment_expired_members
-                    ->where('user_id', $paymentRecord->customer_id)
+                    ->where('customer_id', $paymentRecord->user_id)
                     ->delete();
             }
         }
@@ -190,7 +189,7 @@ class DashboardController extends Controller
 
     public function show(int $memberId)
     {
-        $memberDetails = Customer::where('id', $memberId)->get();
+        $memberDetails = User::where('id', $memberId)->get();
         return view('members.profile', compact('memberDetails'));
     }
 }

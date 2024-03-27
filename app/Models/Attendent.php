@@ -16,7 +16,7 @@ class Attendent extends Model
 
     public function member()
     {
-        return $this->belongsTo(Customer::class,'customer_id');
+        return $this->belongsTo(User::class,'customer_id');
     }
 
    

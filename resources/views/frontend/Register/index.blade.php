@@ -84,6 +84,18 @@
                             <fieldset class="reset pt-2">
                                 <legend class="reset">Address:</legend>
                                 <div class="row">
+                                    <div class="form-group col-md-4">
+                                        <label for="">Country</label>
+                                        <select id="street-dd" class="form-select" name="country">
+                                        </select>
+                                        <x-forms.input-error name="street" />
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="">State</label>
+                                        <select id="street-dd" class="form-select" name="state">
+                                        </select>
+                                        <x-forms.input-error name="street" />
+                                    </div>
                                     <x-forms.dropdownfield :dropdownValues="$cities" name="city"
                                         width="col-md-4"></x-forms.dropdownfield>
                                     <div class="form-group col-md-4">
@@ -93,8 +105,32 @@
                                         <x-forms.input-error name="township" />
                                     </div>
                                     <div class="form-group col-md-4">
+                                        <label for="">Ward</label>
+                                        <select id="street-dd" class="form-select" name="ward">
+                                        </select>
+                                        <x-forms.input-error name="street" />
+                                    </div>
+                                    <div class="form-group col-md-4">
                                         <label for="">Street</label>
                                         <select id="street-dd" class="form-select" name="street">
+                                        </select>
+                                        <x-forms.input-error name="street" />
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="">Block No</label>
+                                        <select id="street-dd" class="form-select" name="block_no">
+                                        </select>
+                                        <x-forms.input-error name="street" />
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="">Floor No</label>
+                                        <select id="street-dd" class="form-select" name="floor">
+                                        </select>
+                                        <x-forms.input-error name="street" />
+                                    </div>
+                                    <div class="form-group col-md-4">
+                                        <label for="">Zip Code</label>
+                                        <select id="street-dd" class="form-select" name="zipcode">
                                         </select>
                                         <x-forms.input-error name="street" />
                                     </div>

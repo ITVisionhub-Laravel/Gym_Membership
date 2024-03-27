@@ -109,7 +109,6 @@
                                 </select>
                             </div>
                             <div id="paymentType" class="col-11 my-2 mx-5" style="display:none">
-
                                 <label for="">Select Payments</label>
                                 <select wire:model.defer="provider_id" required class="form-control">
                                 <option value="0">---Select Payment Type---</option>
@@ -120,7 +119,6 @@
 
                             {{--  <x-forms.dropdownfield :dropdownValues="$data['providers']" name="payment" width="col-md-10"></x-forms.dropdownfield>  --}}
                             </div>
-
                             <button type="button" class="btn btn-outline-secondary mt-5 mb-4 w-25 mx-auto" id="clear">Clear</button>
                             <input type="submit" value="Checkout" class="btn pkg-btn mt-5 mb-4 w-50 mx-auto" id="pkg_register" @if (!$packageInfo) disabled @endif>
                             <br>

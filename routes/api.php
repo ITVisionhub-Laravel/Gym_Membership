@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
-Route::controller(
-    App\Http\Controllers\Admin\CustomerController::class
-)->group(function () {
-    Route::get('/add_member_info', 'store')->name('add_member_info');
-});    
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);

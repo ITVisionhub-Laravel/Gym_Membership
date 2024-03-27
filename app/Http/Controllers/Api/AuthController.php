@@ -15,9 +15,9 @@ class AuthController extends Controller
             'name'=>'required|string|max:225',
             'email'=>'required|string|email|unique:users',
             'phone_number'=>'required|numeric|digits_between:9,11',
-            // 'gender'=>'required|string',
+            'gender'=>'required|string',
             'password'=>'required|numeric|digits_between:4,6',
-            // 'confirm_password'=>'required|numeric|same:password',
+            'confirm_password'=>'required|numeric|same:password',
         ]);
         $validatedData['password'] = Hash::make($request->password);
 

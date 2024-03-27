@@ -66,10 +66,10 @@ Route::middleware(['auth'])->group(function () {
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'showProductInvoice',
     ]);
-    Route::get('class-detail', [
+    Route::get('class-detail/{classCategoryId}', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'detail',
-    ]);
+    ])->name('class.detail');
     Route::get('user_details',[UserRegisterController::class,'userDetails'])->name('user.details');
 });
 

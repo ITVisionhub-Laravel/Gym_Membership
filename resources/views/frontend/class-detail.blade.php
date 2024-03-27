@@ -57,19 +57,9 @@
         <div class="container">
             <div class="section-header text-center wow zoomIn pt-5" data-wow-delay="0.1s">
                 <h5 class="pt-5">Our Classes</h5>
-                <h2 class="pt-3">Yoga Class Shedule</h2>
+                <h2 class="pt-3"> {{ $gymClassType }} Class Shedule</h2>
             </div>
-            <div class="row pt-5">
-                <div class="col-12">
-                    <ul id="class-filter">
-                        <li data-filter="*" class="filter-active">All Classes</li>
-                        <li data-filter=".filter-1">Body Balance</li>
-                        <li data-filter=".filter-2">Fitness Workout</li>
-                        <li data-filter=".filter-3">Children Yoga</li>
-                        <li data-filter=".filter-4">Muscle Workout</li>
-                    </ul>
-                </div>
-            </div>
+           
             <div class="row class-container pt-4">
                 @foreach ($gymClasses as $gymClass)
                     <div class="col-lg-4 col-md-6 col-sm-12 class-item filter-1 wow fadeInUp" data-wow-delay="0.0s">
@@ -79,15 +69,19 @@
                             </div>
                             <div class="class-text">
                                 <div class="class-teacher">
-                                    <img src="{{asset('/uploads/trainer/'.$gymClass->trainer->image)}}" alt="Image">
-                                    <h3>{{ $gymClass->trainer->name }}</h3>
+                                    @if ($gymClass->trainers->isNotEmpty())
+                                        <img src="{{ asset('/uploads/trainer/'.$gymClass->trainers[0]->image) }}" alt="Image">
+                                        <h3>{{ $gymClass->trainers['0']->name }}</h3>
+                                    @endif
                                     <a href="">+</a>
                                 </div>
                                 <h2>{{ $gymClass->name }}</h2>
-                                <div class="class-meta">
-                                    <p><i class="far fa-calendar-alt"></i>Mon, Tue, Thu</p>
-                                    <p><i class="far fa-clock"></i>9:00 - 10:00</p>
-                                </div>
+                                @if ($gymClass->schedules->isNotEmpty())
+                                    <div class="class-meta">
+                                        <p><i class="far fa-calendar-alt"></i>{{ $gymClass->schedules['0']->daysOfWeek->name }}</p>
+                                        <p><i class="far fa-clock"></i>{{ $gymClass->schedules['0']->hours_From }} - {{ $gymClass->schedules['0']->hours_To }}</p>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>

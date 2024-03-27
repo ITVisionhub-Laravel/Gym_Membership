@@ -15,6 +15,12 @@ class GymClass extends Model
     protected $guard=[
         'id'
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(GymClassCategory::class, 'gym_class_category_id');
+    }
+
     public function trainers()
     {
         return $this->belongsToMany(Trainer::class, 'gym_class_trainer', 'gym_class_id', 'trainer_id')->withPivot('schedule_id');

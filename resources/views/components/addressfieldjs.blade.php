@@ -1,10 +1,49 @@
 <script  type="text/javascript">
         $(document).ready(function () {
-        
-            $('#city').on('change', function () {
+
+            $('#country').on('change', function () {
+                var countryId = $(this).val();
+                $("#state-dd").html('');
+                $.ajax({
+                    url: "{{url('admin/customers/fetch_state')}}",
+                    type: "POST",
+                    data: {
+                        country_id: countryId,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#state-dd').html('<option value="">Select State</option>');
+                        $.each(result.states, function (key, value) {
+                            $("#state-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+            $('#state-dd').on('change', function () {
+                var stateId = $(this).val();
+                $("#city-dd").html('');
+                $.ajax({
+                    url: "{{url('admin/customers/fetch_city')}}",
+                    type: "POST",
+                    data: {
+                        state_id: stateId,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        $('#city-dd').html('<option value="">Select City</option>');
+                        $.each(result.cities, function (key, value) {
+                            $("#city-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+            $('#city-dd').on('change', function () {
                 var cityId = $(this).val();
                 $("#township-dd").html('');
-                $("#street-dd").html('');
                 $.ajax({
                     url: "{{url('admin/customers/fetch_township')}}",
                     type: "POST",
@@ -19,18 +58,37 @@
                             $("#township-dd").append('<option value="' + value
                                 .id + '">' + value.name + '</option>');
                         });
-                        $('#city-dd').html('<option value="">Select City</option>');
                     }
                 });
             });
             $('#township-dd').on('change', function () {
                 var townshipId = $(this).val();
+                $("#ward-dd").html('');
+                $.ajax({
+                    url: "{{url('admin/customers/fetch_ward')}}",
+                    type: "POST",
+                    data: {
+                        township_id: townshipId,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (res) {
+                        $('#ward-dd').html('<option value="">Select Street</option>');
+                        $.each(res.wards, function (key, value) {
+                            $("#ward-dd").append('<option value="' + value
+                                .id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            });
+            $('#ward-dd').on('change', function () {
+                var wardId = $(this).val();
                 $("#street-dd").html('');
                 $.ajax({
                     url: "{{url('admin/customers/fetch_street')}}",
                     type: "POST",
                     data: {
-                        township_id: townshipId,
+                        ward_id: wardId,
                         _token: '{{csrf_token()}}'
                     },
                     dataType: 'json',

@@ -130,7 +130,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer}/edit', 'edit');
         Route::put('/customers/{customer}', 'update');
         Route::get('/customers/{customer_id}/delete', 'destroy');
+        Route::post('/customers/fetch_state', 'fetchState');
+        Route::post('/customers/fetch_city', 'fetchCity');
         Route::post('/customers/fetch_township', 'fetchTownship');
+        Route::post('/customers/fetch_ward', 'fetchWard');
         Route::post('/customers/fetch_street', 'fetchStreet');
 
         Route::get('/customers/{customer_id}/history', 'history');

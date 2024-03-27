@@ -26,7 +26,9 @@ use App\Models\PaymentExpiredMembers;
 use App\Http\Requests\CustomerFormRequest;
 use App\Http\Requests\MemberInfoValidation;
 use App\Models\ProductPaymentRecords;
+use App\Models\State;
 use App\Models\User;
+use App\Models\Ward;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CustomerController extends Controller
@@ -44,6 +46,22 @@ class CustomerController extends Controller
         $data['gymclasses'] = GymClass::get();
         return view('admin.customers.create', $data);
     }
+    public function fetchState(Request $request)
+    {
+        $data['states'] = State::where(
+            'country_id',
+            $request->country_id
+        )->get(['name', 'id']);
+        return response()->json($data);
+    }
+    public function fetchCity(Request $request)
+    {
+        $data['cities'] = City::where(
+            'state_id',
+            $request->state_id
+        )->get(['name', 'id']);
+        return response()->json($data);
+    }
     public function fetchTownship(Request $request)
     {
         $data['townships'] = Township::where(
@@ -52,17 +70,25 @@ class CustomerController extends Controller
         )->get(['name', 'id']);
         return response()->json($data);
     }
-    public function fetchStreet(Request $request)
+    public function fetchWard(Request $request)
     {
-        $data['streets'] = Street::where(
+        $data['wards'] = Ward::where(
             'township_id',
             $request->township_id
         )->get(['name', 'id']);
         return response()->json($data);
     }
+    public function fetchStreet(Request $request)
+    {
+        $data['streets'] = Street::where(
+            'ward_id',
+            $request->ward_id
+        )->get(['name', 'id']);
+        return response()->json($data);
+    }
 
     public function store(CustomerFormRequest $request)
-    { 
+    {
         $validatedData = $request->validated();
         $customer = new User();
         $address = new Address();
@@ -87,7 +113,7 @@ class CustomerController extends Controller
                 $request->street
             )->get();
             $customer->address_id = $addressField[0]->id;
-           
+
         } else {
             $address->street_id = $request->street;
             $address->save();

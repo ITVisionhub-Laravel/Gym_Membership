@@ -21,11 +21,13 @@ use App\Models\ProductPaymentRecords;
 use App\Http\Requests\CustomerFormRequest;
 use App\Models\Shop;
 use App\Models\User;
+use App\Models\Country;
 
 class UserRegisterController extends Controller
 {
     public function index()
     {
+        $data['countries'] = Country::all();
         $data['cities'] = City::get(['name', 'id']);
         $data['gymclasses'] = GymClass::get();
         $data['userinfo'] = Auth::user();
@@ -35,55 +37,46 @@ class UserRegisterController extends Controller
     public function createQRCode(CustomerFormRequest $request)
     {
         $validatedData = $request->validated();
-        // dd($validatedData);
         $customer = User::find(Auth::user()->id);
         $address = new Address();
 
-        // $customer->name = $validatedData['name'];
-        // $customer->email = $validatedData['email'];
-        $customer->age = $validatedData['age'];
-        $customer->member_card = time();
-        $customer->height = $validatedData['height'];
-        $customer->weight = $validatedData['weight'];
-        $customer->class_id = $validatedData['gymclass'];
-        $customer->phone_number = $validatedData['phone_number'];
-        $customer->emergency_phone = $validatedData['emergency_phone'];
+        // DB::beginTransaction();
+        // try {
+            $customer->age = $validatedData['age'];
+            $customer->gender = $validatedData['gender'];
+            $customer->member_card = time();
+            $customer->height = $validatedData['height'];
+            $customer->weight = $validatedData['weight'];
+            $customer->gym_class_id = $validatedData['gym_class_id'];
+            $customer->phone_number = $validatedData['phone_number'];
+            $customer->emergency_phone = $validatedData['emergency_phone'];
 
-        if (
-            DB::table('addresses')
-                ->where('street_id', $request->street)
-                ->exists()
-        ) {
-            $addressField = Address::where(
-                'street_id',
-                $request->street
-            )->get();
-            $customer->address_id = $addressField[0]->id;
-            // dd($addressField);
-        } else {
-            $address->street_id = $request->street;
+            $address->user_id = Auth::user()->id;
+            $address->street_id = $request->street_id;
+            $address->block_no = $request->block_no;
+            $address->floor = $request->floor;
+            $address->zipcode = $request->zipcode;
             $address->save();
-            $addressField = Address::where(
-                'street_id',
-                $request->street
-            )->get();
-            $customer->address_id = $addressField[0]->id;
-        }
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $ext;
-            $file->move('uploads/customer/', $filename);
-            $customer->image = $filename;
-        }
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $ext = $file->getClientOriginalExtension();
+                $filename = time() . '.' . $ext;
+                $file->move('uploads/customer/', $filename);
+                $customer->image = $filename;
+            }
 
-        if ($customer->save()) {
-            return redirect(route('user.details'))->with(
-                'message',
-                'Registered Information Successfully'
-            );
-        }
+            if ($customer->save()) {
+                return redirect(route('user.details'))->with(
+                    'message',
+                    'Registered Information Successfully'
+                );
+            }
+        //     DB::commit();
+        // } catch (Exception $e) {
+        //     DB::rollback();
+        //     dd($e);
+        // }
     }
 
     public function showQRCode()

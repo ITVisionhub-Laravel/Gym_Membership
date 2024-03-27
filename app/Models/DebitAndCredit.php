@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class DebitAndCredit extends Model
 {
     use HasFactory;
-    protected $table = 'debit_and_credit';
-    
+    protected $table = 'debit_and_credits';
+
     protected $guarded = ['id'];
-    
+
     public function transaction(): BelongsTo
     {
         return $this->belongsTo(Transaction::class);

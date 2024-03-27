@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Age</th>
+                <th>Gender</th>
                 <th>Height</th>
                 <th>Weight</th>
                 <th>Address</th>
@@ -26,6 +27,7 @@
                 <td>{{ $customer->id }}</td>
                 <td>{{ $customer->name }}</td>
                 <td>{{ $customer->age }}</td>
+                <td>{{ $customer->gender }}</td>
                 <td>{{ $customer->height}} cm</td>
                 <td>{{ $customer->weight}}</td>
                 {{-- <td>

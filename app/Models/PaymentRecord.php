@@ -17,10 +17,10 @@ class PaymentRecord extends Model
     }
     public function package()
     {
-        return $this->belongsTo(PaymentPackage::class, 'package_id','id');
+        return $this->belongsTo(PaymentPackage::class,'payment_package_id','id');
     }
     public function paymentprovider()
     {
-        return $this->belongsTo(PaymentProvider::class, 'provider_id','id');
+        return $this->belongsTo(PaymentProvider::class,'payment_provider_id','id');
     }
 }

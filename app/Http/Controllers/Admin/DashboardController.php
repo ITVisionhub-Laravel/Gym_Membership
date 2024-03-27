@@ -28,12 +28,14 @@ class DashboardController extends Controller
         $data['buying_price'] = Products::sum('buying_price');
         // dd($data['buying_price']);
         $prices = 0;
-        foreach (PaymentRecord::get() as $paymentPrice) {
-            $prices += (int) $paymentPrice->price;
+        $paymentRecords = PaymentRecord::get();
+        // dd($paymentRecord[0]->paymentprovider);
+        foreach ($paymentRecords as $paymentPrice) {
+            $prices += $paymentPrice->package->promotion_price;
         }
         $data['price'] = $prices;
+
         $data['paymentRecords'] = PaymentRecord::get();
-        $paymentRecords = PaymentRecord::get();
 
         // For Attendenced Members
         $todayDate = new DateTimeImmutable(Carbon::now()->format('Y-m-d'));
@@ -43,7 +45,7 @@ class DashboardController extends Controller
         )->get();
 
         // For Bar Chart
-        $monthlyEarnings = PaymentRecord::select('price', 'record_date')
+        $monthlyEarnings = PaymentRecord::select('record_date')
             ->get()
             ->groupBy(function ($date) {
                 //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
@@ -149,7 +151,7 @@ class DashboardController extends Controller
                 )->delete();
             } else {
                 $payment_expired_members
-                    ->where('customer_id', $paymentRecord->user_id)
+                    ->where('user_id', $paymentRecord->user_id)
                     ->delete();
             }
         }

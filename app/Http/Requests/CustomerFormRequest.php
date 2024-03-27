@@ -27,13 +27,17 @@ class CustomerFormRequest extends FormRequest
             'name' => ['required', 'string'],
             'email' => ['required', 'string'],
             'age' => ['required', 'integer'],
+            'gender' => ['required'],
             'height' => ['required', 'string'],
             'weight' => ['required', 'string'],
             'phone_number' => ['required', 'string'],
-            'street' => ['required', 'string'],
             'emergency_phone' => ['required', 'string'],
-            'gymclass' => ['required', 'string'],
+            'gym_class_id' => ['required', 'string'],
             'image' => ['nullable', 'mimes:jpg,jpeg,png'],
+            'street_id' => ['required', 'string'],
+            'block_no' => ['required', 'string'],
+            'floor' => ['required', 'string'],
+            'zipcode' => ['required', 'string'],
         ];
     }
 }

@@ -33,7 +33,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = User::all();
+        $customers = User::with('address')->get();
         return view('admin.customers.index', compact('customers'));
     }
     public function create()

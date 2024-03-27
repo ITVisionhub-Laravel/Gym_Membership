@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->tinyInteger('role_as')->default('0')->comment('0=user,1=admin');
+            $table->string('gender')->nullable();
             $table->foreignId('position_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('reporting_to')->nullable();
             $table->string('image')->nullable()->default('sample.png');

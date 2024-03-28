@@ -17,7 +17,7 @@ use App\Models\PaymentProvider;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\ProductPaymentRecords;
+use App\Models\ProductPaymentRecords;   
 use App\Http\Requests\CustomerFormRequest;
 use App\Models\Shop;
 use App\Models\User;

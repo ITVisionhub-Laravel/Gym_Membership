@@ -57,18 +57,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('package-details', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'show',
-    ]);
+    ])->name('package.details');
     Route::get('product-checkout', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'showproduct',
-    ]);
+        'show',
+    ])->name('product.checkout');
     Route::get('product-invoice', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'showProductInvoice',
     ]);
     Route::get('class-detail/{classCategoryId}', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'detail',
+        'show',
     ])->name('class.detail');
     Route::get('user_details',[UserRegisterController::class,'userDetails'])->name('user.details');
 });
@@ -130,7 +130,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer}/edit', 'edit');
         Route::put('/customers/{customer}', 'update');
         Route::get('/customers/{customer_id}/delete', 'destroy');
+        Route::post('/customers/fetch_state', 'fetchState');
+        Route::post('/customers/fetch_city', 'fetchCity');
         Route::post('/customers/fetch_township', 'fetchTownship');
+        Route::post('/customers/fetch_ward', 'fetchWard');
         Route::post('/customers/fetch_street', 'fetchStreet');
 
         Route::get('/customers/{customer_id}/history', 'history');

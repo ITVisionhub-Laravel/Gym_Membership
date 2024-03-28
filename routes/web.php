@@ -66,10 +66,14 @@ Route::middleware(['auth'])->group(function () {
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'showProductInvoice',
     ]);
-    Route::get('class-detail/{classCategoryId}', [
+    Route::get('class-list/{classCategoryId}', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'show',
-    ])->name('class.detail');
+    ])->name('class.list');
+    Route::get('class-details/{gymclassId}', [
+        App\Http\Controllers\Frontend\UserRegisterController::class,
+        'showGymClassDetails',
+    ])->name('class.details');
     Route::get('user_details',[UserRegisterController::class,'userDetails'])->name('user.details');
 });
 

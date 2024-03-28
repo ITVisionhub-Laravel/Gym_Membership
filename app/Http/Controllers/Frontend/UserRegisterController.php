@@ -124,6 +124,11 @@ class UserRegisterController extends Controller
     //     }
     // }
 
+    public function showGymClassDetails(){
+        $gymclassId = request()->gymclassId;
+        $gymClassInfo = GymClass::find($gymclassId);
+        return view('frontend.gymclass.gymclass-detail',['gymClassInfo' => $gymClassInfo]);
+    }
     public function showProductInvoice()
     {
         $logos = Logo::first();

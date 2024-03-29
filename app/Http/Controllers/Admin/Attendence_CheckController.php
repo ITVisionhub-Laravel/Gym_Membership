@@ -8,6 +8,8 @@ use App\Models\Attendent;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AttendenceCheckResource;
+use App\Models\User;
 
 class Attendence_CheckController extends Controller
 {
@@ -39,13 +41,9 @@ class Attendence_CheckController extends Controller
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'member_check' => ['required'],
-        ]);
-
-        $member_id = Customer::where(
+        $member_id = User::where(
             'member_card',
-            $validatedData['member_check']
+            $request->input('memberId')
         )->value('id');
 
         $todayDate = Carbon::now()->format('Y-m-d');
@@ -58,7 +56,7 @@ class Attendence_CheckController extends Controller
             $data = ['wrongMemberId' => true];
             return response()->json($data);
         }
-        $attendent_check = Attendent::where('customer_id', $member_id)
+        $attendent_check = Attendent::where('user_id', $member_id)
             ->where('attendent_date', $todayDate)
             ->first();
 
@@ -66,57 +64,20 @@ class Attendence_CheckController extends Controller
             // Member is new, create the 'Attendent' record
             $newAttendent = new Attendent();
             $newAttendent->attendent_date = $todayDate;
-            $newAttendent->customer_id = $member_id; // Assigning the correct value
+            $newAttendent->user_id = $member_id; // Assigning the correct value
 
             // Save the new 'Attendent' record
             $newAttendent->save();
-
+            // if (request()->expectsJson()) {
+            //     return new AttendenceCheckResource($newAttendent);
+            // }
             // Member is new, return JSON response indicating success
             $data = ['success' => true];
             return response()->json($data);
         }
         $data = ['memberExists' => true];
-        return response()->json($data);
-        // return new JsonResponse(['memberExists' => true]);
-    }
-
-    // public function store(Request $request)
-    // {
-    //     $validatedData = $request->validate([
-    //         'member_check' => ['required'],
-    //     ]);
-
-    //     $attendent_check = Customer::where(
-    //         'member_card',
-    //         $request->member_check
-    //     )->first();
-
-    //     if (!$attendent_check) {
-    //         return redirect()
-    //             ->route('attendents.index')
-    //             ->with('error', 'Customer not found');
-    //     }
-
-    //     $member_card_id = $attendent_check->id;
-    //     $todayDate = Carbon::now()->format('Y-m-d');
-
-    //     $attendent = Attendent::where('customer_id', $member_card_id)->first();
-
-    //     if ($attendent) {
-    //         return redirect()
-    //             ->route('attendents.index')
-    //             ->with('error', 'Attendent record already exists');
-    //     }
-
-    //     $newAttendent = new Attendent();
-    //     $newAttendent->attendent_date = $todayDate;
-    //     $newAttendent->customer_id = $member_card_id;
-    //     $newAttendent->save();
-
-    //     return redirect()
-    //         ->route('attendents.index')
-    //         ->with('success', 'Attendent created successfully');
-    // }
+        return response()->json($data); 
+}
 
     /**
      * Display the specified resource.

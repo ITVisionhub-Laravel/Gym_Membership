@@ -12,6 +12,7 @@ use App\Models\PaymentProvider;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProductPaymentRecords;
 use App\Models\Shop;
+use App\Models\User;
 
 class ProductCheckout extends Component
 {
@@ -38,15 +39,13 @@ class ProductCheckout extends Component
     public function addToCart($productId)
     {
         $this->products = Products::where('id', $productId)->first();
-        $this->customer = Customer::where(
+        $this->customer = User::where(
             'email',
             auth()->user()->email
         )->first();
-        // @dd(auth()->user()->id);
-
         if (Auth::check()) {
             if (
-                Cart::where('customer_id', $this->customer->id)
+                Cart::where('user_id', $this->customer->id)
                     ->where('product_id', $productId)
                     ->exists()
             ) {
@@ -59,7 +58,7 @@ class ProductCheckout extends Component
                 return false;
             } else {
                 Cart::create([
-                    'customer_id' => $this->customer->id,
+                    'user_id' => $this->customer->id,
                     'product_id' => $productId,
                     'quantity' => 1,
                     'total' => $this->products->selling_price,
@@ -87,7 +86,7 @@ class ProductCheckout extends Component
     public function decrementQuantity(int $cartId)
     {
         $cartData = Cart::where('id', $cartId)
-            ->where('customer_id', auth()->user()->customers->id)
+            ->where('user_id', auth()->user()->id)
             ->first();
         if ($cartData) {
             if ($cartData->quantity > 1) {
@@ -122,7 +121,7 @@ class ProductCheckout extends Component
     public function incrementQuantity(int $cartId)
     {
         $cartData = Cart::where('id', $cartId)
-            ->where('customer_id', auth()->user()->customers->id)
+            ->where('user_id', auth()->user()->id)
             ->first();
         if ($cartData) {
             if ($cartData->shopProducts->quantity > $cartData->quantity) {
@@ -160,8 +159,8 @@ class ProductCheckout extends Component
     public function removeCartItem(int $cartId)
     {
         $cartRemoveData = Cart::where(
-            'customer_id',
-            auth()->user()->customers->id
+            'user_id',
+            auth()->user()->id
         )
             ->where('id', $cartId)
             ->first();
@@ -185,8 +184,8 @@ class ProductCheckout extends Component
     public function removeTheWholeCart()
     {
         $cartRemoveData = Cart::where(
-            'customer_id',
-            auth()->user()->customers->id
+            'user_id',
+            auth()->user()->id
         )->delete();
         if ($cartRemoveData) {
             $this->showDiv = false;
@@ -229,13 +228,12 @@ class ProductCheckout extends Component
         }
 
         $products = Cart::where(
-            'customer_id',
-            auth()->user()->customers->id
+            'user_id',
+            auth()->user()->id
         )->get();
-
         foreach ($products as $product) {
             ProductPaymentRecords::create([
-                'customer_id' => $product->customer_id,
+                'user_id' => $product->user_id,
                 'product_id' => $product->product_id,
                 'provider_id' => $provider_id,
                 'quantity' => $product->quantity,
@@ -243,7 +241,7 @@ class ProductCheckout extends Component
             ]);
         }
         if (
-            Cart::where('customer_id', auth()->user()->customers->id)->delete()
+            Cart::where('user_id', auth()->user()->id)->delete()
         ) {
             $this->showDiv = false;
             return redirect('product-invoice');
@@ -261,7 +259,7 @@ class ProductCheckout extends Component
 
     public function render()
     {
-        $data['customerInfo'] = auth()->user()->customers;
+        $data['customerInfo'] =  User::where('id', auth()->user()->id)->whereNotNull('member_card')->first();
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
         $data['products'] = Products::get();
@@ -270,8 +268,8 @@ class ProductCheckout extends Component
         // dd($data['customerInfo']);
         if ($data['customerInfo']) {
             $data['Cart'] = Cart::where(
-                'customer_id',
-                auth()->user()->customers->id
+                'user_id',
+                auth()->user()->id
             )->get();
 
             $this->totalPrice = 0;

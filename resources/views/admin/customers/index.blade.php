@@ -1,6 +1,4 @@
 <x-admin>
-    
-   
 <div class="container my-3">
     <x-successmessage/>
     <h3 class="my-2">Members List
@@ -30,11 +28,17 @@
                 <td>{{ $customer->age }}</td>
                 <td>{{ $customer->height}} cm</td>
                 <td>{{ $customer->weight}}</td>
-                <td>
-                    {{ $customer->address->street->township->city->name}},<br>
-                    {{ $customer->address->street->township->name}},<br>
+                {{-- <td>
+                    {{ $customer->address->block_no}}
+                    {{ $customer->address->floor}}
+                    {{ $customer->address->zipcode}}
                     {{ $customer->address->street->name}}
-                </td>
+                    {{ $customer->address->street->ward->name}}
+                    {{ $customer->address->street->ward->township->name}}
+                    {{ $customer->address->street->ward->township->city->name}}
+                    {{ $customer->address->street->ward->township->city->state->name}}
+                    {{ $customer->address->street->ward->township->city->state->country->name}}
+                </td> --}}
                 <td>{{ $customer->phone_number}}</td>
                 <td>{{ $customer->emergency_phone}}</td>
                 <td>
@@ -42,11 +46,11 @@
                 </td>
                 <td>
 
-                <a href="{{ empty($customer->payment_records) ? '#' : url('admin/customers/'.$customer->id.'/history')}}" 
+                <a href="{{ empty($customer->payment_records) ? '#' : url('admin/customers/'.$customer->id.'/history')}}"
                 class="btn-history btn-sm {{ empty($customer->payment_records) ? 'show-history-popup' : '' }}">
                     <i class="fa-solid fa-clock-rotate-left text-white"></i>
                 </a>
-                <a href="{{ empty($customer->payment_records) ? '#' : url('admin/customers/'.$customer->id.'/invoice')}}" 
+                <a href="{{ empty($customer->payment_records) ? '#' : url('admin/customers/'.$customer->id.'/invoice')}}"
                 class="m-1 btn-sm btn-invoice" class ="{{ empty($customer->payment_records) ? 'show-history-popup' : '' }}">
                     <i class="fa-solid fa-file-invoice text-white"></i>
                 </a>
@@ -59,7 +63,7 @@
     </table>
 </div>
 
-      <!-- Custom popup box --> 
+      <!-- Custom popup box -->
         <div id="customPopup" class="popup-container">
             <!-- The popup content -->
             <div class="popup-content">
@@ -107,7 +111,7 @@
             $('#myTable').DataTable({
                 scrollX: true,
             });
-        
+
         } );
     </script>
 

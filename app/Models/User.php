@@ -21,7 +21,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'email', 'password','role_as', 'position_id', 'image', 'reporting_to'];
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -53,9 +53,21 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Position::class, 'position_id', 'id');
     }
-    
+
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
+    }
+    public function address(): HasMany
+    {
+        return $this->hasMany(Address::class);
+    }
+    public function payment_records() : HasMany
+    {
+        return $this->hasMany(PaymentRecord::class);
+    }
+
+    public function debitCreditInfo(){
+        return $this->morphMany(DebitAndCredit::class, 'related_info');
     }
 }

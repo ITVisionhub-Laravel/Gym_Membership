@@ -12,11 +12,11 @@ class Attendent extends Model
 
     protected $table = 'attendents';
 
-    protected $fillable = ['customer_id', 'attendent_date'];
+    protected $fillable = ['user_id', 'attendent_date'];
 
     public function member()
     {
-        return $this->belongsTo(Customer::class,'customer_id');
+        return $this->belongsTo(User::class,'user_id');
     }
 
    

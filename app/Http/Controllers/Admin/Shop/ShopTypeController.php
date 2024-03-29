@@ -9,13 +9,19 @@ use Illuminate\Support\Facades\File;
 use App\Http\Requests\BrandFormRequest;
 use App\Http\Requests\Shop\ShopTypeFormRequest;
 use App\Http\Requests\Shop\ShopType as ShopShopType;
+use App\Http\Resources\ShopTypeResource;
 
 class ShopTypeController extends Controller
 {
     public function index()
     {
-        $data['shoptypes'] = ShopType::get();
-        return view('admin.shoptypes.index', $data);
+        $shoptypes = ShopType::get();
+        // $data['shoptypes'] = ShopType::get();
+        if (request()->expectsJson()) {
+            return ShopTypeResource::collection($shoptypes);
+        }
+        return view('admin.shoptypes.index', compact('shoptypes'));
+        // return view('admin.shoptypes.index', $data);
     }
 
     public function create()
@@ -42,6 +48,9 @@ class ShopTypeController extends Controller
         }
         $shoptype->save();
 
+        if(request()->expectsJson()){
+            return new ShopTypeResource($shoptype);
+        }
         return redirect('admin/shoptypes')->with(
             'message',
             'Shoptype Added Successfully'
@@ -75,6 +84,9 @@ class ShopTypeController extends Controller
             $shoptype->image = $filename;
         }
         $shoptype->update();
+        if (request()->expectsJson()) {
+            return new ShopTypeResource($shoptype);
+        }
         return redirect('admin/shoptypes')->with(
             'message',
             'ShopType Updated Successfully'
@@ -85,6 +97,9 @@ class ShopTypeController extends Controller
     {
         $shoptype = ShopType::findOrFail($shoptype_id);
         $shoptype->delete();
+        if (request()->expectsJson()) {
+            return new ShopTypeResource($shoptype);
+        }
         return redirect('admin/shoptypes')->with(
             'message',
             'Brand Deleted Successfully'

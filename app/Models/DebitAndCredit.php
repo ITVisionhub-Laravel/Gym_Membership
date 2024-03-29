@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class DebitAndCredit extends Model
 {
     use HasFactory;
+    protected $table = 'debit_and_credit';
     
     protected $guarded = ['id'];
     
@@ -20,5 +21,9 @@ class DebitAndCredit extends Model
     public function transactionType(): BelongsTo
     {
         return $this->belongsTo(TransactionType::class);
+    }
+
+    public function relatedInfo(){
+        return $this->morphTo();
     }
 }

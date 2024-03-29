@@ -8,35 +8,35 @@
         <div class="card-body row py-5 me-5">
             <div class="col-md-8">
                 <h3 class="one-pkg">Choose One Package </h3>
-                <div class="row"> 
+                <div class="row">
                     @foreach ($data['packages'] as $package)
-                   @if ($chooseOnePackage == $package->id)
-                    <div type="button" class="col-4 col-md-3 p-3 pkg_monthly">
-                        <div class="card h-80 shadow">
-                            <div class="card-body text-center">
-                                My Package <span>({{ $package->package }})</span>
+                        @if ($chooseOnePackage == $package->id)
+                        <div type="button" class="col-4 col-md-3 p-3 pkg_monthly">
+                            <div class="card h-80 shadow">
+                                <div class="card-body text-center">
+                                    My Package <span>({{ $package->package }})</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                   
+
                         @else
-                       <div type="button" class="col-4 col-md-3 p-3 pkg_monthly"
+                            <div type="button" class="col-4 col-md-3 p-3 pkg_monthly"
                             @if (!$data['customerInfo']) style="pointer-events: none;" @endif
-                             @if ($data['customerInfo'] && $data['qrcode'] && $data['qrcode']->user_id == $data['customerInfo']->id)  
+                             @if ($data['customerInfo'] && $data['qrcode'] && $data['qrcode']->user_id == $data['customerInfo']->id)
                             style="pointer-events: none;" @endif
                             wire:loading.attr="disabled" wire:click="choosePackage({{ $package->id }})">
 
                                     <div class="card h-80 shadow" wire:target="choosePackage({{ $package->id}})" >
-                                        <div class="card-body text-center">		
-                                            <h6 class="package_name text-dark">					
-                                                {{ $package->package }}	
+                                        <div class="card-body text-center">
+                                            <h6 class="package_name text-dark">
+                                                {{ $package->package }}
                                             </h6>
                                             <h6 class="package_promotion">
-                                                {{ $package->promotion }} %	
-                                            </h6>          				   
+                                                {{ $package->promotion }} %
+                                            </h6>
                                             <h6 class="package_original_price">
                                                 {{ $package->original_price }}
-                                            </h6>          				   
+                                            </h6>
                                         </div>
                                     </div>
                             </div>
@@ -44,16 +44,16 @@
                     @endforeach
                 </div>
             </div>
-            @if ($data['customerInfo']) 
-            @if ($data['qrcode'])
-            <div class="mt-5 col-md-4 border rounded card">
-                <div class="card-header">
-                    <h4>QR Code</h4>
-                </div>
-                <div class="card-body">
-                    {{ QrCode::size(300)->generate($data['qrcode']->member_card_id) }}
-                </div>
-            </div>
+            @if ($data['customerInfo'])
+                @if ($data['qrcode'])
+                    <div class="mt-5 col-md-4 border rounded card">
+                        <div class="card-header">
+                            <h4>QR Code</h4>
+                        </div>
+                        <div class="card-body">
+                            {{ QrCode::size(300)->generate($data['qrcode']->member_card_id) }}
+                        </div>
+                    </div>
                 @else
                 <div class="mt-5 col-md-4 border rounded ">
                     <h2 class="text-center mt-4 ">Invoice </h2>
@@ -72,8 +72,8 @@
                             </div>
                             <div class="col-5 my-1">
                                 <p class="mobile">{{ $data['customerInfo']->phone_number }}</p>
-                            </div>  
-                            
+                            </div>
+
                             <div class="offset-1 col-5 my-1">
                                 <p>Package:</p>
                             </div>
@@ -82,7 +82,6 @@
                                     {{   $packageInfo->package }}
                                 @endif</p>
                             </div>
-                        
                         </div>
                         <div class="row">
                             <div class="col-12">
@@ -94,14 +93,12 @@
                             <div class="col-5 my-1">
                                 <p id="total_amount">@if ($packageInfo){{ $packageInfo->original_price }} @endif</p>
                             </div>
-
                             <div class="offset-1 col-5 my-1">
                                 <p>Promotion Fee:</p>
                             </div>
                             <div class="col-5 my-1">
                                 <p>@if ($packageInfo){{ $packageInfo->promotion_price }} @endif</p>
                             </div>
-
                             <div class="offset-1 col-5 my-1">
                                 <p>Payment Type:</p>
                             </div>
@@ -112,7 +109,6 @@
                                 </select>
                             </div>
                             <div id="paymentType" class="col-11 my-2 mx-5" style="display:none">
-                            
                                 <label for="">Select Payments</label>
                                 <select wire:model.defer="provider_id" required class="form-control">
                                 <option value="0">---Select Payment Type---</option>
@@ -123,18 +119,15 @@
 
                             {{--  <x-forms.dropdownfield :dropdownValues="$data['providers']" name="payment" width="col-md-10"></x-forms.dropdownfield>  --}}
                             </div>
-                            
                             <button type="button" class="btn btn-outline-secondary mt-5 mb-4 w-25 mx-auto" id="clear">Clear</button>
-                            <input type="submit" value="Checkout" class="btn pkg-btn mt-5 mb-4 w-50 mx-auto" id="pkg_register" @if (!$packageInfo) disabled @endif> 
+                            <input type="submit" value="Checkout" class="btn pkg-btn mt-5 mb-4 w-50 mx-auto" id="pkg_register" @if (!$packageInfo) disabled @endif>
                             <br>
                             <img src="" class="img-fluid loading" style="display: none;">
                         </div>
                     </form>
                 </div>
-                
+                @endif
             @endif
-                   
-            @endif 
         </div>
         </div>
         <!-- ***** Packages Banner Area End ******-->
@@ -145,9 +138,9 @@
     </html>
    @section('script')
     <script>
-        
-        "use strict"; 
-         $(document).ready(function () {                       
+
+        "use strict";
+         $(document).ready(function () {
               let cart = [];
               let cartTotal = 0;
         //Start of Gym Fee Payment
@@ -166,7 +159,7 @@
               document.getElementById("invoice_package_name").innerText = packageData.name;
                document.getElementById("cart_product").style.display = "none";
               });
-            }); 
+            });
 
             //End of Gym Fee Payment
 
@@ -178,8 +171,8 @@
                 document.getElementById("paymentType").style.display = "none";
               }
              });
-            
+
           });
     </script>
-   
+
    @endsection

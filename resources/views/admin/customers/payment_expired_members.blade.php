@@ -24,9 +24,9 @@
                 {{--  @dd($payment_expired_member->expiredMember)  --}}
                 <td>{{ $payment_expired_member->expiredMember->name }}</td>
                 <td>
-                    {{ $payment_expired_member->expiredMember->address->street->township->city->name}},<br>
-                    {{ $payment_expired_member->expiredMember->address->street->township->name}},<br>
-                    {{ $payment_expired_member->expiredMember->address->street->name}}
+                    {{ $payment_expired_member->expiredMember->address?->street->township->city->name}},<br>
+                    {{ $payment_expired_member->expiredMember->address?->street->township->name}},<br>
+                    {{ $payment_expired_member->expiredMember->address?->street->name}}
                 </td>
                 <td>{{ $payment_expired_member->expiredMember->phone_number}}</td>
                 <td>{{ $payment_expired_member->expired_date}}</td>

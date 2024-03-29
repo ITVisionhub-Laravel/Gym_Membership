@@ -7,28 +7,31 @@ use Illuminate\Http\Request;
 use App\Models\CustomerQRCode;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\DaysOfWeek;
 use App\Models\GymClass;
+use App\Models\GymClassCategory;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Logo;
 use App\Models\Partner;
 use App\Models\Trainer;
+use App\Models\User;
 
 class FrontendController extends Controller
 {
     public function index()
     {
+        // dd(isset(Auth::user()->member_card));
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
-        $data['class'] = GymClass::get();
-        $data['trainer'] = Trainer::get();
+        $data['gymClasses'] = GymClass::get();
+        $data['days_of_week'] = DaysOfWeek::get();
+        $data['class_categories'] = GymClassCategory::get();
+        $data['gymTrainers'] = Trainer::get();
         if (Auth::user()) {
             if (Auth::user()->role_as == 1) {
                 return redirect('admin/customers');
             } else {
-                $customer = Customer::where(
-                    'email',
-                    Auth::user()->email
-                )->first();
+                // $customer = false;
 
                 // if ($member_card_id) {
                 //     $member = CustomerQRCode::where(
@@ -49,7 +52,7 @@ class FrontendController extends Controller
                 // $data['qrcode'] = $member;
                 // }
                 // } else {
-                $data['customer'] = $customer;
+                $data['customer'] = isset(Auth::user()->member_card);
                 // }
                 return view('frontend.index', $data);
             }
@@ -57,5 +60,27 @@ class FrontendController extends Controller
             $data['customer'] = false;
             return view('frontend.index', $data);
         }
+    }
+
+    public function create(Request $request)
+    {
+        $rules = [
+            'name' => 'required',
+            'email' => 'required|email',
+            'subject' => 'required',
+            'message' => 'required',
+            'g-recaptcha-response' => 'required|recaptcha'
+        ];
+
+        $this->validate($request,$rules,[
+            'name.required' => 'User Name is required',
+            'email.required' => 'Email is required',
+            'subject.required' => 'Subject is required',
+            'message.required' => 'You have to put some message',
+            'g-recaptcha-response.recaptcha' => 'Captcha verification failed',
+            'g-recaptcha-response.required' => "Please complete the captcha"
+        ]);
+
+
     }
 }

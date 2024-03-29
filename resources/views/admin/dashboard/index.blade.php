@@ -1,6 +1,6 @@
 <x-admin>
     <ul class="box-info">
-	
+
         <li>
             <i class='bx bxs-group' ></i>
             <span class="text">
@@ -20,18 +20,18 @@
         <li>
             <i class='bx bxs-calendar-check' ></i>
             <span class="text">
-                @if ($ExpiredPaymentMember) 
+                @if ($ExpiredPaymentMember)
                 <h3>{{ $payment }}</h3>
                 <a href="{{url('admin/expiredMembers')}}"><p>Payment Expired Members</p></a>
                 @else
-                    <h3>0</h3>    
+                    <h3>0</h3>
                     <p>Payment Expired Members</p>
                 @endif
-                
-                
+
+
             </span>
         </li>
-    
+
         <li>
             <i class='bx bxs-dollar-circle' ></i>
             <span class="text">
@@ -67,6 +67,21 @@
 <div class="container mt-3 mb-3">
     <div class="row">
         <div class="col-md-3">
+            <div class="card p-3 mb-2" style="border-radius:10px; background-color: rgb(231, 179, 228)">
+                <div class="d-flex">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="profitshare"><i class="fa-regular fa-handshake"></i></div>
+                    </div>
+                    <div class=" mt-2 px-3">
+                        <a href="{{url('admin/profitsharing')}}">
+                            <h5 class="heading">Profit Sharing</h5>
+                        </a>
+                        <p>${{ $incomes }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="card p-3 mb-2" style="border-radius:10px; background-color: lightgreen">
                 <div class="d-flex">
                     <div class="d-flex flex-row align-items-center">
@@ -77,7 +92,6 @@
                     <p>${{ $incomes }}</p>
                     </div>
                 </div>
-               
             </div>
         </div>
         <div class="col-md-3">
@@ -91,7 +105,6 @@
                     <p>${{ $expenses }}</p>
                     </div>
                 </div>
-               
             </div>
         </div>
         <div class="col-md-3">
@@ -105,7 +118,6 @@
                     <p>$50.00</p>
                     </div>
                 </div>
-               
             </div>
         </div>
         <div class="col-md-3">
@@ -119,7 +131,6 @@
                     <p>${{ $profits }}</p>
                     </div>
                 </div>
-               
             </div>
         </div>
         <div class="col-md-3">
@@ -133,7 +144,6 @@
                     <p>$70.00</p>
                     </div>
                 </div>
-               
             </div>
         </div>
     </div>
@@ -148,7 +158,7 @@
       @endif
 
        @include('admin.dashboard.memberlist',compact('attendencedMembers','members'))
-      
+
     </div>
 
     <section id="team" class="pb-5">
@@ -206,8 +216,8 @@
             @empty
                 <div>No Trainers</div>
             @endforelse
-            
-            
+
+
         </div>
     </div>
 </section>

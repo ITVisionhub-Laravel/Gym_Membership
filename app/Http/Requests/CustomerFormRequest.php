@@ -25,24 +25,15 @@ class CustomerFormRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string'],
-            'age' => ['required', 'integer'],
             'email' => ['required', 'string'],
-            // 'member_card_id' => ['required', 'integer'],
+            'age' => ['required', 'integer'],
             'height' => ['required', 'string'],
             'weight' => ['required', 'string'],
-            'city' => ['required', 'string'],
-            'township' => ['required', 'string'],
-            'street' => ['required', 'string'],
             'phone_number' => ['required', 'string'],
+            'street' => ['required', 'string'],
             'emergency_phone' => ['required', 'string'],
-            // 'package' => ['required', 'string'],
-            // 'promotion' => ['required', 'string'],
-            // 'original_price' => ['required', 'string'],
-            // 'price' => ['required', 'string'],
-            // 'payment' => ['required', 'string'],
             'gymclass' => ['required', 'string'],
             'image' => ['nullable', 'mimes:jpg,jpeg,png'],
-            // 'bank_slip' => ['nullable', 'mimes:jpg,jpeg,png'],
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class DeliveryType extends Model
 {
@@ -22,5 +23,10 @@ class DeliveryType extends Model
     public function township()
     {
         return $this->belongsTo(Township::class, 'township_id', 'id');
+    }
+
+    public function orders() : HasMany
+    {
+        return $this->hasMany(Order::class);
     }
 }

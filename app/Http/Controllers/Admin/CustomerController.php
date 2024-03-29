@@ -24,13 +24,16 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentExpiredMembers;
 use App\Http\Requests\CustomerFormRequest;
+use App\Http\Requests\MemberInfoValidation;
+use App\Models\ProductPaymentRecords;
+use App\Models\User;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::all();
+        $customers = User::with('address')->get();
         return view('admin.customers.index', compact('customers'));
     }
     public function create()
@@ -59,18 +62,20 @@ class CustomerController extends Controller
     }
 
     public function store(CustomerFormRequest $request)
-    {
+    { 
         $validatedData = $request->validated();
-        $customer = new Customer();
+        $customer = new User();
         $address = new Address();
 
-        $customer->name = $validatedData['name'];
+        $customer->name = Auth::user()->name;
+        $customer->email = Auth::user()->email;
         $customer->age = $validatedData['age'];
-        $customer->email = $validatedData['email'];
         $customer->member_card = time();
+        $customer->password = bcrypt('00000');
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
-        $customer->class_id = $validatedData['gymclass'];
+        $customer->phone_number = $validatedData['phone_number'];
+        $customer->emergency_phone = $validatedData['emergency_phone'];
 
         if (
             DB::table('addresses')
@@ -82,7 +87,7 @@ class CustomerController extends Controller
                 $request->street
             )->get();
             $customer->address_id = $addressField[0]->id;
-            // dd($addressField);
+           
         } else {
             $address->street_id = $request->street;
             $address->save();
@@ -93,9 +98,6 @@ class CustomerController extends Controller
             $customer->address_id = $addressField[0]->id;
         }
 
-        $customer->phone_number = $validatedData['phone_number'];
-        $customer->emergency_phone = $validatedData['emergency_phone'];
-
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $ext = $file->getClientOriginalExtension();
@@ -104,8 +106,8 @@ class CustomerController extends Controller
             $customer->image = $filename;
         }
 
-        // $customer->save();
         if ($customer->save()) {
+            return $customer;
             return redirect('admin/customers')->with(
                 'message',
                 'Customer Added Successfully'
@@ -148,7 +150,7 @@ class CustomerController extends Controller
         //     }
         // }
     }
-    public function edit(Customer $customer)
+    public function edit(User $customer)
     {
         // dd("hello");
         $data['cities'] = City::get(['name', 'id']);
@@ -156,7 +158,7 @@ class CustomerController extends Controller
         $data['streets'] = Street::get();
         $data['gymclasses'] = GymClass::get();
         $data['payment_records'] = PaymentRecord::where(
-            'customer_id',
+            'user_id',
             $customer->id
         )->get();
         $data['packages'] = PaymentPackage::get();
@@ -181,7 +183,7 @@ class CustomerController extends Controller
             'image' => ['nullable', 'mimes:jpg,jpeg,png'],
         ]);
         // dd($validatedData);
-        $customer = Customer::findOrFail($customer);
+        $customer = User::findOrFail($customer);
         $address = new Address();
 
         $customer->name = $validatedData['name'];
@@ -247,15 +249,15 @@ class CustomerController extends Controller
     {
         // return $customer_id;
 
-        $customer = Customer::findOrFail($customer_id);
+        $customer = User::findOrFail($customer_id);
         $path = public_path('uploads/customer/' . $customer->image);
 
         if (File::exists($path)) {
             File::delete($path);
         }
         if ($customer->delete()) {
-            PaymentRecord::where('customer_id', $customer_id)->delete();
-            PaymentExpiredMembers::where('customer_id', $customer_id)->delete();
+            PaymentRecord::where('user_id', $customer_id)->delete();
+            PaymentExpiredMembers::where('user_id', $customer_id)->delete();
         }
 
         return redirect('admin/customers')->with(
@@ -266,8 +268,8 @@ class CustomerController extends Controller
 
     public function history($customer_id)
     {
-        $records = PaymentRecord::where('customer_id', $customer_id)
-            ->with('customer')
+        $records = PaymentRecord::where('user_id', $customer_id)
+            ->with('user')
             ->get();
 
         $logos = Logo::first();
@@ -294,8 +296,8 @@ class CustomerController extends Controller
 
     public function invoice($customer_id)
     {
-        $records = PaymentRecord::where('customer_id', $customer_id)
-            ->with('customer')
+        $records = PaymentRecord::where('user_id', $customer_id)
+            ->with('user')
             ->latest()
             ->first();
 
@@ -310,8 +312,8 @@ class CustomerController extends Controller
 
     public function viewInvoice($customer_id)
     {
-        $records = PaymentRecord::where('customer_id', $customer_id)
-            ->with('customer')
+        $records = PaymentRecord::where('user_id', $customer_id)
+            ->with('user')
             ->latest()
             ->first();
         $logos = Logo::first();
@@ -320,8 +322,8 @@ class CustomerController extends Controller
 
     public function generateInvoice($customer_id)
     {
-        $records = PaymentRecord::where('customer_id', $customer_id)
-            ->with('customer')
+        $records = PaymentRecord::where('user_id', $customer_id)
+            ->with('user')
             ->latest()
             ->first();
         $logos = Logo::first();
@@ -339,17 +341,17 @@ class CustomerController extends Controller
     public function mailInvoice($customer_id)
     {
         try {
-            $data['records'] = PaymentRecord::where('customer_id', $customer_id)
-                ->with('customer')
+            $data['records'] = PaymentRecord::where('user_id', $customer_id)
+                ->with('user')
                 ->first();
             $data['logos'] = Logo::first();
-            Mail::to($data['records']->customer->email)->send(
+            Mail::to($data['records']->user->email)->send(
                 new InvoiceMailable($data)
             );
             return redirect('admin/customers')->with(
                 'message',
                 'Invoice Mail has been sent to ' .
-                    $data['records']->customer->email
+                    $data['records']->user->email
             );
         } catch (\Exception $e) {
             return redirect('admin/customers')->with(
@@ -418,13 +420,30 @@ class CustomerController extends Controller
 
     public function print($customer_id)
     {
-        $records = PaymentRecord::where('customer_id', $customer_id)
-            ->with('customer')
-            ->latest()
-            ->first();
-
+        $records = ProductPaymentRecords::with('user')->get()
+            ->where('user_id', $customer_id)
+            ->groupBy('created_at')
+            ->last();
         $logos = Logo::first();
 
-        return view('admin.customers.print', compact('records', 'logos'));
+        $total = 0;
+        foreach ($records as $record) {
+            $total += $record->total;
+        }
+        return view('admin.customers.print', compact('records', 'logos','total'));
+    }
+
+    public function printPackage($customer_id)
+    {
+        $records = PaymentRecord::where('user_id', $customer_id)
+            ->with('user','package')
+            ->latest()
+            ->first();
+        $logos = Logo::first();
+
+        if (!$records) {
+            return response()->json(['no_records' => 'No records found']);
+        }
+        return view('admin.customers.printPackage', ['records' => $records, 'logos' => $logos]);
     }
 }

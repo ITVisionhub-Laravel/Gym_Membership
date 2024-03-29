@@ -1,6 +1,5 @@
 <!-- ***** Header Area Start ***** -->
 @props(['customer'])
-
 <header class="header-area header-sticky" style="background-color:#232d39">
     <div class="container">
         <div class="row">
@@ -11,18 +10,20 @@
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+                        <li class="scroll-to-section">
+                            <a href="{{ route('home') }}" class="active">Home</a>
+                        </li>
                         <li class="scroll-to-section"><a href="#features">About</a></li>
                         <li class="scroll-to-section"><a href="#our-classes">Classes</a></li>
                         <li class="scroll-to-section"><a href="#trainers">Trainers</a></li>
                         <li class="scroll-to-section"><a href="#schedule">Schedules</a></li>
-                        @if (Auth::user() && !$customer)
+                        {{-- @if (Auth::user() && !$customer)
                             <li class="scroll-to-section">
                                 <a href="{{ url('user_register') }}">
-                                    Submit
+                                    Profile
                                 </a>
                             </li>
-                        @endif
+                        @endif --}}
                         <li class="scroll-to-section"><a href="#contact-us">Contact</a></li>
                         <li>
                             @guest
@@ -35,8 +36,48 @@
                                 </li>
                             @endif
                         @else
-                            <li class="scroll-to-section"><a href="{{ route('login') }}">{{ __(Auth::user()->name) }}</a>
-                            </li>
+                            {{-- @php
+                                $nameWords = explode(' ', __(Auth::user()->name));
+                                $shortenedName = implode(' ', array_slice($nameWords, 0, 2));
+                                if (count($nameWords) > 2) {
+                                    $shortenedName .= '...';
+                                }
+                            @endphp --}}
+                            @if (Auth::user()->phone_number)
+                                <li class="scroll-to-section"><img
+                                        src="{{ asset('uploads/customer/' . Auth::user()->image) }}" width="30"
+                                        height="30" class="d-inline-block bg-transparent border-0 rounded-circle"
+                                        alt="{{ __(Auth::user()->name) }}">
+                                    <a href="{{ route('user.details') }}"
+                                        class="d-inline-block">{{ Str::words(__(Auth::user()->name), 2) }}</a>
+                                </li>
+                            @else
+                                @if (Auth::user()->age)
+                                    <li class="scroll-to-section"><img
+                                            src="{{ asset('uploads/customer/' . Auth::user()->image) }}" width="30"
+                                            height="30" class="d-inline-block bg-transparent border-0 rounded-circle"
+                                            alt="{{ __(Auth::user()->name) }}">
+                                        <a href="{{ url('user_register') }}"
+                                            class="d-inline-block">{{ Str::words(__(Auth::user()->name), 2) }}</a>
+                                    </li>
+                                @else
+                                    <li class="scroll-to-section"><img src="{{ asset('uploads/customer/sample.png') }}"
+                                            width="30" height="30" class="d-inline-block bg-transparent border-0"
+                                            alt="{{ __(Auth::user()->name) }}">
+
+
+                                        <a href="{{ url('user_register') }}"
+                                            class="d-inline-block">{{ Str::words(__(Auth::user()->name), 2) }}</a>
+                                        {{-- <a href="{{ url('user_register') }}"
+                                            class="d-inline-block">{{ __(Auth::user()->name) }}</a> --}}
+                                    </li>
+                                @endif
+                            @endif
+
+                            {{-- <li class="scroll-to-section"><a
+                                    href="{{ url('user_register') }}">{{ __(Auth::user()->name) }}</a>
+                            </li> --}}
+
                             <li>
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();

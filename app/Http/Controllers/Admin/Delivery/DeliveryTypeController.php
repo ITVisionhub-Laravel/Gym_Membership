@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Delivery;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Delivery\DeliveryTypeFormRequest;
+use App\Http\Resources\DeliveryTypeResource;
 use App\Models\DeliveryType;
 use App\Models\Township;
 use Illuminate\Http\Request;
@@ -12,9 +13,13 @@ class DeliveryTypeController extends Controller
 {
     public function index()
     {
-        $data['delivertypes'] = DeliveryType::get();
-
-        return view('admin.deliverytypes.index', $data);
+        // $data['delivertypes'] = DeliveryType::get();
+        $delivertypes = DeliveryType::get();
+        if (request()->expectsJson()) {
+            return DeliveryTypeResource::collection($delivertypes);
+        }
+        return view('admin.deliverytypes.index', compact('delivertypes'));
+        // return view('admin.deliverytypes.index', $data);
     }
     public function create()
     {
@@ -38,6 +43,10 @@ class DeliveryTypeController extends Controller
         $deliver->cost = $validatedData['cost'];
         $deliver->waiting_time = $validatedData['waiting-time'];
         $deliver->save();
+
+        if (request()->expectsJson()) {
+            return new DeliveryTypeResource($deliver);
+        }
         return redirect('admin/deliverytypes')->with(
             'message',
             'DeliverType Added Successfully'
@@ -65,6 +74,11 @@ class DeliveryTypeController extends Controller
         $deliver->cost = $validatedData['cost'];
         $deliver->waiting_time = $validatedData['waiting-time'];
         $deliver->update();
+
+        if (request()->expectsJson()) {
+            return new DeliveryTypeResource($deliver);
+        }
+
         return redirect('admin/deliverytypes')->with(
             'message',
             'DeliverType Updated Successfully'
@@ -74,6 +88,11 @@ class DeliveryTypeController extends Controller
     {
         $deliver = DeliveryType::findOrFail($deliver_id);
         $deliver->delete();
+
+        if (request()->expectsJson()) {
+            return new DeliveryTypeResource($deliver);
+        }
+        
         return redirect('admin/deliverytypes')->with(
             'message',
             'DeliveryType Deleted Successfully'

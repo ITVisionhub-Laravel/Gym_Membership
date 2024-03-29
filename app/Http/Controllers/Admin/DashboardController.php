@@ -11,6 +11,7 @@ use App\Models\Attendent;
 use App\Models\PaymentRecord;
 use App\Models\CustomerQRCode;
 use App\Models\DebitAndCredit;
+use App\Models\ProfitSharingView;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentExpiredMembers;
 use Illuminate\Support\Facades\Config;
@@ -172,16 +173,18 @@ class DashboardController extends Controller
 
         $variablesOneData = Config::get('variables.ONE');
         $variablesTwoData = Config::get('variables.TWO');
+        $data['yufcIncome'] = ProfitSharingView::first()->YUFC_25_percent;
+        $ourIncome = ProfitSharingView::first()->FSA_75_percent;
 
         $monthlyData = DebitAndCredit::whereYear('date', '=', $now->year)
                         ->whereMonth('date', '=', $now->month)
                         ->get();
 
-        $expense = $monthlyData->where('transaction_type_id', $variablesOneData)->sum('amount');
+        $expense = $monthlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
 
-        $income = $monthlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
+        $income = $monthlyData->where('transaction_type_id', $variablesOneData)->sum('amount');
 
-        $profit = $income - $expense;
+        $profit = $ourIncome - $expense;
 
         $data['expenses'] = $expense;
         $data['incomes'] = $income;

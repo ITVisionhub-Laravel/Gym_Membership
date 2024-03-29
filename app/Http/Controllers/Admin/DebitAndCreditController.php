@@ -35,7 +35,7 @@ class DebitAndCreditController extends Controller
     public function edit(DebitAndCredit $debitCredit)
     {
         $transactionTypes = TransactionType::all();
-        $transactions = Transaction::all();
+        // $transactions = Transaction::all();
         
         return view('debit_credit.edit', compact('debitCredit','transactionTypes', 'transactions'));
     }

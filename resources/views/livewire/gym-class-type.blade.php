@@ -11,31 +11,33 @@
             </div>
     
             <div class="row class-container pt-4">
-                @foreach ($gymClasses as $gymClass)
-                <div class="col-lg-4 col-md-6 col-sm-12 class-item filter-1 wow fadeInUp" data-wow-delay="0.0s">
-                    <div class="class-wrap">
-                        <div class="class-img">
-                            <img src="{{asset('/uploads/class/'.$gymClass->image)}}" alt="Image">
-                        </div>
-                        <div class="class-text">
-                            <div class="class-teacher">
-                                @if ($gymClass->trainers->isNotEmpty())
-                                <img src="{{ asset('/uploads/trainer/'.$gymClass->trainers[0]->image) }}" alt="Image">
-                                <h3>{{ $gymClass->trainers['0']->name }}</h3>
-                                @endif
-                                <a href="">+</a>
+               @foreach ($gymClasses as $gymClass)
+                    <div class="col-lg-4 col-md-6 col-sm-12 class-item filter-1 wow fadeInUp" data-wow-delay="0.0s">
+                        <a href="{{ route('class.details', ['gymclassId' => $gymClass->id]) }}">
+                            <div class="class-wrap">
+                                <div class="class-img">
+                                    <img src="{{asset('/uploads/class/'.$gymClass->image)}}" alt="Image">
+                                </div>
+                                <div class="class-text">
+                                    <div class="class-teacher">
+                                        @if ($gymClass->trainers->isNotEmpty())
+                                        <img src="{{ asset('/uploads/trainer/'.$gymClass->trainers[0]->image) }}" alt="Image">
+                                        <h3>{{ $gymClass->trainers['0']->name }}</h3>
+                                        @endif
+                                        <a href="">+</a>
+                                    </div>
+                                    <h2>{{ $gymClass->name }}</h2>
+                                    @if ($gymClass->schedules->isNotEmpty())
+                                    <div class="class-meta">
+                                        <p><i class="far fa-calendar-alt"></i>{{ $gymClass->schedules['0']->daysOfWeek->name }}</p>
+                                        <p><i class="far fa-clock"></i>{{ $gymClass->schedules['0']->hours_From }} - {{
+                                            $gymClass->schedules['0']->hours_To }}</p>
+                                    </div>
+                                    @endif
+                                </div>
                             </div>
-                            <h2>{{ $gymClass->name }}</h2>
-                            @if ($gymClass->schedules->isNotEmpty())
-                            <div class="class-meta">
-                                <p><i class="far fa-calendar-alt"></i>{{ $gymClass->schedules['0']->daysOfWeek->name }}</p>
-                                <p><i class="far fa-clock"></i>{{ $gymClass->schedules['0']->hours_From }} - {{
-                                    $gymClass->schedules['0']->hours_To }}</p>
-                            </div>
-                            @endif
-                        </div>
+                        </a>
                     </div>
-                </div>
                 @endforeach
     
             </div>

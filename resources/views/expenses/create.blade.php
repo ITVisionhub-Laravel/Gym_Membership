@@ -3,10 +3,10 @@
 <x-admin>
    <div class="card w-50 mx-auto ">
      <div class="card-header">
-        <h3 class="text-center my-1">Transactions Create Form</h3>
+        <h3 class="text-center my-1">Expenses Create Form</h3>
      </div>
      <div class="card-body">
-        <form action="{{ route('transactions.store') }}" method="POST">
+        <form action="{{ route('expenses.store') }}" method="POST">
             @csrf
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
@@ -17,12 +17,20 @@
                 <input type="number" class="form-control" id="amount" name="amount" required>
             </div>
             <div class="mb-3">
+                <label for="invoice_slip" class="form-label">Invoice Slip</label>
+                <input type="file" class="form-control" id="invoice_slip" name="invoice_slip" required>
+            </div>
+            <div class="mb-3">
+                <label for="invoice_id" class="form-label">invoice Id</label>
+                <input type="text" class="form-control" id="invoice_id" name="invoice_id" required>
+            </div>
+            {{--  <div class="mb-3">
                 <label for="status" class="form-label">Status</label>
                 <select class="form-select" id="status" name="status" required>
                     <option value="0">Pending</option>
                     <option value="1">Completed</option>
                 </select>
-            </div>
+            </div>  --}}
             <button type="submit" class="btn btn-success">Create</button>
         </form>
      </div>

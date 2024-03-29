@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        view()->composer('components.partials.*', DropdownComposer::class . '@transactionDropdown');
+        view()->composer('components.partials.*', DropdownComposer::class . '@expensesDropdown');
         view()->composer('components.partials.*', DropdownComposer::class . '@transactionTypeDropdown');
         view()->composer('admin.products.*', DropdownComposer::class . '@brandDropdown');
         view()->composer('admin.products.*', DropdownComposer::class . '@categoryDropdown');

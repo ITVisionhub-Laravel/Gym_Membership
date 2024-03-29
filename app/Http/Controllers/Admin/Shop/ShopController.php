@@ -8,13 +8,21 @@ use App\Models\ShopKeeper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shop\ShopFormRequest;
 use App\Http\Requests\Shop\ShopKeeperRequest;
+use App\Http\Resources\ShopResource;
+use Illuminate\Support\Facades\Request;
 
 class ShopController extends Controller
 {
     public function index()
     {
-        $data['shops'] = Shop::get();
-        return view('admin.shops.index', $data);
+        $shops = Shop::get();
+        // $data['shops'] = Shop::get();
+        if(request()->expectsJson())
+        {
+            return ShopResource::collection($shops);
+        }
+        return view('admin.shops.index', compact('shops'));
+        // return view('admin.shops.index', $data);
     }
 
     public function create()
@@ -27,8 +35,9 @@ class ShopController extends Controller
         $validatedData = $request->validated();
         $shop = new Shop();
         $product_id = $validatedData['product_id'];
-        if (Shop::where('product_id', $product_id)->exists()) {
-            $originalShopData = Shop::where('product_id', $product_id)->first();
+        $shopProductData = Shop::where('product_id', $product_id);
+        if ($shopProductData->exists()) {
+            $originalShopData = $shopProductData->first();
             $originalShopData->increment(
                 'quantity',
                 (int) $validatedData['quantity']
@@ -41,10 +50,16 @@ class ShopController extends Controller
             $shop->save();
         }
 
-        return redirect('admin/shops')->with(
-            'message',
-            'Shop Added Successfully'
-        );
+        if (!request()->expectsJson()) {
+            return redirect('admin/shops')->with(
+                'message',
+                'Shop Added Successfully'
+            );
+        }
+        $shopData = $shopProductData ?  $originalShopData :  $shop;
+
+        return new ShopResource($shopData);
+        
     }
 
     public function edit(Shop $shop)
@@ -64,19 +79,25 @@ class ShopController extends Controller
         $shop->shop_type_id = $validatedData['shop_type_id'];
 
         $shop->update();
-        return redirect('admin/shops')->with(
-            'message',
-            'Shop Updated Successfully'
-        );
+        if (!request()->expectsJson()) {
+            return redirect('admin/shops')->with(
+                'message',
+                'Shop Updated Successfully'
+            );
+        }
+        return new ShopResource($shop);
     }
 
     public function destroy($shop_id)
     {
         $shop = Shop::findOrFail($shop_id);
         $shop->delete();
-        return redirect('admin/shops')->with(
-            'message',
-            'Shop Deleted Successfully'
-        );
+        if (!request()->expectsJson()) {
+            return redirect('admin/shops')->with(
+                'message',
+                'Shop Deleted Successfully'
+            );
+        }
+        return new ShopResource($shop);
     }
 }

@@ -6,13 +6,19 @@ use App\Models\Brand;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandFormRequest;
+use App\Http\Resources\BrandsResource;
 
 class BrandsController extends Controller
 {
     public function index()
     {
-        $data['brands'] = Brand::get();
-        return view('admin.brands.index', $data);
+        $brands = Brand::get();
+        // $data['brands'] = Brand::get();
+        if (request()->expectsJson()) {
+            return BrandsResource::collection($brands);
+        }
+        return view('admin.brands.index', compact('brands'));
+        // return view('admin.brands.index', $data);
     }
 
     public function create()
@@ -28,6 +34,10 @@ class BrandsController extends Controller
         $brand->slug = $validatedData['slug'];
 
         $brand->save();
+
+        if (request()->expectsJson()) {
+            return new BrandsResource($brand);
+        }
 
         return redirect('admin/brands')->with(
             'message',
@@ -49,6 +59,11 @@ class BrandsController extends Controller
         $brand->slug = $validatedData['slug'];
 
         $brand->update();
+
+        if (request()->expectsJson()) {
+            return new BrandsResource($brand);
+        }
+
         return redirect('admin/brands')->with(
             'message',
             'Brands Updated Successfully'
@@ -59,6 +74,11 @@ class BrandsController extends Controller
     {
         $brand = Brand::findOrFail($brand_id);
         $brand->delete();
+
+        if (request()->expectsJson()) {
+            return new BrandsResource($brand);
+        }
+        
         return redirect('admin/brands')->with(
             'message',
             'Brand Deleted Successfully'

@@ -7,13 +7,18 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\CategoryFormRequest;
+use App\Http\Resources\CategoryResource;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        $data['categories'] = Category::get();
-        return view('admin.categories.index', $data);
+        $categories = Category::get();
+        if (request()->expectsJson()) {
+            return CategoryResource::collection($categories);
+        }
+        return view('admin.categories.index', compact('categories'));
+        // return view('admin.categories.index', $data);
     }
 
     public function create()
@@ -38,6 +43,10 @@ class CategoryController extends Controller
             $category->image = "uploads/categories/$filename";
         }
         $category->save();
+
+        if (request()->expectsJson()) {
+            return new CategoryResource($category);
+        }
 
         return redirect('admin/categories')->with(
             'message',
@@ -72,6 +81,11 @@ class CategoryController extends Controller
             $category->image = 'uploads/categories/' . $filename;
         }
         $category->update();
+
+        if (request()->expectsJson()) {
+            return new CategoryResource($category);
+        }
+
         return redirect('admin/categories')->with(
             'message',
             'Category Updated Successfully'
@@ -86,6 +100,11 @@ class CategoryController extends Controller
             File::delete($path);
         }
         $category->delete();
+
+        if (request()->expectsJson()) {
+            return new CategoryResource($category);
+        }
+        
         return redirect('admin/categories')->with(
             'message',
             'Category Deleted Successfully'

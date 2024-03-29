@@ -8,6 +8,7 @@ use App\Models\Attendent;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\AttendenceCheckResource;
 use App\Models\User;
 
 class Attendence_CheckController extends Controller
@@ -55,7 +56,7 @@ class Attendence_CheckController extends Controller
             $data = ['wrongMemberId' => true];
             return response()->json($data);
         }
-        $attendent_check = Attendent::where('customer_id', $member_id)
+        $attendent_check = Attendent::where('user_id', $member_id)
             ->where('attendent_date', $todayDate)
             ->first();
 
@@ -63,11 +64,13 @@ class Attendence_CheckController extends Controller
             // Member is new, create the 'Attendent' record
             $newAttendent = new Attendent();
             $newAttendent->attendent_date = $todayDate;
-            $newAttendent->customer_id = $member_id; // Assigning the correct value
+            $newAttendent->user_id = $member_id; // Assigning the correct value
 
             // Save the new 'Attendent' record
             $newAttendent->save();
-
+            // if (request()->expectsJson()) {
+            //     return new AttendenceCheckResource($newAttendent);
+            // }
             // Member is new, return JSON response indicating success
             $data = ['success' => true];
             return response()->json($data);

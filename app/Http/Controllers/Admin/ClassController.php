@@ -6,6 +6,7 @@ use App\Models\Trainer;
 use App\Models\GymClass;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ClassResource;
 use Illuminate\Support\Facades\File;
 
 class ClassController extends Controller
@@ -13,6 +14,11 @@ class ClassController extends Controller
     public function index()
     {
         $classes = GymClass::all();
+
+        if (request()->expectsJson()) {
+            return ClassResource::collection($classes);
+        }
+
         return view('admin.class.index',compact('classes'));
     }
     public function create()
@@ -38,7 +44,7 @@ class ClassController extends Controller
             $file->move('uploads/class/', $filename);
             $validatedData['image'] = "uploads/class/$filename";
         }
-        GymClass::create([
+        $gymClassData = GymClass::create([
             'name'=>$validatedData['name'],
             'image' => $validatedData['image'],
             'description' => $validatedData['description'],
@@ -46,6 +52,11 @@ class ClassController extends Controller
             'evening_time' => $validatedData['evening_time'],
             'trainer_id'=>$request->trainer_id,
         ]);
+
+        if (request()->expectsJson()) {
+            return new ClassResource($gymClassData);
+        }
+
         return redirect('admin/class')->with(
             'message',
             'Class Added Successfully'
@@ -78,7 +89,7 @@ class ClassController extends Controller
             $validatedData['image'] = "uploads/class/$filename";
         }
         // dd($validatedData['image']);
-    Gymclass::where('id', $class->id)->update([
+        $gymClassData = Gymclass::where('id', $class->id)->update([
             'name'=>$validatedData['name'],
             'image' => $validatedData['image'] ?? $class->image,
             'description' => $validatedData['description'],
@@ -86,6 +97,11 @@ class ClassController extends Controller
             'evening_time' => $validatedData['evening_time'],
             'trainer_id'=>$request->trainer_id,
         ]);
+
+        if (request()->expectsJson()) {
+            return new ClassResource($gymClassData);
+        }
+
         return redirect('admin/class')->with(
             'message',
             'Class Updated Successfully'
@@ -99,6 +115,11 @@ class ClassController extends Controller
                 File::delete($path);
             }
             $class->delete();
+
+            if (request()->expectsJson()) {
+                return new ClassResource($class);
+            }
+
             return redirect('admin/class')->with(
                 'message',
                 'Class Deleted Successfully'

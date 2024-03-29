@@ -5,10 +5,10 @@ use App\Http\Controllers\Admin\Attendence_CheckController;
 use App\Http\Controllers\Admin\AttendentController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DebitAndCreditController;
+use App\Http\Controllers\Admin\ExpensesController;
 use App\Http\Controllers\Admin\PaymentPackageController;
 use App\Http\Controllers\Admin\PaymentProviderController;
 use App\Http\Controllers\Admin\PaymentRecordController;
-use App\Http\Controllers\Admin\TransactionController;
 use App\Http\Controllers\Admin\SaleRecordController;
 use App\Http\Controllers\Frontend\UserRegisterController;
 use App\Http\Controllers\ProfileController;
@@ -57,19 +57,23 @@ Route::middleware(['auth'])->group(function () {
     Route::get('package-details', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'show',
-    ]);
+    ])->name('package.details');
     Route::get('product-checkout', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'showproduct',
-    ]);
+        'show',
+    ])->name('product.checkout');
     Route::get('product-invoice', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'showProductInvoice',
     ]);
-    Route::get('class-detail/{classCategoryId}', [
+    Route::get('class-list/{classCategoryId}', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
-        'detail',
-    ])->name('class.detail');
+        'show',
+    ])->name('class.list');
+    Route::get('class-details/{gymclassId}', [
+        App\Http\Controllers\Frontend\UserRegisterController::class,
+        'showGymClassDetails',
+    ])->name('class.details');
     Route::get('user_details',[UserRegisterController::class,'userDetails'])->name('user.details');
 });
 
@@ -110,7 +114,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/brands', App\Http\Livewire\Admin\Brands\Index::class);
 
     Route::resource('debit-credit', DebitAndCreditController::class);
-    Route::resource('transactions', TransactionController::class);
+    Route::resource('expenses', ExpensesController::class);
     Route::resource('profitsharing', ProfitSharingController::class);
 
     Route::controller(

@@ -4,21 +4,21 @@ namespace App\Http\View\Composers;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Expenses;
 use App\Models\Products;
 use App\Models\ShopType;
-use App\Models\Transaction;
 use App\Models\TransactionType;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Config;
 
 class DropdownComposer
 {
-    public function transactionDropdown(View $view)
+    public function expensesDropdown(View $view)
     {
         $variablesData = Config::get('variables.ONE');
-        $transactions = Transaction::where('status', '!=', $variablesData)->get();
+        $expenses = Expenses::where('status', '!=', $variablesData)->get();
         
-        $view->with('transactions', $transactions);
+        $view->with('expenses', $expenses);
     }
     
     public function transactionTypeDropdown(View $view)

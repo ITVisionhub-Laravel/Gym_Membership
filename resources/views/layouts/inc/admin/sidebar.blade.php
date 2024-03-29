@@ -142,13 +142,13 @@
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-transaction" aria-expanded="false"
                 aria-controls="ui-transaction">
                 <i class="mdi mdi-currency-usd menu-icon"></i>
-                <span class="menu-title">Transactions</span>
+                <span class="menu-title">Expenses</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-transaction">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('transactions.create') }}">Add Transactions</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('transactions.index') }}">View Transactions</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('expenses.create') }}">Add Expenses</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('expenses.index') }}">View Expenses</a></li>
                 </ul>
             </div>
         </li>

@@ -13,7 +13,7 @@ class ShopType extends Model
     protected $fillable = [
         'name',
         'email',
-        'address',
+        'address_id',
         'phone',
         'hot_line',
         'image',

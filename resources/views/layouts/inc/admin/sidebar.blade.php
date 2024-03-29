@@ -37,14 +37,15 @@
                 </ul>
             </div>
         </li>
+
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#ui-category" aria-expanded="false"
-                aria-controls="ui-category">
+            <a class="nav-link" data-bs-toggle="collapse" href="#collapse-product" aria-expanded="false"
+                aria-controls="collapse-product">
                 <i class="mdi mdi-google-circles-extended menu-icon"></i>
-                <span class="menu-title">Categories</span>
+                <span class="menu-title">Product Categories</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse" id="ui-category">
+            <div class="collapse show" id="collapse-product">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{ url('admin/categories/create') }}">Add
                             Category</a></li>
@@ -78,12 +79,12 @@
         {{--  Products End  --}}
 
         {{--  For Requeset  --}}
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="{{ url('admin/requests') }}">
                 <i class="mdi mdi-truck menu-icon"></i>
                 <span class="menu-title">Request</span>
             </a>
-        </li>
+        </li> --}}
         {{--  Request End  --}}
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-paymentpackage" aria-expanded="false"
@@ -147,8 +148,10 @@
             </a>
             <div class="collapse" id="ui-transaction">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('expenses.create') }}">Add Expenses</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('expenses.index') }}">View Expenses</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('expenses.create') }}">Add Expenses</a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('expenses.index') }}">View Expenses</a>
+                    </li>
                 </ul>
             </div>
         </li>
@@ -161,8 +164,10 @@
             </a>
             <div class="collapse" id="ui-debitcredit">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('debit-credit.create') }}">Add DebitAndCredit</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('debit-credit.index') }}">View DebitAndCredit</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('debit-credit.create') }}">Add
+                            DebitAndCredit</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('debit-credit.index') }}">View
+                            DebitAndCredit</a></li>
                 </ul>
             </div>
         </li>
@@ -212,87 +217,112 @@
             </div>
         </li>
 
-      {{--  For Gym Classes  --}}
-       <li class="nav-item">
-        <a class="nav-link" href="{{url('admin/class')}}">
-          <i class="mdi mdi-database menu-icon"></i>
-          <span class="menu-title">Class</span>
-        </a>
-      </li>
-
-      {{--  trainer  --}}
-
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url('admin/trainers') }}">
-          <i class="mdi mdi-account menu-icon"></i>
-          <span class="menu-title">Trainner</span>
-        </a>
-
-      </li>
-      {{--  Organization Chart  --}}
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url('admin/organizationchart') }}">
-          <i class="mdi mdi-account menu-icon"></i>
-          <span class="menu-title">Organization Chart</span>
-        </a>
-
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{route('attendents.index')}}">
-          <i class="mdi mdi-file-document-box-outline menu-icon"></i>
-          <span class="menu-title">Attendent</span>
-        </a>
-      </li>
-      <li class="nav-item">
-            <a class="nav-link" href="{{url('admin/sliders')}}">
-              <i class="mdi mdi-view-carousel menu-icon"></i>
-              <span class="menu-title">Home Slider</span>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-class" aria-expanded="false"
+                aria-controls="ui-class">
+                <i class="mdi mdi-database menu-icon"></i>
+                <span class=" menu-title">Class</span>
+                <i class="menu-arrow"></i>
             </a>
-          </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{url('admin/logo')}}">
-          <i class="mdi mdi-message-image menu-icon"></i>
-          <span class="menu-title">Logo</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{{url('admin/partner')}}">
-          <i class="mdi mdi-food-variant menu-icon"></i>
-          <span class="menu-title">Partner</span>
-        </a>
-      </li>
 
-      {{--  For shop  --}}
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#ui-shop" aria-expanded="false" aria-controls="ui-shop">
-        <i class="mdi mdi-clipboard-text menu-icon"></i>
-          <span class="menu-title">Shop</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="ui-shop">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shoptypes/create') }}">Add Shop Type</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shoptypes') }}">View Shop Type</a></li>
+            <div class="collapse" id="ui-class">
+                <ul class="nav flex-column sub-menu">
+                    {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
+                    <li class="nav-item"> <a class="nav-link" href="">Add Class Category</a></li>
+                </ul>
+            </div>
+            <div class="collapse" id="ui-class">
+                <ul class="nav flex-column sub-menu">
+                    {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
+                    <li class="nav-item"> <a class="nav-link" href="">Add Class</a></li>
+                </ul>
+            </div>
 
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops/create') }}">Add Shop</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops') }}">View Shop</a></li>
-          </ul>
-        </div>
-      </li>
-      {{--  Deliver --}}
-      <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="collapse" href="#ui-delivery" aria-expanded="false" aria-controls="ui-delivery">
-        <i class="mdi mdi-clipboard-text menu-icon"></i>
-          <span class="menu-title">DeliveryType</span>
-          <i class="menu-arrow"></i>
-        </a>
-        <div class="collapse" id="ui-delivery">
-          <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/deliverytypes/create') }}">Add DeliveryType</a></li>
-            <li class="nav-item"> <a class="nav-link" href="{{ url('admin/deliverytypes') }}">View DeliveryType</a></li>
-          </ul>
-        </div>
-      </li>
+        </li>
+
+        {{--  For Gym Classes  --}}
+        {{-- <li class="nav-item">
+            <a class="nav-link" href="{{ url('admin/class') }}">
+                <i class="mdi mdi-database menu-icon"></i>
+                <span class="menu-title">Class</span>
+            </a>
+        </li> --}}
+
+        {{--  trainer  --}}
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('admin/trainers') }}">
+                <i class="mdi mdi-account menu-icon"></i>
+                <span class="menu-title">Trainner</span>
+            </a>
+
+        </li>
+        {{--  Organization Chart  --}}
+        {{-- <li class="nav-item">
+            <a class="nav-link" href="{{ url('admin/organizationchart') }}">
+                <i class="mdi mdi-account menu-icon"></i>
+                <span class="menu-title">Organization Chart</span>
+            </a>
+
+        </li> --}}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('attendents.index') }}">
+                <i class="mdi mdi-file-document-box-outline menu-icon"></i>
+                <span class="menu-title">Attendent</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('admin/logo') }}">
+                <i class="mdi mdi-message-image menu-icon"></i>
+                <span class="menu-title">Logo</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ url('admin/partner') }}">
+                <i class="mdi mdi-food-variant menu-icon"></i>
+                <span class="menu-title">Partner</span>
+            </a>
+        </li>
+
+        {{--  For shop  --}}
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-shop" aria-expanded="false"
+                aria-controls="ui-shop">
+                <i class="mdi mdi-clipboard-text menu-icon"></i>
+                <span class="menu-title">Shop</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-shop">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shoptypes/create') }}">Add Shop
+                            Type</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shoptypes') }}">View Shop Type</a>
+                    </li>
+
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops/create') }}">Add Shop</a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/shops') }}">View Shop</a></li>
+                </ul>
+            </div>
+        </li>
+        {{--  Deliver --}}
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-delivery" aria-expanded="false"
+                aria-controls="ui-delivery">
+                <i class="mdi mdi-clipboard-text menu-icon"></i>
+                <span class="menu-title">DeliveryType</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-delivery">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/deliverytypes/create') }}">Add
+                            DeliveryType</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ url('admin/deliverytypes') }}">View
+                            DeliveryType</a></li>
+                </ul>
+            </div>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-salerecord" aria-expanded="false"
@@ -322,11 +352,11 @@
 
 
         {{--  For Equipments  --}}
-        <li class="nav-item">
+        {{-- <li class="nav-item">
             <a class="nav-link" href="{{ url('admin/equipments') }}">
                 <i class="mdi mdi-webhook menu-icon"></i>
                 <span class="menu-title">Equipments</span>
             </a>
-        </li>
+        </li> --}}
     </ul>
 </nav>

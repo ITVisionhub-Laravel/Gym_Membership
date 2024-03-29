@@ -80,17 +80,19 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card p-3 mb-2" style="border-radius:10px; background-color: #cfe8ff">
-                <div class="d-flex">
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="icon2"> <i class="fa fa-usd" aria-hidden="true"></i> </div>
-                    </div>
-                     <div class=" mt-2 px-3">
-                    <h5 class="heading">Our Revenue</h5>
-                    <p>${{ $profits }}</p>
+            <a href="#" class="card-link">
+                <div class="card p-3 mb-2" style="border-radius:10px; background-color: #cfe8ff">
+                    <div class="d-flex">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="icon2"> <i class="fa fa-usd" aria-hidden="true"></i> </div>
+                        </div>
+                        <div class=" mt-2 px-3">
+                            <h5 class="heading">Our Revenue</h5>
+                            <p>${{ $profits }}</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="col-md-3">
             <a href="{{url('admin/profitsharing')}}" class="card-link">
@@ -122,6 +124,7 @@
                 </div>
             </div>
         </div>
+
         {{-- <div class="col-md-3">
             <div class="card p-3 mb-2" style="border-radius:10px; background-color: rgb(228, 228, 100)">
                 <div class="d-flex">

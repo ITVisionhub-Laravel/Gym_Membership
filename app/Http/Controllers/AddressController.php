@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CountryRequest;
-use App\Http\Resources\CountryResource;
-use App\Models\Country;
+use App\Http\Requests\AddressRequest;
+use App\Http\Resources\AddressResource;
+use App\Models\Address;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class CountryController extends Controller
+class AddressController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    private $country;
+    private $address;
     public function __construct()
     {
-        $this->country = new Country();
+        $this->address = new Address();
     }
 
     public function index()
     {
-       $countries = Country::all();
-       return CountryResource::collection($countries);
+       $address = Address::all();
+       return AddressResource::collection($address);
     }
 
     /**
@@ -42,18 +43,23 @@ class CountryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CountryRequest $request)
+    public function store(AddressRequest $request)
     {
+        dd(auth()->user()->id);
         $validatedData = $request->validated();
-        $this->country->name = $validatedData['name'];
-        $this->country->save();
+        $this->address->user_id = Auth::user()->id;
+        $this->address->street_id = $validatedData['street_id'];
+        $this->address->block_no = $validatedData['block_no'];
+        $this->address->floor = $validatedData['floor'];
+        $this->address->zipcode = $validatedData['zipcode'];
+        $this->address->save();
 
-        if(!$this->country){
+        if(!$this->address){
             return response()->json([
-                'message' => 'Country not found'
+                'message' => 'address not found'
             ], 401);
         }
-        return new CountryResource($this->country);
+        return new AddressResource($this->address);
     }
 
     /**
@@ -85,19 +91,21 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-    public function update(CountryRequest $request, string $id)
+    public function update(AddressRequest $request, string $id)
     {
         $validatedData = $request->validated();
-        $country = Country::find($id);
-        if(!$country){
+        $address = Address::find($id);
+        if(!$address){
             return response()->json([
-                'message' => 'Country not found'
+                'message' => 'address not found'
             ],401);
         }
-        $country->name = $validatedData['name'];
-        $country->save();
-        return new CountryResource($country);
+        $address->user_id = Auth::auth()->id;
+        $address->street_id = $validatedData['street_id'];
+        $address->block_no = $validatedData['block_no'];
+        $address->floor = $validatedData['floor'];
+        $address->zipcode = $validatedData['zipcode'];
+        return new AddressResource($address);
     }
 
     /**
@@ -106,9 +114,8 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country)
+    public function destroy(Address $address)
     {
-        dd($country);
-      return $country->delete()? response(status:204): response(status:500);
+      return $address->delete()? response(status:204): response(status:500);
     }
 }

@@ -32,13 +32,13 @@
             </span>
         </li>
 
-        <li>
+        {{-- <li>
             <i class='bx bxs-dollar-circle' ></i>
             <span class="text">
                 <h3>${{ $price }}</h3>
                 <p>Total Earnings</p>
             </span>
-        </li>
+        </li> --}}
         {{-- <li>
             <i class='bx bxs-dollar-circle' ></i>
             <span class="text">
@@ -67,21 +67,6 @@
 <div class="container mt-3 mb-3">
     <div class="row">
         <div class="col-md-3">
-            <div class="card p-3 mb-2" style="border-radius:10px; background-color: rgb(231, 179, 228)">
-                <div class="d-flex">
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="profitshare"><i class="fa-regular fa-handshake"></i></div>
-                    </div>
-                    <div class=" mt-2 px-3">
-                        <a href="{{url('admin/profitsharing')}}">
-                            <h5 class="heading">YUFC Income</h5>
-                        </a>
-                        <p>${{ $yufcIncome }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
             <div class="card p-3 mb-2" style="border-radius:10px; background-color: lightgreen">
                 <div class="d-flex">
                     <div class="d-flex flex-row align-items-center">
@@ -90,32 +75,6 @@
                      <div class=" mt-2 px-3">
                     <h5 class="heading">Total Income</h5>
                     <p>${{ $incomes }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card p-3 mb-2" style="border-radius:10px; background-color: burlywood">
-                <div class="d-flex">
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="expense"> <i class="fa-regular fa-credit-card"></i> </div>
-                    </div>
-                     <div class=" mt-2 px-3">
-                    <h5 class="heading">Total Expense</h5>
-                    <p>${{ $expenses }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card p-3 mb-2" style="border-radius:10px; background-color: rgb(228, 228, 100)">
-                <div class="d-flex">
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="icon1"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> </div>
-                    </div>
-                     <div class=" mt-2 px-3">
-                    <h5 class="heading">Sale Product</h5>
-                    <p>$50.00</p>
                     </div>
                 </div>
             </div>
@@ -134,6 +93,48 @@
             </div>
         </div>
         <div class="col-md-3">
+            <div class="card p-3 mb-2" style="border-radius:10px; background-color: rgb(231, 179, 228)">
+                <div class="d-flex">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="profitshare"><i class="fa-regular fa-handshake"></i></div>
+                    </div>
+                    <div class=" mt-2 px-3">
+                        <a href="{{url('admin/profitsharing')}}">
+                            <h5 class="heading">YUFC Income</h5>
+                        </a>
+                        <p>${{ $yufcIncome }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 mb-2" style="border-radius:10px; background-color: burlywood">
+                <div class="d-flex">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="expense"> <i class="fa-regular fa-credit-card"></i> </div>
+                    </div>
+                     <div class=" mt-2 px-3">
+                    <h5 class="heading">Total Expense</h5>
+                    <p>${{ $expenses }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- <div class="col-md-3">
+            <div class="card p-3 mb-2" style="border-radius:10px; background-color: rgb(228, 228, 100)">
+                <div class="d-flex">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="icon1"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> </div>
+                    </div>
+                     <div class=" mt-2 px-3">
+                    <h5 class="heading">Sale Product</h5>
+                    <p>$50.00</p>
+                    </div>
+                </div>
+            </div>
+        </div> --}}
+
+        {{-- <div class="col-md-3">
             <div class="card p-3 mb-2" style="border-radius:10px; background-color: #fff2c6">
                 <div class="d-flex">
                     <div class="d-flex flex-row align-items-center">
@@ -145,7 +146,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
     </div>
 </div>
 

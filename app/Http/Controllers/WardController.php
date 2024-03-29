@@ -2,28 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CountryRequest;
-use App\Http\Resources\CountryResource;
-use App\Models\Country;
+use App\Http\Requests\WardRequest;
+use App\Http\Resources\WardResource;
+use App\Models\Ward;
 use Illuminate\Http\Request;
 
-class CountryController extends Controller
+class WardController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    private $country;
+    private $ward;
     public function __construct()
     {
-        $this->country = new Country();
+        $this->ward = new Ward();
     }
 
     public function index()
     {
-       $countries = Country::all();
-       return CountryResource::collection($countries);
+       $ward = Ward::all();
+       return WardResource::collection($ward);
     }
 
     /**
@@ -42,18 +42,20 @@ class CountryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CountryRequest $request)
+
+    public function store(WardRequest $request)
     {
         $validatedData = $request->validated();
-        $this->country->name = $validatedData['name'];
-        $this->country->save();
+        $this->ward->name = $validatedData['name'];
+        $this->ward->township_id = $validatedData['township_id'];
+        $this->ward->save();
 
-        if(!$this->country){
+        if(!$this->ward){
             return response()->json([
-                'message' => 'Country not found'
+                'message' => 'Ward not found'
             ], 401);
         }
-        return new CountryResource($this->country);
+        return new WardResource($this->ward);
     }
 
     /**
@@ -85,19 +87,19 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-    public function update(CountryRequest $request, string $id)
+    public function update(WardRequest $request, string $id)
     {
         $validatedData = $request->validated();
-        $country = Country::find($id);
-        if(!$country){
+        $ward = Ward::find($id);
+        if(!$ward){
             return response()->json([
-                'message' => 'Country not found'
+                'message' => 'ward not found'
             ],401);
         }
-        $country->name = $validatedData['name'];
-        $country->save();
-        return new CountryResource($country);
+        $ward->name = $validatedData['name'];
+        $ward->township_id = $validatedData['township_id'];
+        $ward->save();
+        return new WardResource($ward);
     }
 
     /**
@@ -106,9 +108,8 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country)
+    public function destroy(Ward $ward)
     {
-        dd($country);
-      return $country->delete()? response(status:204): response(status:500);
+      return $ward->delete()? response(status:204): response(status:500);
     }
 }

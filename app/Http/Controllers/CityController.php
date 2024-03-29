@@ -2,30 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CountryRequest;
-use App\Http\Resources\CountryResource;
-use App\Models\Country;
+use App\Http\Requests\CityRequest;
+use App\Http\Resources\CityResource;
+use App\Models\City;
 use Illuminate\Http\Request;
 
-class CountryController extends Controller
+class CityController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    private $country;
+    private $city;
     public function __construct()
     {
-        $this->country = new Country();
+        $this->city = new City();
     }
 
     public function index()
     {
-       $countries = Country::all();
-       return CountryResource::collection($countries);
+       $countries = City::all();
+       return CityResource::collection($countries);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -42,18 +41,19 @@ class CountryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CountryRequest $request)
+    public function store(CityRequest $request)
     {
         $validatedData = $request->validated();
-        $this->country->name = $validatedData['name'];
-        $this->country->save();
+        $this->city->name = $validatedData['name'];
+        $this->city->state_id = $validatedData['state_id'];
+        $this->city->save();
 
-        if(!$this->country){
+        if(!$this->city){
             return response()->json([
-                'message' => 'Country not found'
+                'message' => 'City not found'
             ], 401);
         }
-        return new CountryResource($this->country);
+        return new CityResource($this->city);
     }
 
     /**
@@ -85,19 +85,19 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-    public function update(CountryRequest $request, string $id)
+    public function update(CityRequest $request, string $id)
     {
         $validatedData = $request->validated();
-        $country = Country::find($id);
-        if(!$country){
+        $city = City::find($id);
+        if(!$city){
             return response()->json([
-                'message' => 'Country not found'
+                'message' => 'city not found'
             ],401);
         }
-        $country->name = $validatedData['name'];
-        $country->save();
-        return new CountryResource($country);
+        $city->name = $validatedData['name'];
+        $city->state_id = $validatedData['state_id'];
+        $city->save();
+        return new CityResource($city);
     }
 
     /**
@@ -106,9 +106,8 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country)
+    public function destroy(City $city)
     {
-        dd($country);
-      return $country->delete()? response(status:204): response(status:500);
+      return $city->delete()? response(status:204): response(status:500);
     }
 }

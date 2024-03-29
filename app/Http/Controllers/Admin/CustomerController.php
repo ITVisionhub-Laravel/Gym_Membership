@@ -35,7 +35,10 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = User::with('address')->get();
+        $customers = User::with('address')
+        ->where('role_as', 0)
+        ->get();
+
         return view('admin.customers.index', compact('customers'));
     }
     public function create()

@@ -65,7 +65,8 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <label for="Gender">Male</label>
-                                                <input type="radio" id="Gender" name="gender" value="Male" class="p-3" @checked(true)>
+                                                <input type="radio" id="Gender" name="gender" value="Male"
+                                                    class="p-3" @checked(true)>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="Gender">Female</label>
@@ -73,9 +74,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <x-forms.forminput type="file" name="image"
-                                        placeholder="Enter Your Image" value='' width="col-md-3"
-                                    />
+                                    <x-forms.forminput type="file" name="image" placeholder="Enter Your Image"
+                                        value='' width="col-md-3" />
 
 
                                 </div>
@@ -104,7 +104,8 @@
                                         width="col-md-4"></x-forms.dropdownfield>
                                     <div class="form-group col-md-4">
                                         <label for="">State</label>
-                                        <select id="state-dd" class="form-select" name="state">
+                                        <select id="state-dd" class="form-select" name="state"
+                                            value="{{ $userinfo->stateas }}">
                                         </select>
                                         <x-forms.input-error name="street" />
                                     </div>
@@ -128,16 +129,16 @@
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="">Street</label>
-                                        <select id="street-dd" class="form-select" name="street_id" >
+                                        <select id="street-dd" class="form-select" name="street_id">
                                         </select>
                                         <x-forms.input-error name="street" />
                                     </div>
-                                    <x-forms.forminput name="block_no"
-                                        placeholder="Enter Your Block No" width="col-md-4" />
-                                    <x-forms.forminput name="floor"
-                                        placeholder="Enter Your Floor No" width="col-md-4" />
-                                    <x-forms.forminput name="zipcode"
-                                        placeholder="Enter Your Zipcode" width="col-md-4" />
+                                    <x-forms.forminput name="block_no" placeholder="Enter Your Block No"
+                                        width="col-md-4" value="{{ $userAddress->block_no ?? '' }}" />
+                                    <x-forms.forminput name="floor" placeholder="Enter Your Floor No"
+                                        width="col-md-4" value="{{ $userAddress->floor ?? '' }}" />
+                                    <x-forms.forminput name="zipcode" placeholder="Enter Your Zipcode"
+                                        width="col-md-4" value="{{ $userAddress->zipcode ?? '' }}" />
                                 </div>
                             </fieldset>
                         </div>

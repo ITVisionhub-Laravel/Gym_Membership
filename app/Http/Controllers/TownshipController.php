@@ -2,30 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CountryRequest;
-use App\Http\Resources\CountryResource;
-use App\Models\Country;
+use App\Http\Requests\TownshipRequest;
+use App\Http\Resources\TownshipResource;
+use App\Models\Township;
 use Illuminate\Http\Request;
 
-class CountryController extends Controller
+class TownshipController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    private $country;
+    private $township;
     public function __construct()
     {
-        $this->country = new Country();
+        $this->township = new Township();
     }
 
     public function index()
     {
-       $countries = Country::all();
-       return CountryResource::collection($countries);
+       $township = Township::all();
+       return TownshipResource::collection($township);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -42,18 +41,19 @@ class CountryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CountryRequest $request)
+    public function store(TownshipRequest $request)
     {
         $validatedData = $request->validated();
-        $this->country->name = $validatedData['name'];
-        $this->country->save();
+        $this->township->name = $validatedData['name'];
+        $this->township->city_id = $validatedData['city_id'];
+        $this->township->save();
 
-        if(!$this->country){
+        if(!$this->township){
             return response()->json([
-                'message' => 'Country not found'
+                'message' => 'Township not found'
             ], 401);
         }
-        return new CountryResource($this->country);
+        return new TownshipResource($this->township);
     }
 
     /**
@@ -85,19 +85,19 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-    public function update(CountryRequest $request, string $id)
+    public function update(TownshipRequest $request, string $id)
     {
         $validatedData = $request->validated();
-        $country = Country::find($id);
-        if(!$country){
+        $city = Township::find($id);
+        if(!$city){
             return response()->json([
-                'message' => 'Country not found'
+                'message' => 'city not found'
             ],401);
         }
-        $country->name = $validatedData['name'];
-        $country->save();
-        return new CountryResource($country);
+        $city->name = $validatedData['name'];
+        $city->city_id = $validatedData['city_id'];
+        $city->save();
+        return new TownshipResource($city);
     }
 
     /**
@@ -106,9 +106,8 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country)
+    public function destroy(Township $township)
     {
-        dd($country);
-      return $country->delete()? response(status:204): response(status:500);
+      return $township->delete()? response(status:204): response(status:500);
     }
 }

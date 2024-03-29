@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CountryRequest;
-use App\Http\Resources\CountryResource;
-use App\Models\Country;
+use App\Http\Requests\StreetRequest;
+use App\Http\Requests\WardRequest;
+use App\Http\Resources\StreetResource;
+use App\Models\Street;
 use Illuminate\Http\Request;
 
-class CountryController extends Controller
+class StreetController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    private $country;
+    private $street;
     public function __construct()
     {
-        $this->country = new Country();
+        $this->street = new Street();
     }
 
     public function index()
     {
-       $countries = Country::all();
-       return CountryResource::collection($countries);
+       $street = Street::all();
+       return StreetResource::collection($street);
     }
 
     /**
@@ -36,24 +37,26 @@ class CountryController extends Controller
         //
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CountryRequest $request)
+    public function store(StreetRequest $request)
     {
         $validatedData = $request->validated();
-        $this->country->name = $validatedData['name'];
-        $this->country->save();
+        $this->street->name = $validatedData['name'];
+        $this->street->ward_id = $validatedData['ward_id'];
+        $this->street->save();
 
-        if(!$this->country){
+        if(!$this->street){
             return response()->json([
-                'message' => 'Country not found'
+                'message' => 'street not found'
             ], 401);
         }
-        return new CountryResource($this->country);
+        return new streetResource($this->street);
     }
 
     /**
@@ -85,19 +88,19 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-
-    public function update(CountryRequest $request, string $id)
+    public function update(StreetRequest $request, string $id)
     {
         $validatedData = $request->validated();
-        $country = Country::find($id);
-        if(!$country){
+        $street = Street::find($id);
+        if(!$street){
             return response()->json([
-                'message' => 'Country not found'
+                'message' => 'street not found'
             ],401);
         }
-        $country->name = $validatedData['name'];
-        $country->save();
-        return new CountryResource($country);
+        $street->name = $validatedData['name'];
+        $street->ward_id = $validatedData['ward_id'];
+        $street->save();
+        return new StreetResource($street);
     }
 
     /**
@@ -106,9 +109,8 @@ class CountryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country)
+    public function destroy(Street $street)
     {
-        dd($country);
-      return $country->delete()? response(status:204): response(status:500);
+      return $street->delete()? response(status:204): response(status:500);
     }
 }

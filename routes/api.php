@@ -1,9 +1,15 @@
 <?php
 
+use App\Http\Controllers\AddressController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\StateController;
+use App\Http\Controllers\StreetController;
+use App\Http\Controllers\TownshipController;
+use App\Http\Controllers\WardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,3 +28,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::resource('/country',CountryController::class);
+Route::resource('/state',StateController::class);
+Route::resource('/city',CityController::class);
+Route::resource('/township',TownshipController::class);
+Route::resource('/ward',WardController::class);
+Route::resource('/street',StreetController::class);
+Route::resource('/address',AddressController::class);

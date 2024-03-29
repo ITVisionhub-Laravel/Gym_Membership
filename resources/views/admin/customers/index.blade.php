@@ -30,17 +30,17 @@
                 <td>{{ $customer->gender }}</td>
                 <td>{{ $customer->height}} cm</td>
                 <td>{{ $customer->weight}}</td>
-                {{-- <td>
-                    {{ $customer->address->block_no}}
-                    {{ $customer->address->floor}}
-                    {{ $customer->address->zipcode}}
-                    {{ $customer->address->street->name}}
-                    {{ $customer->address->street->ward->name}}
-                    {{ $customer->address->street->ward->township->name}}
-                    {{ $customer->address->street->ward->township->city->name}}
-                    {{ $customer->address->street->ward->township->city->state->name}}
-                    {{ $customer->address->street->ward->township->city->state->country->name}}
-                </td> --}}
+                <td>
+                    {{ $customer->address->last()?->block_no ?? '' }},
+                    {{ $customer->address->last()?->floor ?? '' }},
+                    {{ $customer->address->last()?->zipcode ?? '' }},
+                    {{ $customer->address->last()?->street?->name ?? '' }},
+                    {{ $customer->address->last()?->street?->ward?->name ?? '' }},
+                    {{ $customer->address->last()?->street?->ward?->township?->name ?? '' }},
+                    {{ $customer->address->last()?->street?->ward?->township?->city?->name ?? '' }},
+                    {{ $customer->address->last()?->street?->ward?->township?->city?->state?->name ?? '' }},
+                    {{ $customer->address->last()?->street?->ward?->township?->city?->state?->country?->name ?? '' }}
+                </td>
                 <td>{{ $customer->phone_number}}</td>
                 <td>{{ $customer->emergency_phone}}</td>
                 <td>

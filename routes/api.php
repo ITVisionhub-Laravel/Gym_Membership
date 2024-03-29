@@ -27,15 +27,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-Route::resource('/country',CountryController::class);
-Route::resource('/state',StateController::class);
-Route::resource('/city',CityController::class);
-Route::resource('/township',TownshipController::class);
-Route::resource('/ward',WardController::class);
-Route::resource('/street',StreetController::class);
-Route::resource('/address',AddressController::class);
-
-
 // Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
     // Shop Resource
     Route::resource('shop', ShopController::class);
@@ -46,4 +37,11 @@ Route::resource('/address',AddressController::class);
     Route::resource('brands', BrandsController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('class', ClassController::class);
+    Route::resource('/country',CountryController::class);
+    Route::resource('/state',StateController::class);
+    Route::resource('/city',CityController::class);
+    Route::resource('/township',TownshipController::class);
+    Route::resource('/ward',WardController::class);
+    Route::resource('/street',StreetController::class);
+    Route::resource('/address',AddressController::class);
 // });

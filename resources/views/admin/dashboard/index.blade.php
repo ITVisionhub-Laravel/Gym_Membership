@@ -80,34 +80,6 @@
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card p-3 mb-2" style="border-radius:10px; background-color: rgb(231, 179, 228)">
-                <div class="d-flex">
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="profitshare"><i class="fa-regular fa-handshake"></i></div>
-                    </div>
-                    <div class=" mt-2 px-3">
-                        <a href="{{url('admin/profitsharing')}}">
-                            <h5 class="heading">YUFC Income</h5>
-                        </a>
-                        <p>${{ $yufcIncome }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card p-3 mb-2" style="border-radius:10px; background-color: burlywood">
-                <div class="d-flex">
-                    <div class="d-flex flex-row align-items-center">
-                        <div class="expense"> <i class="fa-regular fa-credit-card"></i> </div>
-                    </div>
-                     <div class=" mt-2 px-3">
-                    <h5 class="heading">Total Expense</h5>
-                    <p>${{ $expenses }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
             <a href="#" class="card-link">
                 <div class="card p-3 mb-2" style="border-radius:10px; background-color: #cfe8ff">
                     <div class="d-flex">
@@ -122,7 +94,37 @@
                 </div>
             </a>
         </div>
-        
+        <div class="col-md-3">
+            <a href="{{url('admin/profitsharing')}}" class="card-link">
+                <div class="card p-3 mb-2" style="border-radius:10px; background-color: rgb(231, 179, 228)">
+                    <div class="d-flex">
+                        <div class="d-flex flex-row align-items-center">
+                            <div class="profitshare"><i class="fa-regular fa-handshake"></i></div>
+                        </div>
+                        <div class=" mt-2 px-3">
+
+                                <h5 class="heading">YUFC Income</h5>
+
+                            <p>${{ $yufcIncome }}</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 mb-2" style="border-radius:10px; background-color: burlywood">
+                <div class="d-flex">
+                    <div class="d-flex flex-row align-items-center">
+                        <div class="expense"> <i class="fa-regular fa-credit-card"></i> </div>
+                    </div>
+                     <div class=" mt-2 px-3">
+                    <h5 class="heading">Total Expense</h5>
+                    <p>${{ $expenses }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {{-- <div class="col-md-3">
             <div class="card p-3 mb-2" style="border-radius:10px; background-color: rgb(228, 228, 100)">
                 <div class="d-flex">

@@ -74,9 +74,9 @@
                     </div>
                     <div class=" mt-2 px-3">
                         <a href="{{url('admin/profitsharing')}}">
-                            <h5 class="heading">Profit Sharing</h5>
+                            <h5 class="heading">YUFC Income</h5>
                         </a>
-                        <p>${{ $incomes }}</p>
+                        <p>${{ $yufcIncome }}</p>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                         <div class="icon2"> <i class="fa fa-usd" aria-hidden="true"></i> </div>
                     </div>
                      <div class=" mt-2 px-3">
-                    <h5 class="heading">Profit</h5>
+                    <h5 class="heading">Our Revenue</h5>
                     <p>${{ $profits }}</p>
                     </div>
                 </div>

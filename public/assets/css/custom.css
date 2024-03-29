@@ -2051,3 +2051,8 @@ select.form-control, .dataTables_wrapper select {
     outline: 1px solid #f3f3f3;
     color: black !important;
 }
+#Gender{
+    display: inline-block;
+    margin-top: 5px;
+    margin-left: 50px;
+}

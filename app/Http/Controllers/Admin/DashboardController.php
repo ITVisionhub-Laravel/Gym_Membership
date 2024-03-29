@@ -11,6 +11,7 @@ use App\Models\Attendent;
 use App\Models\PaymentRecord;
 use App\Models\CustomerQRCode;
 use App\Models\DebitAndCredit;
+use App\Models\ProfitSharingView;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentExpiredMembers;
 use Illuminate\Support\Facades\Config;
@@ -28,12 +29,14 @@ class DashboardController extends Controller
         $data['buying_price'] = Products::sum('buying_price');
         // dd($data['buying_price']);
         $prices = 0;
-        foreach (PaymentRecord::get() as $paymentPrice) {
-            $prices += (int) $paymentPrice->price;
+        $paymentRecords = PaymentRecord::get();
+        // dd($paymentRecord[0]->paymentprovider);
+        foreach ($paymentRecords as $paymentPrice) {
+            $prices += $paymentPrice->package->promotion_price;
         }
         $data['price'] = $prices;
+
         $data['paymentRecords'] = PaymentRecord::get();
-        $paymentRecords = PaymentRecord::get();
 
         // For Attendenced Members
         $todayDate = new DateTimeImmutable(Carbon::now()->format('Y-m-d'));
@@ -43,7 +46,7 @@ class DashboardController extends Controller
         )->get();
 
         // For Bar Chart
-        $monthlyEarnings = PaymentRecord::select('price', 'record_date')
+        $monthlyEarnings = PaymentRecord::select('record_date')
             ->get()
             ->groupBy(function ($date) {
                 //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
@@ -149,7 +152,7 @@ class DashboardController extends Controller
                 )->delete();
             } else {
                 $payment_expired_members
-                    ->where('customer_id', $paymentRecord->user_id)
+                    ->where('user_id', $paymentRecord->user_id)
                     ->delete();
             }
         }
@@ -170,16 +173,18 @@ class DashboardController extends Controller
 
         $variablesOneData = Config::get('variables.ONE');
         $variablesTwoData = Config::get('variables.TWO');
+        $data['yufcIncome'] = ProfitSharingView::first()->YUFC_25_percent;
+        $ourIncome = ProfitSharingView::first()->FSA_75_percent;
 
         $monthlyData = DebitAndCredit::whereYear('date', '=', $now->year)
                         ->whereMonth('date', '=', $now->month)
                         ->get();
 
-        $expense = $monthlyData->where('transaction_type_id', $variablesOneData)->sum('amount');
+        $expense = $monthlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
 
-        $income = $monthlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
+        $income = $monthlyData->where('transaction_type_id', $variablesOneData)->sum('amount');
 
-        $profit = $income - $expense;
+        $profit = $ourIncome - $expense;
 
         $data['expenses'] = $expense;
         $data['incomes'] = $income;

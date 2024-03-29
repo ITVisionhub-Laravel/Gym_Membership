@@ -63,10 +63,10 @@
 
             <div class="row app-logo pt-2">
                 <div class="col-md-6">
-                    <img src="assets/images/ios_logo.png" alt="app-store" height="50">
+                    <img src="{{ asset('assets/images/ios_logo.png') }}" alt="app-store" height="50">
                 </div>
                 <div class="col-md-6">
-                    <img src="assets/images/google_logo.png" alt="android-stroe" height="50">
+                    <img src="{{ asset('assets/images/google_logo.png') }}" alt="android-stroe" height="50">
                 </div>
             </div>
             

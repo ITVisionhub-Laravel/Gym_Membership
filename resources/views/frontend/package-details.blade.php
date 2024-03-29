@@ -15,12 +15,13 @@
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <link rel="stylesheet" type="text/css" href="assets/css/font-awesome.css">
+  <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/font-awesome.css') }}">
 
-  <link rel="stylesheet" href="assets/css/custom.css">
-  <link rel="stylesheet" href="assets/css/frontend_custom.css">
+  <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/frontend_custom.css') }}">
+  <link rel="stylesheet" href="{{ asset('assets/css/class-detail.css') }}">
 
-  <link rel="icon" type="image/x-icon" href="assets/images/features-1-icon.png">
+  <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/features-1-icon.png') }}">
 
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
   <!-- Default theme -->
@@ -29,7 +30,19 @@
   @livewireStyles
 </head>
 <div>
-  <livewire:cart-show />
+  @php
+  $routeName = request()->route()->getName();
+  @endphp 
+  <div>
+    @if($routeName == 'package.details')
+      <livewire:cart-show />
+    @elseif($routeName == 'class.list')
+      <livewire:gym-class-type :gymClassCategoryId="$gymClassCategoryId" />
+    @elseif($routeName == 'product.checkout')
+      <livewire:product-checkout />
+    @endif
+  </div>
+  {{--  <livewire:cart-show />  --}}
 </div>
 
 <script src="{{ asset('assets/js/jquery-3.6.3.min.js') }}"></script>

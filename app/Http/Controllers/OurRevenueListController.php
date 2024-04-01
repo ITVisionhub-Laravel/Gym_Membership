@@ -109,25 +109,25 @@ class OurRevenueListController extends Controller
                 case "daily":
                     $ourIncome = ProfitSharingView::dailyData('Date')->get()->sum('FSA_75_percent');
                     $ourExpense = Expenses::dailyData()->get()->sum('amount');
-                    $date = "From " . Carbon::now()->startOfDay() . " To " .  Carbon::now()->endOfDay();
+                    $date = "From " . Carbon::now()->startOfDay()->toDateString() . " To " . Carbon::now()->endOfDay()->toDateString();
                     break;
 
                 case "weekly":
                     $ourIncome = ProfitSharingView::last7Days('Date')->get()->sum('FSA_75_percent');
                     $ourExpense = Expenses::last7Days()->get()->sum('amount');
-                    $date = "From " . Carbon::today()->subDays(6) . " To " .  Carbon::now();
+                    $date = "From " . Carbon::today()->subDays(6)->toDateString() . " To " .  Carbon::now()->toDateString();
                     break;
 
                 case "monthly":
                     $ourIncome = ProfitSharingView::monthToDate('Date')->get()->sum('FSA_75_percent');
                     $ourExpense = Expenses::monthToDate()->get()->sum('amount');
-                    $date = "From " . Carbon::now()->startOfMonth() . " To " .  Carbon::now();
+                    $date = "From " . Carbon::now()->startOfMonth()->toDateString() . " To " .  Carbon::now()->toDateString();
                     break;
 
                 case "yearly":
                     $ourIncome = ProfitSharingView::lastYear('Date')->get()->sum('FSA_75_percent');
                     $ourExpense = Expenses::lastYear()->get()->sum('amount');
-                    $date = "From " . Carbon::now()->subYear() . " To " .  Carbon::now();
+                    $date = "From " . Carbon::now()->subYear()->toDateString() . " To " .  Carbon::now()->toDateString();
                     break;
 
                 default:

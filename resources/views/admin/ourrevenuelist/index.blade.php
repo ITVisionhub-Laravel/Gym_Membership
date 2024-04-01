@@ -33,7 +33,7 @@
                 <td class="text-center" id="ourIncome"><a href="{{ route('profitsharing.index') }}">$ {{ $ourIncome }}</a></td>
                 <td class="text-center" id="ourExpense"><a href="{{ route('expenses.index') }}">$ {{ $expenses }}</a></td>
                 <td class="text-center" id="ourRevenue">$ {{ $profit }}</td> 
-                <td class="text-center" id="date"></td> 
+                <td class="text-center" id="date">N/A</td> 
                 <td class="text-center" id="profitAndLoss" style="background-color: {{ $profit > 0 ? 'green' : 'red' }}">
                     &nbsp;
                     @if ($profit > 0)

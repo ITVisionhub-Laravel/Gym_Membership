@@ -28,7 +28,7 @@
                 <span class="menu-title">Brands</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse show" id="collapse-brands">
+            <div class="collapse" id="collapse-brands">
                 <ul class="nav flex-column sub-menu">
 
                     <li class="nav-item"> <a class="nav-link" href="{{ url('admin/brands/create') }}">Add Brand</a></li>
@@ -45,7 +45,7 @@
                 <span class="menu-title">Product Categories</span>
                 <i class="menu-arrow"></i>
             </a>
-            <div class="collapse show" id="collapse-product">
+            <div class="collapse" id="collapse-product">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{ url('admin/categories/create') }}">Add
                             Category</a></li>
@@ -217,24 +217,49 @@
             </div>
         </li>
 
+        {{-- Class Category --}}
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-classCategory" aria-expanded="false"
+                aria-controls="ui-class">
+                <i class="mdi mdi-database menu-icon"></i>
+                <span class=" menu-title">Class Category</span>
+                <i class="menu-arrow"></i>
+            </a>
+
+            <div class="collapse" id="ui-classCategory">
+                <ul class="nav flex-column sub-menu">
+                    {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('classCategory.create') }}">Add
+                            Class Category</a></li>
+                </ul>
+            </div>
+            <div class="collapse" id="ui-classCategory">
+                <ul class="nav flex-column sub-menu">
+                    {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('class-category.index') }}">View
+                            Class Category</a></li>
+                </ul>
+            </div>
+
+        </li>
+
+        {{-- Class --}}
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-class" aria-expanded="false"
                 aria-controls="ui-class">
                 <i class="mdi mdi-database menu-icon"></i>
-                <span class=" menu-title">Class</span>
+                <span class=" menu-title">Class </span>
                 <i class="menu-arrow"></i>
             </a>
 
             <div class="collapse" id="ui-class">
                 <ul class="nav flex-column sub-menu">
-                    {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
-                    <li class="nav-item"> <a class="nav-link" href="">Add Class Category</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('class.create') }}">Add Class </a></li>
                 </ul>
             </div>
             <div class="collapse" id="ui-class">
                 <ul class="nav flex-column sub-menu">
-                    {{-- <li class="nav-item"> <a class="nav-link" href="{{ route('payment_records.create') }}">Add PaymentRecords</a></li> --}}
-                    <li class="nav-item"> <a class="nav-link" href="">Add Class</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('class.index') }}">View Class </a></li>
                 </ul>
             </div>
 

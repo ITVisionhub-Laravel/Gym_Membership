@@ -13,6 +13,7 @@ use App\Models\User;
 
 class Attendence_CheckController extends Controller
 {
+    public $member_id;
     /**
      * Display a listing of the resource.
      *
@@ -41,43 +42,40 @@ class Attendence_CheckController extends Controller
 
     public function store(Request $request)
     {
-        $member_id = User::where(
-            'member_card',
-            $request->input('memberId')
-        )->value('id');
+        if ($request->has('memberId')) {
+            $member_id = User::where('member_card', $request->input('memberId'))
+            ->where('role_as', 0)
+            ->value('id');
+            $todayDate = Carbon::now()->format('Y-m-d');
 
-        $todayDate = Carbon::now()->format('Y-m-d');
+            if (!$member_id) {
+                $data = ['wrongMemberId' => true];
+                return response()->json($data);
+            }
 
-        //       if ($member_id->isEmpty()) {
-        //     // Member does not exist, return JSON response indicating that
-        //     return new JsonResponse(['memberExists' => false]);
-        // }
-        if (!$member_id) {
-            $data = ['wrongMemberId' => true];
+            $attendent_check = Attendent::where('user_id', $member_id)
+                ->where('attendent_date', $todayDate)
+                ->first();
+
+            if (!$attendent_check) {
+                // Member is new, create the 'Attendent' record
+                $newAttendent = new Attendent();
+                $newAttendent->attendent_date = $todayDate;
+                $newAttendent->user_id = $member_id; // Assigning the correct value
+                // Save the new 'Attendent' record
+                $newAttendent->save();
+                // Member is new, return JSON response indicating success
+                $data = ['success' => true];
+                return response()->json($data);
+            }
+            // Member already exists, return JSON response
+            $data = ['memberExists' => true];
             return response()->json($data);
+        } else{
+            return redirect()->route('attendents.index');
         }
-        $attendent_check = Attendent::where('user_id', $member_id)
-            ->where('attendent_date', $todayDate)
-            ->first();
+    }
 
-        if (!$attendent_check) {
-            // Member is new, create the 'Attendent' record
-            $newAttendent = new Attendent();
-            $newAttendent->attendent_date = $todayDate;
-            $newAttendent->user_id = $member_id; // Assigning the correct value
-
-            // Save the new 'Attendent' record
-            $newAttendent->save();
-            // if (request()->expectsJson()) {
-            //     return new AttendenceCheckResource($newAttendent);
-            // }
-            // Member is new, return JSON response indicating success
-            $data = ['success' => true];
-            return response()->json($data);
-        }
-        $data = ['memberExists' => true];
-        return response()->json($data); 
-}
 
     /**
      * Display the specified resource.

@@ -10,7 +10,7 @@ class GymClassCategory extends Model
     use HasFactory;
     protected $table = 'gym_class_category';
 
-    protected $guard = [
-        'id'
-    ]; 
+    protected $fillable = [
+        'name','image','description'
+    ];
 }

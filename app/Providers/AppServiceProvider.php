@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
-use App\Http\View\Composers\DropdownComposer;
+use Laravel\Ui\Presets\Bootstrap;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\ServiceProvider;
 use Dotenv\Validator as DotenvValidator;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\ServiceProvider;
-
+use App\Http\View\Composers\DropdownComposer;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,5 +25,7 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('admin.shops.*', DropdownComposer::class . '@shopTypeDropdown');
         view()->composer('admin.shops.*', DropdownComposer::class . '@productDropdown');
         Validator::extend('recaptcha', 'App\\Validators\\ReCaptcha@validate');
+
+    Paginator::useBootstrap();
     }
 }

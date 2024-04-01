@@ -162,6 +162,12 @@ Route::prefix('admin')->group(function () {
         Route::post('/customers/yearly', 'yearly');
     });
 
+    Route::controller(
+        App\Http\Controllers\OurRevenueListController::class
+    )->group(function () {
+        Route::post('monthly_income', 'filteringOurIncome')->name('monthly_income');
+    });
+
     // Products
     Route::controller(
         App\Http\Controllers\Admin\ProductsController::class

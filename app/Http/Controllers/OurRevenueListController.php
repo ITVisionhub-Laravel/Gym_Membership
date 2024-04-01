@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Expenses;
 use Illuminate\Http\Request;
 use App\Models\DebitAndCredit;
 use App\Models\ProfitSharingView;
-use App\Traits\FilterableByDatesTrait;
 use App\Traits\FilterByDatesTrait;
+use Illuminate\Support\Facades\Log;
+use App\Traits\FilterableByDatesTrait;
 use Illuminate\Support\Facades\Config;
 
 class OurRevenueListController extends Controller
@@ -60,41 +62,95 @@ class OurRevenueListController extends Controller
         dd($monthlyExpenses);
     }
 
-    public function filteringOurIncome()
-    {
-        $data['ourIncome'] = ProfitSharingView::get();
 
-        // Initialize an array to store data for each month
-        $monthlyIncomeDatas = [];
+    // $data['ourIncome'] = ProfitSharingView::get();
 
-        // Loop through the retrieved data
-        foreach ($data['ourIncome'] as $ourIncome) {
-            $date = $ourIncome->Date; // Assuming "Date" is the column name in your database
-            $month = date("F", strtotime($date)); // Get the month name
+    // // Initialize an array to store data for each month
+    // $monthlyIncomeDatas = [];
 
-            // Initialize the array for the current month if it doesn't exist
-            if (!isset($monthlyIncomeDatas[$month])) {
-                $monthlyIncomeDatas[$month] = [];
+    // // Loop through the retrieved data
+    // foreach ($data['ourIncome'] as $ourIncome) {
+    //     $date = $ourIncome->Date; // Assuming "Date" is the column name in your database
+    //     $month = date("F", strtotime($date)); // Get the month name
+
+    //     // Initialize the array for the current month if it doesn't exist
+    //     if (!isset($monthlyIncomeDatas[$month])) {
+    //         $monthlyIncomeDatas[$month] = [];
+    //     }
+
+    //     // Add the current entry to the array for the current month
+    //     $monthlyIncomeDatas[$month][] = $ourIncome;
+    // }
+
+    // // Initialize an array to store the sum of amounts for each month
+    // $monthlyIncome = [];
+
+    // // Calculate the sum of amounts for each month
+    // foreach ($monthlyIncomeDatas as $month => $monthlyIncomeData) {
+    //     $sum = 0;
+    //     foreach ($monthlyIncomeData as $monthlyOurIncome) {
+    //         $sum += $monthlyOurIncome->FSA_75_percent; // Assuming "FSA_75_percent" is the column name for the amount in your database
+    //     }
+    //     $monthlyIncome[$month] = $sum;
+    // }
+    public function filteringOurIncome(Request $request)
+    { 
+        $dataType = $request->data_type; 
+        // return response()->json($dataType);
+        
+        $ourIncome = 0;
+        $ourExpense = 0;
+        $date = "";
+
+        try {
+            // daily_profit
+
+            switch ($dataType) {
+                case "daily":
+                    $ourIncome = ProfitSharingView::dailyData('Date')->get()->sum('FSA_75_percent');
+                    $ourExpense = Expenses::dailyData()->get()->sum('amount');
+                    $date = "From " . Carbon::now()->startOfDay() . " To " .  Carbon::now()->endOfDay();
+                    break;
+
+                case "weekly":
+                    $ourIncome = ProfitSharingView::last7Days('Date')->get()->sum('FSA_75_percent');
+                    $ourExpense = Expenses::last7Days()->get()->sum('amount');
+                    $date = "From " . Carbon::today()->subDays(6) . " To " .  Carbon::now();
+                    break;
+
+                case "monthly":
+                    $ourIncome = ProfitSharingView::monthToDate('Date')->get()->sum('FSA_75_percent');
+                    $ourExpense = Expenses::monthToDate()->get()->sum('amount');
+                    $date = "From " . Carbon::now()->startOfMonth() . " To " .  Carbon::now();
+                    break;
+
+                case "yearly":
+                    $ourIncome = ProfitSharingView::lastYear('Date')->get()->sum('FSA_75_percent');
+                    $ourExpense = Expenses::lastYear()->get()->sum('amount');
+                    $date = "From " . Carbon::now()->subYear() . " To " .  Carbon::now();
+                    break;
+
+                default:
+                    // Handle default case here
+                    break;
             }
 
-            // Add the current entry to the array for the current month
-            $monthlyIncomeDatas[$month][] = $ourIncome;
+            
+
+            $data = [
+                'income' => $ourIncome,
+                'expense' => $ourExpense,
+                'date' => $date 
+            ];
+
+            return response()->json($data);
+        } catch (\Exception $e) {
+            // Log the error for further investigation
+            Log::error('Error fetching data: ' . $e->getMessage());
+
+            // Return an error response
+            return response()->json(['error' => 'Internal Server Error'], 500);
         }
-
-        // Initialize an array to store the sum of amounts for each month
-        $monthlyIncome = [];
-
-        // Calculate the sum of amounts for each month
-        foreach ($monthlyIncomeDatas as $month => $monthlyIncomeData) {
-            $sum = 0;
-            foreach ($monthlyIncomeData as $monthlyOurIncome) {
-                $sum += $monthlyOurIncome->FSA_75_percent; // Assuming "FSA_75_percent" is the column name for the amount in your database
-            }
-            $monthlyIncome[$month] = $sum;
-        }
-
-        // Return the array containing the sums of amounts for each month
-        return response()->json($monthlyIncome);
     }
 
 }

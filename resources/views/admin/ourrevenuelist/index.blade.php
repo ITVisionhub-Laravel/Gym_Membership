@@ -7,32 +7,34 @@
             All
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <button class="dropdown-item" type="button" id="daily">Daily</button>
-            <button class="dropdown-item" type="button" id="weekly">Weekly</button>
-            <button class="dropdown-item" type="button" id="monthly">Monthly</button>
-            <button class="dropdown-item" type="button" id="yearly">Yearly</button>
+           <button class="dropdown-item" type="button" id="daily" data-type="daily">Daily</button>
+        <button class="dropdown-item" type="button" id="weekly" data-type="weekly">Weekly</button>
+        <button class="dropdown-item" type="button" id="monthly" data-type="monthly">Monthly</button>
+        <button class="dropdown-item" type="button" id="yearly" data-type="yearly">Yearly</button>
         </div>
     </div>
     <table class="table table-success table-bordered">
         <thead>
             <tr class="text-center">
-                <th scope="col">Date</th>
-                {{--  <th scope="col">Our Income</th>
+                <th scope="col">Profit BreakDown</th>
+                <th scope="col">Our Income</th>
                 <th scope="col">Expenses</th>
-                <th scope="col">Our Revenue</th>   --}}
+                <th scope="col">Our Revenue</th> 
+                <th scope="col">Date</th>
                 <th scope="col">Profit/Loss</th> 
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td class="date"></td>
+                <td class="text-center" id="breakdown">All</td>
                 @php
                 $profit = $ourIncome - $expenses;
                 @endphp
-                {{--  <td class="text-center"><a href="{{ route('profitsharing.index') }}">$ {{ $ourIncome }}</a></td>
-                <td class="text-center"><a href="{{ route('expenses.index') }}">$ {{ $expenses }}</a></td>
-                <td class="text-center">$ {{ $profit }}</td>   --}}
-                <td class="text-center" style="background-color: {{ $profit > 0 ? 'green' : 'red' }}">
+                <td class="text-center" id="ourIncome"><a href="{{ route('profitsharing.index') }}">$ {{ $ourIncome }}</a></td>
+                <td class="text-center" id="ourExpense"><a href="{{ route('expenses.index') }}">$ {{ $expenses }}</a></td>
+                <td class="text-center" id="ourRevenue">$ {{ $profit }}</td> 
+                <td class="text-center" id="date"></td> 
+                <td class="text-center" id="profitAndLoss" style="background-color: {{ $profit > 0 ? 'green' : 'red' }}">
                     &nbsp;
                     @if ($profit > 0)
                         <p style="color: white">Got Profit</p>
@@ -48,69 +50,48 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#daily').on('click', function()
-        {
-            var daily = $(this).text();
+        $('.dropdown-item').on('click', function() {           
+            var dataType = $(this).data('type');  
+            $('#breakdown').text($(this).data('type'));
                 $.ajax({
-                    url: "{{url('admin/customers/daily')}}",
+                    url: "{{ route('our_income_and_expense') }}",
                     type: "POST",
                     data: {
-                        daily_data: daily,
-                        _token: '{{csrf_token()}}'
+                    data_type: dataType,
+                    _token: '{{ csrf_token() }}'
                     },
                     dataType: 'json',
-                    success: function (result) {
+                    success: function(result) {
                         
-                        $('.name').text("Daily Data");
-                        $('.cumulative-sum[data-type="sumRevenue"]').text(sumRevenue);
-                        $('.cumulative-sum[data-type="noOfMember"]').text(noOfMember);
-                        $('.cumulative-sum[data-type="sum75Percent"]').text(sum75Percent);
-                        $('.cumulative-sum[data-type="sum25Percent"]').text(sum25Percent);
-                        $('.cumulative-sum[data-type="date"]').text(date);
+                        //alert("Income: " + result.income + ", Expense: " + result.expense + ", Date: " + result.date);
+                        //alert(JSON.stringify(result))
+                        $('#ourIncome').text("$ " + result.income);
+                        $('#ourExpense').text("$ " + result.expense);
+                        
+                        // Calculate profit
+                        var profit = result.income - result.expense;
+                        $('#ourRevenue').text("$ " + profit);
+                        
+                        // Set the date if available
+                        if (result.date) {
+                            $('#date').text(result.date);
+                        } else {
+                            $('#date').text("N/A");
+                        }
+                        
+                        // Display profit or loss message
+                        if (profit > 0) {
+                            $('#profitAndLoss').html('<p style="color: white; text-align: center;">Got Profit</p>');
+                        } else {
+                            $('#profitAndLoss').html('<p style="color: white; text-align: center;">Loss</p>');
+                        }
                     },
                     error: function(xhr, status, error) {
-                        var errorMessage = xhr.status + ': ' + xhr.statusText;
-                        alert('Error - ' + errorMessage);
+                    var errorMessage = xhr.status + ': ' + xhr.statusText;
+                    alert('Error - ' + errorMessage);
                     }
-                });
-        });
-
-        $('#monthly').on('click', function() {
-            var monthly = $(this).text();
-            $.ajax({
-            url: "{{url('admin/monthly_income')}}",
-            type: "POST",
-            data: {
-            monthly_data: monthly,
-            _token: '{{csrf_token()}}'
-            },
-            dataType: 'json',
-            success: function(result) {
-            $.each(result, function(month, value) {
-            alert(month);
-            $('.date').text(month);
+                })
             });
-            
-            // Loop through the monthly data
-            //$.each(result.monthly, function(index, value) {
-            //sumRevenue += value.Revenue_Amount;
-            //sum75Percent += value.FSA_75_percent;
-            //sum25Percent += value.YUFC_25_percent;
-            //date = value.Date;
-            //});
-            
-            // Update the UI with the calculated values
-            $('.name').text("Monthly Data");
-            $('.cumulative-sum[data-type="sumRevenue"]').text(sumRevenue);
-            $('.cumulative-sum[data-type="sum75Percent"]').text(sum75Percent);
-            $('.cumulative-sum[data-type="sum25Percent"]').text(sum25Percent);
-            $('.cumulative-sum[data-type="date"]').text(date);
-            },
-            error: function(xhr, status, error) {
-            var errorMessage = xhr.status + ': ' + xhr.statusText;
-            alert('Error - ' + errorMessage);
-            }
-            });
-        });
-    });
+        }); 
+    
 </script>

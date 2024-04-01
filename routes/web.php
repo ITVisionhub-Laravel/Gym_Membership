@@ -162,7 +162,10 @@ Route::prefix('admin')->group(function () {
     Route::controller(
         App\Http\Controllers\OurRevenueListController::class
     )->group(function () {
-        Route::post('monthly_income', 'filteringOurIncome')->name('monthly_income');
+        Route::post('filtering_our_income_and_expense', 'filteringOurIncome')->name('our_income_and_expense');
+        // Route::post('weekly_profit', 'filteringOurIncome')->name('weekly_profit');
+        // Route::post('monthly_profit', 'filteringOurIncome')->name('monthly_profit');
+        // Route::post('yearly_profit', 'filteringOurIncome')->name('yearly_profit');
     });
 
     // Products

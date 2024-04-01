@@ -1,22 +1,23 @@
 <?php
 
-use App\Http\Controllers\Admin\Attendee_CheckController;
-use App\Http\Controllers\Admin\Attendence_CheckController;
-use App\Http\Controllers\Admin\AttendentController;
-use App\Http\Controllers\Admin\ClassController;
-use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\DebitAndCreditController;
-use App\Http\Controllers\Admin\ExpensesController;
-use App\Http\Controllers\Admin\GymClassCategoryController;
-use App\Http\Controllers\Admin\PaymentPackageController;
-use App\Http\Controllers\Admin\PaymentProviderController;
-use App\Http\Controllers\Admin\PaymentRecordController;
-use App\Http\Controllers\Admin\SaleRecordController;
-use App\Http\Controllers\Frontend\UserRegisterController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProfitSharingController;
 use App\Models\PaymentRecord;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\ProfitSharingController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\ExpensesController;
+use App\Http\Controllers\OurRevenueListController;
+use App\Http\Controllers\Admin\AttendentController;
+use App\Http\Controllers\Admin\SaleRecordController;
+use App\Http\Controllers\Admin\PaymentRecordController;
+use App\Http\Controllers\Admin\Attendee_CheckController;
+use App\Http\Controllers\Admin\DebitAndCreditController;
+use App\Http\Controllers\Admin\PaymentPackageController;
+use App\Http\Controllers\Admin\PaymentProviderController;
+use App\Http\Controllers\Frontend\UserRegisterController;
+use App\Http\Controllers\Admin\Attendence_CheckController;
+use App\Http\Controllers\Admin\GymClassCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,6 +108,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('payment_providers', PaymentProviderController::class);
     Route::resource('payment_records', PaymentRecordController::class);
     Route::resource('attendents', AttendentController::class);
+    Route::resource('revenueList', OurRevenueListController::class);
+
 });
 
 Route::prefix('admin')->group(function () {
@@ -152,6 +155,8 @@ Route::prefix('admin')->group(function () {
         Route::post('/payFees', 'payFees');
         Route::get('/customers/{customer_id}/print', 'print');
         Route::get('/customers/{customer_id}/print/package', 'printPackage');
+
+        Route::post('/customers/daily', 'daily');
     });
 
     // Products

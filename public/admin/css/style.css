@@ -22764,6 +22764,10 @@ dl li {
     color: #ffc100;
 }
 
+.card-link {
+    cursor: pointer;
+}
+
 .solid-bullet-list {
     position: relative;
     padding-left: 0;

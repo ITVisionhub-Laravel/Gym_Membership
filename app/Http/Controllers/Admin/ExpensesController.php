@@ -51,14 +51,9 @@ class ExpensesController extends Controller
         $new_debit_credit_info->status_id = Config::get('variables.SUCCESS');
         $new_debit_credit_info->date = Carbon::now()->format('Y-m-d');
         $new_debit_credit_info->related_info_id = $this->expensesInfo->invoice_id;
-        $new_debit_credit_info->related_info_type = "expenses";
-        $new_debit_credit_info->transaction_type_id = 2;
-        $new_debit_credit_info->save();
-        // if ($new_debit_credit_info->save()) {
-        //     $this->emit('debitCreditInfoStored', 'Debit/Credit info stored successfully.');
-        // } else {
-        //     $this->emit('debitCreditInfoStoreFailed', 'Failed to store Debit/Credit info.');
-        // }
+        $new_debit_credit_info->related_info_type = Config::get('variables.EXPENSES');
+        $new_debit_credit_info->transaction_type_id = Config::get('variables.CREDIT');
+        $new_debit_credit_info->save(); 
     }
 
     public function edit(Expenses $transaction)

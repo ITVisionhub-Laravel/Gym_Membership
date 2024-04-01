@@ -13,10 +13,11 @@ class ProfitSharingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public $report;
     public function index()
     {
         $users = ProfitSharingView::all();
-        return view('admin.profitsharing.index',["users" => $users]);
+        return view('admin.profitsharing.index',["users" => $users,"reports" => $this->report]);
     }
 
     /**

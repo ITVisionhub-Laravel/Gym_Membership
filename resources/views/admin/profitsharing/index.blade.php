@@ -83,6 +83,111 @@
                     }
                 });
         });
+        $('#weekly').on('click', function()
+        {
+            var weekly = $(this).text();
+                $.ajax({
+                    url: "{{url('admin/customers/weekly')}}",
+                    type: "POST",
+                    data: {
+                        weekly_data: weekly,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        $.each(result.weekly, function (index, value) {
+                        //     sumRevenue += value.Revenue_Amount;
+                        //     sum75Percent += value.FSA_75_percent;
+                        //     sum25Percent += value.YUFC_25_percent;
+                        //     date = value.Date;
+                        });
+                        // $('.name').text("weekly Data");
+                        // $('.cumulative-sum[data-type="sumRevenue"]').text(sumRevenue);
+                        // $('.cumulative-sum[data-type="noOfMember"]').text(noOfMember);
+                        // $('.cumulative-sum[data-type="sum75Percent"]').text(sum75Percent);
+                        // $('.cumulative-sum[data-type="sum25Percent"]').text(sum25Percent);
+                        // $('.cumulative-sum[data-type="date"]').text(date);
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = xhr.status + ': ' + xhr.statusText;
+                        alert('Error - ' + errorMessage);
+                    }
+                });
+        });
+        $('#monthly').on('click', function()
+        {
+            var monthly = $(this).text();
+                $.ajax({
+                    url: "{{url('admin/customers/monthly')}}",
+                    type: "POST",
+                    data: {
+                        monthly_data: monthly,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        var noOfMember = result.monthly.length;
+                        var sumRevenue = 0;
+                        var sum75Percent = 0;
+                        var sum25Percent = 0;
+                        var date;
+                        // alert(JSON.stringify(result.monthly))
+                        $.each(result.monthly, function (index, value) {
+                            sumRevenue += value.Revenue_Amount;
+                            sum75Percent += value.FSA_75_percent;
+                            sum25Percent += value.YUFC_25_percent;
+                            date = value.Date;
+                        });
+                        $('.name').text("monthly Data");
+                        $('.cumulative-sum[data-type="sumRevenue"]').text(sumRevenue);
+                        $('.cumulative-sum[data-type="noOfMember"]').text(noOfMember);
+                        $('.cumulative-sum[data-type="sum75Percent"]').text(sum75Percent);
+                        $('.cumulative-sum[data-type="sum25Percent"]').text(sum25Percent);
+                        $('.cumulative-sum[data-type="date"]').text(date);
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = xhr.status + ': ' + xhr.statusText;
+                        alert('Error - ' + errorMessage);
+                    }
+                });
+        });
+        $('#yearly').on('click', function()
+        {
+            var yearly = $(this).text();
+                $.ajax({
+                    url: "{{url('admin/customers/yearly')}}",
+                    type: "POST",
+                    data: {
+                        yearly_data: yearly,
+                        _token: '{{csrf_token()}}'
+                    },
+                    dataType: 'json',
+                    success: function (result) {
+                        var noOfMember = result.yearly.length;
+                        var sumRevenue = 0;
+                        var sum75Percent = 0;
+                        var sum25Percent = 0;
+                        var date;
+                        // alert(JSON.stringify(result.yearly))
+                        $.each(result.yearly, function (index, value) {
+                            sumRevenue += value.Revenue_Amount;
+                            sum75Percent += value.FSA_75_percent;
+                            sum25Percent += value.YUFC_25_percent;
+                            date = value.Date;
+                        });
+                        $('.name').text("yearly Data");
+                        $('.cumulative-sum[data-type="sumRevenue"]').text(sumRevenue);
+                        $('.cumulative-sum[data-type="noOfMember"]').text(noOfMember);
+                        $('.cumulative-sum[data-type="sum75Percent"]').text(sum75Percent);
+                        $('.cumulative-sum[data-type="sum25Percent"]').text(sum25Percent);
+                        $('.cumulative-sum[data-type="date"]').text(date);
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = xhr.status + ': ' + xhr.statusText;
+                        alert('Error - ' + errorMessage);
+                    }
+                });
+        });
     });
 </script>
 

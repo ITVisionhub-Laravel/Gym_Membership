@@ -100,6 +100,48 @@ class CustomerController extends Controller
             return response()->json($data);
         }
     }
+    public function weekly(Request $request)
+    {
+        $startDate = Carbon::createFromDate(2023, 01, 02);//YY//MM//DD
+        $endDate = Carbon::today();
+        $weeklyData = [];
+
+        while ($startDate->lessThanOrEqualTo($endDate)) {
+            $endOfWeek = $startDate->copy()->endOfWeek();
+
+            $weeklyData[] = [
+                'start_date' => $startDate->toDateString(),
+                'end_date' => $endOfWeek->toDateString(),
+                'data' => ProfitSharingView::whereBetween('Date', [$startDate, $endOfWeek])->get(),
+            ];
+            $startDate->addWeek();
+            return response()->json($weeklyData);
+        // if($request->daily_data == "Weekly")
+        // {
+        //     $startDate = Carbon::createFromDate(2024, 1, 1);
+        //     $today = Carbon::today();
+        //     $data['weekly'] = ProfitSharingView::where('Date', $today)->get();
+        //     return response()->json($data);
+        }
+    }
+    public function monthly(Request $request)
+    {
+        if($request->daily_data == "Monthly")
+        {
+            $today = Carbon::today();
+            $data['monthly'] = ProfitSharingView::where('Date', $today)->get();
+            return response()->json($data);
+        }
+    }
+    public function yearly(Request $request)
+    {
+        if($request->daily_data == "Yearly")
+        {
+            $today = Carbon::today();
+            $data['yearly'] = ProfitSharingView::where('Date', $today)->get();
+            return response()->json($data);
+        }
+    }
     public function store(CustomerFormRequest $request)
     {
         $validatedData = $request->validated();

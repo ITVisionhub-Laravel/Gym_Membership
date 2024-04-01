@@ -157,6 +157,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer_id}/print/package', 'printPackage');
 
         Route::post('/customers/daily', 'daily');
+        Route::post('/customers/weekly', 'weekly');
+        Route::post('/customers/monthly', 'monthly');
+        Route::post('/customers/yearly', 'yearly');
     });
 
     // Products

@@ -153,6 +153,8 @@ Route::prefix('admin')->group(function () {
         Route::post('/payFees', 'payFees');
         Route::get('/customers/{customer_id}/print', 'print');
         Route::get('/customers/{customer_id}/print/package', 'printPackage');
+
+        Route::post('/customers/daily', 'daily');
     });
 
     // Products

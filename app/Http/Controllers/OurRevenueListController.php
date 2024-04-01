@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Expenses;
 use Illuminate\Http\Request;
 use App\Models\DebitAndCredit;
-use App\Models\Expenses;
 use App\Models\ProfitSharingView;
+use App\Traits\FilterableByDatesTrait;
+use App\Traits\FilterByDatesTrait;
 use Illuminate\Support\Facades\Config;
 
 class OurRevenueListController extends Controller
 {
+    use FilterableByDatesTrait;
     public function index()
     {
         $variablesTwoData = Config::get('variables.TWO');

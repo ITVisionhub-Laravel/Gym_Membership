@@ -21,21 +21,23 @@
                         <th scope="col">Revenue Amount</th>
                         <th scope="col">FSA (75%)</th>
                         <th scope="col">YUFC (25%)</th>
+                        <th scope="col">Date</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <th scope="row">First 3 Months</th>
+                        <th scope="row" class="name"></th>
                         {{-- @foreach ($users as $user ) --}}
                             {{-- <td class="text-center">{{$user->Member}}</td>
                             <td class="text-end">{{$user->Revenue_Amount}}</td>
                             <td class="text-end">{{$user->FSA_75_percent}}</td>
                             <td class="text-end">{{$user->YUFC_25_percent}}</td> --}}
                         {{-- @endforeach --}}
-                        <td class="text-center"></td>
-                        <td class="text-end"></td>
-                        <td class="text-end"></td>
-                        <td class="text-end"></td>
+                        <td class="text-center cumulative-sum" data-type="noOfMember"></td>
+                        <td class="text-end cumulative-sum" data-type="sumRevenue"></td>
+                        <td class="text-end cumulative-sum" data-type="sum75Percent"></td>
+                        <td class="text-end cumulative-sum" data-type="sum25Percent"></td>
+                        <td class="text-end cumulative-sum" data-type="date"></td>
                     </tr>
                 </tbody>
             </table>
@@ -56,13 +58,24 @@
                     },
                     dataType: 'json',
                     success: function (result) {
+                        var noOfMember = result.daily.length;
+                        var sumRevenue = 0;
+                        var sum75Percent = 0;
+                        var sum25Percent = 0;
+                        var date;
+                        // alert(JSON.stringify(result.daily))
                         $.each(result.daily, function (index, value) {
-                            alert(value.Member)
-                            $('td.text-center:eq(' + index + ')').text(value.Member);
-                            $('td.text-end:eq(' + index + ')').text(value.Revenue_Amount);
-                            $('td.text-end:eq(' + index + ')').text(value.FSA_75_percent);
-                            $('td.text-end:eq(' + index + ')').text(value.YUFC_25_percent);
+                            sumRevenue += value.Revenue_Amount;
+                            sum75Percent += value.FSA_75_percent;
+                            sum25Percent += value.YUFC_25_percent;
+                            date = value.Date;
                         });
+                        $('.name').text("Daily Data");
+                        $('.cumulative-sum[data-type="sumRevenue"]').text(sumRevenue);
+                        $('.cumulative-sum[data-type="noOfMember"]').text(noOfMember);
+                        $('.cumulative-sum[data-type="sum75Percent"]').text(sum75Percent);
+                        $('.cumulative-sum[data-type="sum25Percent"]').text(sum25Percent);
+                        $('.cumulative-sum[data-type="date"]').text(date);
                     },
                     error: function(xhr, status, error) {
                         var errorMessage = xhr.status + ': ' + xhr.statusText;

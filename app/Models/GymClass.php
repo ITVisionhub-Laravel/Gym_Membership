@@ -12,24 +12,22 @@ class GymClass extends Model
     use HasFactory;
     protected $table='gym_classes';
 
-    protected $guard=[
-        'id'
-    ];
+    protected $fillable = ['name', 'description', 'gym_class_category_id', 'image'];
 
-    public function category()
+    public function classCategory()
     {
         return $this->belongsTo(GymClassCategory::class, 'gym_class_category_id');
     }
 
-    public function trainers()
-    {
-        return $this->belongsToMany(Trainer::class, 'gym_class_trainer', 'gym_class_id', 'trainer_id')->withPivot('schedule_id');
-    }
+    // public function trainers()
+    // {
+    //     return $this->belongsToMany(Trainer::class, 'gym_class_trainer', 'gym_class_id', 'trainer_id')->withPivot('schedule_id');
+    // }
 
-    public function schedules()
-    {
-        return $this->belongsToMany(GymSchedule::class, 'gym_class_trainer', 'gym_class_id', 'schedule_id')
-        ->withPivot('trainer_id');
-    }
+    // public function schedules()
+    // {
+    //     return $this->belongsToMany(GymSchedule::class, 'gym_class_trainer', 'gym_class_id', 'schedule_id')
+    //     ->withPivot('trainer_id');
+    // }
 
 }

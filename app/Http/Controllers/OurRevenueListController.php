@@ -14,10 +14,10 @@ class OurRevenueListController extends Controller
     {
         $variablesTwoData = Config::get('variables.TWO');
         // $this->filteringOurIncome();
-        $this->filteringOurExpenses();
+        // $this->filteringOurExpenses();
 
         $yearlyData = DebitAndCredit::whereYear('date', '=', now()->year)->get();
-
+        $data['ourIncome'] = ProfitSharingView::sum('FSA_75_percent');
         $data['expenses'] = $yearlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
         return view('admin.ourrevenueList.index', $data);
     }
@@ -85,11 +85,14 @@ class OurRevenueListController extends Controller
         foreach ($monthlyIncomeDatas as $month => $monthlyIncomeData) {
             $sum = 0;
             foreach ($monthlyIncomeData as $monthlyOurIncome) {
-                $sum += $monthlyOurIncome->FSA_75_percent; // Assuming "amount" is the column name in your database
+                $sum += $monthlyOurIncome->FSA_75_percent; // Assuming "FSA_75_percent" is the column name for the amount in your database
             }
             $monthlyIncome[$month] = $sum;
         }
-        dd($monthlyIncome);
+
+        // Return the array containing the sums of amounts for each month
+        return response()->json($monthlyIncome);
     }
+
 }
 

@@ -11,6 +11,11 @@ trait FilterableByDatesTrait
         return $query->whereDate($column, Carbon::today());
     }
 
+    public function scopeDailyData($query, $column = 'created_at')
+    {
+        return $query->whereBetween($column, [Carbon::now()->startOfDay(), Carbon::now()->endOfDay()]);
+    }
+
     public function scopeYesterday($query, $column = 'created_at')
     {
         return $query->whereDate($column, Carbon::yesterday());

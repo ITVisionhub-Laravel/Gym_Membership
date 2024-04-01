@@ -2,7 +2,7 @@
         <div class="card col-md-4">
             <div class="card-header">
                 <h3 class="p-2">Member List
-                    <a href="barchart.html" class="btn btn-success btn-sm text-white float-end">View All</a>
+                    <a href="{{ route('attendents.index') }}" class="btn btn-success btn-sm text-white float-end">View All</a>
                 </h3>
             </div>
 

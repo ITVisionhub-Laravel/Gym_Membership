@@ -13,20 +13,18 @@
                 <th>No</th>
                 <th>Name</th>
                 <th>Amount</th>
-                <th>Status</th>
                 <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($expenses as $transaction)
+            @foreach($expenses as $expense)
                 <tr>
-                    <td>{{ $transaction->id }}</td>
-                    <td>{{ $transaction->name }}</td>
-                    <td>{{ $transaction->amount }}</td>
-                    <td>{{ $transaction->status }}</td>
+                    <td>{{ $expense->id }}</td>
+                    <td>{{ $expense->name }}</td>
+                    <td>{{ $expense->amount }}</td>
                     <td>
-                        <a href="{{ route('expenses.edit', $transaction->id) }}" class="btn btn-info py-2">Edit</a>
-                        <form action="{{ route('expenses.destroy', $transaction->id) }}" method="POST" class="d-inline">
+                        <a href="{{ route('expenses.edit', $expense->id) }}" class="btn btn-info py-2">Edit</a>
+                        <form action="{{ route('expenses.destroy', $expense->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger py-2" onclick="return confirm('Are you sure?')">Delete</button>

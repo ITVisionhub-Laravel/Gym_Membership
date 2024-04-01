@@ -80,7 +80,7 @@
             </div>
         </div>
         <div class="col-md-3">
-            <a href="#" class="card-link">
+            <a href="{{url('revenueList')}}" class="card-link">
                 <div class="card p-3 mb-2" style="border-radius:10px; background-color: #cfe8ff">
                     <div class="d-flex">
                         <div class="d-flex flex-row align-items-center">

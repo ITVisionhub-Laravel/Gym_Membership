@@ -20,7 +20,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (auth()->guest() || !auth()->user()->role_as == '1') {
+        if (auth()->guest() || !auth()->user()->role_as == Config::get('variables.ADMIN')) {
             return redirect('/')->with('status', 'Logged In Successfully');
         }
         $expiredDate = '';
@@ -176,13 +176,13 @@ class DashboardController extends Controller
         $data['yufcIncome'] = ProfitSharingView::first()->YUFC_25_percent;
         $ourIncome = ProfitSharingView::first()->FSA_75_percent;
 
-        $monthlyData = DebitAndCredit::whereYear('date', '=', $now->year)
-                        ->whereMonth('date', '=', $now->month)
+        $yearlyData = DebitAndCredit::whereYear('date', '=', $now->year)
+                        // ->whereMonth('date', '=', $now->month)
                         ->get();
 
-        $expense = $monthlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
+        $expense = $yearlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
 
-        $income = $monthlyData->where('transaction_type_id', $variablesOneData)->sum('amount');
+        $income = $yearlyData->where('transaction_type_id', $variablesOneData)->sum('amount');
 
         $profit = $ourIncome - $expense;
 

@@ -26,9 +26,11 @@ use App\Models\PaymentExpiredMembers;
 use App\Http\Requests\CustomerFormRequest;
 use App\Http\Requests\MemberInfoValidation;
 use App\Models\ProductPaymentRecords;
+use App\Models\ProfitSharingView;
 use App\Models\State;
 use App\Models\User;
 use App\Models\Ward;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CustomerController extends Controller
@@ -89,7 +91,15 @@ class CustomerController extends Controller
         )->get(['name', 'id']);
         return response()->json($data);
     }
-
+    public function daily(Request $request)
+    {
+        if($request->daily_data == "Daily")
+        {
+            $today = Carbon::today();
+            $data['daily'] = ProfitSharingView::where('Date', $today)->get();
+            return response()->json($data);
+        }
+    }
     public function store(CustomerFormRequest $request)
     {
         $validatedData = $request->validated();

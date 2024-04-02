@@ -165,6 +165,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer_id}/print/package', 'printPackage');
 
         Route::post('/customers/daily', 'daily');
+        Route::post('/customers/weekly', 'weekly');
+        Route::post('/customers/monthlyProfit', 'profit');
+        Route::post('/customers/yearly', 'yearly');
+        Route::post('/customers/all', 'all');
     });
 
     Route::controller(

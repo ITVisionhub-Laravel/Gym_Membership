@@ -14,6 +14,7 @@ use App\Models\DebitAndCredit;
 use App\Models\ProfitSharingView;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentExpiredMembers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
 class DashboardController extends Controller
@@ -27,7 +28,7 @@ class DashboardController extends Controller
 
         $data['members'] = User::get();
         $data['buying_price'] = Products::sum('buying_price');
-        // dd($data['buying_price']);
+        // dd($data["user_profile"]);
         $prices = 0;
         $paymentRecords = PaymentRecord::get();
         // dd($paymentRecord[0]->paymentprovider);

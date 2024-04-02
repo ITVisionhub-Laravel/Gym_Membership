@@ -17,4 +17,12 @@ class ShopTypeResource extends JsonResource
             'image'=>$this->image
         ];
     }
+    public function with($request)
+    {
+        return [
+            'version' => '1.0.0',
+            'api_url' => url('http://127.0.0.1:8000/api/shop-types'),
+            'message' => 'Your action is successful'
+        ];
+    }
 }

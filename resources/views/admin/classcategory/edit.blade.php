@@ -6,30 +6,36 @@
             @endif
             <div class="card w-50 mx-auto">
                 <div class="card-header">
-                    <h3>Edit Gym Class
-                        <a href="{{ route('class.index') }}" class="btn btn-danger btn-sm text-white float-end">Back</a>
+                    <h3>Edit Class
+                        <a href="{{ route('class-category.index') }}"
+                            class="btn btn-danger btn-sm text-white float-end">Back</a>
                     </h3>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('class.update', $gymClass->id) }}" method="POST"
+                    <form action="{{ route('classCategory.update', $class->id) }}" method="POST"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <div class="row">
-                            <x-forms.forminput name="name" placeholder="Enter Name" value="{{ $gymClass->name }}"
+                            <x-forms.forminput name="name" placeholder="Enter Name" value="{{ $class->name }}"
                                 width="col-md-6" />
-                            <x-forms.dropdownfield :dropdownValues="$classCategory" name="gym_class_category_id" labelName="Classes"
-                                width="col-md-3" :checkOldValue="$gymClass->gym_class_category_id"></x-forms.dropdownfield>
+                            {{-- <x-forms.dropdownfield :dropdownValues="$trainers" checkOldValue="" name="trainer_id"
+                                labelName="Trainer Name" width="col-md-6"></x-forms.dropdownfield> --}}
                         </div>
                         <div class="row">
                             <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-6" />
-                            @if ($gymClass->image)
-                                <img src="{{ asset('uploads/class/' . $gymClass->image) }}" alt="{{ $gymClass->name }}"
+                            @if ($class->image)
+                                <img src="{{ asset('uploads/classcategory/' . $class->image) }}" alt="Class Image"
                                     style="width:150px;height:150px">
                             @endif
-                            <x-forms.forminput name="description" type="textarea" value="{{ $gymClass->description }}"
+                            <x-forms.forminput name="description" type="textarea" value="{{ $class->description }}"
                                 width="col-md-12" />
                         </div>
+                        {{-- <div class="row">
+                        <x-forms.forminput name="morning_time" value="{{$class->morning_time}}" placeholder="Morning_time" width="col-md-6" />
+                        <x-forms.forminput name="evening_time" value="{{$class->evening_time}}" placeholder="Evening_time" width="col-md-6" />
+                    </div> --}}
+
 
                         <div class="mb-3">
                             <button type="submit" class="btn btn-primary">Update</button>

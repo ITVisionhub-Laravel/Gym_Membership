@@ -2056,3 +2056,6 @@ select.form-control, .dataTables_wrapper select {
     margin-top: 5px;
     margin-left: 46px;
 }
+.yufctable table{
+    background-color: #d5d1e1 !important;
+}

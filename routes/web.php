@@ -1,21 +1,23 @@
 <?php
 
-use App\Http\Controllers\Admin\Attendee_CheckController;
-use App\Http\Controllers\Admin\Attendence_CheckController;
-use App\Http\Controllers\Admin\AttendentController;
-use App\Http\Controllers\Admin\CustomerController;
-use App\Http\Controllers\Admin\DebitAndCreditController;
-use App\Http\Controllers\Admin\ExpensesController;
-use App\Http\Controllers\Admin\PaymentPackageController;
-use App\Http\Controllers\Admin\PaymentProviderController;
-use App\Http\Controllers\Admin\PaymentRecordController;
-use App\Http\Controllers\Admin\SaleRecordController;
-use App\Http\Controllers\Frontend\UserRegisterController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProfitSharingController;
-use App\Http\Livewire\UserAddressComponent;
 use App\Models\PaymentRecord;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\ProfitSharingController;
+use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\ExpensesController;
+use App\Http\Controllers\OurRevenueListController;
+use App\Http\Controllers\Admin\AttendentController;
+use App\Http\Controllers\Admin\SaleRecordController;
+use App\Http\Controllers\Admin\PaymentRecordController;
+use App\Http\Controllers\Admin\Attendee_CheckController;
+use App\Http\Controllers\Admin\DebitAndCreditController;
+use App\Http\Controllers\Admin\PaymentPackageController;
+use App\Http\Controllers\Admin\PaymentProviderController;
+use App\Http\Controllers\Frontend\UserRegisterController;
+use App\Http\Controllers\Admin\Attendence_CheckController;
+use App\Http\Controllers\Admin\GymClassCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,6 +116,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('payment_providers', PaymentProviderController::class);
     Route::resource('payment_records', PaymentRecordController::class);
     Route::resource('attendents', AttendentController::class);
+    Route::resource('revenueList', OurRevenueListController::class);
+
 });
 
 Route::prefix('admin')->group(function () {
@@ -159,6 +163,17 @@ Route::prefix('admin')->group(function () {
         Route::post('/payFees', 'payFees');
         Route::get('/customers/{customer_id}/print', 'print');
         Route::get('/customers/{customer_id}/print/package', 'printPackage');
+
+        Route::post('/customers/daily', 'daily');
+    });
+
+    Route::controller(
+        App\Http\Controllers\OurRevenueListController::class
+    )->group(function () {
+        Route::post('filtering_our_income_and_expense', 'filteringOurIncome')->name('our_income_and_expense');
+        // Route::post('weekly_profit', 'filteringOurIncome')->name('weekly_profit');
+        // Route::post('monthly_profit', 'filteringOurIncome')->name('monthly_profit');
+        // Route::post('yearly_profit', 'filteringOurIncome')->name('yearly_profit');
     });
 
     // Products
@@ -185,16 +200,38 @@ Route::prefix('admin')->group(function () {
         Route::get('/brands/{brand_id}/delete', 'destroy');
     });
 
-    // Categories
-    Route::controller(
-        App\Http\Controllers\Admin\CategoryController::class
-    )->group(function () {
-        Route::get('/categories', 'index');
-        Route::get('/categories/create', 'create');
-        Route::post('/categories', 'store');
-        Route::get('/categories/{category}/edit', 'edit');
-        Route::put('/categories/{category}', 'update');
-        Route::get('/categories/{category_id}/delete', 'destroy');
+    // // Categories
+    // Route::controller(
+    //     App\Http\Controllers\Admin\CategoryController::class
+    // )->group(function () {
+    //     Route::get('/categories', 'index');
+    //     Route::get('/categories/create', 'create');
+    //     Route::post('/categories', 'store');
+    //     Route::get('/categories/{category}/edit', 'edit');
+    //     Route::put('/categories/{category}', 'update');
+    //     Route::get('/categories/{category_id}/delete', 'destroy');
+    // });
+
+
+    //Class
+
+    Route::controller(GymClassCategoryController::class)->group(function(){
+        Route::get('/class-category','index')->name('class-category.index');
+        Route::get('class-category/create','create')->name('classCategory.create');
+        Route::post('class-category/','store')->name('classCategory.store');
+        Route::get('class-category/{class}/edit','edit')->name('class-category.edit');
+        Route::put('class-category/{class}','update')->name('classCategory.update');
+        Route::get('class-category/{class}/delete','destroy')->name('classCategory.delete');
+    });
+
+    //Class
+    Route::controller(ClassController::class)->group(function(){
+        Route::get('class','index')->name('class.index');
+        Route::get('class/create','create')->name('class.create');
+        Route::post('class/store','store')->name('class.store');
+        Route::get('class/{gymClass}/edit','edit')->name('class.edit');
+        Route::put('class/{gymClass}','update')->name('class.update');
+        Route::get('class/{gymClass}/delete','destroy')->name('class.delete');
     });
 
     // shop types
@@ -235,12 +272,12 @@ Route::prefix('admin')->group(function () {
     });
 
     // shopkeepers
-    Route::controller(
-        App\Http\Controllers\Admin\RequestController::class
-    )->group(function () {
-        Route::post('/shopkeepers', 'store');
-        Route::get('/requests', 'index');
-    });
+    // Route::controller(
+    //     App\Http\Controllers\Admin\RequestController::class
+    // )->group(function () {
+    //     Route::post('/shopkeepers', 'store');
+    //     Route::get('/requests', 'index');
+    // });
 
     // Route::controller(
     //     App\Http\Controllers\Admin\Shop\ShopController::class
@@ -253,16 +290,16 @@ Route::prefix('admin')->group(function () {
     //     Route::get('/shops/{shop_id}/delete', 'destroy');
     // });
 
-    Route::controller(
-        App\Http\Controllers\Admin\EquipmentController::class
-    )->group(function () {
-        Route::get('/equipments', 'index');
-        Route::get('/equipments/create', 'create');
-        Route::post('/equipments', 'store');
-        Route::get('/equipments/{equipment}/edit', 'edit');
-        Route::put('/equipments/{equipment}', 'update');
-        Route::get('/equipments/{equipment_id}/delete', 'destroy');
-    });
+    // Route::controller(
+    //     App\Http\Controllers\Admin\EquipmentController::class
+    // )->group(function () {
+    //     Route::get('/equipments', 'index');
+    //     Route::get('/equipments/create', 'create');
+    //     Route::post('/equipments', 'store');
+    //     Route::get('/equipments/{equipment}/edit', 'edit');
+    //     Route::put('/equipments/{equipment}', 'update');
+    //     Route::get('/equipments/{equipment_id}/delete', 'destroy');
+    // });
 
     Route::controller(App\Http\Controllers\Admin\LogoController::class)->group(
         function () {
@@ -275,16 +312,16 @@ Route::prefix('admin')->group(function () {
         }
     );
 
-    Route::controller(
-        App\Http\Controllers\Admin\SliderController::class
-    )->group(function () {
-        Route::get('/sliders', 'index');
-        Route::get('/sliders/create', 'create');
-        Route::post('/sliders', 'store');
-        Route::get('/sliders/{slider}/edit', 'edit');
-        Route::put('/sliders/{slider}', 'update');
-        Route::get('/sliders/{slider}/delete', 'destroy');
-    });
+    // Route::controller(
+    //     App\Http\Controllers\Admin\SliderController::class
+    // )->group(function () {
+    //     Route::get('/sliders', 'index');
+    //     Route::get('/sliders/create', 'create');
+    //     Route::post('/sliders', 'store');
+    //     Route::get('/sliders/{slider}/edit', 'edit');
+    //     Route::put('/sliders/{slider}', 'update');
+    //     Route::get('/sliders/{slider}/delete', 'destroy');
+    // });
 
     Route::controller(
         App\Http\Controllers\Admin\TrainerController::class
@@ -312,16 +349,6 @@ Route::prefix('admin')->group(function () {
         Route::put('/partner/{partner}', 'update');
         Route::get('/partner/{partner}/delete', 'destroy');
     });
-    Route::controller(App\Http\Controllers\Admin\ClassController::class)->group(
-        function () {
-            Route::get('/class', 'index');
-            Route::get('/class/create', 'create');
-            Route::post('/class', 'store');
-            Route::get('/class/{class}/edit', 'edit');
-            Route::put('/class/{class}', 'update');
-            Route::get('/class/{class}/delete', 'destroy');
-        }
-    );
 });
 
 require __DIR__ . '/auth.php';

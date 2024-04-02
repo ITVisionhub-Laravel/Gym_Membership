@@ -27,7 +27,6 @@ class GymClassCategoryFormRequest extends FormRequest
             'name'=>['required','string'],
             'image' => ['nullable', 'mimes:png,jpg,jpeg'],
             'description'=>['required','max:225']
-
         ];
     }
 }

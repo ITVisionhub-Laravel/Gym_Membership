@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\SaleRecordController;
 use App\Http\Controllers\Frontend\UserRegisterController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProfitSharingController;
+use App\Http\Livewire\UserAddressComponent;
 use App\Models\PaymentRecord;
 use Illuminate\Support\Facades\Route;
 
@@ -46,9 +47,17 @@ Route::middleware(['auth'])->group(function () {
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'index',
     ]);
+    Route::get('user_address', [
+        UserRegisterController::class,
+        'userAddress',
+    ]);
     Route::post('create_qrcode', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'createQRCode',
+    ]);
+    Route::post('create_user_address', [
+        UserRegisterController::class,
+        'createUserAddress',
     ]);
     Route::get('user_qrcode', [
         App\Http\Controllers\Frontend\UserRegisterController::class,

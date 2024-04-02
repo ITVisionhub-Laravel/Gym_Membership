@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class ProfitSharingView extends Model
 {
-    use HasFactory;
-    use FilterableByDatesTrait;
+    use HasFactory, FilterableByDatesTrait;
 
     protected $table = 'profit_sharing_view';
 

@@ -5,79 +5,121 @@ namespace App\Http\Controllers\Frontend;
 use App\Models\City;
 use App\Models\Logo;
 use App\Models\Address;
-use App\Models\Partner;
-use App\Models\Customer;
 use App\Models\GymClass;
-use App\Models\Products;
-use Illuminate\Http\Request;
-use App\Models\PaymentRecord;
 use App\Models\CustomerQRCode;
-use App\Models\PaymentPackage;
-use App\Models\PaymentProvider;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\ProductPaymentRecords;
 use App\Http\Requests\CustomerFormRequest;
-use App\Models\Shop;
+use App\Http\Requests\UserAddressRequest;
 use App\Models\User;
 use App\Models\Country;
+use App\Models\State;
+use App\Models\Street;
+use App\Models\Township;
+use App\Models\Ward;
+use Illuminate\Validation\ValidationException;
 
 class UserRegisterController extends Controller
 {
     public function index()
     {
-        $data['countries'] = Country::all();
-        $data['cities'] = City::get(['name', 'id']);
+
         $data['gymclasses'] = GymClass::get();
         $data['userinfo'] = Auth::user();
-        $data['userAddress'] = Address::where('user_id', Auth::id())->first();
+        $data['oldGymClassId'] = $data['userinfo']->gym_class_id;
+        
         return view('frontend.register.index', $data);
     }
 
+    public function userAddress()
+    {
+        $data = [
+            'countries' => Country::all(),
+            'states' => State::all(),
+            'cities' => City::all(),
+            'townships' => Township::all(),
+            'wards' => Ward::all(),
+            'streets' => Street::all(),
+            'userAddress' => Address::where('user_id', Auth::id())->latest()->first(),
+        ];
+
+        $this->setOldValues($data);
+
+        return view('frontend.register.address', $data);
+    }
+
+    private function setOldValues(&$data)
+    {
+        $userAddress = $data['userAddress'];
+
+        $data['oldCountryId'] = $userAddress->street->ward->township->city->state->country->id ?? null;
+        $data['oldStateId'] = $userAddress->street->ward->township->city->state->id ?? null;
+        $data['oldCityId'] = $userAddress->street->ward->township->city->id ?? null;
+        $data['oldTownshipId'] = $userAddress->street->ward->township->id ?? null;
+        $data['oldWardId'] = $userAddress->street->ward->id ?? null;
+        $data['oldStreetId'] = $userAddress->street->id ?? null;
+    }
     public function createQRCode(CustomerFormRequest $request)
     {
         $validatedData = $request->validated();
-        $customer = User::find(Auth::user()->id);
-        $address = new Address();
+        $user = Auth::user();
 
-        // DB::beginTransaction();
-        // try {
-            $customer->age = $validatedData['age'];
-            $customer->gender = $validatedData['gender'];
-            $customer->member_card = time();
-            $customer->height = $validatedData['height'];
-            $customer->weight = $validatedData['weight'];
-            $customer->gym_class_id = $validatedData['gym_class_id'];
-            $customer->phone_number = $validatedData['phone_number'];
-            $customer->emergency_phone = $validatedData['emergency_phone'];
+        try {
+            DB::beginTransaction();
 
-            $address->user_id = Auth::user()->id;
-            $address->street_id = $request->street_id;
-            $address->block_no = $request->block_no;
-            $address->floor = $request->floor;
-            $address->zipcode = $request->zipcode;
-            $address->save();
+            $user->update([
+                'age' => $validatedData['age'],
+                'gender' => $validatedData['gender'],
+                'member_card' => time(),
+                'height' => $validatedData['height'],
+                'weight' => $validatedData['weight'],
+                'gym_class_id' => $validatedData['gym_class_id'],
+                'phone_number' => $validatedData['phone_number'],
+                'emergency_phone' => $validatedData['emergency_phone'],
+            ]);
 
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $ext = $file->getClientOriginalExtension();
                 $filename = time() . '.' . $ext;
                 $file->move('uploads/customer/', $filename);
-                $customer->image = $filename;
+                $user->image = $filename;
             }
 
-            if ($customer->save()) {
-                return redirect(route('user.details'))->with(
-                    'message',
-                    'Registered Information Successfully'
-                );
+            $user->save();
+
+            DB::commit();
+
+            return redirect()->route('user.details')->with('message', 'Registered Information Successfully');
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage());
+        }
+    }
+    public function createUserAddress(UserAddressRequest $request, Address $address)
+    {
+        try {
+            $address->fill([
+                'user_id' => Auth::user()->id,
+                'street_id' => $request->street_id,
+                'block_no' => $request->block_no,
+                'floor' => $request->floor,
+                'zipcode' => $request->zipcode,
+            ]);
+
+            DB::beginTransaction();
+            $saved = $address->save();
+
+            if ($saved) {
+                DB::commit();
+                return redirect()->route('user.details')->with('message', 'User Address Information Successfully');
             }
-        //     DB::commit();
-        // } catch (Exception $e) {
-        //     DB::rollback();
-        //     dd($e);
-        // }
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+        }
     }
 
     public function showQRCode()
@@ -158,8 +200,13 @@ class UserRegisterController extends Controller
     //     return view('frontend.class-detail', compact('gymClassCategoryId'));
     // }
 
-    public function userDetails(){
+    public function userDetails()
+    {
+        $userId = Auth::id();
+        
+        $userDetailsData = User::where('id',$userId)->first();
+        $userAddressDatas = Address::where('user_id', $userId)->latest()->first();
 
-        return view('frontend.user.details');
+        return view('frontend.user.details', ['userDetailsData' => $userDetailsData, 'userAddressData' => $userAddressDatas]);
     }
 }

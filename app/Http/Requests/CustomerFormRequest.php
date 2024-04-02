@@ -34,10 +34,10 @@ class CustomerFormRequest extends FormRequest
             'emergency_phone' => ['required', 'string'],
             'gym_class_id' => ['required', 'string'],
             'image' => ['nullable', 'mimes:jpg,jpeg,png'],
-            'street_id' => ['required', 'string'],
-            'block_no' => ['required', 'string'],
-            'floor' => ['required', 'string'],
-            'zipcode' => ['required', 'string'],
+            // 'street_id' => ['required', 'string'],
+            // 'block_no' => ['required', 'string'],
+            // 'floor' => ['required', 'string'],
+            // 'zipcode' => ['required', 'string'],
         ];
     }
 }

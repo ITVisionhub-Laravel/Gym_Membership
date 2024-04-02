@@ -158,8 +158,9 @@ Route::prefix('admin')->group(function () {
 
         Route::post('/customers/daily', 'daily');
         Route::post('/customers/weekly', 'weekly');
-        Route::post('/customers/monthly', 'monthly');
+        Route::post('/customers/monthlyProfit', 'profit');
         Route::post('/customers/yearly', 'yearly');
+        Route::post('/customers/all', 'all');
     });
 
     Route::controller(

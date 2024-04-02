@@ -19,6 +19,7 @@ use App\Models\State;
 use App\Models\Street;
 use App\Models\Township;
 use App\Models\Ward;
+use Illuminate\Validation\ValidationException;
 
 class UserRegisterController extends Controller
 {
@@ -63,71 +64,64 @@ class UserRegisterController extends Controller
     public function createQRCode(CustomerFormRequest $request)
     {
         $validatedData = $request->validated();
-        $customer = User::find(Auth::user()->id);
-        // $address = new Address();
+        $user = Auth::user();
 
-        // DB::beginTransaction();
-        // try {
-            $customer->age = $validatedData['age'];
-            $customer->gender = $validatedData['gender'];
-            $customer->member_card = time();
-            $customer->height = $validatedData['height'];
-            $customer->weight = $validatedData['weight'];
-            $customer->gym_class_id = $validatedData['gym_class_id'];
-            $customer->phone_number = $validatedData['phone_number'];
-            $customer->emergency_phone = $validatedData['emergency_phone'];
+        try {
+            DB::beginTransaction();
 
-            // $address->user_id = Auth::user()->id;
-            // $address->street_id = $request->street_id;
-            // $address->block_no = $request->block_no;
-            // $address->floor = $request->floor;
-            // $address->zipcode = $request->zipcode;
-            // $address->save();
+            $user->update([
+                'age' => $validatedData['age'],
+                'gender' => $validatedData['gender'],
+                'member_card' => time(),
+                'height' => $validatedData['height'],
+                'weight' => $validatedData['weight'],
+                'gym_class_id' => $validatedData['gym_class_id'],
+                'phone_number' => $validatedData['phone_number'],
+                'emergency_phone' => $validatedData['emergency_phone'],
+            ]);
 
             if ($request->hasFile('image')) {
                 $file = $request->file('image');
                 $ext = $file->getClientOriginalExtension();
                 $filename = time() . '.' . $ext;
                 $file->move('uploads/customer/', $filename);
-                $customer->image = $filename;
+                $user->image = $filename;
             }
 
-            if ($customer->save()) {
-                return redirect(route('user.details'))->with(
-                    'message',
-                    'Registered Information Successfully'
-                );
-            }
-        //     DB::commit();
-        // } catch (Exception $e) {
-        //     DB::rollback();
-        //     dd($e);
-        // }
+            $user->save();
+
+            DB::commit();
+
+            return redirect()->route('user.details')->with('message', 'Registered Information Successfully');
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e->getMessage());
+        }
     }
     public function createUserAddress(UserAddressRequest $request, Address $address)
     {
-        // DB::beginTransaction();
-        // try {
+        try {
+            $address->fill([
+                'user_id' => Auth::user()->id,
+                'street_id' => $request->street_id,
+                'block_no' => $request->block_no,
+                'floor' => $request->floor,
+                'zipcode' => $request->zipcode,
+            ]);
 
-        $address->user_id = Auth::user()->id;
-        $address->street_id = $request->street_id;
-        $address->block_no = $request->block_no;
-        $address->floor = $request->floor;
-        $address->zipcode = $request->zipcode;
-        $address->save();
+            DB::beginTransaction();
+            $saved = $address->save();
 
-        if ($address->save()) {
-            return redirect(route('user.details'))->with(
-                'message',
-                'User Address Information Successfully'
-            );
+            if ($saved) {
+                DB::commit();
+                return redirect()->route('user.details')->with('message', 'User Address Information Successfully');
+            }
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
         }
-        // DB::commit();
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     dd($e);
-        // }
     }
+
     public function showQRCode()
     {
         $data['qrcode'] = CustomerQRCode::where(

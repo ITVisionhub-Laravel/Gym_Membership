@@ -49,9 +49,17 @@ Route::middleware(['auth'])->group(function () {
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'index',
     ]);
+    Route::get('user_address', [
+        UserRegisterController::class,
+        'userAddress',
+    ]);
     Route::post('create_qrcode', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'createQRCode',
+    ]);
+    Route::post('create_user_address', [
+        UserRegisterController::class,
+        'createUserAddress',
     ]);
     Route::get('user_qrcode', [
         App\Http\Controllers\Frontend\UserRegisterController::class,

@@ -59,4 +59,5 @@ Route::resource('/debit-credit', DebitAndCreditController::class);
 Route::resource('/logo', LogoController::class);
 Route::resource('/partner', PartnerController::class);
 Route::resource('/trainer', TrainerController::class);
+Route::resource('/gymclass', ClassController::class);
 // });

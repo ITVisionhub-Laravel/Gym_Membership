@@ -13,7 +13,7 @@ class LogoResource extends JsonResource
             'image' => $this->image,
             'name' => $this->name,
             'description' => $this->description,
-            'address' => $this->address,
+            'address_id' => $this->address_id,
             'location' => $this->location,
             'ph_no' => $this->ph_no,
             'email' => $this->email,

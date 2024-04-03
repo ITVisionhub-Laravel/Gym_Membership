@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
-class GymClassCategoryFormRequest extends FormRequest
+class PartnerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +21,11 @@ class GymClassCategoryFormRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'name'=>['required','string'],
-            'image' => ['nullable', 'mimes:png,jpg,jpeg'],
-            'description'=>['required','max:225']
+            'name' => ['string'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png']
         ];
     }
 }

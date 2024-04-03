@@ -1,6 +1,19 @@
 <?php
 
 return [
+    'ERROR_MESSAGES' => [
+        'SOMETHING_WENT_WRONG' => 'Something Went Wrong',
+        'NOT_FOUND_GYM_CLASS' => 'Gym Class not found',
+        'NOT_FOUND_GYM_CLASS_CATEGORY' => 'Gym Class Category not found',
+    ],
+    'SUCCESS_MESSAGES' => [
+        'CREATED_GYM_CLASS' => 'Gym Class Created Successfully',
+        'UPDATED_GYM_CLASS' => 'Gym Class Updated Successfully',
+        'DELETED_GYM_CLASS' => 'Gym Class Deleted Successfully',
+        'CREATED_GYM_CLASS_CATEGORY' => 'Gym Class Category Created Successfully',
+        'UPDATED_GYM_CLASS_CATEGORY' => 'Gym Class Category Updated Successfully',
+        'DELETED_GYM_CLASS_CATEGORY' => 'Gym Class Category Deleted Successfully', 
+    ],
     "SUCCESS" => 1, "FAILURE" => 2, "STAFFID" => 2, "DEBIT" => 1, "CREDIT" => 2,
     "EXPENSES" => "expenses", "MEMBER" => "member", "ADMIN" => 1,
     "ZERO" => 0, "ONE" => 1, "TWO" => 2, "THREE" => 3, "FOUR" => 4, "FIVE" => 5, "SIX" => 6,

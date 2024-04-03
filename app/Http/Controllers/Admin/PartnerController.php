@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Partner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PartnerRequest;
 use App\Http\Resources\PartnerResource;
+use App\Traits\UploadImageTrait;
 use Illuminate\Support\Facades\File;
 
 class PartnerController extends Controller
 {
+    use UploadImageTrait;
+
     public function index()
     {
         $partners=Partner::all();
@@ -22,26 +26,30 @@ class PartnerController extends Controller
     {
         return view('admin.partner.create');
     }
-    public function store(Request $request)
+    public function store(PartnerRequest $request, Partner $partner)
     {
-        $validatedData = $request->validate([
-            'name'=>['string'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png']
-        ]);
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $ext;
-            $file->move('uploads/partner/', $filename);
-            $validatedData['image'] = "uploads/partner/$filename";
-        }
-        $partnerData = Partner::create([
-            'name'=>$validatedData['name'],
-            'image' => $validatedData['image']
-        ]);
+        $validatedData = $request->validated();
+        // if ($request->hasFile('image')) {
+        //     $file = $request->file('image');
+        //     $ext = $file->getClientOriginalExtension();
+        //     $filename = time() . '.' . $ext;
+        //     $file->move('uploads/partner/', $filename);
+        //     $validatedData['image'] = "uploads/partner/$filename";
+        // }
+        // Partner::create([
+        //     'name'=>$validatedData['name'],
+        //     'image' => $validatedData['image']
+        // ]);
+
+
+        $partner->fill($validatedData);
+
+        $this->uploadImage($request, $partner, 'partner');
+
+        $partner->save();
 
         if (request()->expectsJson()) {
-            return new PartnerResource($partnerData);
+            return new PartnerResource($partner);
         }
 
         return redirect('admin/partner')->with(
@@ -53,12 +61,9 @@ class PartnerController extends Controller
     {
         return view('admin.partner.edit',compact('partner'));
     }
-    public function update(Request $request, Partner $partner)
+    public function update(PartnerRequest $request, Partner $partner)
     {
-        $validatedData = $request->validate([
-            'name'=>['string'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png']
-        ]);
+        $validatedData = $request->validated();
         if ($request->hasFile('image')) {
             $destination = public_path($partner->image);
             if (File::exists($destination)) {
@@ -70,13 +75,13 @@ class PartnerController extends Controller
             $file->move('uploads/partner/', $filename);
             $validatedData['image'] = "uploads/partner/$filename";
         }
-            $partnerData = Partner::where('id', $partner->id)->update([
-                'name'=>$validatedData['name'],
-                'image' => $validatedData['image'] ?? $partner->image
-            ]);
+        Partner::where('id', $partner->id)->update([
+            'name'=>$validatedData['name'],
+            'image' => $validatedData['image'] ?? $partner->image
+        ]);
 
         if (request()->expectsJson()) {
-            return new PartnerResource($partnerData);
+            return new PartnerResource($partner);
         }
 
         return redirect('admin/partner')->with(

@@ -10,10 +10,13 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExpensesRequest;
 use App\Http\Resources\ExpensesResource;
+use App\Traits\UploadImageTrait;
 use Illuminate\Support\Facades\Config;
 
 class ExpensesController extends Controller
 {
+    use UploadImageTrait;
+
     public $expensesInfo;
     public function index()
     {
@@ -29,18 +32,29 @@ class ExpensesController extends Controller
         return view('expenses.create');
     }
 
-    public function store(ExpensesRequest $request)
+    public function store(ExpensesRequest $request, Expenses $expenses)
     {
         $validatedData = $request->validated();
+        
         DB::beginTransaction();
         try {
-            $this->expensesInfo = Expenses::create($validatedData);
+
+            $expenses->fill($validatedData);
+            $this->uploadImage($request, $expenses, 'expenses', 'invoice_slip');
+
+            $expenses->save();
+            
             if (request()->expectsJson()) {
-                return new ExpensesResource($this->expensesInfo);
+                DB::commit();
+                return new ExpensesResource($expenses);
             }
+
             $this->debitCreditInfos();
+
             DB::commit();
+
             return redirect()->route('expenses.index')->with('message', 'Expenses created successfully.');
+
         } catch (Exception $e) {
             DB::rollback();
             report($e);
@@ -66,20 +80,25 @@ class ExpensesController extends Controller
         return view('expenses.edit', compact('transaction'));
     }
 
-    public function update(ExpensesRequest $request, Expenses $transaction)
+    public function update(ExpensesRequest $request, Expenses $expenses)
     {
-        $transaction->update($request->validated());
+        $validatedData = $request->validated();
+        $expenses->fill($validatedData);
+        $this->uploadImage($request, $expenses, 'expenses', 'invoice_slip');
+        
+        $expenses->update($validatedData);
+
         if (request()->expectsJson()) {
-            return new ExpensesResource($transaction);
+            return new ExpensesResource($expenses);
         }
         return redirect()->route('expenses.index')->with('message', 'Expenses updated successfully.');
     }
 
-    public function destroy(Expenses $transaction)
+    public function destroy(Expenses $expenses)
     {
-        $transaction->delete();
+        $expenses->delete();
         if (request()->expectsJson()) {
-            return new ExpensesResource($transaction);
+            return new ExpensesResource($expenses);
         }
         return redirect()->route('expenses.index')->with('message', 'Expenses deleted successfully.');
     }

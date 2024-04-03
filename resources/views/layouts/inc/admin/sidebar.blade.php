@@ -164,8 +164,6 @@
             </a>
             <div class="collapse" id="ui-debitcredit">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('debit-credit.create') }}">Add
-                            DebitAndCredit</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('debit-credit.index') }}">View
                             DebitAndCredit</a></li>
                 </ul>
@@ -273,6 +271,15 @@
             </a>
         </li> --}}
 
+        {{-- Schedule --}}
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('schedule.index') }}">
+                <i class="fa-solid fa-calendar-days menu-icon"></i>
+                <span class="menu-title">Schedule</span>
+            </a>
+
+        </li>
+
         {{--  trainer  --}}
 
         <li class="nav-item">
@@ -303,6 +310,29 @@
                 <span class="menu-title">Logo</span>
             </a>
         </li>
+
+        {{-- Location --}}
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-address" aria-expanded="false"
+                aria-controls="ui-address">
+                <i class="fa-solid fa-location-dot menu-icon"></i>
+                <span class="menu-title">Address</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ui-address">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('country.index') }}">Add Country</a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('state.index') }}">View State</a> </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('city.index') }}">Add City</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('township.index') }}">View Township</a>
+                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('ward.index') }}">View Ward</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('street.index') }}">View Street</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="{{ url('admin/partner') }}">
                 <i class="mdi mdi-food-variant menu-icon"></i>
@@ -331,6 +361,7 @@
                 </ul>
             </div>
         </li>
+
         {{--  Deliver --}}
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-delivery" aria-expanded="false"

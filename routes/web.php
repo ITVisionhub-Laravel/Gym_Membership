@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\StateController;
+use App\Http\Controllers\TownshipController;
+use App\Http\Controllers\WardController;
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\StreetController;
 use App\Models\PaymentRecord;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -18,6 +25,7 @@ use App\Http\Controllers\Admin\PaymentProviderController;
 use App\Http\Controllers\Frontend\UserRegisterController;
 use App\Http\Controllers\Admin\Attendence_CheckController;
 use App\Http\Controllers\Admin\GymClassCategoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -196,7 +204,7 @@ Route::prefix('admin')->group(function () {
     // });
 
 
-    //Class
+    // Category Class
 
     Route::controller(GymClassCategoryController::class)->group(function(){
         Route::get('/class-category','index')->name('class-category.index');
@@ -253,6 +261,82 @@ Route::prefix('admin')->group(function () {
         Route::put('/shops/{shop}', 'update');
         Route::get('/shops/{shop_id}/delete', 'destroy');
     });
+
+    //Country
+    Route::controller(CountryController::class)->group(function(){
+        Route::get('country','index')->name('country.index');
+        Route::get('/country/create','create')->name('country.create');
+        Route::post('/country/store','store')->name('country.store');
+        Route::get('/country/{id}/edit','edit')->name('country.edit');
+        Route::put('/country/{id}','update')->name('country.update');
+        Route::get('/country/{id}/delete','destroy')->name('country.delete');
+
+    });
+
+    //State
+    Route::controller(StateController::class)->group(function(){
+        Route::get('state','index')->name('state.index');
+        Route::get('state/create','create')->name('state.create');
+        Route::post('state/store','store')->name('state.store');
+        Route::get('state/{id}/edit','edit')->name('state.edit');
+        Route::put('state/{id}/update','update')->name('state.update');
+        Route::get('state/{id}/delete','destroy')->name('state.delete');
+    });
+
+    //city
+    Route::controller(CityController::class)->group(function(){
+        Route::get('city','index')->name('city.index');
+        Route::get('city/create','create')->name('city.create');
+        Route::post('city/store','store')->name('city.store');
+        Route::get('city/{id}/edit','edit')->name('city.edit');
+        Route::put('city/{id}/update','update')->name('city.update');
+        Route::get('city/{id}/delete','destroy')->name('city.delete');
+    });
+
+     //township
+     Route::controller(TownshipController::class)->group(function(){
+        Route::get('township','index')->name('township.index');
+        Route::get('township/create','create')->name('township.create');
+        Route::post('township/store','store')->name('township.store');
+        Route::get('township/{id}/edit','edit')->name('township.edit');
+        Route::put('township/{id}/update','update')->name('township.update');
+        Route::get('township/{id}/delete','destroy')->name('township.delete');
+    });
+
+     //ward
+     Route::controller(WardController::class)->group(function(){
+        Route::get('ward','index')->name('ward.index');
+        Route::get('ward/create','create')->name('ward.create');
+        Route::post('ward/store','store')->name('ward.store');
+        Route::get('ward/{id}/edit','edit')->name('ward.edit');
+        Route::put('ward/{id}/update','update')->name('ward.update');
+        Route::get('ward/{id}/delete','destroy')->name('ward.delete');
+    });
+
+    //street
+    Route::controller(StreetController::class)->group(function(){
+        Route::get('street','index')->name('street.index');
+        Route::get('street/create','create')->name('street.create');
+        Route::post('street/store','store')->name('street.store');
+        Route::get('street/{id}/edit','edit')->name('street.edit');
+        Route::put('street/{id}/update','update')->name('street.update');
+        Route::get('street/{id}/delete','destroy')->name('street.delete');
+    });
+
+    // schedule
+    Route::controller(ScheduleController::class)->group(function(){
+        Route::get('schedule','index')->name('schedule.index');
+        Route::get('schedule/create','create')->name('schedule.create');
+        Route::post('schedule/store','store')->name('schedule.store');
+        Route::get('schedule/{id}/edit','edit')->name('schedule.edit');
+        Route::put('schedule/{id}/update','update')->name('schedule.update');
+        Route::get('schedule/{id}/delete','destroy')->name('schedule.delete');
+    });
+
+
+
+
+
 
     // shopkeepers
     // Route::controller(

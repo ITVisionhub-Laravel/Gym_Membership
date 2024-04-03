@@ -52,7 +52,6 @@ class ClassController extends Controller
         return redirect(route('class.index'))->with('message','Gym Class Created Successfully');
     }
 
-
     public function edit(GymClass $gymClass)
     {
         $classCategory= GymClassCategory::get();
@@ -66,6 +65,8 @@ class ClassController extends Controller
 
         $gymClass->name = $validatedData['name'];
         $gymClass->description = $validatedData['description'];
+        $gymClass->gym_class_category_id =$validatedData['gym_class_category_id'];
+
 
         if ($request->hasFile('image')) {
             $file = $request->file('image');

@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CountryRequest;
-use App\Http\Resources\CountryResource;
+use Exception;
 use App\Models\Country;
 use Illuminate\Http\Request;
+use App\Http\Requests\CountryRequest;
+use App\Http\Resources\CountryResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CountryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     private $country;
     public function __construct()
     {
@@ -23,71 +20,62 @@ class CountryController extends Controller
     public function index()
     {
        $countries = Country::all();
-       return CountryResource::collection($countries);
+       if(request()->expectsJson()){
+        return CountryResource::collection($countries);
+       }
+       return view('admin.address.country.index',compact('countries'));
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        return view('admin.address.country.create');
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(CountryRequest $request)
     {
-        $validatedData = $request->validated();
-        $this->country->name = $validatedData['name'];
-        $this->country->save();
+        if(request()->expectsJson()){
+            $validatedData = $request->validated();
+            $this->country->name = $validatedData['name'];
+            $this->country->save();
 
-        if(!$this->country){
-            return response()->json([
-                'message' => 'Country not found'
-            ], 401);
+            if(!$this->country){
+                return response()->json([
+                    'message' => 'Country not found'
+                ], 401);
+            }
+            return new CountryResource($this->country);
         }
-        return new CountryResource($this->country);
+
+        try {
+            $validatedData = $request->validated();
+            $country =new Country();
+            $country->name = $validatedData['name'];
+
+            $country->save();
+            return redirect(route('country.index'))->with('message','Country Created Successfully');
+          } catch (ModelNotFoundException $e) {
+            return redirect(route('country.index'))->with('error', 'Country not found');
+        } catch (Exception $e) {
+            return redirect(route('country.index'))->with('error', 'An error occurred while updating country');
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Country $country)
     {
-        //
+        return view('admin.address.country.edit',compact('country'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
 
     public function update(CountryRequest $request, string $id)
     {
+       if(request()->expectsJson()){
         $validatedData = $request->validated();
         $country = Country::find($id);
         if(!$country){
@@ -98,17 +86,33 @@ class CountryController extends Controller
         $country->name = $validatedData['name'];
         $country->save();
         return new CountryResource($country);
+       }
+       try {
+        $validatedData = $request->validated();
+        $country = Country::find($id);
+        $country->name = $validatedData['name'];
+        $country->update();
+        return redirect(route('country.index'))->with('message','Country Updated Successfully');
+       }  catch (ModelNotFoundException $e) {
+        return redirect(route('country.index'))->with('error', 'Country not found');
+    } catch (Exception $e) {
+        return redirect(route('country.index'))->with('error', 'An error occurred while updating country');
+    }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Country $country)
     {
-        dd($country);
-      return $country->delete()? response(status:204): response(status:500);
+        if(request()->expectsJson()){
+            return $country->delete()? response(status:204): response(status:500);
+        }
+        try {
+            $country = Country::findOrFail($country);
+            $country->delete();
+            return redirect(route('country.index'))->with('message','Country Deleted Successfully');
+           }  catch (ModelNotFoundException $e) {
+            return redirect(route('country.index'))->with('error', 'Country not found');
+        } catch (Exception $e) {
+            return redirect(route('country.index'))->with('error', 'An error occurred while updating country');
+        }
     }
 }

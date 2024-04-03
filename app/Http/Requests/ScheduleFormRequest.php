@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StateRequest extends FormRequest
+class ScheduleFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,9 @@ class StateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'country_id' => 'nullable'
+            'hours_From'=>'required|string',
+            'hours_To'=>'required|string',
+            'days_of_week_id'=>'required|string'
         ];
     }
 }

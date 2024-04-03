@@ -9,6 +9,7 @@ use App\Models\DebitAndCredit;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExpensesRequest;
+use App\Http\Resources\ExpensesResource;
 use Illuminate\Support\Facades\Config;
 
 class ExpensesController extends Controller
@@ -17,7 +18,9 @@ class ExpensesController extends Controller
     public function index()
     {
         $expenses = Expenses::all();
-        
+        if (request()->expectsJson()) {
+            return ExpensesResource::collection($expenses);
+        }
         return view('expenses.index', compact('expenses'));
     }
 
@@ -29,10 +32,12 @@ class ExpensesController extends Controller
     public function store(ExpensesRequest $request)
     {
         $validatedData = $request->validated();
-
         DB::beginTransaction();
         try {
             $this->expensesInfo = Expenses::create($validatedData);
+            if (request()->expectsJson()) {
+                return new ExpensesResource($this->expensesInfo);
+            }
             $this->debitCreditInfos();
             DB::commit();
             return redirect()->route('expenses.index')->with('message', 'Expenses created successfully.');
@@ -53,7 +58,7 @@ class ExpensesController extends Controller
         $new_debit_credit_info->related_info_id = $this->expensesInfo->invoice_id;
         $new_debit_credit_info->related_info_type = Config::get('variables.EXPENSES');
         $new_debit_credit_info->transaction_type_id = Config::get('variables.CREDIT');
-        $new_debit_credit_info->save(); 
+        $new_debit_credit_info->save();
     }
 
     public function edit(Expenses $transaction)
@@ -64,14 +69,18 @@ class ExpensesController extends Controller
     public function update(ExpensesRequest $request, Expenses $transaction)
     {
         $transaction->update($request->validated());
-        
+        if (request()->expectsJson()) {
+            return new ExpensesResource($transaction);
+        }
         return redirect()->route('expenses.index')->with('message', 'Expenses updated successfully.');
     }
 
     public function destroy(Expenses $transaction)
     {
         $transaction->delete();
-
+        if (request()->expectsJson()) {
+            return new ExpensesResource($transaction);
+        }
         return redirect()->route('expenses.index')->with('message', 'Expenses deleted successfully.');
     }
 }

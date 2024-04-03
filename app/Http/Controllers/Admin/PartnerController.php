@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Partner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PartnerResource;
 use Illuminate\Support\Facades\File;
 
 class PartnerController extends Controller
@@ -12,6 +13,9 @@ class PartnerController extends Controller
     public function index()
     {
         $partners=Partner::all();
+        if (request()->expectsJson()) {
+            return PartnerResource::collection($partners);
+        }
         return view('admin.partner.index',compact('partners'));
     }
     public function create()
@@ -31,10 +35,15 @@ class PartnerController extends Controller
             $file->move('uploads/partner/', $filename);
             $validatedData['image'] = "uploads/partner/$filename";
         }
-        Partner::create([
+        $partnerData = Partner::create([
             'name'=>$validatedData['name'],
             'image' => $validatedData['image']
         ]);
+
+        if (request()->expectsJson()) {
+            return new PartnerResource($partnerData);
+        }
+
         return redirect('admin/partner')->with(
             'message',
             'Partner Added Successfully'
@@ -61,10 +70,15 @@ class PartnerController extends Controller
             $file->move('uploads/partner/', $filename);
             $validatedData['image'] = "uploads/partner/$filename";
         }
-    Partner::where('id', $partner->id)->update([
-            'name'=>$validatedData['name'],
-            'image' => $validatedData['image'] ?? $partner->image
-        ]);
+            $partnerData = Partner::where('id', $partner->id)->update([
+                'name'=>$validatedData['name'],
+                'image' => $validatedData['image'] ?? $partner->image
+            ]);
+
+        if (request()->expectsJson()) {
+            return new PartnerResource($partnerData);
+        }
+
         return redirect('admin/partner')->with(
             'message',
             'Partner Updated Successfully'
@@ -78,7 +92,10 @@ class PartnerController extends Controller
                 File::delete($destination);
             }
             $partner->delete();
-
+            
+            if (request()->expectsJson()) {
+                return new PartnerResource($partner);
+            }
             return redirect('admin/partner')->with(
                 'message',
                 'Partner Deleted Successfully'

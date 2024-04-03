@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\LogoResource;
 use App\Models\Logo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -12,6 +13,9 @@ class LogoController extends Controller
     public function index()
     {
         $logos = Logo::all();
+        if (request()->expectsJson()) {
+            return LogoResource::collection($logos);
+        }
         return view('admin.logo.index', compact('logos'));
     }
     public function create()
@@ -40,7 +44,7 @@ class LogoController extends Controller
             $file->move('uploads/logo/', $filename);
             $validatedData['image'] = "uploads/logo/$filename";
         }
-        Logo::create([
+        $logoData = Logo::create([
             'name' => $validatedData['name'],
             'image' => $validatedData['image'],
             'description' => $validatedData['description'],
@@ -52,6 +56,10 @@ class LogoController extends Controller
             'open_time' => $validatedData['open_time'],
             'close_day' => $validatedData['close_day'],
         ]);
+
+        if (request()->expectsJson()) {
+            return new LogoResource($logoData);
+        }
         return redirect('admin/logo')->with(
             'message',
             'Logo Added Successfully'
@@ -87,7 +95,7 @@ class LogoController extends Controller
             $file->move('uploads/logo/', $filename);
             $validatedData['image'] = "uploads/logo/$filename";
         }
-        logo::where('id', $logo->id)->update([
+        $logoData = logo::where('id', $logo->id)->update([
             'name' => $validatedData['name'],
             'image' => $validatedData['image'] ?? $logo->image,
             'description' => $validatedData['description'],
@@ -99,6 +107,11 @@ class LogoController extends Controller
             'open_time' => $validatedData['open_time'],
             'close_day' => $validatedData['close_day'],
         ]);
+
+        if (request()->expectsJson()) {
+            return new LogoResource($logoData);
+        }
+
         return redirect('admin/logo')->with(
             'message',
             'Logo Updated Successfully'
@@ -113,6 +126,10 @@ class LogoController extends Controller
                 File::delete($destination);
             }
             $logo->delete();
+
+            if (request()->expectsJson()) {
+                return new LogoResource($logo);
+            }
 
             return redirect('admin/logo')->with(
                 'message',

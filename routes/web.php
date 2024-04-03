@@ -57,9 +57,17 @@ Route::middleware(['auth'])->group(function () {
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'index',
     ]);
+    Route::get('user_address', [
+        UserRegisterController::class,
+        'userAddress',
+    ]);
     Route::post('create_qrcode', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
         'createQRCode',
+    ]);
+    Route::post('create_user_address', [
+        UserRegisterController::class,
+        'createUserAddress',
     ]);
     Route::get('user_qrcode', [
         App\Http\Controllers\Frontend\UserRegisterController::class,
@@ -165,6 +173,19 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/{customer_id}/print/package', 'printPackage');
 
         Route::post('/customers/daily', 'daily');
+        Route::post('/customers/weekly', 'weekly');
+        Route::post('/customers/monthlyProfit', 'profit');
+        Route::post('/customers/yearly', 'yearly');
+        Route::post('/customers/all', 'all');
+    });
+
+    Route::controller(
+        App\Http\Controllers\OurRevenueListController::class
+    )->group(function () {
+        Route::post('filtering_our_income_and_expense', 'filteringOurIncome')->name('our_income_and_expense');
+        // Route::post('weekly_profit', 'filteringOurIncome')->name('weekly_profit');
+        // Route::post('monthly_profit', 'filteringOurIncome')->name('monthly_profit');
+        // Route::post('yearly_profit', 'filteringOurIncome')->name('yearly_profit');
     });
 
     // Products

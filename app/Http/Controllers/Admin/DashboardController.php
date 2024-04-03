@@ -14,6 +14,7 @@ use App\Models\DebitAndCredit;
 use App\Models\ProfitSharingView;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentExpiredMembers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
 class DashboardController extends Controller
@@ -27,10 +28,10 @@ class DashboardController extends Controller
 
         $data['members'] = User::get();
         $data['buying_price'] = Products::sum('buying_price');
-        // dd($data['buying_price']);
+         
         $prices = 0;
         $paymentRecords = PaymentRecord::get();
-        // dd($paymentRecord[0]->paymentprovider);
+        
         foreach ($paymentRecords as $paymentPrice) {
             $prices += $paymentPrice->package->promotion_price;
         }
@@ -165,24 +166,13 @@ class DashboardController extends Controller
 
         $data['trainers'] = Trainer::get();
 
-        // $results = DebitAndCredit::select('name', DB::raw('SUM(amount) as total_amount'), DB::raw('COUNT(name) as name_count'))
-        // ->groupBy('name')
-        //     ->havingRaw('COUNT(name) = (SELECT MAX(name_count) FROM (SELECT COUNT(name) as name_count FROM debit_and_credits GROUP BY name) AS subquery)')
-        //     ->get();
-        $now = now();
-
-        $variablesOneData = Config::get('variables.ONE');
-        $variablesTwoData = Config::get('variables.TWO');
         $data['yufcIncome'] = ProfitSharingView::first()->YUFC_25_percent;
         $ourIncome = ProfitSharingView::first()->FSA_75_percent;
 
-        $yearlyData = DebitAndCredit::whereYear('date', '=', $now->year)
-                        // ->whereMonth('date', '=', $now->month)
-                        ->get();
+        $allDebitCreditData = DebitAndCredit::get(); 
 
-        $expense = $yearlyData->where('transaction_type_id', $variablesTwoData)->sum('amount');
-
-        $income = $yearlyData->where('transaction_type_id', $variablesOneData)->sum('amount');
+        $expense = $allDebitCreditData->where('transaction_type_id', Config::get('variables.CREDIT'))->sum('amount');
+        $income = $allDebitCreditData->where('transaction_type_id', Config::get('variables.DEBIT'))->sum('amount');
 
         $profit = $ourIncome - $expense;
 

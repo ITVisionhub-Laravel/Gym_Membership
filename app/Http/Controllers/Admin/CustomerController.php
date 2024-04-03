@@ -30,11 +30,14 @@ use App\Models\ProfitSharingView;
 use App\Models\State;
 use App\Models\User;
 use App\Models\Ward;
+use App\Traits\FilterableByDatesTrait;
+use Carbon\Carbon as CarbonCarbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CustomerController extends Controller
 {
+    // use FilterableByDatesTrait;
     public function index()
     {
         $customers = User::with('address')
@@ -95,10 +98,54 @@ class CustomerController extends Controller
     {
         if($request->daily_data == "Daily")
         {
-            $today = Carbon::today();
-            $data['daily'] = ProfitSharingView::where('Date', $today)->get();
+            $data = [
+                'date' => Carbon::today()->toDateString(),
+                'daily' => ProfitSharingView::today('Date')->get(),
+            ];
             return response()->json($data);
         }
+    }
+    public function weekly(Request $request)
+    {
+        if($request->weekly_data == "Weekly")
+        {
+            $data = [
+                'date' => 'From ' . Carbon::today()->subDays(6)->toDateString() . ' To ' . Carbon::today()->toDateString(),
+                'weekly' => ProfitSharingView::last7Days('Date')->get(),
+            ];
+            return response()->json($data);
+        }
+    }
+    public function profit()
+    {
+        $data = [
+            'date' => 'From ' . Carbon::today()->subDays(29)->toDateString() . ' To ' . Carbon::today()->toDateString(),
+            'monthly' => ProfitSharingView::last30Days('Date')->get(),
+        ];
+        return response()->json($data);
+    }
+    public function yearly(Request $request)
+    {
+        if($request->yearly_data == "Yearly")
+        {
+            $data = [
+                'date' => 'From ' . Carbon::now()->subYear()->toDateString() . ' To ' . Carbon::today()->toDateString(),
+                'yearly' => ProfitSharingView::lastYear('Date')->get(),
+            ];
+            return response()->json($data);
+        }
+    }
+    public function all()
+    {
+        // $data = ProfitSharingView::all();
+        $smallestDate = ProfitSharingView::min('Date');
+        $largestDate = ProfitSharingView::max('Date');
+
+        $data = [
+            'date' => 'From ' . $smallestDate . ' To ' . $largestDate,
+            'allData' => ProfitSharingView::all(),
+        ];
+        return response()->json($data);
     }
     public function store(CustomerFormRequest $request)
     {

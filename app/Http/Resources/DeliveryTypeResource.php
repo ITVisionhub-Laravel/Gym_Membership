@@ -17,4 +17,12 @@ class DeliveryTypeResource extends JsonResource
             'waiting_time'=> $this->waiting_time
         ];
     }
+    public function with($request)
+    {
+        return [
+            'version' => '1.0.0',
+            'api_url' => url('http://127.0.0.1:8000/api/delivery-type'),
+            'message' => 'Your action is successful'
+        ];
+    }
 }

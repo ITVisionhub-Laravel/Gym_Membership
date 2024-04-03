@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TownshipRequest;
-use App\Http\Resources\TownshipResource;
+use Exception;
+use App\Models\City;
 use App\Models\Township;
 use Illuminate\Http\Request;
+use App\Http\Requests\TownshipRequest;
+use App\Http\Resources\TownshipResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class TownshipController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     private $township;
     public function __construct()
     {
@@ -22,28 +21,22 @@ class TownshipController extends Controller
 
     public function index()
     {
-       $township = Township::all();
-       return TownshipResource::collection($township);
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+       $townships = Township::all();
+        if(request()->expectsJson()){
+            return TownshipResource::collection($townships);
+        }
+       return view('admin.address.township.index',compact('townships'));
+      }
+      public function create()
+      {
+          $city = City::get();
+          return view('admin.address.township.create',compact('city'));
+      }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(TownshipRequest $request)
     {
-        $validatedData = $request->validated();
+        if(request()->expectsJson()){
+            $validatedData = $request->validated();
         $this->township->name = $validatedData['name'];
         $this->township->city_id = $validatedData['city_id'];
         $this->township->save();
@@ -54,40 +47,37 @@ class TownshipController extends Controller
             ], 401);
         }
         return new TownshipResource($this->township);
+        }
+        try {
+            $valitadedData = $request->validated();
+            $township = new Township();
+            $township->name = $valitadedData['name'];
+            $township->city_id = $valitadedData['city_id'];
+            $township->save();
+            return redirect(route('township.index'))->with('message','Township Created Successfully');
+           } catch (ModelNotFoundException $e) {
+            return redirect(route('township.index'))->with('error', 'township not found');
+        }  catch (Exception $e) {
+            return redirect(route('township.index'))->with('error', 'An error occurred while updating township');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+    public function edit(Township $township)
     {
-        //
+        $cities = City::get();
+        return view('admin.address.township.edit',compact('township','cities'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(TownshipRequest $request, string $id)
     {
-        $validatedData = $request->validated();
+        if(request()->expectsJson()){
+            $validatedData = $request->validated();
         $city = Township::find($id);
         if(!$city){
             return response()->json([
@@ -98,16 +88,35 @@ class TownshipController extends Controller
         $city->city_id = $validatedData['city_id'];
         $city->save();
         return new TownshipResource($city);
+        }
+        try {
+            $valitadedData = $request->validated();
+            $township =Township::findOrFail($id);
+
+            $township->name = $valitadedData['name'];
+            $township->city_id = $valitadedData['city_id'];
+
+            $township->update();
+            return redirect(route('township.index'))->with('message','Township Updated Scuccessfully');
+           } catch (ModelNotFoundException $e) {
+            return redirect(route('township.index'))->with('error', 'township not found');
+        }  catch (Exception $e) {
+            return redirect(route('township.index'))->with('error', 'An error occurred while updating township');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Township $township)
     {
+        if(request()->expectsJson()){
       return $township->delete()? response(status:204): response(status:500);
+        }
+        try {
+            $township->delete();
+            return redirect(route('township.index'))->with('message','Township Deleted Scuccessfully');
+        } catch (ModelNotFoundException $e) {
+            return redirect(route('township.index'))->with('error', 'township not found');
+        }  catch (Exception $e) {
+            return redirect(route('township.index'))->with('error', 'An error occurred while updating township');
+        }
     }
 }

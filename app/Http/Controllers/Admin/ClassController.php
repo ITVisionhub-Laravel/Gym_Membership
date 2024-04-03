@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\GymClass; 
+use App\Models\GymClass;
 use Illuminate\Http\Response;
 use App\Traits\UploadImageTrait;
-use App\Models\GymClassCategory; 
+use App\Models\GymClassCategory;
 use Illuminate\Support\Facades\File;
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Config;
 use App\Http\Resources\GymClassResource;
 use App\Http\Requests\GymClassFormRequest;
@@ -22,7 +22,7 @@ class ClassController extends Controller
         if (request()->expectsJson()) {
             return GymClassResource::collection($classes);
         }
-        return  view('admin.class.index',compact('classes')); 
+        return  view('admin.class.index',compact('classes'));
     }
     public function create()
     {
@@ -40,19 +40,18 @@ class ClassController extends Controller
             $class->description = $validatedData['description'];
             $class->gym_class_category_id =$validatedData['gym_class_category_id'];
             $this->uploadImage($request, $class, "class");
-            
+
             $class->save();
             if ($request->expectsJson()) {
                 return new GymClassResource($class);
             }
             return redirect(route('class.index'))->with('message',Config::get('variables.SUCCESS_MESSAGES.CREATED_GYM_CLASS'));
-        } catch (ModelNotFoundException $e) { 
+        } catch (ModelNotFoundException $e) {
             return response()->json([
                 'message'=> Config::get('constants.ERROR_MESSAGES.SOMETHING_WENT_WRONG')
             ], Response::HTTP_NOT_FOUND);
         }
     }
-
 
     public function edit(GymClass $gymClass)
     {
@@ -69,7 +68,7 @@ class ClassController extends Controller
             $gymClass->name = $validatedData['name'];
             $gymClass->description = $validatedData['description'];
             $this->uploadImage($request, $class, "class");
-             
+
             $gymClass->update();
             if ($request->expectsJson()) {
                 return new GymClassResource($gymClass);

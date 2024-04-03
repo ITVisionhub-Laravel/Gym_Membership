@@ -1,31 +1,32 @@
 <?php
 
-use App\Http\Controllers\AddressController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\CityController;
-use App\Http\Controllers\CountryController;
+use App\Http\Controllers\WardController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\StreetController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\TownshipController;
-use App\Http\Controllers\WardController;
-use App\Http\Controllers\Admin\Attendence_CheckController;
-use App\Http\Controllers\Admin\AttendentController;
+use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\DebitAndCreditController;
-use App\Http\Controllers\Admin\Delivery\DeliveryTypeController;
 use App\Http\Controllers\Admin\ExpensesController;
-use App\Http\Controllers\Admin\GymClassCategoryController;
 use App\Http\Controllers\Admin\LogoController;
 use App\Http\Controllers\Admin\PartnerController;
 use App\Http\Controllers\Admin\PaymentPackageController;
 use App\Http\Controllers\Admin\PaymentProviderController;
+use App\Http\Controllers\Admin\TrainerController;
+use App\Http\Controllers\Admin\AttendentController;
 use App\Http\Controllers\Admin\Shop\ShopController;
 use App\Http\Controllers\Admin\Shop\ShopTypeController;
-use App\Http\Controllers\Admin\TrainerController;
+use App\Http\Controllers\Admin\Attendence_CheckController;
+use App\Http\Controllers\Admin\GymClassCategoryController;
+use App\Http\Controllers\Admin\Delivery\DeliveryTypeController;
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

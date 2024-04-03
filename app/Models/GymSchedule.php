@@ -10,8 +10,8 @@ class GymSchedule extends Model
     use HasFactory;
     protected $table = 'gym_schedule';
 
-    protected $guard = [
-        'id'
+    protected $fillable = [
+        'hours_From','hours_To','days_of_week_id'
     ];
 
     public function daysOfWeek()

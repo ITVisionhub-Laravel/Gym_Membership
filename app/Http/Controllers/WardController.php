@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\Ward;
+use App\Models\Township;
+use Illuminate\Http\Request;
 use App\Http\Requests\WardRequest;
 use App\Http\Resources\WardResource;
-use App\Models\Ward;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class WardController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     private $ward;
     public function __construct()
     {
@@ -22,29 +21,22 @@ class WardController extends Controller
 
     public function index()
     {
-       $ward = Ward::all();
-       return WardResource::collection($ward);
+       $wards = Ward::all();
+       if(request()->expectsJson()){
+        return WardResource::collection($wards);
+       }
+       return view('admin.address.ward.index',compact('wards'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $township = Township::get();
+        return view('admin.address.ward.create',compact('township'));
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
 
     public function store(WardRequest $request)
     {
+       if(request()->expectsJson()){
         $validatedData = $request->validated();
         $this->ward->name = $validatedData['name'];
         $this->ward->township_id = $validatedData['township_id'];
@@ -56,39 +48,36 @@ class WardController extends Controller
             ], 401);
         }
         return new WardResource($this->ward);
+       }
+       try {
+        $validatedData = $request->validated();
+        $ward = new Ward();
+        $ward->name = $validatedData['name'];
+        $ward->township_id = $validatedData['township_id'];
+        $ward->save();
+        return redirect(route('ward.index'))->with('message','Ward Created Successfully');
+    } catch (ModelNotFoundException $e) {
+        return redirect(route('ward.index'))->with('error', 'ward not found');
+    }  catch (Exception $e) {
+        return redirect(route('ward.index'))->with('error', 'An error occurred while updating ward');
+    }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Ward $ward)
     {
-        //
+        $townships = Township::get();
+        return view('admin.address.ward.edit',compact('ward','townships'));
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(WardRequest $request, string $id)
     {
+       if(request()->expectsJson()){
         $validatedData = $request->validated();
         $ward = Ward::find($id);
         if(!$ward){
@@ -100,16 +89,34 @@ class WardController extends Controller
         $ward->township_id = $validatedData['township_id'];
         $ward->save();
         return new WardResource($ward);
+       }
+       try {
+        $validatedData =$request->validated();
+        $ward=Ward::findOrFail($id);
+
+        $ward->name = $validatedData['name'];
+        $ward->township_id = $validatedData['township_id'];
+        $ward->update();
+        return redirect(route('ward.index'))->with('message','Ward Updated Successfully');
+       } catch (ModelNotFoundException $e) {
+        return redirect(route('ward.index'))->with('error', 'ward not found');
+    }  catch (Exception $e) {
+        return redirect(route('ward.index'))->with('error', 'An error occurred while updating ward');
+    }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Ward $ward)
     {
-      return $ward->delete()? response(status:204): response(status:500);
+        if(request()->expectsJson()){
+            return $ward->delete()? response(status:204): response(status:500);
+        }
+        try {
+            $ward->delete();
+        return redirect(route('ward.index'))->with('message','Ward Deleted Successfully');
+        } catch (ModelNotFoundException $e) {
+            return redirect(route('ward.index'))->with('error', 'ward not found');
+        }  catch (Exception $e) {
+            return redirect(route('ward.index'))->with('error', 'An error occurred while updating ward');
+        }
     }
 }

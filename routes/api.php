@@ -46,4 +46,5 @@ Route::resource('/ward', WardController::class);
 Route::resource('/street', StreetController::class);
 Route::resource('/address', AddressController::class);
 Route::resource('/gymclass-category', GymClassCategoryController::class);
+Route::resource('/gymclass', ClassController::class);
 // });

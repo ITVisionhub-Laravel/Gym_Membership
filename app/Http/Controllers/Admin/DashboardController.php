@@ -14,6 +14,7 @@ use App\Models\DebitAndCredit;
 use App\Models\ProfitSharingView;
 use App\Http\Controllers\Controller;
 use App\Models\PaymentExpiredMembers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
 class DashboardController extends Controller

@@ -13,6 +13,7 @@ use App\Models\CustomerQRCode;
 use App\Models\DebitAndCredit;
 use App\Models\ProfitSharingView;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\DashboardResource;
 use App\Models\PaymentExpiredMembers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
@@ -21,12 +22,14 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (auth()->guest() || !auth()->user()->role_as == Config::get('variables.ADMIN')) {
-            return redirect('/')->with('status', 'Logged In Successfully');
-        }
+        // dd(auth()->user());
+        // if (auth()->guest() || !auth()->user()->role_as == Config::get('variables.ADMIN')) {
+        //     return redirect('/')->with('status', 'Logged In Successfully');
+        // }
+        // dd("Hello");
         $expiredDate = '';
 
-        $data['members'] = User::get();
+        $data['members'] = User::where('role_as', Config::get('variables.ZERO'))->get();
         $data['buying_price'] = Products::sum('buying_price');
          
         $prices = 0;
@@ -41,10 +44,10 @@ class DashboardController extends Controller
 
         // For Attendenced Members
         $todayDate = new DateTimeImmutable(Carbon::now()->format('Y-m-d'));
-        $data['attendencedMembers'] = Attendent::where(
+        $data['attendedMembers'] = Attendent::where(
             'attendent_date',
             $todayDate
-        )->get();
+        )->get(); 
 
         // For Bar Chart
         $monthlyEarnings = PaymentRecord::select('record_date')
@@ -164,21 +167,27 @@ class DashboardController extends Controller
             $data['ExpiredPaymentMember'] = false;
         }
 
+        // End of Expired Payment Member
+
         $data['trainers'] = Trainer::get();
 
-        $data['yufcIncome'] = ProfitSharingView::first()->YUFC_25_percent;
-        $ourIncome = ProfitSharingView::first()->FSA_75_percent;
+        $data['yufc_income'] = ProfitSharingView::get()->sum('YUFC_25_percent');
+        $ourIncome = ProfitSharingView::get()->sum('FSA_75_percent');
 
         $allDebitCreditData = DebitAndCredit::get(); 
 
         $expense = $allDebitCreditData->where('transaction_type_id', Config::get('variables.CREDIT'))->sum('amount');
-        $income = $allDebitCreditData->where('transaction_type_id', Config::get('variables.DEBIT'))->sum('amount');
+        $total_income = $allDebitCreditData->where('status_id', Config::get('variables.SUCCESS'))->where('transaction_type_id', Config::get('variables.DEBIT'))->sum('amount');
 
-        $profit = $ourIncome - $expense;
+        $our_revenue = $ourIncome - $expense;
 
         $data['expenses'] = $expense;
-        $data['incomes'] = $income;
-        $data['profits'] = $profit;
+        $data['total_income'] = $total_income;
+        $data['our_revenue'] = $our_revenue;
+        
+        if(request()->expectsJson()){
+            return new DashboardResource($data);
+        }
         return view('admin.dashboard.index', $data);
     }
 

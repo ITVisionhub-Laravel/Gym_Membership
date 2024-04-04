@@ -3,7 +3,7 @@
         <li>
             <i class='bx bxs-group' ></i>
             <span class="text">
-                <h3>{{ $attendencedMembers->count() }}</h3>
+                <h3>{{ $attendedMembers->count() }}</h3>
                 <a href="{{route('attendents.index')}}"><p>Attendented Members</p> </a>
             </span>
         </li>
@@ -40,7 +40,7 @@
                         </div>
                         <div class=" mt-2 px-3">
                             <h5 class="heading">Total Income</h5>
-                            <p>${{ $incomes }}</p>
+                            <p>${{ $total_income }}</p>
                         </div>
                     </div>
                 </div>
@@ -54,7 +54,7 @@
                             </div>
                             <div class=" mt-2 px-3">
                                 <h5 class="heading">Our Revenue</h5>
-                                <p>${{ $profits }}</p>
+                                <p>${{ $our_revenue }}</p>
                             </div>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                             </div>
                             <div class=" mt-2 px-3">
                                 <h5 class="heading">YUFC Income</h5>
-                                <p>${{ $yufcIncome }}</p>
+                                <p>${{ $yufc_income }}</p>
                             </div>
                         </div>
                     </div>
@@ -127,7 +127,7 @@
         @else
             @include('admin.dashboard.barchart')
         @endif
-        @include('admin.dashboard.memberlist',compact('attendencedMembers','members'))
+        @include('admin.dashboard.memberlist',compact('attendedMembers','members'))
     </div>
 
     <section id="team" class="pb-5">

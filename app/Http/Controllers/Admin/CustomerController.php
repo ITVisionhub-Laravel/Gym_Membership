@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\City;
 use App\Models\Logo;
+use App\Models\User;
+use App\Models\Ward;
+use App\Models\State;
 use App\Models\Street;
-use App\Models\Address;
-use App\Models\Customer;
+use App\Models\Address; 
 use App\Models\GymClass;
 use App\Models\Township;
 use Illuminate\Http\Request;
@@ -17,22 +19,20 @@ use App\Models\PaymentPackage;
 use Illuminate\Support\Carbon;
 use App\Models\PaymentProvider;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\ProfitSharingView;
+use Illuminate\Http\JsonResponse;
+use Carbon\Carbon as CarbonCarbon;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentExpiredMembers;
+use App\Models\ProductPaymentRecords;
+use App\Traits\FilterableByDatesTrait;
 use App\Http\Requests\CustomerFormRequest;
 use App\Http\Requests\MemberInfoValidation;
-use App\Models\ProductPaymentRecords;
-use App\Models\ProfitSharingView;
-use App\Models\State;
-use App\Models\User;
-use App\Models\Ward;
-use App\Traits\FilterableByDatesTrait;
-use Carbon\Carbon as CarbonCarbon;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\PaymentExpiredMemberResource;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CustomerController extends Controller
@@ -448,17 +448,12 @@ class CustomerController extends Controller
     }
 
     public function showExpiredMembers()
-    {
-        // $expiredMembers = [];
-        // foreach (json_decode($expiredPaymentMembers) as $expiredMember) {
-        //     array_push(
-        //         $expiredMembers,
-        //         Customer::where('id', $expiredMember)->first()
-        //     );
-        // }
-
+    { 
         $payment_expired_members = PaymentExpiredMembers::all();
 
+        if (request()->expectsJson()) {
+            return new PaymentExpiredMemberResource($payment_expired_members);
+        }
         return view(
             'admin.customers.payment_expired_members',
             compact('payment_expired_members')

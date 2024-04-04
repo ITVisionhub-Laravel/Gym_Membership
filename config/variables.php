@@ -12,7 +12,11 @@ return [
         'DELETED_GYM_CLASS' => 'Gym Class Deleted Successfully',
         'CREATED_GYM_CLASS_CATEGORY' => 'Gym Class Category Created Successfully',
         'UPDATED_GYM_CLASS_CATEGORY' => 'Gym Class Category Updated Successfully',
-        'DELETED_GYM_CLASS_CATEGORY' => 'Gym Class Category Deleted Successfully', 
+        'DELETED_GYM_CLASS_CATEGORY' => 'Gym Class Category Deleted Successfully',
+
+        'CREATED_SCHEDULE' => 'Schedule Created Successfully',
+        'UPDATED_SCHEDULE' => 'Schedule Updated Successfully',
+        'DELETED_SCHEDULE' => 'Schedule Deleted Successfully',
     ],
     "SUCCESS" => 1, "FAILURE" => 2, "STAFFID" => 2, "DEBIT" => 1, "CREDIT" => 2,
     "EXPENSES" => "expenses", "MEMBER" => "member", "ADMIN" => 1,

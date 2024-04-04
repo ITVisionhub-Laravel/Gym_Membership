@@ -13,27 +13,22 @@ use App\Models\GymClass;
 use App\Models\Township;
 use Illuminate\Http\Request;
 use App\Mail\InvoiceMailable;
-use App\Models\PaymentRecord;
-use App\Models\CustomerQRCode;
+use App\Models\PaymentRecord; 
 use App\Models\PaymentPackage;
 use Illuminate\Support\Carbon;
 use App\Models\PaymentProvider;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\ProfitSharingView;
-use Illuminate\Http\JsonResponse;
-use Carbon\Carbon as CarbonCarbon;
+use App\Models\ProfitSharingView; 
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Controller; 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentExpiredMembers;
-use App\Models\ProductPaymentRecords;
-use App\Traits\FilterableByDatesTrait;
-use App\Http\Requests\CustomerFormRequest;
-use App\Http\Requests\MemberInfoValidation;
-use App\Http\Resources\PaymentExpiredMemberResource;
-use Illuminate\Support\Facades\Request as FacadesRequest;
+use App\Http\Resources\MemberResource;
+use App\Models\Country;
+use App\Models\ProductPaymentRecords; 
+use App\Http\Requests\CustomerFormRequest; 
+use App\Http\Resources\PaymentExpiredMemberResource; 
 
 class CustomerController extends Controller
 {
@@ -43,15 +38,34 @@ class CustomerController extends Controller
         $customers = User::with('address')
         ->where('role_as', 0)
         ->get();
-
+        // For API
+        foreach($customers as $customer){
+            $customer->address->last()?->street;
+            $customer->address->last()?->street?->ward;
+            $customer->address->last()?->street?->ward?->township;
+            $customer->address->last()?->street?->ward?->township?->city;
+            $customer->address->last()?->street?->ward?->township?->city?->state;
+            $customer->address->last()?->street?->ward?->township?->city?->state?->country;
+        }
+        if (request()->expectsJson()) {
+            return MemberResource::collection($customers);
+        }
         return view('admin.customers.index', compact('customers'));
     }
     public function create()
     {
-        $data['cities'] = City::get(['name', 'id']);
-        $data['packages'] = PaymentPackage::get();
-        $data['providers'] = PaymentProvider::get();
-        $data['gymclasses'] = GymClass::get();
+        $data = [
+            'countries' => Country::all(),
+            'states' => State::all(),
+            'cities' => City::all(),
+            'townships' => Township::all(),
+            'wards' => Ward::all(),
+            'streets' => Street::all(),
+            'packages' => PaymentPackage::get(),
+            'providers' => PaymentProvider::get(),
+            'gymclasses' => GymClass::get(),
+        ];
+
         return view('admin.customers.create', $data);
     }
     public function fetchState(Request $request)
@@ -153,37 +167,20 @@ class CustomerController extends Controller
         $customer = new User();
         $address = new Address();
 
-        $customer->name = Auth::user()->name;
-        $customer->email = Auth::user()->email;
+        $customer->name = $validatedData['name'];
+        $customer->email = $validatedData['email'];
         $customer->age = $validatedData['age'];
+        $customer->gender = $validatedData['gender'];
         $customer->member_card = time();
         $customer->password = bcrypt('00000');
+        $customer->gym_class_id = $validatedData['gym_class_id'];
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
         $customer->phone_number = $validatedData['phone_number'];
         $customer->emergency_phone = $validatedData['emergency_phone'];
-
-        if (
-            DB::table('addresses')
-                ->where('street_id', $request->street)
-                ->exists()
-        ) {
-            $addressField = Address::where(
-                'street_id',
-                $request->street
-            )->get();
-            $customer->address_id = $addressField[0]->id;
-
-        } else {
-            $address->street_id = $request->street;
-            $address->save();
-            $addressField = Address::where(
-                'street_id',
-                $request->street
-            )->get();
-            $customer->address_id = $addressField[0]->id;
-        }
-
+        $customer->facebook = $request->facebook;
+        $customer->twitter = $request->twitter;
+        $customer->linkedIn = $request->linkedIn;
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $ext = $file->getClientOriginalExtension();
@@ -191,119 +188,85 @@ class CustomerController extends Controller
             $file->move('uploads/customer/', $filename);
             $customer->image = $filename;
         }
-
-        if ($customer->save()) {
-            return $customer;
-            return redirect('admin/customers')->with(
-                'message',
-                'Customer Added Successfully'
-            );
-        }
-        // @dd($customer);
-        // if ($customer->save()) {
-        //     if ($request->hasFile('bank_slip')) {
-        //         $file = $request->file('bank_slip');
-        //         $ext = $file->getClientOriginalExtension();
-        //         $filename = time() . '.' . $ext;
-        //         $file->move('uploads/bankslip/', $filename);
-        //         $payment_record->bank_slip = $filename;
-        //     }
-        //     $package_info = explode(' ', $request->package);
-        // $payment_record->package_id = $package_info[0];
-        // $payment_record->price = $request->price;
-        // $payment_record->record_date = date('Y.m.d');
-        // $payment_record->provider_id = $request->payment;
-        // $payment_record->customer_id = $customer->id;
-        // // @dd($payment_record);
-        //     if (!$payment_record->save()) {
-        //         $customer->delete();
-        //     } else {
-        // if ($payment_record->save()) {
-        //     $customerQRCode = new CustomerQRCode();
-        //     $customerQRCode->member_card_id = $customer->member_card;
-        //     $customerQRCode->user_id = 0;
-        //     // @dd($customerQRCode);
-        //     if ($customerQRCode->save()) {
-        //         return redirect('admin/customers')->with(
-        //             'message',
-        //             'Customer Added Successfully'
-        //         );
-        //     } else {
-        //         $customer->delete();
-        //         $payment_record->delete();
-        //     }
-        //         }
-        //     }
-        // }
+        DB::beginTransaction();
+        try{
+                $customer->save();
+                $address->street_id = $request->street_id;
+                $address->user_id = $customer->id;
+                $address->block_no = $request->block_no;
+                $address->floor = $request->floor;
+                $address->zipcode = $request->zipcode;
+                $address->save();
+                DB::commit();
+                return redirect('admin/customers')->with('message','Customer Added Successfully');
+            }catch(Exception $e){
+                DB::rollback();
+                dd("Exception occurred: " . $e->getMessage());
+            }
+            if (request()->expectsJson())
+            {
+                if(!$customer){
+                    return response()->json([
+                        'message' => 'Member not found'
+                    ], 401);
+                }
+                return new MemberResource($customer);
+            }
     }
     public function edit(User $customer)
     {
-        // dd("hello");
-        $data['cities'] = City::get(['name', 'id']);
-        $data['townships'] = Township::get();
-        $data['streets'] = Street::get();
-        $data['gymclasses'] = GymClass::get();
+        $data = [
+            'countries' => Country::all(),
+            'states' => State::all(),
+            'cities' => City::all(),
+            'townships' => Township::all(),
+            'wards' => Ward::all(),
+            'streets' => Street::all(),
+            'packages' => PaymentPackage::get(),
+            'providers' => PaymentProvider::get(),
+            'gymclasses' => GymClass::get(),
+            'userAddress' => Address::where('user_id', $customer->id)->latest()->first(),
+            'oldGymClassId' => $customer->gym_class_id,
+        ];
         $data['payment_records'] = PaymentRecord::where(
             'user_id',
             $customer->id
         )->get();
-        $data['packages'] = PaymentPackage::get();
-        $data['providers'] = PaymentProvider::get();
+        $this->setOldValues($data);
         return view('admin.customers.edit', $data, compact('customer'));
     }
-    public function update(Request $request, $customer)
+
+    private function setOldValues(&$data)
     {
-        // dd($request);
-        $validatedData = $request->validate([
-            'name' => ['required', 'string'],
-            'age' => ['required', 'integer'],
-            'email' => ['required', 'string'],
-            'height' => ['required', 'string'],
-            'weight' => ['required', 'string'],
-            'city' => ['required', 'string'],
-            'township' => ['required', 'string'],
-            'street' => ['required', 'string'],
-            'phone_number' => ['required', 'string'],
-            'emergency_phone' => ['required', 'string'],
-            'gymclass' => ['required', 'string'],
-            'image' => ['nullable', 'mimes:jpg,jpeg,png'],
-        ]);
-        // dd($validatedData);
+        $userAddress = $data['userAddress'];
+
+        $data['oldCountryId'] = $userAddress->street->ward->township->city->state->country->id ?? null;
+        $data['oldStateId'] = $userAddress->street->ward->township->city->state->id ?? null;
+        $data['oldCityId'] = $userAddress->street->ward->township->city->id ?? null;
+        $data['oldTownshipId'] = $userAddress->street->ward->township->id ?? null;
+        $data['oldWardId'] = $userAddress->street->ward->id ?? null;
+        $data['oldStreetId'] = $userAddress->street->id ?? null;
+    }
+
+    public function update(CustomerFormRequest $request, $customer)
+    {
         $customer = User::findOrFail($customer);
         $address = new Address();
-
+        $validatedData = $request->validated();
         $customer->name = $validatedData['name'];
-        $customer->age = $validatedData['age'];
         $customer->email = $validatedData['email'];
+        $customer->age = $validatedData['age'];
+        $customer->gender = $validatedData['gender'];
+        $customer->member_card = time();
+        $customer->password = bcrypt('00000');
+        $customer->gym_class_id = $validatedData['gym_class_id'];
         $customer->height = $validatedData['height'];
         $customer->weight = $validatedData['weight'];
-
-        if (
-            DB::table('addresses')
-                ->where('street_id', $request->street)
-                ->exists()
-        ) {
-            $addressField = Address::where(
-                'street_id',
-                $request->street
-            )->get();
-            $customer->address_id = $addressField[0]->id;
-            // dd($addressField);
-        } else {
-            $address->street_id = $request->street;
-            $address->save();
-            $addressField = Address::where(
-                'street_id',
-                $request->street
-            )->get();
-            $customer->address_id = $addressField[0]->id;
-        }
-
         $customer->phone_number = $validatedData['phone_number'];
         $customer->emergency_phone = $validatedData['emergency_phone'];
-
-        $customer->class_id = $validatedData['gymclass'];
-        // @dd($customer);
+        $customer->facebook = $request->facebook;
+        $customer->twitter = $request->twitter;
+        $customer->linkedIn = $request->linkedIn;
         if ($request->hasFile('image')) {
             $path = public_path('uploads/customer/' . $customer->image);
             if (File::exists($path)) {
@@ -315,26 +278,34 @@ class CustomerController extends Controller
             $file->move('uploads/customer/', $filename);
             $customer->image = $filename;
         }
-        if ($customer->update()) {
-            // $payment_record = new PaymentRecord();
-            // $package_info = explode(' ', $request->package);
-            // PaymentRecord::where('customer_id', $customer->id)->update([
-            //     'package_id' => $package_info[0],
-            //     'price' => $request->price,
-            //     'record_date' => date('Y.m.d'),
-            //     'provider_id' => $request->payment,
-            //     'customer_id' => $customer->id,
-            // ]);
-            return redirect('admin/customers')->with(
-                'message',
-                'Customer Updated Successfully'
-            );
-        }
+
+        DB::beginTransaction();
+        try{
+                $customer->update();
+                $address->street_id = $request->street_id;
+                $address->user_id = $customer->id;
+                $address->block_no = $request->block_no;
+                $address->floor = $request->floor;
+                $address->zipcode = $request->zipcode;
+                $address->save();
+                DB::commit();
+                return redirect('admin/customers')->with('message','Customer Updated Successfully');
+            }catch(Exception $e){
+                DB::rollback();
+                dd("Exception occurred: " . $e->getMessage());
+            }
+            if (request()->expectsJson())
+            {
+                if(!$customer){
+                    return response()->json([
+                        'message' => 'Member not found'
+                    ], 401);
+                }
+                return new MemberResource($customer);
+            }
     }
     public function destroy($customer_id)
     {
-        // return $customer_id;
-
         $customer = User::findOrFail($customer_id);
         $path = public_path('uploads/customer/' . $customer->image);
 
@@ -345,7 +316,9 @@ class CustomerController extends Controller
             PaymentRecord::where('user_id', $customer_id)->delete();
             PaymentExpiredMembers::where('user_id', $customer_id)->delete();
         }
-
+        if (request()->expectsJson()) {
+            return new MemberResource($customer);
+        }
         return redirect('admin/customers')->with(
             'message',
             'Customer Deleted Successfully'

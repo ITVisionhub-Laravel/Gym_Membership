@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ScheduleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Delivery\DeliveryTypeController;
 use App\Http\Controllers\Admin\GymClassCategoryController;
 use App\Http\Controllers\Admin\Shop\ShopController;
@@ -63,4 +65,8 @@ Route::resource('/logo', LogoController::class);
 Route::resource('/partner', PartnerController::class);
 Route::resource('/trainer', TrainerController::class);
 Route::resource('/gymclass', ClassController::class);
+Route::resource('/schedule',ScheduleController::class);
+Route::resource('/dashboard', DashboardController::class);
+Route::get('/payment_expired_members', [CustomerController::class, 'showExpiredMembers']);
+// });
 // });

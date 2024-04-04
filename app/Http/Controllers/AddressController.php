@@ -45,7 +45,6 @@ class AddressController extends Controller
      */
     public function store(AddressRequest $request)
     {
-        dd(auth()->user()->id);
         $validatedData = $request->validated();
         $this->address->user_id = Auth::user()->id;
         $this->address->street_id = $validatedData['street_id'];

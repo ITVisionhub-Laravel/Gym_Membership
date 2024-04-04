@@ -145,7 +145,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/customers/create', 'create');
         Route::post('/customers', 'store');
         Route::get('/customers/{customer}/edit', 'edit');
-        Route::put('/customers/{customer}', 'update');
+        Route::patch('/customers/{customer}', 'update');
         Route::get('/customers/{customer_id}/delete', 'destroy');
         Route::post('/customers/fetch_state', 'fetchState');
         Route::post('/customers/fetch_city', 'fetchCity');

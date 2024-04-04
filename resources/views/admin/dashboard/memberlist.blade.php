@@ -21,7 +21,7 @@
                             @forelse ($attendencedMembers->take(3) as $attendencedMember)
                                 @if($attendencedMember->member)
                                     <div class="row col-md-12">
-                                        <div class="item-thumbnail col-md-5">
+                                        <div class="item-thumbnail col-md-5 pb-3">
                                             <img src="{{asset('/uploads/customer/'.$attendencedMember->member->image)}}" alt="image" class="attendent">
                                         </div>
                                         <div class="col-md-6 my-3">
@@ -43,7 +43,7 @@
                             @forelse ($members->take(3) as $member)
                                 <a href="{{ url('members/'.$member->id) }}" target="_blank" style="text-decoration: none;">
                                     <div class="row col-md-12 text-dark">
-                                        <div class="item-thumbnail col-md-5">
+                                        <div class="item-thumbnail col-md-5 pb-3">
                                             <img src="{{asset('/uploads/customer/'.$member->image)}}" alt="image" class="attendent">
                                         </div>
                                         <div class="col-md-6 my-3">

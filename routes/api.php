@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ScheduleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CityController;
@@ -47,4 +48,5 @@ Route::resource('/street', StreetController::class);
 Route::resource('/address', AddressController::class);
 Route::resource('/gymclass-category', GymClassCategoryController::class);
 Route::resource('/gymclass', ClassController::class);
+Route::resource('/schedule',ScheduleController::class);
 // });

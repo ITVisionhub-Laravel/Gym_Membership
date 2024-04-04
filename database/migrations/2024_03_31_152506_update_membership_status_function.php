@@ -14,6 +14,7 @@ class UpdateMembershipStatusFunction extends Migration
     {
         $sql = <<<SQL
 CREATE FUNCTION UpdateMembershipStatus(member_id INT) RETURNS INT
+DETERMINISTIC
 BEGIN
     DECLARE record_date DATE;
     DECLARE package_name VARCHAR(255);
@@ -22,7 +23,7 @@ BEGIN
     -- Fetch required data
     SELECT dc.date, pp.package INTO record_date, package_name
     FROM debit_and_credits dc
-    JOIN users u ON dc.related_info_id = u.member_card     
+    JOIN users u ON dc.related_info_id = u.member_card
     JOIN payment_records pr ON pr.user_id = u.id
     JOIN payment_packages pp ON pp.id = pr.payment_package_id
     WHERE dc.related_info_type = 'member'

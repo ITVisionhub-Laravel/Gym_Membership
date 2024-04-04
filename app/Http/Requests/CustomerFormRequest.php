@@ -34,10 +34,13 @@ class CustomerFormRequest extends FormRequest
             'emergency_phone' => ['required', 'string'],
             'gym_class_id' => ['required', 'string'],
             'image' => ['nullable', 'mimes:jpg,jpeg,png'],
-            // 'street_id' => ['required', 'string'],
-            // 'block_no' => ['required', 'string'],
-            // 'floor' => ['required', 'string'],
-            // 'zipcode' => ['required', 'string'],
+            'street_id' => ['nullable', 'string'],
+            'block_no' => ['nullable', 'string'],
+            'floor' => ['nullable', 'string'],
+            'zipcode' => ['nullable', 'string'],
+            'facebook' => ['nullable', 'string'],
+            'twitter' => ['nullable', 'string'],
+            'linkedIn' => ['nullable', 'string'],
         ];
     }
 }

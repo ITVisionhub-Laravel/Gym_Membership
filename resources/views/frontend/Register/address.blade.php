@@ -57,7 +57,7 @@
                                 <div class="row">
                                     <x-forms.dropdownfield :dropdownValues="$countries" name="country" :checkOldValue="$oldCountryId"
                                     width="col-md-4" function="getStates" modelName="selectedCountry"></x-forms.dropdownfield>
-                                    
+
                                     <div class="form-group col-md-4">
                                         <label for="">State</label>
                                         <select id="state-dd" class="form-select" name="state">
@@ -73,7 +73,7 @@
                                         <select id="city-dd" class="form-select" name="city">
                                             <option value="">Select City</option>
                                                 @foreach($cities as $city)
-                                                    <option value="{{ $city->id }}" @if($city->id == $oldStateId) selected @endif>{{ $city->name }}</option>
+                                                    <option value="{{ $city->id }}" @if($city->id == $oldCityId) selected @endif>{{ $city->name }}</option>
                                                 @endforeach
                                         </select>
                                         <x-forms.input-error name="city" />
@@ -83,7 +83,7 @@
                                         <select id="township-dd" class="form-select" name="township">
                                             <option value="">Select Township</option>
                                                 @foreach($townships as $township)
-                                                    <option value="{{ $township->id }}" @if($township->id == $oldStateId) selected @endif>{{ $township->name }}</option>
+                                                    <option value="{{ $township->id }}" @if($township->id == $oldTownshipId) selected @endif>{{ $township->name }}</option>
                                                 @endforeach
                                         </select>
                                         <x-forms.input-error name="township" />
@@ -93,7 +93,7 @@
                                         <select id="ward-dd" class="form-select" name="ward">
                                             <option value="">Select Wards</option>
                                                 @foreach($wards as $ward)
-                                                    <option value="{{ $ward->id }}" @if($ward->id == $oldStateId) selected @endif>{{ $ward->name }}</option>
+                                                    <option value="{{ $ward->id }}" @if($ward->id == $oldWardId) selected @endif>{{ $ward->name }}</option>
                                                 @endforeach
                                         </select>
                                         <x-forms.input-error name="street" />
@@ -103,7 +103,7 @@
                                         <select id="street-dd" class="form-select" name="street_id">
                                             <option value="">Select Wards</option>
                                                 @foreach($streets as $street)
-                                                    <option value="{{ $street->id }}" @if($street->id == $oldStateId) selected @endif>{{ $street->name }}</option>
+                                                    <option value="{{ $street->id }}" @if($street->id == $oldStreetId) selected @endif>{{ $street->name }}</option>
                                                 @endforeach
                                         </select>
                                         <x-forms.input-error name="street" />

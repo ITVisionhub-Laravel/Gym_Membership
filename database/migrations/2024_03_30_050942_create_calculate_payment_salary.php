@@ -17,16 +17,17 @@ return new class extends Migration
         DB::unprepared('
 
         CREATE FUNCTION calculate_total_salary(role_id INT) RETURNS DECIMAL(10, 2)
+        DETERMINISTIC
         BEGIN
             DECLARE total_salary DECIMAL(10, 2);
-            
+
             SELECT SUM(s.amount) INTO total_salary
             FROM users u
             JOIN salaries s ON u.salary_id = s.id
             WHERE u.role_as = role_id;
 
             RETURN total_salary;
-        END  
+        END
         ');
     }
 

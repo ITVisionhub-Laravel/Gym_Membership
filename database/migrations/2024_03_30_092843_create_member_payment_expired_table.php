@@ -16,6 +16,7 @@ return new class extends Migration
     {
         DB::unprepared("
             CREATE FUNCTION CheckMembershipStatus(record_date DATE, package VARCHAR(255)) RETURNS VARCHAR(50)
+            DETERMINISTIC
             BEGIN
                 DECLARE expiry_date DATE;
                 DECLARE diff_days INT;
@@ -43,7 +44,7 @@ return new class extends Migration
                 END IF;
 
                 RETURN status;
-            END 
+            END
         ");
     }
 

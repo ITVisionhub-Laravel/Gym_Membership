@@ -1,17 +1,15 @@
 <?php
 
-use App\Http\Controllers\AddressController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\CityController;
-use App\Http\Controllers\CountryController;
+use App\Http\Controllers\WardController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\StreetController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CountryController;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\TownshipController;
-use App\Http\Controllers\WardController;
-use App\Http\Controllers\Admin\Attendence_CheckController;
-use App\Http\Controllers\Admin\AttendentController;
 use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClassController;
@@ -21,6 +19,15 @@ use App\Http\Controllers\Admin\GymClassCategoryController;
 use App\Http\Controllers\Admin\Shop\ShopController;
 use App\Http\Controllers\Admin\Shop\ShopTypeController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\Admin\DebitAndCreditController;
+use App\Http\Controllers\Admin\ExpensesController;
+use App\Http\Controllers\Admin\LogoController;
+use App\Http\Controllers\Admin\PartnerController;
+use App\Http\Controllers\Admin\PaymentPackageController;
+use App\Http\Controllers\Admin\PaymentProviderController;
+use App\Http\Controllers\Admin\TrainerController;
+use App\Http\Controllers\Admin\AttendentController;
+use App\Http\Controllers\Admin\Attendence_CheckController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -48,4 +55,12 @@ Route::resource('/street', StreetController::class);
 Route::resource('/address', AddressController::class);
 Route::resource('/gymclass-category', GymClassCategoryController::class);
 Route::resource('/member',CustomerController::class);
+Route::resource('/package', PaymentPackageController::class);
+Route::resource('/payment-provider', PaymentProviderController::class);
+Route::resource('/expenses', ExpensesController::class);
+Route::resource('/debit-credit', DebitAndCreditController::class);
+Route::resource('/logo', LogoController::class);
+Route::resource('/partner', PartnerController::class);
+Route::resource('/trainer', TrainerController::class);
+Route::resource('/gymclass', ClassController::class);
 // });

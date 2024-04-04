@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Http\Requests\TrainerFormRequest;
+use App\Http\Resources\TrainerResource;
 use App\Models\User;
 
 class TrainerController extends Controller
@@ -14,6 +15,9 @@ class TrainerController extends Controller
     public function index()
     {
         $trainers = Trainer::all();
+        if (request()->expectsJson()) {
+            return TrainerResource::collection($trainers);
+        }
         return view('admin.trainer.index', compact('trainers'));
     }
     public function create()
@@ -38,6 +42,9 @@ class TrainerController extends Controller
             $trainer->image = $filename;
         }
         $trainer->save();
+        if (request()->expectsJson()) {
+            return new TrainerResource($trainer);
+        }
         return redirect('admin/trainers')->with(
             'message',
             'Trainer Added Successfully'
@@ -71,6 +78,11 @@ class TrainerController extends Controller
             $trainer->image = $filename;
         }
         $trainer->update();
+
+        if (request()->expectsJson()) {
+            return new TrainerResource($trainer);
+        }
+
         return redirect('admin/trainers')->with(
             'message',
             'Trainer Updated Successfully'
@@ -84,6 +96,11 @@ class TrainerController extends Controller
             File::delete($path);
         }
         $trainer->delete();
+
+        if (request()->expectsJson()) {
+            return new TrainerResource($trainer);
+        }
+        
         return redirect('admin/trainers')->with(
             'message',
             'Trainer Deleted Successfully'

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DebitAndCreditRequest;
+use App\Http\Resources\DebitAndCreditResource;
 use App\Models\DebitAndCredit;
 use App\Models\Transaction;
 use App\Models\TransactionType;
@@ -13,6 +14,9 @@ class DebitAndCreditController extends Controller
    public function index()
    {
         $debitCredits = DebitAndCredit::all();
+        if (request()->expectsJson()) {
+            return DebitAndCreditResource::collection($debitCredits);
+        }
         return view('debit_credit.index', compact('debitCredits'));
    }
 
@@ -23,7 +27,10 @@ class DebitAndCreditController extends Controller
 
     public function store(DebitAndCreditRequest $request)
     {
-        DebitAndCredit::create($request->validated());
+        $debitCreditData = DebitAndCredit::create($request->validated());
+        if (request()->expectsJson()) {
+            return new DebitAndCreditResource($debitCreditData);
+        }
         return redirect()->route('debit-credit.index')->with('message', 'Debit/Credit created successfully!');
     }
 
@@ -43,12 +50,18 @@ class DebitAndCreditController extends Controller
     public function update(DebitAndCreditRequest $request, DebitAndCredit $debitCredit)
     {
         $debitCredit->update($request->validated());
+        if (request()->expectsJson()) {
+            return new DebitAndCreditResource($debitCredit);
+        }
         return redirect()->route('debit-credit.index')->with('message', 'Debit/Credit updated successfully!');
     }
 
     public function destroy(DebitAndCredit $debitCredit)
     {
         $debitCredit->delete();
+        if (request()->expectsJson()) {
+            return new DebitAndCreditResource($debitCredit);
+        }
         return redirect()->route('debit-credit.index')->with('message', 'Debit/Credit deleted successfully!');
     }
 

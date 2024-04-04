@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use Exception;
+use App\Models\City;
+use App\Models\State;
+use Illuminate\Http\Request;
 use App\Http\Requests\CityRequest;
 use App\Http\Resources\CityResource;
-use App\Models\City;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     private $city;
     public function __construct()
     {
@@ -22,27 +21,23 @@ class CityController extends Controller
 
     public function index()
     {
-       $countries = City::all();
-       return CityResource::collection($countries);
-    }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+       $cities = City::all();
+       if(request()->expectsJson()){
+        return CityResource::collection($cities);
+       }
+       return view('admin.address.city.index',compact('cities'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function create()
+    {
+        $states = State::get();
+        return view('admin.address.city.create',compact('states'));
+    }
+
+
     public function store(CityRequest $request)
     {
+       if(request()->expectsJson()){
         $validatedData = $request->validated();
         $this->city->name = $validatedData['name'];
         $this->city->state_id = $validatedData['state_id'];
@@ -54,40 +49,39 @@ class CityController extends Controller
             ], 401);
         }
         return new CityResource($this->city);
+       }
+       try {
+        $validatedData = $request->validated();
+        $city =new City();
+        $city->name = $validatedData['name'];
+        $city->state_id = $validatedData['state_id'];
+        $city->save();
+        return redirect(route('city.index'))->with('message','City Created Successfully');
+    }catch (ModelNotFoundException $e) {
+        return redirect(route('city.index'))->with('error', 'City not found');
+    }  catch (Exception $e) {
+        return redirect(route('city.index'))->with('error', 'An error occurred while updating city');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    }
+
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(City $city)
     {
-        //
+        $state = State::get();
+        return view('admin.address.city.edit',compact('city','state'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(CityRequest $request, string $id)
     {
-        $validatedData = $request->validated();
+        if(request()->expectsJson()){
+            $validatedData = $request->validated();
         $city = City::find($id);
         if(!$city){
             return response()->json([
@@ -98,16 +92,36 @@ class CityController extends Controller
         $city->state_id = $validatedData['state_id'];
         $city->save();
         return new CityResource($city);
+        }
+        try {
+            $validatedData = $request->validated();
+            $city = City::findOrFail($id);
+
+            $city->name = $validatedData['name'];
+            $city->state_id = $validatedData['state_id'];
+
+            $city->update();
+
+            return redirect(route('city.index'))->with('message', 'City Updated Successfully');
+        } catch (ModelNotFoundException $e) {
+            return redirect(route('city.index'))->with('error', 'City not found');
+        } catch (Exception $e) {
+            return redirect(route('city.index'))->with('error', 'An error occurred while updating city');
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(City $city)
     {
-      return $city->delete()? response(status:204): response(status:500);
+        if(request()->expectsJson()){
+            return $city->delete()? response(status:204): response(status:500);
+        }
+        try {
+            $city->delete();
+            return redirect(route('city.index'))->with('message','City Deleted Successfully');
+           } catch (ModelNotFoundException $e) {
+            return redirect(route('city.index'))->with('error', 'City not found');
+        } catch (Exception $e) {
+            return redirect(route('city.index'))->with('error', 'An error occurred while updating city');
+        }
     }
 }

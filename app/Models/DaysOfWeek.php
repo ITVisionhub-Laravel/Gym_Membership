@@ -10,7 +10,7 @@ class DaysOfWeek extends Model
     use HasFactory;
     protected $table = 'days_of_week';
 
-    protected $guard = [
-        'id'
+    protected $fillable = [
+        'name'
     ];
 }

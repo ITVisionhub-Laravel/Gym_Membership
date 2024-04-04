@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StreetRequest;
-use App\Http\Requests\WardRequest;
-use App\Http\Resources\StreetResource;
+use Exception;
+use App\Models\Ward;
 use App\Models\Street;
 use Illuminate\Http\Request;
+use App\Http\Requests\WardRequest;
+use App\Http\Requests\StreetRequest;
+use App\Http\Resources\StreetResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class StreetController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     private $street;
     public function __construct()
     {
@@ -23,29 +21,23 @@ class StreetController extends Controller
 
     public function index()
     {
-       $street = Street::all();
-       return StreetResource::collection($street);
+       $streets = Street::all();
+       if(request()->expectsJson()){
+        return StreetResource::collection($streets);
+       }
+       return view('admin.address.street.index',compact('streets'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        $ward = Ward::get();
+        // dd($ward);
+       return view('admin.address.street.create',compact('ward'));
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StreetRequest $request)
     {
+       if(request()->expectsJson()){
         $validatedData = $request->validated();
         $this->street->name = $validatedData['name'];
         $this->street->ward_id = $validatedData['ward_id'];
@@ -57,39 +49,35 @@ class StreetController extends Controller
             ], 401);
         }
         return new streetResource($this->street);
+       }
+       try {
+        $validatedData = $request->validated();
+        $street = new Street();
+        $street->name = $validatedData['name'];
+        $street->ward_id = $validatedData['ward_id'];
+        $street->save();
+        return redirect(route('street.index'))->with('message','Street Created Successfully');
+    } catch (ModelNotFoundException $e) {
+        return redirect(route('street.index'))->with('error', 'street not found');
+    }  catch (Exception $e) {
+        return redirect(route('street.index'))->with('error', 'An error occurred while updating street');
+    }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Street $street)
     {
-        //
+        $wards = Ward::get();
+        return view('admin.address.street.edit',compact('street','wards'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(StreetRequest $request, string $id)
     {
+       if(request()->expectsJson()){
         $validatedData = $request->validated();
         $street = Street::find($id);
         if(!$street){
@@ -101,16 +89,36 @@ class StreetController extends Controller
         $street->ward_id = $validatedData['ward_id'];
         $street->save();
         return new StreetResource($street);
+       }
+       try {
+        $validatedData = $request->validated();
+        $street = Street::findOrFail($id);
+
+        $street->name = $validatedData['name'];
+        $street->ward_id = $validatedData['ward_id'];
+
+        $street->update();
+        return redirect(route('street.update'))->with('message','Street Updated Successfully');
+       }catch (ModelNotFoundException $e) {
+        return redirect(route('street.index'))->with('error', 'street not found');
+    }  catch (Exception $e) {
+        return redirect(route('street.index'))->with('error', 'An error occurred while updating street');
+    }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Street $street)
     {
+        if(request()->expectsJson()){
       return $street->delete()? response(status:204): response(status:500);
+        }
+        try {
+            $street->delete();
+            return redirect(route('street.index'))->with('message','Street Deleted Successfully');
+        }catch (ModelNotFoundException $e) {
+            return redirect(route('street.index'))->with('error', 'street not found');
+        }  catch (Exception $e) {
+            return redirect(route('street.index'))->with('error', 'An error occurred while updating street');
+        }
+
     }
 }

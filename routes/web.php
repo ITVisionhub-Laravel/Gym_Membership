@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ScheduleController;
+use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TownshipController;
@@ -352,6 +353,12 @@ Route::prefix('admin')->group(function () {
         Route::get('schedule/{id}/edit','edit')->name('schedule.edit');
         Route::put('schedule/{id}/update','update')->name('schedule.update');
         Route::get('schedule/{id}/delete','destroy')->name('schedule.delete');
+    });
+
+    //setting
+    Route::controller(SettingController::class)->group(function(){
+        Route::get('setting','index')->name('setting.index');
+        Route::post('setting','store')->name('setting.store');
     });
 
 

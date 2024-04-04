@@ -18,6 +18,7 @@ return new class extends Migration
 
         CREATE FUNCTION CalculateFSAProfit(amount INT,percentage INT)
         RETURNS INT
+        DETERMINISTIC
         BEGIN
             DECLARE getAmount INT;
             SET getAmount = amount * (percentage / 100);

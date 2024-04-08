@@ -176,13 +176,13 @@ jobs:
           ${{ matrix.server.afterHooks }}  
   
   clean-up:
-    name: "${{ matrix.server.name }}: Clean Up"
-    runs-on: ubuntu-latest
-    needs: [ create-deployment-artifacts, prepare-release-on-servers,active-release,run-after-hooks ]
-    strategy:
-      matrix:
-        server: ${{ fromJson(needs.create-deployment-artifacts.outputs.deployment-matrix) }}
-    steps:
+  name: "${{ matrix.server.name }}: Clean Up"
+  runs-on: ubuntu-latest
+  needs: [ create-deployment-artifacts, prepare-release-on-servers, active-release, run-after-hooks ]
+  strategy:
+    matrix:
+      server: ${{ fromJson(needs.create-deployment-artifacts.outputs.deployment-matrix) }}
+  steps:
     - name: Clean Up
       uses: appleboy/ssh-action@master
       env:
@@ -196,5 +196,10 @@ jobs:
         port: ${{ matrix.server.port }}
         envs: RELEASES_PATH,ARTIFACTS_PATH
         script: |
-          cd $RELEASES_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
-          cd $ARTIFACTS_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
+          if [ -d "$RELEASES_PATH" ]; then
+            cd $RELEASES_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
+          fi
+          
+          if [ -d "$ARTIFACTS_PATH" ]; then
+            cd $ARTIFACTS_PATH && ls -t -1 | tail -n +6 | xargs rm -rf
+          fi

@@ -17,6 +17,7 @@ return new class extends Migration
         DB::unprepared('
         CREATE FUNCTION CalculateYUFCProfit(amount INT,percentage INT)
         RETURNS INT
+        DETERMINISTIC
         BEGIN
             DECLARE getAmount INT;
             SET getAmount = amount * (percentage / 100);

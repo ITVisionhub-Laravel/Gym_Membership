@@ -14,7 +14,7 @@ trait UploadImageTrait
             $filename = time() . '.' . $ext;
 
             // Store the file in DigitalOcean Spaces
-            $path = $file->storeAs('uploads/' . $imageDir, $filename, 'spaces');
+            $path = $file->storeAs('uploads/' . $imageDir, $filename, ['disk' => 'spaces']);
 
             if ($path) {
                 // Delete the old image if it exists

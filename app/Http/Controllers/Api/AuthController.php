@@ -28,7 +28,6 @@ class AuthController extends Controller
             'gender'=>$request->gender,
             'password'=>Hash::make($request->password),
             'confirm_password'=>Hash::make($request->password),
-
         ]);
 
         $user->save();

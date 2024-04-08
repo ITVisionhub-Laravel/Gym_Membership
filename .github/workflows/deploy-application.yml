@@ -67,7 +67,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }} 
           port: ${{ matrix.server.port }}
           source: ${{ github.sha }}.tar.gz
-          target: /var/www/html/Invoice/artifacts
+          target: /var/www/html/Gym_Membership/artifacts
       
       - name: Extract archive and create directories
         uses: appleboy/ssh-action@master

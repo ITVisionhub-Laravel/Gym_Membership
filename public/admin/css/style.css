@@ -11777,6 +11777,7 @@ fieldset:disabled .btn {
     border-color: #6047b2;
 }
 
+
 .btn-check:focus + .btn-info,
 .btn-info:focus {
     color: #fff;

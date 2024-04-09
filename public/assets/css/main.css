@@ -120,7 +120,7 @@ body {
   background: #6ca12b;
   color: #fff;
 }
-
+ 
 @media (max-width: 991px) {
   html, body {
     overflow-x: hidden;

@@ -44,7 +44,7 @@
                 <td>{{ $customer->phone_number}}</td>
                 <td>{{ $customer->emergency_phone}}</td>
                 <td>
-                    <img src="{{asset('/uploads/customer/'.$customer->image)}}" style="width:50px;height:50px" alt="customer">
+                    <img src="{{$customer->image}}" style="width:50px;height:50px" alt="customer">
                 </td>
                 <td>
 

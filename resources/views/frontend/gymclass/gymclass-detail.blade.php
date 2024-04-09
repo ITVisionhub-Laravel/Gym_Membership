@@ -15,7 +15,7 @@
         <!-- Added mt-4 for margin-top -->
         <div class="row">
             <div class="col-md-4"> 
-                <img src="{{ asset('uploads/class/' . $gymClassInfo->image) }}" width="70" style="width:70%"
+                <img src="{{ $gymClassInfo->image }}" width="70" style="width:70%"
                     class="d-inline-block bg-transparent ">
 
                 <p class="mt-4">{{ $gymClassInfo->name }}</p>    

@@ -22,10 +22,14 @@
                     <tr>
                         <td>{{ $classCategory->id }}</td>
                         <td>{{ $classCategory->name }}</td>
-                        <td>{{ $classCategory->description }}</td>
+                        <td class="col-md-4">
+                            
+                            <div class="col-md-4">{{ $classCategory->description }}</div>
+                            
+                        </td>
                         <td>
                             @if ($classCategory->image)
-                                <img src="{{ asset('uploads/classcategory/' . $classCategory->image) }}"
+                                <img src="{{ $classCategory->image }}"
                                     style="width:70px;height:70px" alt="{{ $classCategory->name }}">
                             @endif
                         </td>
@@ -49,7 +53,9 @@
     <x-slot name="scripts">
         <script>
             $(document).ready(function() {
-                $('#myTable').DataTable();
+               $('#myTable').DataTable({
+                scrollX: true,
+                });
             });
         </script>
     </x-slot>

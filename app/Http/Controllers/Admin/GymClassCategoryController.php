@@ -84,10 +84,11 @@ class GymClassCategoryController extends Controller
     public function destroy($class){
         try {
             $classCategory = GymClassCategory::findOrFail($class);
-            $path = public_path($classCategory->image);
-            if (File::exists($path)) {
-                File::delete($path);
-            }
+            $this->deleteImage($classCategory);
+            // $path = public_path($classCategory->image);
+            // if (File::exists($path)) {
+            //     File::delete($path);
+            // }
             $classCategory->delete();
             if (request()->expectsJson()) {
                 return new GymClassCategoryResource($classCategory);

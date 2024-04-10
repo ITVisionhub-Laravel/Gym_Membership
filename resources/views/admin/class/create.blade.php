@@ -2,7 +2,7 @@
 
     <div class="card w-50 mx-auto ">
         <div class="card-header">
-            <h3 class="text-center my-1">Class Create Form</h3>
+            <h3 class="text-center my-1">Add Gym Class</h3>
         </div>
         <div class="card-body">
             <form action="{{ route('class.store') }}" method="POST" enctype="multipart/form-data">

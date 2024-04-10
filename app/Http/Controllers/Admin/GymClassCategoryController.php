@@ -92,8 +92,10 @@ class GymClassCategoryController extends Controller
             $classCategory->delete();
             if (request()->expectsJson()) {
                 return new GymClassCategoryResource($classCategory);
+            }else{
+                return redirect(route('class-category.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.DELETED_GYM_CLASS_CATEGORY'));
             }
-            return redirect(route('class-category.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.DELETED_GYM_CLASS_CATEGORY'));
+            
         } catch (ModelNotFoundException $e) {
             // GymClassCategory with the provided ID not found
             return response()->json([

@@ -6,7 +6,7 @@
             @endif
             <div class="card w-50 mx-auto">
                 <div class="card-header">
-                    <h3>Edit Class
+                    <h3>Edit Gym Class Category
                         <a href="{{ route('class-category.index') }}"
                             class="btn btn-danger btn-sm text-white float-end">Back</a>
                     </h3>
@@ -25,7 +25,7 @@
                         <div class="row">
                             <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-6" />
                             @if ($class->image)
-                                <img src="{{ asset('uploads/classcategory/' . $class->image) }}" alt="Class Image"
+                                <img src="{{ $class->image }}" alt="Class Image"
                                     style="width:150px;height:150px">
                             @endif
                             <x-forms.forminput name="description" type="textarea" value="{{ $class->description }}"

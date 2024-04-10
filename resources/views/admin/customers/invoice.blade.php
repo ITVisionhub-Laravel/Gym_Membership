@@ -43,9 +43,15 @@
                       <h6>Phone Number: {{ $records->user->phone_number}}</h6>
                       <h6 style="line-height: 1.5">
                         Member ID Number: {{ $records->user->member_card }} <br>
-                        {{ $records->user->address->street->township->city->name}},
-                        {{ $records->user->address->street->township->name}},<br>
-                        {{ $records->user->address->street->name}}
+                        @foreach($records->user->address as $address)
+                        {{ $address->street->ward->township->city->name ?? '' }},
+                        {{ $address->street->ward->township->name ?? '' }},
+                        {{ $address->street->ward->name ?? '' }},
+                        {{ $address->street->name ?? '' }},
+                        {{ $address->block_no ?? '' }},
+                        {{ $address->floor ?? '' }},
+                        {{ $address->zipcode ?? '' }},<br>
+                        @endforeach
                       </h6>
 
                     </div>

@@ -24,7 +24,7 @@
                         <div class="row">
                             <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-6" />
                             @if ($gymClass->image)
-                                <img src="{{ asset('uploads/class/' . $gymClass->image) }}" alt="{{ $gymClass->name }}"
+                                <img src="{{ $gymClass->image }}" alt="{{ $gymClass->name }}"
                                     style="width:150px;height:150px">
                             @endif
                             <x-forms.forminput name="description" type="textarea" value="{{ $gymClass->description }}"

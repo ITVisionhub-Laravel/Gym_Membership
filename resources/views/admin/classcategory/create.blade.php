@@ -6,7 +6,7 @@
             @endif
             <div class="card w-50 mx-auto">
                 <div class="card-header">
-                    <h3>Add Class Category
+                    <h3>Add Gym Class Category
                         <a href="{{ route('class-category.index') }}"
                             class="btn btn-danger btn-sm text-white float-end">Back</a>
                     </h3>

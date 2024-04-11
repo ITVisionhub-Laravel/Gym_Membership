@@ -79,10 +79,19 @@ class ClassController extends Controller
     {
         try{
             $validatedData = $request->validated();
-            $gymClass = GymClass::findOrFail($class);
+            // Check if the gym class category exists
+            $category = GymClassCategory::find($validatedData['gym_class_category_id']);
+            if (!$category) {
+                // Gym class category does not exist, return an error response
+                return response()->json([
+                    'message' => 'Invalid gym class category ID provided'
+                ], Response::HTTP_BAD_REQUEST);
+            }
 
+            $gymClass = GymClass::findOrFail($class);
             $gymClass->name = $validatedData['name'];
             $gymClass->description = $validatedData['description'];
+            $gymClass->gym_class_category_id = $validatedData['gym_class_category_id'];
             $this->uploadImage($request, $gymClass, "gymClass");
 
             $gymClass->update();

@@ -18,7 +18,7 @@ class ClassController extends Controller
     use UploadImageTrait;
     public function index()
     {
-        $classes = GymClass::paginate(3);
+        $classes = GymClass::paginate(10);
         if (request()->expectsJson()) {
             return GymClassResource::collection($classes);
         }
@@ -33,22 +33,38 @@ class ClassController extends Controller
 
     public function store(GymClassFormRequest $request)
     {
-        try{
-            $validatedData =$request->validated();
+        try {
+            // Validate the incoming request
+            $validatedData = $request->validated();
+
+            // Check if the gym class category exists
+            $category = GymClassCategory::find($validatedData['gym_class_category_id']);
+            if (!$category) {
+                // Gym class category does not exist, return an error response
+                return response()->json([
+                    'message' => 'Invalid gym class category ID provided'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            // If gym class category exists, proceed to create the gym class
             $class = new GymClass();
             $class->name = $validatedData['name'];
             $class->description = $validatedData['description'];
-            $class->gym_class_category_id =$validatedData['gym_class_category_id'];
+            $class->gym_class_category_id = $validatedData['gym_class_category_id'];
             $this->uploadImage($request, $class, "class");
-
             $class->save();
+
+            // If the request expects JSON, return the gym class resource
             if ($request->expectsJson()) {
                 return new GymClassResource($class);
             }
-            return redirect(route('class.index'))->with('message',Config::get('variables.SUCCESS_MESSAGES.CREATED_GYM_CLASS'));
+
+            // If not JSON, redirect with success message
+            return redirect(route('class.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.CREATED_GYM_CLASS'));
         } catch (ModelNotFoundException $e) {
+            // Catch any model not found exceptions
             return response()->json([
-                'message'=> Config::get('constants.ERROR_MESSAGES.SOMETHING_WENT_WRONG')
+                'message' => Config::get('constants.ERROR_MESSAGES.SOMETHING_WENT_WRONG')
             ], Response::HTTP_NOT_FOUND);
         }
     }
@@ -67,7 +83,7 @@ class ClassController extends Controller
 
             $gymClass->name = $validatedData['name'];
             $gymClass->description = $validatedData['description'];
-            $this->uploadImage($request, $class, "class");
+            $this->uploadImage($request, $gymClass, "gymClass");
 
             $gymClass->update();
             if ($request->expectsJson()) {

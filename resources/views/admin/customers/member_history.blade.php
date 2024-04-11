@@ -22,14 +22,15 @@
                 History
                  <a href="{{ url('admin/customers') }}" class="btn btn-danger btn-sm float-end mx-1">Back</a>
                </h3>
-            </div>
+            </div>  
+            @if ($records->isNotEmpty()) 
             <div class="card-body">
               <div class="row form-group">
                 <div class="col-12"> 
                   <div class="col-md-12">
                     <div class="row">
                       <div class="col-md-4">
-                          <img src="{{asset('/uploads/customer/'.$records[0]->user->image)}}" alt="Member" style="width:120px;height:120px;">
+                          <img src="{{$records[0]->user->image}}" alt="Member" style="width:120px;height:120px;">
 
                       </div>
                       <div class="col-md-8">
@@ -97,6 +98,15 @@
                 </div>
               </div>
             </div>
+            @else
+            <div class="card-body">
+              <div class="row form-group">
+                <div class="col-12">
+                  <h5 style="color: red">There is no Members Information History!!!!</h5>
+                </div>
+              </div>
+            </div>
+            @endif
           </div>
         </div>
       </div>

@@ -333,9 +333,9 @@ class CustomerController extends Controller
 
         $logos = Logo::first();
 
-        if ($records->isEmpty()) {
-            return response()->json(['no_records' => 'No records found']);
-        }
+        // if ($records->isEmpty()) {
+        //     return response()->json(['no_records' => 'No records found']);
+        // }
 
         $packages = [];
         foreach ($records as $paymentRecord) {
@@ -362,9 +362,9 @@ class CustomerController extends Controller
 
         $logos = Logo::first();
 
-        if (!$records) {
-            return response()->json(['no_records' => 'No records found']);
-        }
+        // if (!$records) {
+        //     return response()->json(['no_records' => 'No records found']);
+        // }
 
         return view('admin.customers.invoice', compact('logos', 'records'));
     }

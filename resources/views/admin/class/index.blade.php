@@ -50,7 +50,9 @@
     <x-slot name="scripts">
         <script>
             $(document).ready(function() {
-                $('#myTable').DataTable();
+                $('#myTable').DataTable({
+                scrollX: true,
+                });
             });
         </script>
     </x-slot>

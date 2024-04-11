@@ -21,48 +21,50 @@
               <h3>
                 Invoice
                 <a href="{{ url('admin/customers') }}" class="btn btn-danger btn-sm float-end mx-1">Back</a>
-                <a href="{{ url('admin/customers/'.$records->user->id.'/generate') }}" class="btn btn-primary btn-sm float-end mx-1"><i class="fa fa-download"></i></a>
-                <a href="{{ url('admin/customers/'.$records->user->id.'/view') }}" target="_blank" class="btn btn-warning btn-sm float-end mx-1"><i class="fa-regular fa-eye"></i></a>
-                <a href="{{ url('admin/customers/'.$records->user->id.'/mail') }}"  class="btn btn-info btn-sm float-end mx-1"><i class="fa fa-envelope"></i></a>
-                <a href="{{ url('admin/customers/'.$records->user->id.'/print/package') }}" target="_blank"  class="btnprint btn btn-success btn-sm float-end mx-1"><i class="fa fa-print"></i></a>
+                <a href="{{ url('admin/customers/'.$records?->user->id.'/generate') }}" class="btn btn-primary btn-sm float-end mx-1"><i class="fa fa-download"></i></a>
+                <a href="{{ url('admin/customers/'.$records?->user->id.'/view') }}" target="_blank" class="btn btn-warning btn-sm float-end mx-1"><i class="fa-regular fa-eye"></i></a>
+                <a href="{{ url('admin/customers/'.$records?->user->id.'/mail') }}"  class="btn btn-info btn-sm float-end mx-1"><i class="fa fa-envelope"></i></a>
+                <a href="{{ url('admin/customers/'.$records?->user->id.'/print/package') }}" target="_blank"  class="btnprint btn btn-success btn-sm float-end mx-1"><i class="fa fa-print"></i></a>
               </h3>
             </div>
-            <div class="card-body">
-              <div class="row form-group">
-                <div class="col-12">
-
-                  <div class="col-md-12">
-                    <div class="row">
-                    <div class="col-md-4">
-                        <img src="{{asset('/uploads/customer/'.$records->user->image)}}" alt="Member" style="width:120px;height:120px;">
-
+            @if ($records)
+              <div class="card-body">
+                <div class="row form-group">
+                  <div class="col-12">
+              
+                    <div class="col-md-12">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <img src="{{$records->user->image}}" alt="Member"
+                            style="width:120px;height:120px;">
+              
+                        </div>
+                        <div class="col-md-8">
+              
+                          <h6>Member Name: {{ $records->user->name }}</h5>
+                            <h6>Phone Number: {{ $records->user->phone_number}}</h6>
+                            <h6 style="line-height: 1.5">
+                              Member ID Number: {{ $records->user->member_card }} <br>
+                              @foreach($records->user->address as $address)
+                              {{ $address->street->ward->township->city->name ?? '' }},
+                              {{ $address->street->ward->township->name ?? '' }},
+                              {{ $address->street->ward->name ?? '' }},
+                              {{ $address->street->name ?? '' }},
+                              {{ $address->block_no ?? '' }},
+                              {{ $address->floor ?? '' }},
+                              {{ $address->zipcode ?? '' }},<br>
+                              @endforeach
+                            </h6>
+              
+                        </div>
+              
+                      </div>
                     </div>
-                    <div class="col-md-8">
-
-                      <h6>Member Name: {{ $records->user->name }}</h5>
-                      <h6>Phone Number: {{ $records->user->phone_number}}</h6>
-                      <h6 style="line-height: 1.5">
-                        Member ID Number: {{ $records->user->member_card }} <br>
-                        @foreach($records->user->address as $address)
-                        {{ $address->street->ward->township->city->name ?? '' }},
-                        {{ $address->street->ward->township->name ?? '' }},
-                        {{ $address->street->ward->name ?? '' }},
-                        {{ $address->street->name ?? '' }},
-                        {{ $address->block_no ?? '' }},
-                        {{ $address->floor ?? '' }},
-                        {{ $address->zipcode ?? '' }},<br>
-                        @endforeach
-                      </h6>
-
-                    </div>
-
-                    </div>
-                  </div>
-
-                  <br>
-
-
-                      <table class="table table-striped table-hover">
+              
+                    <br>
+              
+              
+                    <table class="table table-striped table-hover">
                       <thead class="table-primary">
                         <tr>
                           <th scope="col">Package</th>
@@ -80,30 +82,40 @@
                           <td>{{ $records->package->original_price }} MMK</td>
                           <td>{{ $records->package->promotion_price }} MMK</td>
                         </tr>
-                        {{--  @endforeach
-
-                  @endif  --}}
+                        {{-- @endforeach
+              
+                        @endif --}}
                         <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Total Fee:</td>
-                        <td> {{ $records->package->promotion_price }} MMK </td>
+                          <td></td>
+                          <td></td>
+                          <td></td>
+                          <td>Total Fee:</td>
+                          <td> {{ $records->package->promotion_price }} MMK </td>
                         </tr>
-                  </tbody>
-
-
-                  </table>
-                  <br>
-                  @if ($logos)
+                      </tbody>
+              
+              
+                    </table>
+                    <br>
+                    @if ($logos)
                     <p class="text-center">
-                        Thank you for joining with {{ $logos->name }}
+                      Thank you for joining with {{ $logos->name }}
                     </p>
-                  @endif
-
+                    @endif
+              
+                  </div>
                 </div>
               </div>
-            </div>
+            @else
+              <div class="card-body">
+                <div class="row form-group">
+                  <div class="col-12">
+                    <h5 style="color: red">There is no Members Information!!!!</h5>
+                  </div>
+                </div>
+              </div>  
+            @endif
+            
           </div>
         </div>
       </div>

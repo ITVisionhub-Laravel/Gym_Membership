@@ -24,7 +24,11 @@
                     </div>
                     <div class="row">
                         <x-forms.forminput name="linkin_name" placeholder="Enter linkin-name" value="{{ $trainer->linkin_name }}" width="col-md-6" />
-                        <x-forms.forminput name="image" type="file" placeholder="Image" value="{{'/uploads/trainer/'.$trainer->image}}" width="col-md-6"/>
+                        
+                        <x-forms.forminput name="image" type="file" placeholder="Image" width="col-md-6" />
+                        @if ($trainer->image)
+                        <img src="{{ $trainer->image}}" alt="Trainer IMG" style="width:150px; height:150px">
+                        @endif
                     </div>
                 <div class="mb-3">
                     <button type="submit" class="btn btn-primary">Update</button>

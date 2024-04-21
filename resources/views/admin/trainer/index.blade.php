@@ -33,13 +33,13 @@
                             <td>{{ $trainer->twitter_name }}</td>
                             <td>{{ $trainer->linkin_name }}</td>
                             <td>
-                                <img src="{{asset('/uploads/trainer/'.$trainer->image)}}" style="width:70px;height:70px" alt="">
+                                <img src="{{ $trainer->image }}" style="width:70px;height:70px" alt="">
                              
                             </td>
                             
                             <td>
-                                <a href="{{ url('admin/trainers/'.$trainer->id.'/edit') }}" class="btn btn-primary btn-sm">Edit</a>
-                                <a href="{{ url('admin/trainers/'.$trainer->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this data?')" class="btn btn-danger btn-sm">Delete</a>
+                                <a href="{{ url('admin/trainers/'.$trainer->id.'/edit') }}" class="btn btn-primary py-2">Edit</a>
+                                <a href="{{ url('admin/trainers/'.$trainer->id.'/delete') }}" onclick="return confirm('Are you sure you want to delete this data?')" class="btn btn-danger py-2">Delete</a>
                             </td>
                         </tr>
                         @endforeach
@@ -53,7 +53,9 @@
 <x-slot name="scripts">
     <script>
      $(document).ready( function () {
-        $('#myTable').DataTable();
+        $('#myTable').DataTable({
+        scrollX: true,
+        });
     } );
 </script>
 

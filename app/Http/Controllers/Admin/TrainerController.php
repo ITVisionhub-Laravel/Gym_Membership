@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
 use App\Models\Trainer;
 use Illuminate\Http\Request;
+use App\Traits\UploadImageTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
-use App\Http\Requests\TrainerFormRequest;
 use App\Http\Resources\TrainerResource;
-use App\Models\User;
+use App\Http\Requests\TrainerFormRequest;
 
 class TrainerController extends Controller
 {
+    use UploadImageTrait;
     public function index()
     {
         $trainers = Trainer::all();
@@ -33,14 +35,8 @@ class TrainerController extends Controller
         $trainer->fb_name = $validatedData['fb_name'];
         $trainer->twitter_name = $validatedData['twitter_name'];
         $trainer->linkin_name = $validatedData['linkin_name'];
+        $this->uploadImage($request, $trainer, "trainer");
 
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $ext;
-            $file->move('uploads/trainer/', $filename);
-            $trainer->image = $filename;
-        }
         $trainer->save();
         if (request()->expectsJson()) {
             return new TrainerResource($trainer);
@@ -65,18 +61,10 @@ class TrainerController extends Controller
         $trainer->fb_name = $validatedData['fb_name'];
         $trainer->twitter_name = $validatedData['twitter_name'];
         $trainer->linkin_name = $validatedData['linkin_name'];
-
-        if ($request->hasFile('image')) {
-            $path = public_path('uploads/trainer/' . $trainer->image);
-            if (File::exists($path)) {
-                File::delete($path);
-            }
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $ext;
-            $file->move('uploads/trainer/', $filename);
-            $trainer->image = $filename;
+        if($this->deleteImage($trainer)){
+            $this->uploadImage($request, $trainer, "trainer");
         }
+       
         $trainer->update();
 
         if (request()->expectsJson()) {
@@ -91,10 +79,7 @@ class TrainerController extends Controller
     public function destroy($trainer_id)
     {
         $trainer = Trainer::findOrFail($trainer_id);
-        $path = public_path('uploads/trainer/' . $trainer->image);
-        if (File::exists($path)) {
-            File::delete($path);
-        }
+        $this->deleteImage($trainer);
         $trainer->delete();
 
         if (request()->expectsJson()) {

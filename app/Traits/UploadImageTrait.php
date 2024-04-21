@@ -19,7 +19,14 @@ trait UploadImageTrait
             if ($path) { 
                 // Delete the old image if it exists
                 if ($model->$imageColumn) {
-                    Storage::disk('spaces')->delete($model->$imageColumn);
+                    try {
+                        $imageKey = $model->$imageColumn;
+                        Storage::disk('spaces')->delete($imageKey);
+                        // Optional: Log success message
+                    } catch (\Exception $e) {
+                        // Handle exception
+                        dd($e->getMessage()); // Print error message for debugging
+                    }
                 }
 
                 $model->$imageColumn = Storage::disk('spaces')->url($path);

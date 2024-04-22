@@ -9,6 +9,7 @@ class PaymentPackageResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'package' => $this->package,
             'promotion' => $this->promotion,
             'original_price' => $this->original_price,

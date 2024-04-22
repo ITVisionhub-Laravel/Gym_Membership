@@ -15,6 +15,7 @@ class WardResource extends JsonResource
     public function toArray($request)
     {
         return[
+            'id' => $this->id,
             'name' => $this->name,
             'township_id' => $this->township_id
         ];

@@ -88,7 +88,7 @@ class TrainerController extends Controller
         
         return redirect('admin/trainers')->with(
             'message',
-            'Trainer Deleted Successfully'
+            'Trainer has been Deleted Successfully'
         );
     }
 

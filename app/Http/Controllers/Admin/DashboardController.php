@@ -50,20 +50,18 @@ class DashboardController extends Controller
         )->get(); 
 
         // For Bar Chart
-        $monthlyEarnings = PaymentRecord::select('record_date')
+        $monthlyEarnings = PaymentRecord::select('record_date','payment_package_id')
             ->get()
             ->groupBy(function ($date) {
-                //return Carbon::parse($date->created_at)->format('Y'); // grouping by years
-                return Carbon::parse($date->record_date); // grouping by months
+                return Carbon::parse($date->record_date)->format('F'); // grouping by months
             });
-        // if ($monthlyEarnings) {
         $monthlyPrice = 0;
         $monthlyEarningMoney = [];
         $month = [];
 
         foreach ($monthlyEarnings as $key => $monthlyEarning) {
             foreach ($monthlyEarning as $earning) {
-                $monthlyPrice += (int) $earning->price;
+                $monthlyPrice += (int) $earning->package->promotion_price;
             }
             $arrayKeys = Carbon::parse($key)->format('F');
 

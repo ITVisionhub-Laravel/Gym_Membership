@@ -39,7 +39,7 @@ trait UploadImageTrait
     public function deleteImage($model, $imageColumn = 'image'): bool
     {
         if ($model->$imageColumn) { 
-            return Storage::disk('spaces')->delete($model->$imageColumn);
+            dd(Storage::disk('spaces')->delete($model->$imageColumn));
         }
 
         return false;

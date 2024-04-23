@@ -51,7 +51,7 @@ class ClassController extends Controller
             $class->name = $validatedData['name'];
             $class->description = $validatedData['description'];
             $class->gym_class_category_id = $validatedData['gym_class_category_id'];
-            $this->uploadImage($request, $class, "class");
+            $this->uploadImage($request, $class, "gymClass");
             $class->save();
 
             // If the request expects JSON, return the gym class resource
@@ -110,19 +110,23 @@ class ClassController extends Controller
     {
         try {
             $gymClass = GymClass::findOrFail($class);
-            $path=public_path($gymClass->image);
-            if(File::exists($path)){
-                File::delete($path);
-            }
+            $this->deleteImage($gymClass);
+            // $path=public_path($gymClass->image);
+            // if(File::exists($path)){
+            //     File::delete($path);
+            // }
             $gymClass->delete();
             if (request()->expectsJson()) {
-                return new GymClassResource($gymClass);
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Gymclass has been deleted successfully',
+                ]);
             }
             return redirect(route('class.index'))->with('message',Config::get('variables.SUCCESS_MESSAGES.DELETED_GYM_CLASS'));
         } catch (ModelNotFoundException $e) {
             // GymClassCategory with the provided ID not found
             return response()->json([
-                'message' =>Config::get('constants.ERROR_MESSAGES.NOT_FOUND_GYM_CLASS')
+                'message' =>Config::get('variables.ERROR_MESSAGES.NOT_FOUND_GYM_CLASS')
             ], Response::HTTP_NOT_FOUND);
         }
     }

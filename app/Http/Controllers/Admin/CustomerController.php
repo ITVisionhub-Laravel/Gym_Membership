@@ -8,31 +8,35 @@ use App\Models\User;
 use App\Models\Ward;
 use App\Models\State;
 use App\Models\Street;
-use App\Models\Address; 
+use App\Models\Address;
 use App\Models\GymClass;
 use App\Models\Township;
 use Illuminate\Http\Request;
 use App\Mail\InvoiceMailable;
-use App\Models\PaymentRecord; 
+use App\Models\PaymentRecord;
 use App\Models\PaymentPackage;
 use Illuminate\Support\Carbon;
 use App\Models\PaymentProvider;
 use Barryvdh\DomPDF\Facade\Pdf;
-use App\Models\ProfitSharingView; 
+use App\Models\ProfitSharingView;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Controller; 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentExpiredMembers;
 use App\Http\Resources\MemberResource;
 use App\Models\Country;
-use App\Models\ProductPaymentRecords; 
-use App\Http\Requests\CustomerFormRequest; 
-use App\Http\Resources\PaymentExpiredMemberResource; 
+use App\Models\ProductPaymentRecords;
+use App\Http\Requests\CustomerFormRequest;
+use App\Http\Requests\CustomerUpdateRequest;
+use App\Http\Resources\PaymentExpiredMemberResource;
+use App\Traits\UploadImageTrait;
 
 class CustomerController extends Controller
 {
     // use FilterableByDatesTrait;
+    use UploadImageTrait;
+
     public function index()
     {
         $customers = User::with('address')
@@ -166,7 +170,6 @@ class CustomerController extends Controller
         $validatedData = $request->validated();
         $customer = new User();
         $address = new Address();
-
         $customer->name = $validatedData['name'];
         $customer->email = $validatedData['email'];
         $customer->age = $validatedData['age'];
@@ -181,13 +184,7 @@ class CustomerController extends Controller
         $customer->facebook = $request->facebook;
         $customer->twitter = $request->twitter;
         $customer->linkedIn = $request->linkedIn;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $ext;
-            $file->move('uploads/customer/', $filename);
-            $customer->image = $filename;
-        }
+        $this->uploadImage($request, $customer, "member");
         DB::beginTransaction();
         try{
                 $customer->save();
@@ -248,13 +245,12 @@ class CustomerController extends Controller
         $data['oldStreetId'] = $userAddress->street->id ?? null;
     }
 
-    public function update(CustomerFormRequest $request, $customer)
+    public function update(CustomerUpdateRequest $request, $customer)
     {
         $customer = User::findOrFail($customer);
         $address = new Address();
         $validatedData = $request->validated();
         $customer->name = $validatedData['name'];
-        $customer->email = $validatedData['email'];
         $customer->age = $validatedData['age'];
         $customer->gender = $validatedData['gender'];
         $customer->member_card = time();
@@ -267,18 +263,7 @@ class CustomerController extends Controller
         $customer->facebook = $request->facebook;
         $customer->twitter = $request->twitter;
         $customer->linkedIn = $request->linkedIn;
-        if ($request->hasFile('image')) {
-            $path = public_path('uploads/customer/' . $customer->image);
-            if (File::exists($path)) {
-                File::delete($path);
-            }
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $ext;
-            $file->move('uploads/customer/', $filename);
-            $customer->image = $filename;
-        }
-
+        $this->uploadImage($request, $customer, "member");
         DB::beginTransaction();
         try{
                 $customer->update();
@@ -307,11 +292,8 @@ class CustomerController extends Controller
     public function destroy($customer_id)
     {
         $customer = User::findOrFail($customer_id);
-        $path = public_path('uploads/customer/' . $customer->image);
+        $this->deleteImage($customer);
 
-        if (File::exists($path)) {
-            File::delete($path);
-        }
         if ($customer->delete()) {
             PaymentRecord::where('user_id', $customer_id)->delete();
             PaymentExpiredMembers::where('user_id', $customer_id)->delete();
@@ -421,7 +403,7 @@ class CustomerController extends Controller
     }
 
     public function showExpiredMembers()
-    { 
+    {
         $payment_expired_members = PaymentExpiredMembers::all();
 
         if (request()->expectsJson()) {

@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\Country;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Requests\CountryRequest;
+use Illuminate\Support\Facades\Config;
 use App\Http\Resources\CountryResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -93,26 +95,32 @@ class CountryController extends Controller
         $country->name = $validatedData['name'];
         $country->update();
         return redirect(route('country.index'))->with('message','Country Updated Successfully');
-       }  catch (ModelNotFoundException $e) {
-        return redirect(route('country.index'))->with('error', 'Country not found');
-    } catch (Exception $e) {
-        return redirect(route('country.index'))->with('error', 'An error occurred while updating country');
-    }
-    }
-
-    public function destroy(Country $country)
-    {
-        if(request()->expectsJson()){
-            return $country->delete()? response(status:204): response(status:500);
-        }
-        try {
-            $country = Country::findOrFail($country);
-            $country->delete();
-            return redirect(route('country.index'))->with('message','Country Deleted Successfully');
-           }  catch (ModelNotFoundException $e) {
-            return redirect(route('country.index'))->with('error', 'Country not found');
+       } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_COUNTRY')
+            ], Response::HTTP_NOT_FOUND);
+            // return redirect(route('country.index'))->with('error', 'Country not found');
         } catch (Exception $e) {
             return redirect(route('country.index'))->with('error', 'An error occurred while updating country');
         }
+    }
+
+    public function destroy($country)
+    { 
+        try{ 
+            $country = Country::findOrFail($country);
+            $country->delete();
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Country has been deleted successfully',
+                ]);
+            }
+            return redirect(route('country.index'))->with('message', 'Country Deleted Successfully'); 
+        }catch(ModelNotFoundException $e){
+            return response()->json([
+                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_COUNTRY')
+            ], Response::HTTP_NOT_FOUND);
+        } 
     }
 }

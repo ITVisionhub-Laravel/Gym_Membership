@@ -15,23 +15,17 @@ trait UploadImageTrait
 
             // Store the file in DigitalOcean Spaces
             $path = $file->storeAs($imageDir, $filename, 'spaces');
-
             if ($path) {
                 // Delete the old image if it exists
                 if ($model->$imageColumn) {
                     try {
                         $imageKey = $model->$imageColumn;
-                        Storage::disk('spaces')->delete($imageKey);
-                        // Optional: Log success message
-                    } catch (\Exception $e) {
-                        // Handle exception
+                        Storage::disk('spaces')->delete($imageKey); 
+                    } catch (\Exception $e) { 
                         dd($e->getMessage()); // Print error message for debugging
                     }
                 }
-
-                $model->$imageColumn = Storage::disk('spaces')->url($path);
-                // Update the image column with the new filename
-                // $model->$imageColumn = $path;
+                $model->$imageColumn = Storage::disk('spaces')->url($path); 
             }
         }
     }

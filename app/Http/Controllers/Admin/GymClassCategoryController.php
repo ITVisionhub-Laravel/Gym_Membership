@@ -37,7 +37,7 @@ class GymClassCategoryController extends Controller
         $classCategory->name = $validatedData['name'];
         $classCategory->description = $validatedData['description'];
         $this->uploadImage($request, $classCategory, "classcategory");
-       
+     
         $classCategory->save();
 
         if ($request->expectsJson()) {
@@ -91,7 +91,10 @@ class GymClassCategoryController extends Controller
             // }
             $classCategory->delete();
             if (request()->expectsJson()) {
-                return new GymClassCategoryResource($classCategory);
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Gymclass Category has been deleted successfully',
+                ]);
             }else{
                 return redirect(route('class-category.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.DELETED_GYM_CLASS_CATEGORY'));
             }

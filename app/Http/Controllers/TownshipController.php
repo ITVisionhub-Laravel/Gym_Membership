@@ -6,7 +6,9 @@ use Exception;
 use App\Models\City;
 use App\Models\Township;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use App\Http\Requests\TownshipRequest;
+use Illuminate\Support\Facades\Config;
 use App\Http\Resources\TownshipResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -35,31 +37,31 @@ class TownshipController extends Controller
 
     public function store(TownshipRequest $request)
     {
-        if(request()->expectsJson()){
-            $validatedData = $request->validated();
-        $this->township->name = $validatedData['name'];
-        $this->township->city_id = $validatedData['city_id'];
-        $this->township->save();
-
-        if(!$this->township){
-            return response()->json([
-                'message' => 'Township not found'
-            ], 401);
-        }
-        return new TownshipResource($this->township);
-        }
         try {
-            $valitadedData = $request->validated();
-            $township = new Township();
-            $township->name = $valitadedData['name'];
-            $township->city_id = $valitadedData['city_id'];
-            $township->save();
-            return redirect(route('township.index'))->with('message','Township Created Successfully');
-           } catch (ModelNotFoundException $e) {
-            return redirect(route('township.index'))->with('error', 'township not found');
-        }  catch (Exception $e) {
+            $validatedData = $request->validated();
+            // Check if the City ID exists
+            $city = City::find($validatedData['city_id']);
+            if (!$city) {
+                return response()->json([
+                    'message' => 'Invalid City ID provided'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            $this->township->name = $validatedData['name'];
+            $this->township->country_id = $validatedData['state_id'];
+            $this->township->save();
+            if (request()->expectsJson()) {
+                return new TownshipResource($this->township);
+            }
+            return redirect(route('city.index'))->with('message', 'City Created Successfully');
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_TOWNSHIP')
+            ], Response::HTTP_NOT_FOUND);
+            //  return redirect(route('township.index'))->with('message','Township Created Successfully');
+        } catch (Exception $e) {
             return redirect(route('township.index'))->with('error', 'An error occurred while updating township');
         }
+        
     }
 
     public function show($id)
@@ -76,46 +78,55 @@ class TownshipController extends Controller
 
     public function update(TownshipRequest $request, string $id)
     {
-        if(request()->expectsJson()){
-            $validatedData = $request->validated();
-        $city = Township::find($id);
-        if(!$city){
-            return response()->json([
-                'message' => 'city not found'
-            ],401);
-        }
-        $city->name = $validatedData['name'];
-        $city->city_id = $validatedData['city_id'];
-        $city->save();
-        return new TownshipResource($city);
-        }
         try {
-            $valitadedData = $request->validated();
-            $township =Township::findOrFail($id);
+            $validatedData = $request->validated();
 
-            $township->name = $valitadedData['name'];
-            $township->city_id = $valitadedData['city_id'];
+            // Check if the city ID exists
+            $city = City::find($validatedData['city_id']);
+            if (!$city) {
+                return response()->json([
+                    'message' => 'Invalid City ID provided'
+                ], Response::HTTP_BAD_REQUEST);
+            }
+
+            $township = Township::findOrFail($id);
+            $township->name = $validatedData['name'];
+            $township->city_id = $validatedData['city_id'];
 
             $township->update();
-            return redirect(route('township.index'))->with('message','Township Updated Scuccessfully');
-           } catch (ModelNotFoundException $e) {
-            return redirect(route('township.index'))->with('error', 'township not found');
-        }  catch (Exception $e) {
+            if ($request->expectsJson()) {
+                return new TownshipResource($township);
+            }
+            return redirect(route('city.index'))->with('message', 'City Updated Successfully');
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_TOWNSHIP')
+            ], Response::HTTP_NOT_FOUND);
+            // return redirect(route('township.index'))->with('message','Township Updated Scuccessfully');
+        } catch (Exception $e) {
             return redirect(route('township.index'))->with('error', 'An error occurred while updating township');
         }
     }
 
-    public function destroy(Township $township)
+    public function destroy($township)
     {
-        if(request()->expectsJson()){
-      return $township->delete()? response(status:204): response(status:500);
-        }
         try {
+            $township = Township::findOrFail($township);
+            $this->deleteImage($township);
             $township->delete();
-            return redirect(route('township.index'))->with('message','Township Deleted Scuccessfully');
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Township has been deleted successfully',
+                ]);
+            }
+            return redirect(route('township.index'))->with('message', 'Township Deleted Scuccessfully');
         } catch (ModelNotFoundException $e) {
-            return redirect(route('township.index'))->with('error', 'township not found');
-        }  catch (Exception $e) {
+            return response()->json([
+                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_TOWNSHIP')
+            ], Response::HTTP_NOT_FOUND);
+            // return redirect(route('township.index'))->with('error', 'township not found');
+        } catch (Exception $e) {
             return redirect(route('township.index'))->with('error', 'An error occurred while updating township');
         }
     }

@@ -5,6 +5,10 @@ return [
         'SOMETHING_WENT_WRONG' => 'Something Went Wrong',
         'NOT_FOUND_GYM_CLASS' => 'Gym Class not found',
         'NOT_FOUND_GYM_CLASS_CATEGORY' => 'Gym Class Category not found',
+        'NOT_FOUND_COUNTRY' => 'Country not found',
+        'NOT_FOUND_STATE' => 'State not found',
+        'NOT_FOUND_CITY' => 'City not found',
+        'NOT_FOUND_TOWNSHIP' => 'Township not found',
     ],
     'SUCCESS_MESSAGES' => [
         'CREATED_GYM_CLASS' => 'Gym Class Created Successfully',

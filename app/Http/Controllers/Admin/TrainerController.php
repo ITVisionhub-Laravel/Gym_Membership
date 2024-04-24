@@ -83,7 +83,10 @@ class TrainerController extends Controller
         $trainer->delete();
 
         if (request()->expectsJson()) {
-            return new TrainerResource($trainer);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Gym Trainer has been deleted successfully',
+            ]);
         }
         
         return redirect('admin/trainers')->with(

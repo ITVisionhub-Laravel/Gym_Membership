@@ -41,7 +41,7 @@ class CustomerController extends Controller
     {
         $customers = User::with('address')
         ->where('role_as', 0)
-        ->get();
+        ->paginate(10);
         // For API
         foreach($customers as $customer){
             $customer->address->last()?->street;

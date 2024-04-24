@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\DaysOfWeek;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ScheduleResource extends JsonResource
@@ -14,10 +15,14 @@ class ScheduleResource extends JsonResource
      */
     public function toArray($request)
     {
+
+        $daysOfWeeksName = DaysOfWeek::findOrFail($this->days_of_week_id);
+        $daysName = $daysOfWeeksName->name;
         return [
-            'id'=>$this->id,
-            'hours_From'=>$this->hours_From,
-            'hours_To'=>$this->hours_To
+            'id' => $this->id,
+            'hours_From' => $this->hours_From,
+            'hours_To' => $this->hours_To,
+            'days_of_week_name' => $daysName
         ];
     }
 

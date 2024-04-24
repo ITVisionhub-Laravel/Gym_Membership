@@ -299,7 +299,10 @@ class CustomerController extends Controller
             PaymentExpiredMembers::where('user_id', $customer_id)->delete();
         }
         if (request()->expectsJson()) {
-            return new MemberResource($customer);
+            return response()->json([
+                'status' => 200,
+                'message' => 'City has been deleted successfully',
+            ]);
         }
         return redirect('admin/customers')->with(
             'message',

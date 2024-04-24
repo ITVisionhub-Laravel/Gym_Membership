@@ -15,7 +15,6 @@ trait UploadImageTrait
 
             // Store the file in DigitalOcean Spaces
             $path = $file->storeAs($imageDir, $filename, 'spaces');
-
             if ($path) {
                 // Delete the old image if it exists
                 if ($model->$imageColumn) {
@@ -28,7 +27,6 @@ trait UploadImageTrait
                         dd($e->getMessage()); // Print error message for debugging
                     }
                 }
-
                 $model->$imageColumn = Storage::disk('spaces')->url($path);
                 // Update the image column with the new filename
                 // $model->$imageColumn = $path;

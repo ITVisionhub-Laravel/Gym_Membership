@@ -55,7 +55,7 @@ class PaymentPackageController extends Controller
             (int) $paymentpackage->original_price -
             ((int) $paymentpackage->original_price *
                 (int) $paymentpackage->promotion) /
-                100;
+            100;
         $paymentpackage->promotion_price = $promotion_price;
         $paymentpackage->save();
         if (request()->expectsJson()) {
@@ -84,9 +84,9 @@ class PaymentPackageController extends Controller
         $paymentpackage->package = $request->package;
         $paymentpackage->promotion = $request->promotion;
         $paymentpackage->original_price = $request->original_price;
-        
+
         $paymentpackage->update($validatedData);
-        
+
         if (request()->expectsJson()) {
             return new PaymentPackageResource($paymentpackage);
         }
@@ -97,7 +97,10 @@ class PaymentPackageController extends Controller
     public function destroy($id)
     {
         $paymentpackage = PaymentPackage::find($id);
-        $paymentpackage->delete();
+        $success = $paymentpackage->delete();
+        if (request()->expectsJson()) {
+            return $success ? response(status: 204) : response(status: 500);
+        }
         return redirect()->route('payment_packages.index');
     }
 }

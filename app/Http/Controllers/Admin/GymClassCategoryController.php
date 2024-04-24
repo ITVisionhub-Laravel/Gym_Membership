@@ -37,7 +37,7 @@ class GymClassCategoryController extends Controller
         $classCategory->name = $validatedData['name'];
         $classCategory->description = $validatedData['description'];
         $this->uploadImage($request, $classCategory, "classcategory");
-       
+     
         $classCategory->save();
 
         if ($request->expectsJson()) {

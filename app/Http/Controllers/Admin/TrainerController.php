@@ -16,7 +16,7 @@ class TrainerController extends Controller
     use UploadImageTrait;
     public function index()
     {
-        $trainers = Trainer::all();
+        $trainers = Trainer::paginate(10);;
         if (request()->expectsJson()) {
             return TrainerResource::collection($trainers);
         }
@@ -64,7 +64,7 @@ class TrainerController extends Controller
         if($this->deleteImage($trainer)){
             $this->uploadImage($request, $trainer, "trainer");
         }
-       
+
         $trainer->update();
 
         if (request()->expectsJson()) {
@@ -88,7 +88,7 @@ class TrainerController extends Controller
                 'message' => 'Gym Trainer has been deleted successfully',
             ]);
         }
-        
+
         return redirect('admin/trainers')->with(
             'message',
             'Trainer has been Deleted Successfully'

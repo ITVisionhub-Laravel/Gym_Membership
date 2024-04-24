@@ -26,7 +26,7 @@ class LogoController extends Controller
         return view('admin.logo.create');
     }
 
-    public function store(LogoRequest $request,Logo $logo)
+    public function store(LogoRequest $request, Logo $logo)
     {
         $validatedData = $request->validated();
         // $validatedData = $request->validate([
@@ -76,6 +76,7 @@ class LogoController extends Controller
             'Logo Added Successfully'
         );
     }
+
     public function edit(Logo $logo)
     {
         return view('admin.logo.edit', compact('logo'));
@@ -84,7 +85,7 @@ class LogoController extends Controller
     public function update(LogoRequest $request, Logo $logo)
     {
         $validatedData = $request->validated();
-
+        // unset($validatedData['email']);
         // $validatedData = $request->validate([
         //     'name' => ['string'],
         //     'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png'],
@@ -111,7 +112,7 @@ class LogoController extends Controller
         // }
 
         $logo->fill($validatedData);
-        
+
         $this->uploadImage($request, $logo, 'logo');
 
         $logo->update($validatedData);
@@ -141,22 +142,12 @@ class LogoController extends Controller
 
     public function destroy(Logo $logo)
     {
-        if ($logo->count() > 0) {
-            $destination = $logo->image;
-            if (File::exists($destination)) {
-                File::delete($destination);
-            }
-            $logo->delete();
-
-            if (request()->expectsJson()) {
-                return new LogoResource($logo);
-            }
-
-            return redirect('admin/logo')->with(
-                'message',
-                'Logo Deleted Successfully'
-            );
+        $logo = Logo::findOrFail($logo->id);
+        $this->deleteImage($logo, $logo->image);
+        $success = $logo->delete();
+        if (request()->expectsJson()) {
+            return $success ? response(status: 204) : response(status: 500);
         }
-        return redirect('admin/logo')->with('message', 'Something Went Wrong');
+        return redirect('admin/logo')->with('message', 'Logo deleted successfully!');
     }
 }

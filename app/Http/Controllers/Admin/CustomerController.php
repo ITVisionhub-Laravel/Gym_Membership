@@ -29,21 +29,70 @@ use App\Models\Country;
 use App\Models\ProductPaymentRecords;
 use App\Http\Requests\CustomerFormRequest;
 use App\Http\Requests\CustomerUpdateRequest;
+use App\Http\Resources\InvoiceResource;
+use App\Http\Resources\MemberHistoryResource;
 use App\Http\Resources\PaymentExpiredMemberResource;
+use App\Http\Resources\SearchMemberResource;
 use App\Traits\UploadImageTrait;
+use FontLib\TrueType\Collection;
 
 class CustomerController extends Controller
 {
     // use FilterableByDatesTrait;
     use UploadImageTrait;
 
+    public function searchMember(Request $request)
+    {
+        if ($request->has('search') && !empty($request->input('search'))) {
+            $query = User::with('address')->where('role_as', 0);
+            $searchKey = $request->input('search');
+
+            $data = $query->where(function ($query) use ($searchKey) {
+                $query->where('name', 'like', "%{$searchKey}%")
+                    ->orWhere('age', 'like', "%{$searchKey}%")
+                    ->orWhere('gender', 'like', "%{$searchKey}%")
+                    ->orWhere('height', 'like', "%{$searchKey}%")
+                    ->orWhere('weight', 'like', "%{$searchKey}%")
+                    ->orWhere('phone_number', 'like', "%{$searchKey}%")
+                    ->orWhere('emergency_phone', 'like', "%{$searchKey}%")
+                    ->orWhere('image', 'like', "%{$searchKey}%")
+                    ->orWhereHas('address', function ($query) use ($searchKey) {
+                        $query->where('floor', 'like', "%{$searchKey}%")
+                            ->orWhere('block_no', 'like', "%{$searchKey}%");
+                    })
+                    ->orWhereHas('address.street', function ($query) use ($searchKey) {
+                        $query->where('name', 'like', "%{$searchKey}%");
+                    })
+                    ->orWhereHas('address.street.ward', function ($query) use ($searchKey) {
+                        $query->where('name', 'like', "%{$searchKey}%");
+                    })
+                    ->orWhereHas('address.street.ward.township', function ($query) use ($searchKey) {
+                        $query->where('name', 'like', "%{$searchKey}%");
+                    })
+                    ->orWhereHas('address.street.ward.township.city', function ($query) use ($searchKey) {
+                        $query->where('name', 'like', "%{$searchKey}%");
+                    })
+                    ->orWhereHas('address.street.ward.township.city.state', function ($query) use ($searchKey) {
+                        $query->where('name', 'like', "%{$searchKey}%");
+                    })
+                    ->orWhereHas('address.street.ward.township.city.state.country', function ($query) use ($searchKey) {
+                        $query->where('name', 'like', "%{$searchKey}%");
+                    });
+            })->paginate(10);
+
+            if (request()->expectsJson()) {
+                return SearchMemberResource::collection($data);
+            }
+        }
+    }
+
     public function index()
     {
         $customers = User::with('address')
-        ->where('role_as', 0)
-        ->paginate(10);
+            ->where('role_as', 0)
+            ->paginate(10);
         // For API
-        foreach($customers as $customer){
+        foreach ($customers as $customer) {
             $customer->address->last()?->street;
             $customer->address->last()?->street?->ward;
             $customer->address->last()?->street?->ward?->township;
@@ -114,8 +163,7 @@ class CustomerController extends Controller
     }
     public function daily(Request $request)
     {
-        if($request->daily_data == "Daily")
-        {
+        if ($request->daily_data == "Daily") {
             $data = [
                 'date' => Carbon::today()->toDateString(),
                 'daily' => ProfitSharingView::today('Date')->get(),
@@ -125,8 +173,7 @@ class CustomerController extends Controller
     }
     public function weekly(Request $request)
     {
-        if($request->weekly_data == "Weekly")
-        {
+        if ($request->weekly_data == "Weekly") {
             $data = [
                 'date' => 'From ' . Carbon::today()->subDays(6)->toDateString() . ' To ' . Carbon::today()->toDateString(),
                 'weekly' => ProfitSharingView::last7Days('Date')->get(),
@@ -144,8 +191,7 @@ class CustomerController extends Controller
     }
     public function yearly(Request $request)
     {
-        if($request->yearly_data == "Yearly")
-        {
+        if ($request->yearly_data == "Yearly") {
             $data = [
                 'date' => 'From ' . Carbon::now()->subYear()->toDateString() . ' To ' . Carbon::today()->toDateString(),
                 'yearly' => ProfitSharingView::lastYear('Date')->get(),
@@ -186,29 +232,28 @@ class CustomerController extends Controller
         $customer->linkedIn = $request->linkedIn;
         $this->uploadImage($request, $customer, "member");
         DB::beginTransaction();
-        try{
-                $customer->save();
-                $address->street_id = $request->street_id;
-                $address->user_id = $customer->id;
-                $address->block_no = $request->block_no;
-                $address->floor = $request->floor;
-                $address->zipcode = $request->zipcode;
-                $address->save();
-                DB::commit();
-                return redirect('admin/customers')->with('message','Customer Added Successfully');
-            }catch(Exception $e){
-                DB::rollback();
-                dd("Exception occurred: " . $e->getMessage());
+        try {
+            $customer->save();
+            $address->street_id = $request->street_id;
+            $address->user_id = $customer->id;
+            $address->block_no = $request->block_no;
+            $address->floor = $request->floor;
+            $address->zipcode = $request->zipcode;
+            $address->save();
+            DB::commit();
+            return redirect('admin/customers')->with('message', 'Customer Added Successfully');
+        } catch (Exception $e) {
+            DB::rollback();
+            dd("Exception occurred: " . $e->getMessage());
+        }
+        if (request()->expectsJson()) {
+            if (!$customer) {
+                return response()->json([
+                    'message' => 'Member not found'
+                ], 401);
             }
-            if (request()->expectsJson())
-            {
-                if(!$customer){
-                    return response()->json([
-                        'message' => 'Member not found'
-                    ], 401);
-                }
-                return new MemberResource($customer);
-            }
+            return new MemberResource($customer);
+        }
     }
     public function edit(User $customer)
     {
@@ -265,29 +310,28 @@ class CustomerController extends Controller
         $customer->linkedIn = $request->linkedIn;
         $this->uploadImage($request, $customer, "member");
         DB::beginTransaction();
-        try{
-                $customer->update();
-                $address->street_id = $request->street_id;
-                $address->user_id = $customer->id;
-                $address->block_no = $request->block_no;
-                $address->floor = $request->floor;
-                $address->zipcode = $request->zipcode;
-                $address->save();
-                DB::commit();
-                return redirect('admin/customers')->with('message','Customer Updated Successfully');
-            }catch(Exception $e){
-                DB::rollback();
-                dd("Exception occurred: " . $e->getMessage());
+        try {
+            $customer->update();
+            $address->street_id = $request->street_id;
+            $address->user_id = $customer->id;
+            $address->block_no = $request->block_no;
+            $address->floor = $request->floor;
+            $address->zipcode = $request->zipcode;
+            $address->save();
+            DB::commit();
+            return redirect('admin/customers')->with('message', 'Customer Updated Successfully');
+        } catch (Exception $e) {
+            DB::rollback();
+            dd("Exception occurred: " . $e->getMessage());
+        }
+        if (request()->expectsJson()) {
+            if (!$customer) {
+                return response()->json([
+                    'message' => 'Member not found'
+                ], 401);
             }
-            if (request()->expectsJson())
-            {
-                if(!$customer){
-                    return response()->json([
-                        'message' => 'Member not found'
-                    ], 401);
-                }
-                return new MemberResource($customer);
-            }
+            return new MemberResource($customer);
+        }
     }
     public function destroy($customer_id)
     {
@@ -318,9 +362,12 @@ class CustomerController extends Controller
 
         $logos = Logo::first();
 
-        // if ($records->isEmpty()) {
-        //     return response()->json(['no_records' => 'No records found']);
-        // }
+        if (request()->expectsJson()) {
+            if ($records->isEmpty()) {
+                return response()->json(['no_records' => 'No records found']);
+            }
+        }
+
 
         $packages = [];
         foreach ($records as $paymentRecord) {
@@ -330,6 +377,10 @@ class CustomerController extends Controller
         $totalAmount = 0;
         foreach ($packages as $package) {
             $totalAmount += $package->promotion_price;
+        }
+
+        if (request()->expectsJson()) {
+            return new MemberHistoryResource($logos, $records, $packages, $totalAmount);
         }
 
         return view(
@@ -344,12 +395,17 @@ class CustomerController extends Controller
             ->with('user')
             ->latest()
             ->first();
-
         $logos = Logo::first();
 
-        // if (!$records) {
-        //     return response()->json(['no_records' => 'No records found']);
-        // }
+
+        if (request()->expectsJson()) {
+            if (is_null($records)) {
+                return response()->json(['no_records' => 'No records found']);
+            }
+        }
+        if (request()->expectsJson()) {
+            return new InvoiceResource($records, $logos);
+        }
 
         return view('admin.customers.invoice', compact('logos', 'records'));
     }
@@ -469,13 +525,13 @@ class CustomerController extends Controller
         foreach ($records as $record) {
             $total += $record->total;
         }
-        return view('admin.customers.print', compact('records', 'logos','total'));
+        return view('admin.customers.print', compact('records', 'logos', 'total'));
     }
 
     public function printPackage($customer_id)
     {
         $records = PaymentRecord::where('user_id', $customer_id)
-            ->with('user','package')
+            ->with('user', 'package')
             ->latest()
             ->first();
         $logos = Logo::first();

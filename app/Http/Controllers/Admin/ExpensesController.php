@@ -94,6 +94,7 @@ class ExpensesController extends Controller
             $expenses = Expenses::findOrFail($expense->id);
             $debit_credit = DebitAndCredit::where('related_info_id', $expense->invoice_id)->first();
             $debit_credit->delete();
+            $this->deleteImage($expense, $expense->invoice_slip);
             $success = $expenses->delete();
             DB::commit();
             if (request()->expectsJson()) {

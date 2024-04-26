@@ -31,10 +31,10 @@ class DashboardController extends Controller
 
         $data['members'] = User::where('role_as', Config::get('variables.ZERO'))->get();
         $data['buying_price'] = Products::sum('buying_price');
-         
+
         $prices = 0;
         $paymentRecords = PaymentRecord::get();
-        
+
         foreach ($paymentRecords as $paymentPrice) {
             $prices += $paymentPrice->package->promotion_price;
         }
@@ -47,10 +47,10 @@ class DashboardController extends Controller
         $data['attendedMembers'] = Attendent::where(
             'attendent_date',
             $todayDate
-        )->get(); 
+        )->get();
 
         // For Bar Chart
-        $monthlyEarnings = PaymentRecord::select('record_date','payment_package_id')
+        $monthlyEarnings = PaymentRecord::select('record_date', 'payment_package_id')
             ->get()
             ->groupBy(function ($date) {
                 return Carbon::parse($date->record_date)->format('F'); // grouping by months
@@ -172,7 +172,7 @@ class DashboardController extends Controller
         $data['yufc_income'] = ProfitSharingView::get()->sum('YUFC_25_percent');
         $ourIncome = ProfitSharingView::get()->sum('FSA_75_percent');
 
-        $allDebitCreditData = DebitAndCredit::get(); 
+        $allDebitCreditData = DebitAndCredit::get();
 
         $expense = $allDebitCreditData->where('transaction_type_id', Config::get('variables.CREDIT'))->sum('amount');
         $total_income = $allDebitCreditData->where('status_id', Config::get('variables.SUCCESS'))->where('transaction_type_id', Config::get('variables.DEBIT'))->sum('amount');
@@ -182,8 +182,8 @@ class DashboardController extends Controller
         $data['expenses'] = $expense;
         $data['total_income'] = $total_income;
         $data['our_revenue'] = $our_revenue;
-        
-        if(request()->expectsJson()){
+
+        if (request()->expectsJson()) {
             return new DashboardResource($data);
         }
         return view('admin.dashboard.index', $data);

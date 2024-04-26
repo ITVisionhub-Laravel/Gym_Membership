@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PartnerRequest;
 use App\Http\Resources\PartnerResource;
 use App\Traits\UploadImageTrait;
+use Exception;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PartnerController extends Controller
 {
@@ -16,16 +18,18 @@ class PartnerController extends Controller
 
     public function index()
     {
-        $partners=Partner::all();
+        $partners = Partner::all();
         if (request()->expectsJson()) {
             return PartnerResource::collection($partners);
         }
-        return view('admin.partner.index',compact('partners'));
+        return view('admin.partner.index', compact('partners'));
     }
+
     public function create()
     {
         return view('admin.partner.create');
     }
+
     public function store(PartnerRequest $request, Partner $partner)
     {
         $validatedData = $request->validated();
@@ -57,29 +61,18 @@ class PartnerController extends Controller
             'Partner Added Successfully'
         );
     }
+
     public function edit(Partner $partner)
     {
-        return view('admin.partner.edit',compact('partner'));
+        return view('admin.partner.edit', compact('partner'));
     }
+
     public function update(PartnerRequest $request, Partner $partner)
     {
         $validatedData = $request->validated();
-        if ($request->hasFile('image')) {
-            $destination = public_path($partner->image);
-            if (File::exists($destination)) {
-                File::delete($destination);
-            }
-            $file = $request->file('image');
-            $ext = $file->getClientOriginalExtension();
-            $filename = time() . '.' . $ext;
-            $file->move('uploads/partner/', $filename);
-            $validatedData['image'] = "uploads/partner/$filename";
-        }
-        Partner::where('id', $partner->id)->update([
-            'name'=>$validatedData['name'],
-            'image' => $validatedData['image'] ?? $partner->image
-        ]);
-
+        $partner->name = $validatedData['name'];
+        $this->uploadImage($request, $partner, 'partner');
+        $partner->save();
         if (request()->expectsJson()) {
             return new PartnerResource($partner);
         }
@@ -89,26 +82,20 @@ class PartnerController extends Controller
             'Partner Updated Successfully'
         );
     }
+
     public function destroy(Partner $partner)
     {
-        if ($partner->count() > 0) {
-            $destination = $partner->image;
-            if (File::exists($destination)) {
-                File::delete($destination);
-            }
-            $partner->delete();
-            
+        try {
+            $this->deleteImage($partner);
+            $success = $partner->delete();
             if (request()->expectsJson()) {
-                return new PartnerResource($partner);
+                return $success ? response(status: 204) : response(status: 500);
             }
-            return redirect('admin/partner')->with(
-                'message',
-                'Partner Deleted Successfully'
-            );
+            return redirect('admin/partner')->with('message', 'Partner has been deleted successfully!');
+        } catch (NotFoundHttpException $e) {
+            throw new NotFoundHttpException($e->getMessage());
+        } catch (Exception $e) {
+            throw new Exception($e->getMessage());
         }
-        return redirect('admin/partner')->with(
-            'message',
-            'Something Went Wrong'
-        );
     }
 }

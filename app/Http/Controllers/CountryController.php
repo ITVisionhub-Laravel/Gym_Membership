@@ -21,7 +21,7 @@ class CountryController extends Controller
 
     public function index()
     {
-       $countries = Country::all();
+       $countries = Country::paginate(10);
        if(request()->expectsJson()){
         return CountryResource::collection($countries);
        }
@@ -106,8 +106,8 @@ class CountryController extends Controller
     }
 
     public function destroy($country)
-    { 
-        try{ 
+    {
+        try{
             $country = Country::findOrFail($country);
             $country->delete();
             if (request()->expectsJson()) {
@@ -116,11 +116,11 @@ class CountryController extends Controller
                     'message' => 'Country has been deleted successfully',
                 ]);
             }
-            return redirect(route('country.index'))->with('message', 'Country Deleted Successfully'); 
+            return redirect(route('country.index'))->with('message', 'Country Deleted Successfully');
         }catch(ModelNotFoundException $e){
             return response()->json([
                 'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_COUNTRY')
             ], Response::HTTP_NOT_FOUND);
-        } 
+        }
     }
 }

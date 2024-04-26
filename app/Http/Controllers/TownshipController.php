@@ -23,7 +23,7 @@ class TownshipController extends Controller
 
     public function index()
     {
-       $townships = Township::all();
+       $townships = Township::paginate(10);
         if(request()->expectsJson()){
             return TownshipResource::collection($townships);
         }
@@ -61,7 +61,7 @@ class TownshipController extends Controller
         } catch (Exception $e) {
             return redirect(route('township.index'))->with('error', 'An error occurred while updating township');
         }
-        
+
     }
 
     public function show($id)
@@ -112,7 +112,7 @@ class TownshipController extends Controller
     {
         try {
             $township = Township::findOrFail($township);
-            $this->deleteImage($township);
+            // $this->deleteImage($township);
             $township->delete();
             if (request()->expectsJson()) {
                 return response()->json([

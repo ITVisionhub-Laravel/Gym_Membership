@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\State;
-use App\Models\Country; 
+use App\Models\Country;
 use Illuminate\Http\Response;
 use App\Http\Requests\StateRequest;
 use App\Http\Resources\StateResource;
@@ -22,7 +22,7 @@ class StateController extends Controller
 
     public function index()
     {
-       $states = State::all();
+       $states = State::paginate(10);
        if(request()->expectsJson()){
         return StateResource::collection($states);
        }
@@ -38,19 +38,19 @@ class StateController extends Controller
     }
     public function store(StateRequest $request)
     {
-        try { 
-            $validatedData = $request->validated(); 
+        try {
+            $validatedData = $request->validated();
             // Check if the country ID exists
             $country = Country::find($validatedData['country_id']);
-            if (!$country) { 
+            if (!$country) {
                 return response()->json([
                     'message' => 'Invalid Country ID provided'
                 ], Response::HTTP_BAD_REQUEST);
             }
             $this->state->name = $validatedData['name'];
-            $this->state->country_id = $validatedData['country_id']; 
-            $this->state->save(); 
-            if(request()->expectsJson()){  
+            $this->state->country_id = $validatedData['country_id'];
+            $this->state->save();
+            if(request()->expectsJson()){
                 return new StateResource($this->state);
             }
             return redirect(route('state.index'))->with('message','State Created Successfully');
@@ -112,7 +112,7 @@ class StateController extends Controller
     {
         try {
             $state = State::findOrFail($state);
-            $this->deleteImage($state);
+            // $this->deleteImage($state);
             $state->delete();
             if (request()->expectsJson()) {
                 return response()->json([
@@ -128,6 +128,6 @@ class StateController extends Controller
             //   return redirect(route('state.index'))->with('error', 'State not found');
         } catch (Exception $e) {
             return redirect(route('state.index'))->with('error', 'An error occurred while updating state');
-        } 
+        }
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\City;
-use App\Models\State; 
+use App\Models\State;
 use Illuminate\Http\Response;
 use App\Http\Requests\CityRequest;
 use App\Http\Resources\CityResource;
@@ -22,7 +22,7 @@ class CityController extends Controller
 
     public function index()
     {
-       $cities = City::all();
+       $cities = City::paginate(10);
        if(request()->expectsJson()){
         return CityResource::collection($cities);
        }
@@ -80,7 +80,7 @@ class CityController extends Controller
     public function update(CityRequest $request, string $id)
     {
         try {
-            $validatedData = $request->validated(); 
+            $validatedData = $request->validated();
 
             // Check if the state ID exists
             $state = State::find($validatedData['state_id']);
@@ -113,7 +113,7 @@ class CityController extends Controller
     {
         try {
             $city = State::findOrFail($city);
-            $this->deleteImage($city);
+            // $this->deleteImage($city);
             $city->delete();
             if (request()->expectsJson()) {
                 return response()->json([

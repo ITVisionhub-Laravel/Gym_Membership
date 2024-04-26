@@ -21,7 +21,7 @@ class StreetController extends Controller
 
     public function index()
     {
-       $streets = Street::all();
+       $streets = Street::paginate(10);
        if(request()->expectsJson()){
         return StreetResource::collection($streets);
        }
@@ -108,11 +108,14 @@ class StreetController extends Controller
 
     public function destroy(Street $street)
     {
-        if(request()->expectsJson()){
-      return $street->delete()? response(status:204): response(status:500);
-        }
         try {
             $street->delete();
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Street has been deleted successfully',
+                ]);
+            }
             return redirect(route('street.index'))->with('message','Street Deleted Successfully');
         }catch (ModelNotFoundException $e) {
             return redirect(route('street.index'))->with('error', 'street not found');

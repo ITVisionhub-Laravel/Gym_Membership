@@ -48,7 +48,7 @@ class CityController extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             }
             $this->city->name = $validatedData['name'];
-            $this->city->country_id = $validatedData['state_id'];
+            $this->city->state_id = $validatedData['state_id'];
             $this->city->save();
             if (request()->expectsJson()) {
                 return new CityResource($this->city);
@@ -77,7 +77,7 @@ class CityController extends Controller
     }
 
 
-    public function update(CityRequest $request, string $id)
+    public function update(CityRequest $request, string $city)
     {
         try {
             $validatedData = $request->validated();
@@ -90,7 +90,7 @@ class CityController extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             }
 
-            $city = City::findOrFail($id);
+            $city = City::findOrFail($city);
             $city->name = $validatedData['name'];
             $city->state_id = $validatedData['state_id'];
 

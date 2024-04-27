@@ -321,10 +321,10 @@
             </a>
             <div class="collapse" id="ui-address">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('country.index') }}">Add Country</a>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('country.index') }}">View Country</a>
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('state.index') }}">View State</a> </li>
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('city.index') }}">Add City</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('city.index') }}">View City</a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('township.index') }}">View Township</a>
                     </li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('ward.index') }}">View Ward</a></li>
@@ -406,7 +406,7 @@
 
         <li class="nav-item">
             <a class="nav-link" href="{{ route('setting.index') }}">
-                <i class="fa-solid fa-gear  menu-icon"></i>
+                <i class="fa-solid fa-gear"></i>
                 <span class="menu-title">Setting</span>
             </a>
         </li>

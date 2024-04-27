@@ -75,11 +75,11 @@ class StreetController extends Controller
         return view('admin.address.street.edit',compact('street','wards'));
     }
 
-    public function update(StreetRequest $request, string $id)
+    public function update(StreetRequest $request, string $street)
     {
        if(request()->expectsJson()){
         $validatedData = $request->validated();
-        $street = Street::find($id);
+        $street = Street::find($street);
         if(!$street){
             return response()->json([
                 'message' => 'street not found'
@@ -92,13 +92,13 @@ class StreetController extends Controller
        }
        try {
         $validatedData = $request->validated();
-        $street = Street::findOrFail($id);
+        $street = Street::findOrFail($street);
 
         $street->name = $validatedData['name'];
         $street->ward_id = $validatedData['ward_id'];
 
         $street->update();
-        return redirect(route('street.update'))->with('message','Street Updated Successfully');
+        return redirect(route('street.index'))->with('message','Street Updated Successfully');
        }catch (ModelNotFoundException $e) {
         return redirect(route('street.index'))->with('error', 'street not found');
     }  catch (Exception $e) {

@@ -75,11 +75,11 @@ class WardController extends Controller
 
     }
 
-    public function update(WardRequest $request, string $id)
+    public function update(WardRequest $request, string $ward)
     {
        if(request()->expectsJson()){
         $validatedData = $request->validated();
-        $ward = Ward::find($id);
+        $ward = Ward::find($ward);
         if(!$ward){
             return response()->json([
                 'message' => 'ward not found'
@@ -92,7 +92,7 @@ class WardController extends Controller
        }
        try {
         $validatedData =$request->validated();
-        $ward=Ward::findOrFail($id);
+        $ward=Ward::findOrFail($ward);
 
         $ward->name = $validatedData['name'];
         $ward->township_id = $validatedData['township_id'];

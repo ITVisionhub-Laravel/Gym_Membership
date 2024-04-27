@@ -292,17 +292,17 @@ Route::prefix('admin')->group(function () {
         Route::get('/country/{id}/edit','edit')->name('country.edit');
         Route::put('/country/{id}','update')->name('country.update');
         Route::get('/country/{id}/delete','destroy')->name('country.delete');
-
     });
+
 
     //State
     Route::controller(StateController::class)->group(function(){
         Route::get('state','index')->name('state.index');
         Route::get('state/create','create')->name('state.create');
         Route::post('state/store','store')->name('state.store');
-        Route::get('state/{id}/edit','edit')->name('state.edit');
-        Route::put('state/{id}/update','update')->name('state.update');
-        Route::get('state/{id}/delete','destroy')->name('state.delete');
+        Route::get('state/{state}/edit','edit')->name('state.edit');
+        Route::put('state/{state}/update','update')->name('state.update');
+        Route::get('state/{state}/delete','destroy')->name('state.delete');
     });
 
     //city
@@ -310,9 +310,9 @@ Route::prefix('admin')->group(function () {
         Route::get('city','index')->name('city.index');
         Route::get('city/create','create')->name('city.create');
         Route::post('city/store','store')->name('city.store');
-        Route::get('city/{id}/edit','edit')->name('city.edit');
-        Route::put('city/{id}/update','update')->name('city.update');
-        Route::get('city/{id}/delete','destroy')->name('city.delete');
+        Route::get('city/{city}/edit','edit')->name('city.edit');
+        Route::put('city/{city}/update','update')->name('city.update');
+        Route::get('city/{city}/delete','destroy')->name('city.delete');
     });
 
      //township
@@ -320,9 +320,9 @@ Route::prefix('admin')->group(function () {
         Route::get('township','index')->name('township.index');
         Route::get('township/create','create')->name('township.create');
         Route::post('township/store','store')->name('township.store');
-        Route::get('township/{id}/edit','edit')->name('township.edit');
-        Route::put('township/{id}/update','update')->name('township.update');
-        Route::get('township/{id}/delete','destroy')->name('township.delete');
+        Route::get('township/{township}/edit','edit')->name('township.edit');
+        Route::put('township/{township}/update','update')->name('township.update');
+        Route::get('township/{township}/delete','destroy')->name('township.delete');
     });
 
      //ward
@@ -330,9 +330,9 @@ Route::prefix('admin')->group(function () {
         Route::get('ward','index')->name('ward.index');
         Route::get('ward/create','create')->name('ward.create');
         Route::post('ward/store','store')->name('ward.store');
-        Route::get('ward/{id}/edit','edit')->name('ward.edit');
-        Route::put('ward/{id}/update','update')->name('ward.update');
-        Route::get('ward/{id}/delete','destroy')->name('ward.delete');
+        Route::get('ward/{ward}/edit','edit')->name('ward.edit');
+        Route::put('ward/{ward}/update','update')->name('ward.update');
+        Route::get('ward/{ward}/delete','destroy')->name('ward.delete');
     });
 
     //street
@@ -340,9 +340,9 @@ Route::prefix('admin')->group(function () {
         Route::get('street','index')->name('street.index');
         Route::get('street/create','create')->name('street.create');
         Route::post('street/store','store')->name('street.store');
-        Route::get('street/{id}/edit','edit')->name('street.edit');
-        Route::put('street/{id}/update','update')->name('street.update');
-        Route::get('street/{id}/delete','destroy')->name('street.delete');
+        Route::get('street/{street}/edit','edit')->name('street.edit');
+        Route::put('street/{street}/update','update')->name('street.update');
+        Route::get('street/{street}/delete','destroy')->name('street.delete');
     });
 
     // schedule

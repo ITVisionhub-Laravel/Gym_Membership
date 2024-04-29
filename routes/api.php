@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\PaymentProviderController;
 use App\Http\Controllers\Admin\TrainerController;
 use App\Http\Controllers\Admin\AttendentController;
 use App\Http\Controllers\Admin\Attendence_CheckController;
+use App\Http\Livewire\GymClassType;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -66,6 +67,7 @@ Route::resource('/trainer', TrainerController::class);
 Route::resource('/gymclass', ClassController::class);
 Route::resource('/schedule',ScheduleController::class);
 Route::resource('/dashboard', DashboardController::class);
-Route::get('/payment_expired_members', [CustomerController::class, 'showExpiredMembers']);
+Route::get('/payment-expired-members', [CustomerController::class, 'showExpiredMembers']);
+Route::get('/gymclass-type/{gymClassCategoryId}', GymClassType::class);
 // });
 // });

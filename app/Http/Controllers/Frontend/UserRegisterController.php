@@ -133,6 +133,7 @@ class UserRegisterController extends Controller
     public function show()
     {
         if (Auth::user()) {
+            // dd(Auth::user()->role_as);
             if (Auth::user()->role_as == 1) {
                 return redirect('admin/customers');
             } else {

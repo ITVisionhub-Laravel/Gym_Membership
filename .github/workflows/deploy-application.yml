@@ -25,6 +25,7 @@ jobs:
       - name: Composer install --ignore-platform-reqs
         run: |
           composer install
+          composer dump-autoload
 
       - name: Create deployment artifact
         env:

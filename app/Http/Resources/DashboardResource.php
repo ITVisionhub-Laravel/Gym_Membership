@@ -16,15 +16,15 @@ class DashboardResource extends JsonResource
     {
         
             return [
-                'number_of_attended_member' => $this['attendedMembers']?->count(),
-                'number_of_registered_member' => $this['members']?->count(),
-                'number_of_payment_expired_member' => $this['payment'],
-                'total_income' => $this['total_income'],
-                'our_revenue' => $this['our_revenue'],
-                'yufc_income' => $this['yufc_income'],
-                'expenses' => $this['expenses'],
-                'trainers' => $this['trainers'],
-                'attended_members' => $this['attendedMembers']
+                // 'number_of_attended_member' => $this['attendedMembers']?->count(),
+                // 'number_of_registered_member' => $this['members']?->count(),
+                // 'number_of_payment_expired_member' => $this['payment'],
+                // 'total_income' => $this['total_income'],
+                // 'our_revenue' => $this['our_revenue'],
+                // 'yufc_income' => $this['yufc_income'],
+                // 'expenses' => $this['expenses'],
+                // 'trainers' => $this['trainers'],
+                'attended_members' => $this['partner']
             ];
        
     }

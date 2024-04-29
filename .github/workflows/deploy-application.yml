@@ -23,9 +23,8 @@ jobs:
           extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, xml
       
       - name: Composer install --ignore-platform-reqs
-        run: |
-          composer install --ignore-platform-reqs
-          composer dump-autoload
+        run: |  
+          composer install --no-dev --no-interaction --prefer-dist
 
       - name: Create deployment artifact
         env:

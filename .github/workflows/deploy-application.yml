@@ -24,6 +24,8 @@ jobs:
       
       - name: Composer install --ignore-platform-reqs
         run: |
+          composer install
+          composer install --ignore-platform-reqs
           composer install --no-dev --no-interaction --prefer-dist
 
       - name: Create deployment artifact

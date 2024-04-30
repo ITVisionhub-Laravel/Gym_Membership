@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
 use App\Models\City;
 use App\Models\Logo;
 use App\Models\User;
@@ -9,6 +10,7 @@ use App\Models\Ward;
 use App\Models\State;
 use App\Models\Street;
 use App\Models\Address;
+use App\Models\Country;
 use App\Models\GymClass;
 use App\Models\Township;
 use Illuminate\Http\Request;
@@ -18,23 +20,24 @@ use App\Models\PaymentPackage;
 use Illuminate\Support\Carbon;
 use App\Models\PaymentProvider;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Traits\UploadImageTrait;
+use FontLib\TrueType\Collection;
 use App\Models\ProfitSharingView;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MemberRequest;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use App\Models\PaymentExpiredMembers;
-use App\Http\Resources\MemberResource;
-use App\Models\Country;
 use App\Models\ProductPaymentRecords;
-use App\Http\Requests\CustomerFormRequest;
-use App\Http\Requests\CustomerUpdateRequest;
+use App\Http\Resources\MemberResource;
 use App\Http\Resources\InvoiceResource;
+use App\Http\Requests\CustomerFormRequest;
+use App\Http\Resources\EditMemberResource;
+use App\Http\Requests\CustomerUpdateRequest;
+use App\Http\Resources\SearchMemberResource;
 use App\Http\Resources\MemberHistoryResource;
 use App\Http\Resources\PaymentExpiredMemberResource;
-use App\Http\Resources\SearchMemberResource;
-use App\Traits\UploadImageTrait;
-use FontLib\TrueType\Collection;
 
 class CustomerController extends Controller
 {
@@ -275,6 +278,10 @@ class CustomerController extends Controller
             $customer->id
         )->get();
         $this->setOldValues($data);
+
+        if (request()->expectsJson()) {
+            return new EditMemberResource($data, $customer);
+        }
         return view('admin.customers.edit', $data, compact('customer'));
     }
 
@@ -309,6 +316,8 @@ class CustomerController extends Controller
         $customer->twitter = $request->twitter;
         $customer->linkedIn = $request->linkedIn;
         $this->uploadImage($request, $customer, "member");
+
+
         DB::beginTransaction();
         try {
             $customer->update();
@@ -319,20 +328,20 @@ class CustomerController extends Controller
             $address->zipcode = $request->zipcode;
             $address->save();
             DB::commit();
+
+            if (request()->expectsJson()) {
+                return new MemberResource($customer);
+            }
             return redirect('admin/customers')->with('message', 'Customer Updated Successfully');
         } catch (Exception $e) {
             DB::rollback();
+            if (request()->expectsJson()) {
+                return response()->json(['error' => 'Failed to update customer, error: ' . $e->getMessage()], 500);
+            }
             dd("Exception occurred: " . $e->getMessage());
         }
-        if (request()->expectsJson()) {
-            if (!$customer) {
-                return response()->json([
-                    'message' => 'Member not found'
-                ], 401);
-            }
-            return new MemberResource($customer);
-        }
     }
+
     public function destroy($customer_id)
     {
         $customer = User::findOrFail($customer_id);

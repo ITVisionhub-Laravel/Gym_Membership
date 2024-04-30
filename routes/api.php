@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\PaymentProviderController;
 use App\Http\Controllers\Admin\TrainerController;
 use App\Http\Controllers\Admin\AttendentController;
 use App\Http\Controllers\Admin\Attendence_CheckController;
+use App\Models\Customer;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -73,3 +74,5 @@ Route::get('/payment_expired_members', [CustomerController::class, 'showExpiredM
 Route::get('/admin/search_member', [CustomerController::class, 'searchMember']);
 Route::get('/admin/customers/{id}/history', [CustomerController::class, 'history']);
 Route::get('/admin/customers/{id}/invoice', [CustomerController::class, 'invoice']);
+Route::get('admin/customers/{customer}/edit', [CustomerController::class, 'edit']);
+Route::patch('admin/customers/{customer}', [CustomerController::class, 'update']);

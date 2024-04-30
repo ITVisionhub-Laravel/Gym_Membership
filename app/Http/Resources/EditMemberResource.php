@@ -3,9 +3,10 @@
 namespace App\Http\Resources;
 
 use App\Models\Address;
+use App\Models\GymClass;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class MemberResource extends JsonResource
+class EditMemberResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,28 +15,29 @@ class MemberResource extends JsonResource
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
     private $customer;
+
     public function __construct($customer)
     {
         $this->customer = $customer;
     }
+
     public function toArray($request)
     {
-        $addressData = Address::where('user_id', $this->customer->id)->latest('updated_at')->first();
+        $gymClassData = GymClass::findOrFail($this->customer->gym_class_id);
+        $addressData = Address::findOrFail($this->customer->id);
+
         return [
-            'name' => $this->customer->name,
+            'Name' => $this->customer->name,
             'email' => $this->customer->email,
-            'member_card' => $this->customer->member_card,
-            'twitter' => $this->customer->twitter,
-            'facebook' => $this->customer->facebook,
-            'linkedIn' => $this->customer->linkedIn,
             'age' => $this->customer->age,
             'gender' => $this->customer->gender,
-            'height' => $this->customer->height,
-            'weight' => $this->customer->weight,
-            'mobile' => $this->customer->phone_number,
-            'emergency' => $this->customer->emergency_phone,
             'image' => $this->customer->image,
-            'address' => [
+            'class' => $gymClassData->name,
+            'Height' => $this->customer->height,
+            'Weight' => $this->customer->weight,
+            'Mobile' => $this->customer->phone_number,
+            'Emergency Mobile' => $this->customer->emergency_phone,
+            'Address' => [
                 'Street' => $addressData->street->name,
                 'Ward' => $addressData->street->ward->name,
                 'Township' => $addressData->street->ward->township->name,
@@ -45,16 +47,8 @@ class MemberResource extends JsonResource
                 'Block_no' => $addressData->block_no,
                 'Floor' => $addressData->floor,
                 'ZipCode' => $addressData->zipcode
-            ]
-        ];
-    }
+            ],
 
-    public function with($request)
-    {
-        return [
-            'version' => '1.0.0',
-            'api_url' => url('http://127.0.0.1:8000/api/country'),
-            'message' => 'Your action is successful'
         ];
     }
 }

@@ -21,7 +21,7 @@ class WardController extends Controller
 
     public function index()
     {
-       $wards = Ward::all();
+       $wards = Ward::paginate(10);
        if(request()->expectsJson()){
         return WardResource::collection($wards);
        }
@@ -75,11 +75,11 @@ class WardController extends Controller
 
     }
 
-    public function update(WardRequest $request, string $id)
+    public function update(WardRequest $request, string $ward)
     {
        if(request()->expectsJson()){
         $validatedData = $request->validated();
-        $ward = Ward::find($id);
+        $ward = Ward::find($ward);
         if(!$ward){
             return response()->json([
                 'message' => 'ward not found'
@@ -92,7 +92,7 @@ class WardController extends Controller
        }
        try {
         $validatedData =$request->validated();
-        $ward=Ward::findOrFail($id);
+        $ward=Ward::findOrFail($ward);
 
         $ward->name = $validatedData['name'];
         $ward->township_id = $validatedData['township_id'];
@@ -107,11 +107,14 @@ class WardController extends Controller
 
     public function destroy(Ward $ward)
     {
-        if(request()->expectsJson()){
-            return $ward->delete()? response(status:204): response(status:500);
-        }
         try {
             $ward->delete();
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Ward has been deleted successfully',
+                ]);
+            }
         return redirect(route('ward.index'))->with('message','Ward Deleted Successfully');
         } catch (ModelNotFoundException $e) {
             return redirect(route('ward.index'))->with('error', 'ward not found');

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\City;
-use App\Models\State; 
+use App\Models\State;
 use Illuminate\Http\Response;
 use App\Http\Requests\CityRequest;
 use App\Http\Resources\CityResource;
@@ -22,7 +22,7 @@ class CityController extends Controller
 
     public function index()
     {
-       $cities = City::all();
+       $cities = City::paginate(10);
        if(request()->expectsJson()){
         return CityResource::collection($cities);
        }
@@ -48,7 +48,7 @@ class CityController extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             }
             $this->city->name = $validatedData['name'];
-            $this->city->country_id = $validatedData['state_id'];
+            $this->city->state_id = $validatedData['state_id'];
             $this->city->save();
             if (request()->expectsJson()) {
                 return new CityResource($this->city);
@@ -77,10 +77,10 @@ class CityController extends Controller
     }
 
 
-    public function update(CityRequest $request, string $id)
+    public function update(CityRequest $request, string $city)
     {
         try {
-            $validatedData = $request->validated(); 
+            $validatedData = $request->validated();
 
             // Check if the state ID exists
             $state = State::find($validatedData['state_id']);
@@ -90,7 +90,7 @@ class CityController extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             }
 
-            $city = City::findOrFail($id);
+            $city = City::findOrFail($city);
             $city->name = $validatedData['name'];
             $city->state_id = $validatedData['state_id'];
 
@@ -113,7 +113,7 @@ class CityController extends Controller
     {
         try {
             $city = State::findOrFail($city);
-            $this->deleteImage($city);
+            // $this->deleteImage($city);
             $city->delete();
             if (request()->expectsJson()) {
                 return response()->json([

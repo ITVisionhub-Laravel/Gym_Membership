@@ -21,7 +21,7 @@ class StreetController extends Controller
 
     public function index()
     {
-       $streets = Street::all();
+       $streets = Street::paginate(10);
        if(request()->expectsJson()){
         return StreetResource::collection($streets);
        }
@@ -75,11 +75,11 @@ class StreetController extends Controller
         return view('admin.address.street.edit',compact('street','wards'));
     }
 
-    public function update(StreetRequest $request, string $id)
+    public function update(StreetRequest $request, string $street)
     {
        if(request()->expectsJson()){
         $validatedData = $request->validated();
-        $street = Street::find($id);
+        $street = Street::find($street);
         if(!$street){
             return response()->json([
                 'message' => 'street not found'
@@ -92,13 +92,13 @@ class StreetController extends Controller
        }
        try {
         $validatedData = $request->validated();
-        $street = Street::findOrFail($id);
+        $street = Street::findOrFail($street);
 
         $street->name = $validatedData['name'];
         $street->ward_id = $validatedData['ward_id'];
 
         $street->update();
-        return redirect(route('street.update'))->with('message','Street Updated Successfully');
+        return redirect(route('street.index'))->with('message','Street Updated Successfully');
        }catch (ModelNotFoundException $e) {
         return redirect(route('street.index'))->with('error', 'street not found');
     }  catch (Exception $e) {
@@ -108,11 +108,14 @@ class StreetController extends Controller
 
     public function destroy(Street $street)
     {
-        if(request()->expectsJson()){
-      return $street->delete()? response(status:204): response(status:500);
-        }
         try {
             $street->delete();
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Street has been deleted successfully',
+                ]);
+            }
             return redirect(route('street.index'))->with('message','Street Deleted Successfully');
         }catch (ModelNotFoundException $e) {
             return redirect(route('street.index'))->with('error', 'street not found');

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Setting;
 use Laravel\Ui\Presets\Bootstrap;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Dotenv\Validator as DotenvValidator;
 use Illuminate\Support\Facades\Validator;
@@ -27,5 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('recaptcha', 'App\\Validators\\ReCaptcha@validate');
 
     Paginator::useBootstrap();
+    $websiteSetting = Setting::first();
+    View::share('appSetting',$websiteSetting);
     }
 }

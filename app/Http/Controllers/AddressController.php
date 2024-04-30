@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AddressRequest;
 use App\Http\Resources\AddressResource;
 use App\Models\Address;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +25,7 @@ class AddressController extends Controller
 
     public function index()
     {
-       $address = Address::all();
+       $address = Address::paginate(10);
        return AddressResource::collection($address);
     }
 
@@ -115,6 +117,19 @@ class AddressController extends Controller
      */
     public function destroy(Address $address)
     {
-      return $address->delete()? response(status:204): response(status:500);
+        try {
+            $address->delete();
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Address has been deleted successfully',
+                ]);
+            }
+            return redirect(route('address.index'))->with('message','Address Deleted Successfully');
+        }catch (ModelNotFoundException $e) {
+            return redirect(route('address.index'))->with('error', 'Address not found');
+        }  catch (Exception $e) {
+            return redirect(route('address.index'))->with('error', 'An error occurred while updating address');
+        }
     }
 }

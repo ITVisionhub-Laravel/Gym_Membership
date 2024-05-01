@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('recaptcha', 'App\\Validators\\ReCaptcha@validate');
 
     Paginator::useBootstrap();
-    $websiteSetting = Setting::first();
-    View::share('appSetting',$websiteSetting);
+    // $websiteSetting = Setting::first();
+    // View::share('appSetting',$websiteSetting);
     }
 }

@@ -85,15 +85,16 @@ class CountryController extends Controller
                 'message' => 'Country not found'
             ],401);
         }
-        $country->name = $validatedData['name'];
-        $country->save();
+        // $country->name = $validatedData['name'];
+        // $country->save();
+        $country->update($validatedData);
         return new CountryResource($country);
        }
        try {
         $validatedData = $request->validated();
         $country = Country::find($id);
-        $country->name = $validatedData['name'];
-        $country->update();
+        // $country->name = $validatedData['name'];
+        $country->update($validatedData);
         return redirect(route('country.index'))->with('message','Country Updated Successfully');
        } catch (ModelNotFoundException $e) {
             return response()->json([

@@ -89,10 +89,20 @@ class StateController extends Controller
                     'message' => 'Invalid Country ID provided'
                 ], Response::HTTP_BAD_REQUEST);
             }
-            $state->name = $validatedData['name'];
-            $state->country_id = $validatedData['country_id'];
+            // $state->name = $validatedData['name'];
+            // $state->country_id = $validatedData['country_id'];
 
-            $state->update();
+            // $state->update();
+            // if ($request->expectsJson()) {
+            //     return new StateResource($state);
+            // }
+
+            // Update state attributes
+            $state->update([
+                'name' => $validatedData['name'],
+                'country_id' => $validatedData['country_id']
+            ]);
+
             if ($request->expectsJson()) {
                 return new StateResource($state);
             }

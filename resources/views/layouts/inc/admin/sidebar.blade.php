@@ -406,7 +406,7 @@
 
         <li class="nav-item">
             <a class="nav-link" href="{{ route('setting.index') }}">
-                <i class="fa-solid fa-gear"></i>
+                <i class="fa-solid fa-gear menu-icon"></i>
                 <span class="menu-title">Setting</span>
             </a>
         </li>

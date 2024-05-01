@@ -355,7 +355,7 @@ Route::prefix('admin')->group(function () {
         Route::get('schedule/{id}/delete','destroy')->name('schedule.delete');
     });
 
-    //setting
+    // setting
     Route::controller(SettingController::class)->group(function(){
         Route::get('setting','index')->name('setting.index');
         Route::post('setting','store')->name('setting.store');

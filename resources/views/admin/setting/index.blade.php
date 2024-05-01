@@ -13,7 +13,7 @@
                     <div class="row">
 
                         <x-forms.forminput name="website_name" type="text" placeholder="Enter Website Name"
-                            value="{{ $setting->website_name ?? '' }}" width="col-md-6" />
+                            value="Gym Membership" width="col-md-6" />
 
                         <x-forms.forminput name="website_url" type="text" placeholder="Enter Website URL"
                             value="{{ $setting->website_url ?? '' }}" width="col-md-6" />

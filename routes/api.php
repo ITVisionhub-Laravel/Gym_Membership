@@ -38,9 +38,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::prefix('admin')
-    ->middleware(['auth:sanctum', 'admin'])
-    ->group(function () {
+// Route::prefix('admin')
+//     ->middleware(['auth:sanctum', 'admin'])
+//     ->group(function () {
 
         // General Resources
         Route::resource('shop', ShopController::class);
@@ -77,7 +77,7 @@ Route::prefix('admin')
         Route::get('/dashboard', DashboardController::class);
         Route::get('/payment-expired-members', [CustomerController::class, 'showExpiredMembers']);
         
-    });
+    // });
 
 Route::get('/gymclass-type/{gymClassCategoryId}', [GymClassType::class, 'GymClassType']);
 Route::get('/admin/search_member', [CustomerController::class, 'searchMember']);

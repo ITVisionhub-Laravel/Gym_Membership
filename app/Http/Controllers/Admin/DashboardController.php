@@ -20,6 +20,11 @@ use Illuminate\Support\Facades\Config;
 
 class DashboardController extends Controller
 {
+    public function __invoke()
+    {
+        // Your controller logic here
+        return view('admin.dashboard');
+    }
     public function index()
     {
         // dd(auth()->user());

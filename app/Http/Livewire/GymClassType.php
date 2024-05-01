@@ -7,7 +7,9 @@ use App\Models\User;
 use App\Models\Partner;
 use Livewire\Component;
 use App\Models\GymClass;
-use App\Http\Resources\DashboardResource;
+use Illuminate\Http\Request;
+use App\Http\Resources\GymClassResource;
+use App\Http\Resources\GymClassByCategoryResource;
 
 class GymClassType extends Component
 {
@@ -18,20 +20,25 @@ class GymClassType extends Component
         $this->gymClassCategoryId = $gymClassCategoryId;
     }
 
+    public function gymClassType(Request $request){
+        $this->gymClassCategoryId = $request->route('gymClassCategoryId');
+        $gymClasses = GymClass::where('gym_class_category_id', $this->gymClassCategoryId)->get();
+        foreach($gymClasses as $gymClass){
+            $gymClass->trainers;
+            $gymClass->schedules;
+        }
+        // $gymClass->trainers['0']
+        return GymClassByCategoryResource::collection($gymClasses);
+    }
+
     public function render()
     { 
         $gymClasses = GymClass::where('gym_class_category_id', $this->gymClassCategoryId)->get();
         $gymClassType = $gymClasses->first()->classCategory->name;
-        // auth()->user()->id
-        $data['customerInfo'] = User::where('id', 3)->whereNotNull('member_card')->first();
-        // $data['paymentExpired'] = PaymentExpire
+        $data['customerInfo'] = User::where('id', auth()->user()->id)->whereNotNull('member_card')->first();
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
-        if (request()->expectsJson()) {
-            return new DashboardResource($data);
-        }else{
-
-            return view('livewire.gym-class-type',['data' => $data, 'gymClasses' => $gymClasses, 'gymClassType' => $gymClassType]);
-        }
+        return view('livewire.gym-class-type',['data' => $data, 'gymClasses' => $gymClasses, 'gymClassType' => $gymClassType]);
+        
     }
 }

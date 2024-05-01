@@ -38,40 +38,48 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::prefix('admin')
+    ->middleware(['auth:sanctum', 'admin'])
+    ->group(function () {
 
-// Route::prefix('admin')->middleware(['auth:sanctum', 'admin'])->group(function () {
-// Shop Resource
-Route::resource('shop', ShopController::class);
-Route::resource('shop-types', ShopTypeController::class);
-Route::resource('delivery-type', DeliveryTypeController::class);
-Route::resource('attendence-check', Attendence_CheckController::class);
-Route::resource('attendent', AttendentController::class);
-Route::resource('brands', BrandsController::class);
-Route::resource('categories', CategoryController::class);
-Route::resource('/country', CountryController::class);
-Route::resource('/state', StateController::class);
-Route::resource('/city', CityController::class);
-Route::resource('/township', TownshipController::class);
-Route::resource('/ward', WardController::class);
-Route::resource('/street', StreetController::class);
-Route::resource('/address', AddressController::class);
-Route::resource('/gymclass-category', GymClassCategoryController::class);
-Route::resource('/member', CustomerController::class);
-Route::resource('/package', PaymentPackageController::class);
-Route::resource('/payment-provider', PaymentProviderController::class);
-Route::resource('/expenses', ExpensesController::class);
-Route::resource('/debit-credit', DebitAndCreditController::class);
-Route::resource('/logo', LogoController::class);
-Route::resource('/partner', PartnerController::class);
-Route::resource('/trainer', TrainerController::class);
-Route::resource('/gymclass', ClassController::class);
-Route::resource('/schedule', ScheduleController::class);
-Route::resource('/dashboard', DashboardController::class);
-Route::get('/payment-expired-members', [CustomerController::class, 'showExpiredMembers']);
-Route::get('/gymclass-type/{gymClassCategoryId}', GymClassType::class);
-// });
-// });
+        // General Resources
+        Route::resource('shop', ShopController::class);
+        Route::resource('shop-types', ShopTypeController::class);
+        Route::resource('delivery-type', DeliveryTypeController::class);
+        Route::resource('attendence-check', Attendence_CheckController::class);
+        Route::resource('attendent', AttendentController::class);
+        Route::resource('brands', BrandsController::class);
+        Route::resource('categories', CategoryController::class);
 
+        // Location Resources
+        Route::resource('/country', CountryController::class);
+        Route::resource('/state', StateController::class);
+        Route::resource('/city', CityController::class);
+        Route::resource('/township', TownshipController::class);
+        Route::resource('/ward', WardController::class);
+        Route::resource('/street', StreetController::class);
+        Route::resource('/address', AddressController::class);
+
+        // Gym Resources
+        Route::resource('/gymclass-category', GymClassCategoryController::class);
+        Route::resource('/member', CustomerController::class);
+        Route::resource('/package', PaymentPackageController::class);
+        Route::resource('/payment-provider', PaymentProviderController::class);
+        Route::resource('/expenses', ExpensesController::class);
+        Route::resource('/debit-credit', DebitAndCreditController::class);
+        Route::resource('/logo', LogoController::class);
+        Route::resource('/partner', PartnerController::class);
+        Route::resource('/trainer', TrainerController::class);
+        Route::resource('/gymclass', ClassController::class);
+        Route::resource('/schedule', ScheduleController::class);
+
+        // Dashboard Routes
+        Route::get('/dashboard', DashboardController::class);
+        Route::get('/payment-expired-members', [CustomerController::class, 'showExpiredMembers']);
+        
+    });
+
+Route::get('/gymclass-type/{gymClassCategoryId}', [GymClassType::class, 'GymClassType']);
 Route::get('/admin/search_member', [CustomerController::class, 'searchMember']);
 Route::get('/admin/customers/{id}/history', [CustomerController::class, 'history']);
 Route::get('/admin/customers/{id}/invoice', [CustomerController::class, 'invoice']);

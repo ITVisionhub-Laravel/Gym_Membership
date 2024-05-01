@@ -6,7 +6,7 @@
             <div class="col-12">
                 <nav class="main-nav">
                     <!-- ***** Logo Start ***** -->
-                    <a href="/" class="logo">{{ $appSetting->website_name ?? 'website_name' }}</a>
+                    <a href="/" class="logo">Gym</a>
                     <!-- ***** Logo End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">

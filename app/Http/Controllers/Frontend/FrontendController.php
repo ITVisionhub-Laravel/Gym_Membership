@@ -20,7 +20,7 @@ class FrontendController extends Controller
 {
     public function index()
     {
-        dd(Auth::user());
+        // dd(Auth::user());
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
         $data['gymClasses'] = GymClass::get();

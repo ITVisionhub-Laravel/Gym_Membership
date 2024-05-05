@@ -23,6 +23,7 @@
             <img src="admin/images/gymlogo.png" alt="" width="100" height="100">
 
             <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+                {{--  <h1>Hello</h1>  --}}
                 {{ $slot }}
             </div>
         </div>

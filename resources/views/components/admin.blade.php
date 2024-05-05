@@ -25,7 +25,7 @@
             @include('layouts.inc.admin.sidebar')
 
             <div class="main-panel">
-                <div class="content-wrapper">
+                <div class="content-wrapper"> 
                     {{ $slot }}
                 </div>
             </div>

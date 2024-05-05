@@ -1381,6 +1381,9 @@ a.float:hover + div.label-container{
 .image-thumb img:hover{
   transform: scale(1.2);
 }
+.card{
+  margin-bottom: 1rem;
+}
 .card-img-top {
   height: 140px;
 }

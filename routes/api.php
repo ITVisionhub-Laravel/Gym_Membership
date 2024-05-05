@@ -30,6 +30,7 @@ use App\Http\Controllers\Admin\PaymentProviderController;
 use App\Http\Controllers\Admin\TrainerController;
 use App\Http\Controllers\Admin\AttendentController;
 use App\Http\Controllers\Admin\Attendence_CheckController;
+use App\Http\Controllers\Frontend\FrontendController;
 use App\Http\Livewire\GymClassType;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -80,6 +81,7 @@ Route::post('/login', [AuthController::class, 'login']);
     // });
 
 Route::get('/gymclass-type/{gymClassCategoryId}', [GymClassType::class, 'GymClassType']);
+Route::get('/schedule-by-dayofweek/{dayOfWeek}', [FrontendController::class, 'scheduleByDayOfWeek']);
 Route::get('/admin/search_member', [CustomerController::class, 'searchMember']);
 Route::get('/admin/customers/{id}/history', [CustomerController::class, 'history']);
 Route::get('/admin/customers/{id}/invoice', [CustomerController::class, 'invoice']);

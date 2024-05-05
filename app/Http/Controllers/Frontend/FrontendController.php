@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Models\Slider;
-use Illuminate\Http\Request;
-use App\Models\CustomerQRCode;
-use App\Http\Controllers\Controller;
-use App\Models\Customer;
-use App\Models\DaysOfWeek;
-use App\Models\GymClass;
-use App\Models\GymClassCategory;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Logo;
+use App\Models\Logo; 
 use App\Models\Partner;
-use App\Models\Trainer;
-use App\Models\User;
+use App\Models\Trainer; 
+use App\Models\GymClass;
+use App\Models\DaysOfWeek;
+use Illuminate\Http\Request; 
+use App\Models\GymClassCategory;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth; 
+use App\Http\Resources\FrontendDashboardResource;
+use App\Models\GymSchedule;
 
 class FrontendController extends Controller
 {
     public function index()
-    {
-        // dd(Auth::user());
+    { 
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
         $data['gymClasses'] = GymClass::get();
@@ -29,8 +26,12 @@ class FrontendController extends Controller
         $data['gymTrainers'] = Trainer::get();
         if (Auth::user()) {
             if (Auth::user()->role_as == 1) {
-                return redirect('admin/customers');
+                return redirect('admin/dashboard');
             } else {
+                if (request()->expectsJson()) {
+                    // dd("hello");
+                    return FrontendDashboardResource::collection($data);
+                }
                 // $customer = false;
 
                 // if ($member_card_id) {
@@ -62,6 +63,12 @@ class FrontendController extends Controller
         }
     }
 
+    public function
+    scheduleByDayOfWeek(Request $request)
+    { 
+        $gymSchedules = GymSchedule::with('trainers', 'gymclasses')->where('days_of_week_id', $request->route('dayOfWeek'))->get();
+    }
+
     public function create(Request $request)
     {
         $rules = [
@@ -80,7 +87,5 @@ class FrontendController extends Controller
             'g-recaptcha-response.recaptcha' => 'Captcha verification failed',
             'g-recaptcha-response.required' => "Please complete the captcha"
         ]);
-
-
     }
 }

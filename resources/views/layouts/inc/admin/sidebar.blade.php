@@ -405,7 +405,8 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="{{ route('setting.index') }}">
+            {{--  {{ route('setting.index') }}  --}}
+            <a class="nav-link" href="">
                 <i class="fa-solid fa-gear menu-icon"></i>
                 <span class="menu-title">Setting</span>
             </a>

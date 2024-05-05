@@ -18,4 +18,15 @@ class GymSchedule extends Model
     {
         return $this->belongsTo(DaysOfWeek::class, 'days_of_week_id', 'id');
     }
+
+    public function trainers()
+    {
+        return $this->belongsToMany(Trainer::class, 'gym_class_trainer', 'schedule_id', 'trainer_id')->withPivot('gym_class_id');
+    }
+
+    public function gymclasses()
+    {
+        return $this->belongsToMany(GymSchedule::class, 'gym_class_trainer', 'schedule_id', 'gym_class_id')
+        ->withPivot('trainer_id');
+    }
 }

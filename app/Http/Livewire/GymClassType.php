@@ -34,11 +34,11 @@ class GymClassType extends Component
     public function render()
     { 
         $gymClasses = GymClass::where('gym_class_category_id', $this->gymClassCategoryId)->get();
-        $gymClassType = $gymClasses->first()->classCategory->name;
+
         $data['customerInfo'] = User::where('id', auth()->user()->id)->whereNotNull('member_card')->first();
         $data['logo'] = Logo::first();
         $data['partner'] = Partner::get();
-        return view('livewire.gym-class-type',['data' => $data, 'gymClasses' => $gymClasses, 'gymClassType' => $gymClassType]);
-        
+        $gymClassType = $gymClasses->first()?->classCategory->name; 
+        return view('livewire.gym-class-type', ['data' => $data, 'gymClasses' => $gymClasses, 'gymClassType' => $gymClassType]);
     }
 }

@@ -13,4 +13,8 @@ class DaysOfWeek extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function schedule(){
+        return $this->hasMany(GymSchedule::class);
+    }
 }

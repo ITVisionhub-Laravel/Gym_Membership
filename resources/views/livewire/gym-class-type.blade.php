@@ -7,7 +7,7 @@
         <div class="container">
             <div class="section-header text-center wow zoomIn pt-5" data-wow-delay="0.1s">
                 <h5 class="pt-5">Our Classes</h5>
-                <h2 class="pt-3"> {{ $gymClassType }} Class Shedule</h2>
+                <h2 class="pt-3"> @if($gymClassType) {{ $gymClassType }} Class Shedule @else There is no Class Type @endif</h2>
             </div>
     
             <div class="row class-container pt-4">
@@ -16,7 +16,7 @@
                         <a href="{{ route('class.details', ['gymclassId' => $gymClass->id]) }}">
                             <div class="class-wrap">
                                 <div class="class-img">
-                                    <img src="{{asset('/uploads/class/'.$gymClass->image)}}" alt="Image">
+                                    <img src="{{ $gymClass->image }}" alt="Image">
                                 </div>
                                 <div class="class-text">
                                     <div class="class-teacher">

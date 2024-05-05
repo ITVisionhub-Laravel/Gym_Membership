@@ -67,7 +67,6 @@ class GymClassCategoryController extends Controller
             $gymClass->description= $validateData['description'];
             $gymClass->image= $validateData['image'];
             $this->uploadImage($request, $gymClass, "classcategory");
-            
                 $gymClass->update();
                 if ($request->expectsJson()) {
                     return new GymClassCategoryResource($gymClass);

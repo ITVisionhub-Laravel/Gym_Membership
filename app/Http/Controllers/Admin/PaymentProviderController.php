@@ -13,7 +13,7 @@ class PaymentProviderController extends Controller
 {
     public function index()
     {
-        $paymentproviders = PaymentProvider::all();
+        $paymentproviders = PaymentProvider::paginate(10);
 
         if (request()->expectsJson()) {
             return PaymentProviderResource::collection($paymentproviders);

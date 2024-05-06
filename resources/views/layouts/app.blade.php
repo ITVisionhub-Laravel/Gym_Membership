@@ -23,7 +23,7 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/images/features-1-icon.png') }}">
     {{-- <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/> --}}
     <!-- Scripts -->
-    {{--  @vite(['resources/css/app.css', 'resources/js/app.js'])  --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
 

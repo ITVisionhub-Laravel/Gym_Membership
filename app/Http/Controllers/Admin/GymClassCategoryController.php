@@ -64,7 +64,7 @@ class GymClassCategoryController extends Controller
             $gymClass =GymClassCategory::findOrFail($class);
             $gymClass->name = $validateData['name'];
             $gymClass->description= $validateData['description'];
-            $gymClass->image= $validateData['image']?? $gymClass['image'];
+            // $gymClass->image= $validateData['image']?? $gymClass['image'];
             $this->uploadImage($request, $gymClass, "classcategory");
             
                 $gymClass->update();

@@ -13,8 +13,7 @@
                     <th>Class Name</th>
                     <th>Description</th>
                     <th>Image</th>
-                    <th>Action</th>
-
+                    <th>Action</th> 
                 </tr>
             </thead>
             <tbody>
@@ -46,10 +45,9 @@
 
             </tbody>
         </table>
-        <div>
-            {{ $classCategories->links() }}
-        </div>
-    </div>
+    <div>
+    {{ $classCategories->links() }}
+       
     <x-slot name="scripts">
         <script>
             $(document).ready(function() {

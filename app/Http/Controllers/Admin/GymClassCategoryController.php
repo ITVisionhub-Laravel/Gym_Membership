@@ -60,13 +60,13 @@ class GymClassCategoryController extends Controller
 
     public function update(GymClassCategoryFormRequest $request, String $class){ 
        try{
-            $validateData =$request->validated(); 
+            $validateData =$request->validated();  
             $gymClass =GymClassCategory::findOrFail($class);
-
             $gymClass->name = $validateData['name'];
             $gymClass->description= $validateData['description'];
-            $gymClass->image= $validateData['image'];
+            $gymClass->image= $validateData['image']?? $gymClass['image'];
             $this->uploadImage($request, $gymClass, "classcategory");
+            
                 $gymClass->update();
                 if ($request->expectsJson()) {
                     return new GymClassCategoryResource($gymClass);

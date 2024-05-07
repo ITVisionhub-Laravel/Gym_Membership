@@ -21,7 +21,7 @@ class CountryController extends Controller
 
     public function index()
     {
-       $countries = Country::paginate(10);
+       $countries = Country::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
        if(request()->expectsJson()){
         return CountryResource::collection($countries);
        }

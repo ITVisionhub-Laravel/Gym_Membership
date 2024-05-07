@@ -19,7 +19,7 @@
 <div >
   <div data-staffs="{{ json_encode($staffs) }}" id="tree"></div>
 </div>
-<x-script />
+{{--  <x-script />  --}}
 <script>
   // JavaScript
       var staffsData = JSON.parse(document.getElementById('tree').getAttribute('data-staffs'));

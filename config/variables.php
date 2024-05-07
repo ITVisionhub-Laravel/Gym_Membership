@@ -25,6 +25,7 @@ return [
         'CREATED_SETTING' => 'Setting Created Successfully',
         'UPDATED_SETTING' => 'Setting Updated Successfully',
     ],
+    "NUMBER_OF_ITEMS_PER_PAGE" => 10,
     "SUCCESS" => 1, "FAILURE" => 2, "STAFFID" => 2, "DEBIT" => 1, "CREDIT" => 2,
     "EXPENSES" => "expenses", "MEMBER" => "member", "ADMIN" => 1,
     "ZERO" => 0, "ONE" => 1, "TWO" => 2, "THREE" => 3, "FOUR" => 4, "FIVE" => 5, "SIX" => 6,

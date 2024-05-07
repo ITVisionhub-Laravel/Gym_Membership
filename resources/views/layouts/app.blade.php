@@ -76,7 +76,7 @@
     //<script src="assets/js/accordions.js"></script>
     
     <!-- Global Init -->
-    //<script src="assets/js/custom.js"></script>
+    <script src="assets/js/custom.js"></script>
     <script>
         window.addEventListener('message', event => {
             alertify.set('notifier','position', 'top-right');

@@ -23,7 +23,7 @@ class TownshipController extends Controller
 
     public function index()
     {
-       $townships = Township::paginate(10);
+       $townships = Township::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
         if(request()->expectsJson()){
             return TownshipResource::collection($townships);
         }

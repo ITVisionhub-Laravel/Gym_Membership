@@ -26,9 +26,9 @@ class TrainerFormRequest extends FormRequest
         return [
             'name' => ['required', 'string'],
             'description' => ['required', 'string'],
-            'fb_name' => ['required', 'string'],
-            'twitter_name' => ['required', 'string'],
-            'linkin_name' => ['required', 'string'],
+            // 'fb_name' => ['required', 'string'],
+            // 'twitter_name' => ['required', 'string'],
+            // 'linkin_name' => ['required', 'string'],
             'image' => ['nullable', 'mimes:png,jpg,jpeg'],
         ];
     }

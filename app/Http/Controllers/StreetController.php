@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\WardRequest;
 use App\Http\Requests\StreetRequest;
 use App\Http\Resources\StreetResource;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class StreetController extends Controller
@@ -21,7 +22,7 @@ class StreetController extends Controller
 
     public function index()
     {
-       $streets = Street::paginate(10);
+       $streets = Street::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
        if(request()->expectsJson()){
         return StreetResource::collection($streets);
        }

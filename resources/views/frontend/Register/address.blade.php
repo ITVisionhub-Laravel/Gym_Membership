@@ -126,7 +126,7 @@
         </div>
     </div>
    </div>
-    <x-script />
+    {{--  <x-script />  --}}
     <x-addressfieldjs />
 </body>
 

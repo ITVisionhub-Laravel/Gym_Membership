@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Traits\UploadImageTrait;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Config;
 use App\Http\Resources\TrainerResource;
 use App\Http\Requests\TrainerFormRequest;
 
@@ -16,7 +17,7 @@ class TrainerController extends Controller
     use UploadImageTrait;
     public function index()
     {
-        $trainers = Trainer::paginate(10);;
+        $trainers = Trainer::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
         if (request()->expectsJson()) {
             return TrainerResource::collection($trainers);
         }

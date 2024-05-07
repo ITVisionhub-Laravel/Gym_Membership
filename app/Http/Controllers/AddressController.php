@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AddressRequest;
-use App\Http\Resources\AddressResource;
-use App\Models\Address;
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\AddressRequest;
+use Illuminate\Support\Facades\Config;
+use App\Http\Resources\AddressResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AddressController extends Controller
 {
@@ -25,7 +26,7 @@ class AddressController extends Controller
 
     public function index()
     {
-       $address = Address::paginate(10);
+       $address = Address::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
        return AddressResource::collection($address);
     }
 

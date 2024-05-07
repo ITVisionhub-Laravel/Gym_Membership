@@ -22,7 +22,7 @@ class StateController extends Controller
 
     public function index()
     {
-       $states = State::paginate(10);
+       $states = State::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
        if(request()->expectsJson()){
         return StateResource::collection($states);
        }

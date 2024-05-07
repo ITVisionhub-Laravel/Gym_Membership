@@ -22,7 +22,7 @@ class CityController extends Controller
 
     public function index()
     {
-       $cities = City::paginate(10);
+       $cities = City::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
        if(request()->expectsJson()){
         return CityResource::collection($cities);
        }

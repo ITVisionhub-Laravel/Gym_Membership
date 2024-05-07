@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Resources\PaymentProviderResource;
-use App\Models\PaymentProvider;
 use App\Models\Status;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use App\Models\PaymentProvider;
+use App\Http\Controllers\Controller;
+use Illuminate\Auth\Events\Validated;
+use Illuminate\Support\Facades\Config;
+use App\Http\Resources\PaymentProviderResource;
 
 class PaymentProviderController extends Controller
 {
     public function index()
     {
-        $paymentproviders = PaymentProvider::paginate(10);
+        $paymentproviders = PaymentProvider::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
 
         if (request()->expectsJson()) {
             return PaymentProviderResource::collection($paymentproviders);

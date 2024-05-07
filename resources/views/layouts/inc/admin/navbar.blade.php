@@ -34,7 +34,7 @@
             <p class="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
             <a class="dropdown-item">
               <div class="item-thumbnail">
-                  <img src="/images/faces/face1.jpg" alt="image" class="profile-pic">
+                  <img src="{{ asset('images/faces/face1.jpg') }}" alt="image" class="profile-pic">
               </div>
               <div class="item-content flex-grow">
                 <h6 class="ellipsis font-weight-normal">David Grey

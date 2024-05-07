@@ -17,7 +17,7 @@ class GymClassCategoryController extends Controller
 {
     use UploadImageTrait;
     public function index(){ 
-     $classCategories = GymClassCategory::paginate(10);
+     $classCategories = GymClassCategory::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
     if (request()->expectsJson()) {
         return GymClassCategoryResource::collection($classCategories);
     }

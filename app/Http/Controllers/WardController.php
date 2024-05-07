@@ -8,6 +8,7 @@ use App\Models\Township;
 use Illuminate\Http\Request;
 use App\Http\Requests\WardRequest;
 use App\Http\Resources\WardResource;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class WardController extends Controller
@@ -21,7 +22,7 @@ class WardController extends Controller
 
     public function index()
     {
-       $wards = Ward::paginate(10);
+       $wards = Ward::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
        if(request()->expectsJson()){
         return WardResource::collection($wards);
        }

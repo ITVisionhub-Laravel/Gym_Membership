@@ -94,14 +94,17 @@ class CustomerController extends Controller
         $customers = User::with('address')
             ->where('role_as', 0)
             ->paginate(10);
+            
         // For API
         foreach ($customers as $customer) {
+            // dd($customer->address->last()?->street);
             $customer->address->last()?->street;
             $customer->address->last()?->street?->ward;
             $customer->address->last()?->street?->ward?->township;
             $customer->address->last()?->street?->ward?->township?->city;
             $customer->address->last()?->street?->ward?->township?->city?->state;
             $customer->address->last()?->street?->ward?->township?->city?->state?->country;
+            
         }
         if (request()->expectsJson()) {
             return MemberResource::collection($customers);

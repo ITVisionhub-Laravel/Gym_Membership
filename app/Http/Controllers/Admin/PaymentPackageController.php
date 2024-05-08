@@ -85,7 +85,12 @@ class PaymentPackageController extends Controller
         $paymentpackage->package = $request->package;
         $paymentpackage->promotion = $request->promotion;
         $paymentpackage->original_price = $request->original_price;
-
+        $promotion_price =
+            (int) $paymentpackage->original_price -
+            ((int) $paymentpackage->original_price *
+                (int) $paymentpackage->promotion) /
+            100;
+        $paymentpackage->promotion_price = $promotion_price;
         $paymentpackage->update($validatedData);
 
         if (request()->expectsJson()) {
@@ -100,7 +105,10 @@ class PaymentPackageController extends Controller
         $paymentpackage = PaymentPackage::find($id);
         $success = $paymentpackage->delete();
         if (request()->expectsJson()) {
-            return $success ? response(status: 204) : response(status: 500);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Package has been deleted successfully',
+            ]);
         }
         return redirect()->route('payment_packages.index');
     }

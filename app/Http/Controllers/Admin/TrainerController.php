@@ -29,6 +29,7 @@ class TrainerController extends Controller
     }
     public function store(TrainerFormRequest $request)
     {
+        // dd($request->all());
         $validatedData = $request->validated();
         $trainer = new Trainer();
         $trainer->name = $validatedData['name'];

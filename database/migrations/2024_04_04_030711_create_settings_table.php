@@ -12,8 +12,7 @@ return new class extends Migration
      * @return void
      */
     public function up()
-    {
-        dd("hello");
+    {       
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('website_name')->nullable();

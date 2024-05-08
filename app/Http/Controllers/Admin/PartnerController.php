@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Exception;
 use App\Models\Partner;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\PartnerRequest;
-use App\Http\Resources\PartnerResource;
 use App\Traits\UploadImageTrait;
-use Exception;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
+use App\Http\Requests\PartnerRequest;
+use Illuminate\Support\Facades\Config;
+use App\Http\Resources\PartnerResource;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PartnerController extends Controller
@@ -18,7 +19,7 @@ class PartnerController extends Controller
 
     public function index()
     {
-        $partners = Partner::all();
+        $partners = Partner::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
         if (request()->expectsJson()) {
             return PartnerResource::collection($partners);
         }

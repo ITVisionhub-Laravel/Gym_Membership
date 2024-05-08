@@ -8,7 +8,7 @@ trait UploadImageTrait
 {
     public function uploadImage($request, $model, $imageDir, $imageColumn = 'image')
     {
-        if ($request->hasFile($imageColumn)) {
+        if ($request->hasFile($imageColumn)) { 
             $file = $request->file($imageColumn);
             $ext = $file->getClientOriginalExtension();
             $filename = time() . '.' . $ext;

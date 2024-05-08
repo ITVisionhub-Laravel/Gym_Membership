@@ -25,7 +25,6 @@ class UserRegisterController extends Controller
 {
     public function index()
     {
-
         $data['gymclasses'] = GymClass::get();
         $data['userinfo'] = Auth::user();
         $data['oldGymClassId'] = $data['userinfo']->gym_class_id;

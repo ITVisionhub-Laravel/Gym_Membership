@@ -23,6 +23,7 @@ class MemberResource extends JsonResource
         // dd(Address::where('user_id', $this->customer->id)->latest('updated_at')->first());
         $addressData = Address::where('user_id', $this->customer->id)->latest('updated_at')->first();
         return [
+            'id' => $this->customer->id,
             'name' => $this->customer->name,
             'email' => $this->customer->email,
             'member_card' => $this->customer->member_card,

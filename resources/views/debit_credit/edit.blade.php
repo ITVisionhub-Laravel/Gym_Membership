@@ -12,17 +12,17 @@
                     @method('PUT')
                     <div class="form-group">
                         <label for="name">Name:</label>
-                        <input type="text" name="name" class="form-control" value="{{ $debitCredit->name }}" required>
+                        <input type="text" name="name" class="form-control" value="{{ $debitCredit->name }}" disabled>
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount:</label>
-                        <input type="number" name="amount" class="form-control" value="{{ $debitCredit->amount }}" required>
+                        <input type="number" name="amount" class="form-control" value="{{ $debitCredit->amount }}" disabled>
                     </div>
                     <div class="form-group">
                         <label for="date">Date:</label>
-                        <input type="date" name="date" class="form-control" value="{{ $debitCredit->date }}" required>
+                        <input type="date" name="date" class="form-control" value="{{ $debitCredit->date }}" disabled>
                     </div>
-                    <div class="form-group">
+                    {{--  <div class="form-group">
                         <label for="transaction_id">Transaction:</label>
                         <select name="transaction_id" class="form-control" required>
                             @foreach($transactions as $transaction)
@@ -31,7 +31,7 @@
                                 </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div>  --}}
                     <div class="form-group">
                         <label for="transaction_type_id">Transaction Type:</label>
                         <select name="transaction_type_id" class="form-control" required>

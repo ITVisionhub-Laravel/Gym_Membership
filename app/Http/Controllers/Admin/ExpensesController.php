@@ -34,9 +34,8 @@ class ExpensesController extends Controller
     }
 
     public function store(ExpensesRequest $request)
-    {
-        $validatedData = $request->validated();
-
+    { 
+        $validatedData = $request->validated(); 
         DB::beginTransaction();
         try {
             $this->expenses = new Expenses();

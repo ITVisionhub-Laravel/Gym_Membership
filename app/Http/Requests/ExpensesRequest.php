@@ -16,7 +16,7 @@ class ExpensesRequest extends FormRequest
         return [
             'name' => 'required|string',
             'amount' => 'required|integer',
-            'invoice_slip' => ['nullable', 'image', 'mimes:jpg,jpeg,png'],
+            'invoice_slip' => 'nullable', 'image', 'mimes:jpg,jpeg,png',
             'invoice_id' => 'required|string',
         ];
     }

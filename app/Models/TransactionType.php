@@ -11,7 +11,8 @@ class TransactionType extends Model
     use HasFactory;
     
     protected $guarded = ['id'];
-    
+    protected $table = 'transaction_type';
+
     public function transaction() : HasOne
     {
         return $this->hasOne(DebitAndCredit::class);

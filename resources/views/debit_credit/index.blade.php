@@ -14,7 +14,6 @@
                     <th>Name</th>
                     <th>Amount</th>
                     <th>Date</th>
-                    <th>Transaction Name</th>
                     <th>Transaction Type Name</th>
                     <th>Actions</th>
                 </tr>
@@ -25,8 +24,7 @@
                         <td>{{ $debitCredit->id }}</td>
                         <td>{{ $debitCredit->name }}</td>
                         <td>{{ $debitCredit->amount }}</td>
-                        <td>{{ $debitCredit->date }}</td>
-                        <td>{{ $debitCredit->transaction->name }}</td>
+                        <td>{{ $debitCredit->date }}</td> 
                         <td>{{ $debitCredit->transactionType->name }}</td>
                         <td>
                             {{-- <a href="{{ route('debit-credit.show', $debitCredit->id) }}" class="btn btn-info">View</a> --}}

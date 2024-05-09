@@ -9,6 +9,7 @@ class ExpensesResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'amount' => $this->amount,
             'invoice_slip' => $this->invoice_slip,

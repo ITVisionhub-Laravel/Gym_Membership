@@ -49,6 +49,7 @@ class DebitAndCreditController extends Controller
     public function update(DebitAndCreditRequest $request, DebitAndCredit $debitCredit)
     {
         $debitCredit->update($request->validated());
+        
         if (request()->expectsJson()) {
             return new DebitAndCreditResource($debitCredit);
         }

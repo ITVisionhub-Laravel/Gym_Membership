@@ -21,7 +21,7 @@ class ExpensesController extends Controller
     public Model $expenses;
     public function index()
     {
-        $expenses = Expenses::all();
+        $expenses = Expenses::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
         if (request()->expectsJson()) {
             return ExpensesResource::collection($expenses);
         }

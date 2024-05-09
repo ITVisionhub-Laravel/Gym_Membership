@@ -3,10 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Models\Address;
-use App\Models\PaymentPackage;
-use App\Models\Street;
-use App\Models\User;
-use App\Models\Ward;
+use App\Models\PaymentPackage; 
+use App\Models\User; 
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MemberHistoryResource extends JsonResource

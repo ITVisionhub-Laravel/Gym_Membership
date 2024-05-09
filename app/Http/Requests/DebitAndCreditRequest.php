@@ -24,11 +24,11 @@ class DebitAndCreditRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'amount' => 'required|integer',
-            'date' => 'required|date', // Add the date validation rule here
-            'transaction_id' => 'required|exists:transactions,id',
-            'transaction_type_id' => 'required|exists:transaction_types,id',
+            // 'name' => 'required|string',
+            // 'amount' => 'required|integer',
+            // 'date' => 'required|date', // Add the date validation rule here
+            // 'transaction_id' => 'required|exists:transactions,id',
+            'transaction_type_id' => 'required|exists:transaction_type,id',
         ];
     }
 }

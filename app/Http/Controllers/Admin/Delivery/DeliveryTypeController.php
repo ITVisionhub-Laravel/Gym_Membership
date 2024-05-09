@@ -7,13 +7,11 @@ use App\Http\Requests\Delivery\DeliveryTypeFormRequest;
 use App\Http\Resources\DeliveryTypeResource;
 use App\Models\DeliveryType;
 use App\Models\Township;
-use Illuminate\Http\Request;
 
 class DeliveryTypeController extends Controller
 {
     public function index()
-    {
-        // $data['delivertypes'] = DeliveryType::get();
+    { 
         $delivertypes = DeliveryType::get();
         if (request()->expectsJson()) {
             return DeliveryTypeResource::collection($delivertypes);

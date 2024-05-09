@@ -46,6 +46,9 @@
                         
                     </tbody>
                 </table>
+                <div>
+                    {{ $trainers->links() }}
+                </div>
             </div>
         </div>
     </div>

@@ -27,7 +27,8 @@ class EditMemberResource extends JsonResource
         $addressData = Address::findOrFail($this->customer->id);
 
         return [
-            'Name' => $this->customer->name,
+            'id' => $this->customer->id,
+            'name' => $this->customer->name,
             'email' => $this->customer->email,
             'age' => $this->customer->age,
             'gender' => $this->customer->gender,

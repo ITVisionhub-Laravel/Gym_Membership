@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Models\Trainer;
-use Illuminate\Http\Request;
 use App\Traits\UploadImageTrait;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
 use App\Http\Resources\TrainerResource;
 use App\Http\Requests\TrainerFormRequest;
@@ -27,19 +25,14 @@ class TrainerController extends Controller
     {
         return view('admin.trainer.create');
     }
-    public function store(TrainerFormRequest $request)
-    {
-        // dd($request->all());
-        $validatedData = $request->validated();
-        $trainer = new Trainer();
-        $trainer->name = $validatedData['name'];
-        $trainer->description = $validatedData['description'];
-        $trainer->fb_name = $validatedData['fb_name'];
-        $trainer->twitter_name = $validatedData['twitter_name'];
-        $trainer->linkin_name = $validatedData['linkin_name'];
-        $this->uploadImage($request, $trainer, "trainer");
 
-        $trainer->save();
+    public function store(TrainerFormRequest $request)
+    { 
+        $trainer = new Trainer();
+        $this->uploadImage($request, $trainer, "trainer");
+        $validatedData = $request->validated(); 
+        $trainer->create($validatedData);
+
         if (request()->expectsJson()) {
             return new TrainerResource($trainer);
         }
@@ -48,6 +41,7 @@ class TrainerController extends Controller
             'Trainer Added Successfully'
         );
     }
+
     public function edit(Trainer $trainer)
     {
         return view('admin.trainer.edit', compact('trainer'));

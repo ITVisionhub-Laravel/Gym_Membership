@@ -9,6 +9,7 @@ class DeliveryTypeResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->name,
             'name' => $this->name,
             'image'=> $this->image,
             'kg'=> $this->kg,

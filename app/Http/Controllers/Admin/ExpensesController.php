@@ -36,22 +36,22 @@ class ExpensesController extends Controller
     public function store(ExpensesRequest $request)
     { 
         $validatedData = $request->validated(); 
-        // DB::beginTransaction();
+        DB::beginTransaction();
         try {
             $this->expenses = new Expenses();
             $this->expenses->fill($validatedData);
             $this->uploadImage($request, $this->expenses, 'expenses', 'invoice_slip');
-            // dd($this->expenses);
+            
             $this->expenses->save();
             $this->debitCreditInfos();
 
-            // DB::commit();
+            DB::commit();
             if (request()->expectsJson()) {
                 return new ExpensesResource($this->expenses);
             }
             return redirect()->route('expenses.index')->with('message', 'Expenses created successfully.');
         } catch (Exception $e) {
-            // DB::rollback();
+            DB::rollback();
             throw new Exception($e->getMessage());
         }
     }

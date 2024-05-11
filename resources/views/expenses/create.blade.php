@@ -24,13 +24,6 @@
                 <label for="invoice_id" class="form-label">invoice Id</label>
                 <input type="text" class="form-control" id="invoice_id" name="invoice_id" required>
             </div>
-            {{--  <div class="mb-3">
-                <label for="status" class="form-label">Status</label>
-                <select class="form-select" id="status" name="status" required>
-                    <option value="0">Pending</option>
-                    <option value="1">Completed</option>
-                </select>
-            </div>  --}}
             <button type="submit" class="btn btn-success">Create</button>
         </form>
      </div>

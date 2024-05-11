@@ -47,16 +47,16 @@ class TrainerController extends Controller
         return view('admin.trainer.edit', compact('trainer'));
     }
 
-    public function update(TrainerFormRequest $request, $trainer)
+    public function update(TrainerFormRequest $request, Trainer $trainer)
     {
         $validatedData = $request->validated();
-        $trainer = Trainer::findOrFail($trainer);
+        $trainer = Trainer::findOrFail($trainer->id);
 
-        $trainer->name = $validatedData['name'];
-        $trainer->description = $validatedData['description'];
-        $trainer->fb_name = $validatedData['fb_name'];
-        $trainer->twitter_name = $validatedData['twitter_name'];
-        $trainer->linkin_name = $validatedData['linkin_name'];
+        $trainer->name = $validatedData['name']?? $trainer->name;
+        $trainer->description = $validatedData['description']?? $trainer->description;
+        $trainer->fb_name = $validatedData['fb_name'] ?? $trainer->fb_name;
+        $trainer->twitter_name = $validatedData['twitter_name'] ?? $trainer->twitter_name;
+        $trainer->linkin_name = $validatedData['linkin_name'] ?? $trainer->linkin_name;
         if($this->deleteImage($trainer)){
             $this->uploadImage($request, $trainer, "trainer");
         }

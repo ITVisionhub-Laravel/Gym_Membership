@@ -1,28 +1,26 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Exception;
-use App\Models\Country;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+ 
+use App\Models\Country; 
+use App\Contracts\LocationInterface;
 use App\Http\Requests\CountryRequest;
 use Illuminate\Support\Facades\Config;
-use App\Http\Resources\CountryResource;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Http\Resources\CountryResource; 
 
 class CountryController extends Controller
 {
-    private $country;
-    public function __construct()
+    private $locationInterface;
+
+    public function __construct(LocationInterface $locationInterface)
     {
-        $this->country = new Country();
+        $this->locationInterface = $locationInterface;
     }
 
     public function index()
     {
-       $countries = Country::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
-       if(request()->expectsJson()){
+       $countries = $this->locationInterface->all('Country');
+       if(request()->is('api/*')){
         return CountryResource::collection($countries);
        }
        return view('admin.address.country.index',compact('countries'));
@@ -37,32 +35,13 @@ class CountryController extends Controller
 
     public function store(CountryRequest $request)
     {
-        if(request()->expectsJson()){
-            $validatedData = $request->validated();
-            $this->country->name = $validatedData['name'];
-            $this->country->save();
-
-            if(!$this->country){
-                return response()->json([
-                    'message' => 'Country not found'
-                ], 401);
-            }
-            return new CountryResource($this->country);
+        $validatedData = $request->validated();
+        $country = $this->locationInterface->store('Country', $validatedData);
+        if (request()->is('api/*')) {
+            return new CountryResource($country);
         }
-
-        try {
-            $validatedData = $request->validated();
-            $country =new Country();
-            $country->name = $validatedData['name'];
-
-            $country->save();
-            return redirect(route('country.index'))->with('message','Country Created Successfully');
-          } catch (ModelNotFoundException $e) {
-            return redirect(route('country.index'))->with('error', 'Country not found');
-        } catch (Exception $e) {
-            return redirect(route('country.index'))->with('error', 'An error occurred while updating country');
-        }
-
+        return redirect(route('country.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.CREATED_COUNTRY'));
+        
     }
 
     public function show($id)
@@ -77,51 +56,25 @@ class CountryController extends Controller
 
     public function update(CountryRequest $request, string $id)
     {
-       if(request()->expectsJson()){
         $validatedData = $request->validated();
-        $country = Country::find($id);
-        if(!$country){
-            return response()->json([
-                'message' => 'Country not found'
-            ],401);
+        $country = $this->locationInterface->update('Country', $validatedData, $id);
+        if ($request->is('api/*')) {
+            return new CountryResource($country);
         }
-        // $country->name = $validatedData['name'];
-        // $country->save();
-        $country->update($validatedData);
-        return new CountryResource($country);
-       }
-       try {
-        $validatedData = $request->validated();
-        $country = Country::find($id);
-        // $country->name = $validatedData['name'];
-        $country->update($validatedData);
-        return redirect(route('country.index'))->with('message','Country Updated Successfully');
-       } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_COUNTRY')
-            ], Response::HTTP_NOT_FOUND);
-            // return redirect(route('country.index'))->with('error', 'Country not found');
-        } catch (Exception $e) {
-            return redirect(route('country.index'))->with('error', 'An error occurred while updating country');
-        }
+        return redirect(route('country.index'))->with('message',Config::get('variables.SUCCESS_MESSAGES.UPDATED_COUNTRY'));
+      
     }
 
     public function destroy($country)
     {
-        try{
-            $country = Country::findOrFail($country);
-            $country->delete();
-            if (request()->expectsJson()) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Country has been deleted successfully',
-                ]);
-            }
-            return redirect(route('country.index'))->with('message', 'Country Deleted Successfully');
-        }catch(ModelNotFoundException $e){
+        $this->locationInterface->delete('Country', $country);
+        if (request()->is('api/*')) {
             return response()->json([
-                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_COUNTRY')
-            ], Response::HTTP_NOT_FOUND);
+                'status' => Config::get('variables.SUCCESS_MESSAGES.RESPONSE_STATUS_CODE'),
+                'message' => Config::get('variables.SUCCESS_MESSAGES.DELETED_COUNTRY'),
+            ]);
         }
+        return redirect(route('country.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.DELETED_COUNTRY'));
+       
     }
 }

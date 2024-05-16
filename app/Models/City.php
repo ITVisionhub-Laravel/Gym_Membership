@@ -1,15 +1,25 @@
 <?php
 
 namespace App\Models;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+ 
+use App\Db\Core\StringField;
+use App\Db\Core\IntegerField;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class City extends Model
 {
     use HasFactory;
+
     protected $table = 'cities';
-    protected $fillable = ['name','state_id'];
+
+    public function saveableFields(): array
+    { 
+        return [
+            'name' => StringField::new(),
+            'state_id' => IntegerField::new(),
+        ];
+    }
 
     public function townships()
     {

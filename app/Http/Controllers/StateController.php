@@ -1,32 +1,31 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Exception;
+ 
 use App\Models\State;
-use App\Models\Country;
-use Illuminate\Http\Response;
+use App\Models\Country; 
+use App\Exceptions\ErrorException;
 use App\Http\Requests\StateRequest;
+use App\Contracts\LocationInterface;
 use App\Http\Resources\StateResource;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Config; 
 
 class StateController extends Controller
 {
+    private $locationInterface;
 
-    private $state;
-    public function __construct()
+    public function __construct(LocationInterface $locationInterface)
     {
-        $this->state = new State();
+        $this->locationInterface = $locationInterface;
     }
 
     public function index()
-    {
-       $states = State::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
-       if(request()->expectsJson()){
-        return StateResource::collection($states);
-       }
-      return view('admin.address.state.index',compact('states'));
+    { 
+        $states = $this->locationInterface->all('State');
+        if (request()->is('api/*')) {
+            return StateResource::collection($states);
+        }
+        return view('admin.address.state.index',compact('states'));
 
     }
 
@@ -38,30 +37,17 @@ class StateController extends Controller
     }
     public function store(StateRequest $request)
     {
-        try {
-            $validatedData = $request->validated();
-            // Check if the country ID exists
-            $country = Country::find($validatedData['country_id']);
-            if (!$country) {
-                return response()->json([
-                    'message' => 'Invalid Country ID provided'
-                ], Response::HTTP_BAD_REQUEST);
-            }
-            $this->state->name = $validatedData['name'];
-            $this->state->country_id = $validatedData['country_id'];
-            $this->state->save();
-            if(request()->expectsJson()){
-                return new StateResource($this->state);
-            }
-            return redirect(route('state.index'))->with('message','State Created Successfully');
-           } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_STATE')
-            ], Response::HTTP_NOT_FOUND);
-            // return redirect(route('state.index'))->with('error', 'State not found');
-        } catch (Exception $e) {
-            return redirect(route('state.index'))->with('error', 'An error occurred while updating state');
+        $validatedData = $request->validated();
+        // Check if the Country ID exists
+        $country = $this->locationInterface->findById('Country', $validatedData['country_id']);
+        if (!$country) {
+            throw ErrorException::errorMessageCode(Config::get('variables.ERROR_MESSAGES.INVALID_COUNTRY_ID'));
         }
+        $state = $this->locationInterface->store('State', $validatedData);
+        if (request()->is('api/*')) {
+            return new StateResource($state);
+        }
+        return redirect(route('state.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.CREATED_STATE'));
 
     }
 
@@ -78,66 +64,29 @@ class StateController extends Controller
 
     public function update(StateRequest $request, string $id)
     {
-        try {
-            $validatedData = $request->validated();
-            $state = State::findOrFail($id);
-
-            // Check if the country ID exists
-            $country = Country::find($validatedData['country_id']);
-            if (!$country) {
-                return response()->json([
-                    'message' => 'Invalid Country ID provided'
-                ], Response::HTTP_BAD_REQUEST);
-            }
-            // $state->name = $validatedData['name'];
-            // $state->country_id = $validatedData['country_id'];
-
-            // $state->update();
-            // if ($request->expectsJson()) {
-            //     return new StateResource($state);
-            // }
-
-            // Update state attributes
-            $state->update([
-                'name' => $validatedData['name'],
-                'country_id' => $validatedData['country_id']
-            ]);
-
-            if ($request->expectsJson()) {
-                return new StateResource($state);
-            }
-            return redirect(route('state.index'))->with('message','State Updated Successfully');
-           }catch (ModelNotFoundException $e) {
-                return response()->json([
-                    'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_STATE')
-                ], Response::HTTP_NOT_FOUND);
-            // return redirect(route('state.index'))->with('error', 'State not found');
-        } catch (Exception $e) {
-            return redirect(route('state.index'))->with('error', 'An error occurred while updating state');
+        $validatedData = $request->validated();
+        // Check if the Country ID exists
+        $country = $this->locationInterface->findById('Country', $validatedData['country_id']);
+        if (!$country) {
+            throw ErrorException::errorMessageCode(Config::get('variables.ERROR_MESSAGES.INVALID_COUNTRY_ID'));
         }
+        $state = $this->locationInterface->update('State', $validatedData, $id);
+        if ($request->is('api/*')) {
+            return new StateResource($state);
+        }
+        return redirect(route('state.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.UPDATED_STATE'));
     }
 
 
     public function destroy($state)
     {
-        try {
-            $state = State::findOrFail($state);
-            // $this->deleteImage($state);
-            $state->delete();
-            if (request()->expectsJson()) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'State has been deleted successfully',
-                ]);
-            }
-            return redirect(route('state.index'))->with('message', 'State Deleted Successfully');
-        } catch (ModelNotFoundException $e) {
+        $this->locationInterface->delete('State', $state);
+        if (request()->is('api/*')) {
             return response()->json([
-                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_STATE')
-            ], Response::HTTP_NOT_FOUND);
-            //   return redirect(route('state.index'))->with('error', 'State not found');
-        } catch (Exception $e) {
-            return redirect(route('state.index'))->with('error', 'An error occurred while updating state');
+                'status' => Config::get('variables.SUCCESS_MESSAGES.RESPONSE_STATUS_CODE'),
+                'message' => Config::get('variables.SUCCESS_MESSAGES.DELETED_STATE'),
+            ]);
         }
+        return redirect(route('state.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.DELETED_STATE'));
     }
 }

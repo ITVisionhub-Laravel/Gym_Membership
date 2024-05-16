@@ -2,8 +2,11 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -13,7 +16,7 @@ class Handler extends ExceptionHandler
      * @var array<class-string<\Throwable>, \Psr\Log\LogLevel::*>
      */
     protected $levels = [
-        //
+        // Custom log levels can be specified here
     ];
 
     /**
@@ -22,7 +25,7 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<\Throwable>>
      */
     protected $dontReport = [
-        //
+        // Specify the exceptions that should not be reported
     ];
 
     /**
@@ -43,8 +46,24 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        // Register a custom renderable for ErrorException
+        $this->renderable(function (ErrorException $e, $request) {
+            if($request->is('api/*')){
+                return response()->json([
+                    'message' => $e->getMessage(),
+                    'status' => $e->getStatusCode()
+                ], $e->getStatusCode() ?? 400);
+            }
+            
+        });
+
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'The route ' . $request->path() . ' could not be found.',
+                    'status' => 404
+                ], 404);
+            }
         });
     }
 }

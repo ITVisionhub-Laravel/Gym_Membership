@@ -1,12 +1,15 @@
 <?php
 
 namespace App\Db\Core;
-
+ 
 use app\Db\Core\ParentField;
+use App\Exceptions\ErrorException;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Config;
 use illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Crud
 {
@@ -53,7 +56,7 @@ class Crud
             } else {
                 return $this->handleStoreMode();
             }
-        } catch (QueryException $e) {
+        } catch (QueryException $e) { 
             return response($e->getMessage());
         }
     }
@@ -75,15 +78,20 @@ class Crud
             Log::error('This is stored data log');
             if ($this->model->save()) {
                 return $this->model;
-            } else {
-                return response(status: 500);
-            }
+            } 
+            // else {
+            //     return response(status: 500);
+            // }
         }
     }
 
     protected function handleEditMode(): Model
     {
-        $this->record = $this->model->findOrFail($this->id);
+        try{
+            $this->record = $this->model->findOrFail($this->id);
+        }catch(ModelNotFoundException){
+            throw ErrorException::recordNotFoundCode(Config::get('variables.ERROR_MESSAGES.NOT_FOUND_RECORD'));
+        }
         if ($this->model->getTable() === 'products' || $this->model->getTable() === 'profiles' || $this->model->getTable() === 'users' || $this->model->getTable() === 'company') {
             $this->deleteImage();
         }
@@ -95,12 +103,17 @@ class Crud
 
     protected function handleDeleteMode()
     {
-        $this->record = $this->model->findOrFail($this->id);
-        return $this->record->delete() ? true : false;
+        try {
+            $this->record = $this->model->findOrFail($this->id);
+            return $this->record->delete() ? true : false;
+        } catch (ModelNotFoundException) {
+            throw ErrorException::recordNotFoundCode(Config::get('variables.ERROR_MESSAGES.NOT_FOUND_RECORD'));
+        }
+        
     }
 
     public function savableField($column): ParentField
-    {
+    {  
         return $this->model->saveableFields()[$column];
     }
 

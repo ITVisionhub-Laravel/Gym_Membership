@@ -2,31 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use App\Models\Ward;
-use App\Models\Township;
-use Illuminate\Http\Request;
+use App\Models\Township; 
+use App\Exceptions\ErrorException;
 use App\Http\Requests\WardRequest;
+use App\Contracts\LocationInterface;
 use App\Http\Resources\WardResource;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class WardController extends Controller
 {
 
-    private $ward;
-    public function __construct()
+    private $locationInterface;
+
+    public function __construct(LocationInterface $locationInterface)
     {
-        $this->ward = new Ward();
+        $this->locationInterface = $locationInterface;
     }
 
     public function index()
     {
-       $wards = Ward::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
-       if(request()->expectsJson()){
-        return WardResource::collection($wards);
-       }
-       return view('admin.address.ward.index',compact('wards'));
+        $wards = $this->locationInterface->all('Ward');
+        if (request()->is('api/*')) {
+            return WardResource::collection($wards);
+        }
+        return view('admin.address.ward.index',compact('wards'));
     }
 
     public function create()
@@ -37,31 +37,19 @@ class WardController extends Controller
 
     public function store(WardRequest $request)
     {
-       if(request()->expectsJson()){
         $validatedData = $request->validated();
-        $this->ward->name = $validatedData['name'];
-        $this->ward->township_id = $validatedData['township_id'];
-        $this->ward->save();
-
-        if(!$this->ward){
-            return response()->json([
-                'message' => 'Ward not found'
-            ], 401);
+        // Check if the Township ID exists
+        $township = $this->locationInterface->findById('Township', $validatedData['township_id']);
+        if (!$township) {
+            throw ErrorException::errorMessageCode(Config::get('variables.ERROR_MESSAGES.INVALID_TOWNSHIP_ID'));
         }
-        return new WardResource($this->ward);
-       }
-       try {
-        $validatedData = $request->validated();
-        $ward = new Ward();
-        $ward->name = $validatedData['name'];
-        $ward->township_id = $validatedData['township_id'];
-        $ward->save();
-        return redirect(route('ward.index'))->with('message','Ward Created Successfully');
-    } catch (ModelNotFoundException $e) {
-        return redirect(route('ward.index'))->with('error', 'ward not found');
-    }  catch (Exception $e) {
-        return redirect(route('ward.index'))->with('error', 'An error occurred while updating ward');
-    }
+
+        $ward = $this->locationInterface->store('Ward', $validatedData);
+        if (request()->is('api/*')) {
+            return new WardResource($ward);
+        }
+        return redirect(route('ward.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.CREATED_WARD'));
+       
     }
 
     public function show($id)
@@ -78,49 +66,30 @@ class WardController extends Controller
 
     public function update(WardRequest $request, string $ward)
     {
-       if(request()->expectsJson()){
         $validatedData = $request->validated();
-        $ward = Ward::find($ward);
-        if(!$ward){
-            return response()->json([
-                'message' => 'ward not found'
-            ],401);
+        // Check if the Township ID exists
+        $township = $this->locationInterface->findById('Township', $validatedData['township_id']);
+        if (!$township) {
+            throw ErrorException::errorMessageCode(Config::get('variables.ERROR_MESSAGES.INVALID_TOWNSHIP_ID'));
         }
-        $ward->name = $validatedData['name'];
-        $ward->township_id = $validatedData['township_id'];
-        $ward->save();
-        return new WardResource($ward);
-       }
-       try {
-        $validatedData =$request->validated();
-        $ward=Ward::findOrFail($ward);
 
-        $ward->name = $validatedData['name'];
-        $ward->township_id = $validatedData['township_id'];
-        $ward->update();
-        return redirect(route('ward.index'))->with('message','Ward Updated Successfully');
-       } catch (ModelNotFoundException $e) {
-        return redirect(route('ward.index'))->with('error', 'ward not found');
-    }  catch (Exception $e) {
-        return redirect(route('ward.index'))->with('error', 'An error occurred while updating ward');
-    }
+        $ward = $this->locationInterface->update('Ward', $validatedData, $ward);
+        if (request()->is('api/*')) {
+            return new WardResource($ward);
+        }
+        return redirect(route('ward.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.UPDATED_WARD'));
+       
     }
 
-    public function destroy(Ward $ward)
+    public function destroy($ward)
     {
-        try {
-            $ward->delete();
-            if (request()->expectsJson()) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Ward has been deleted successfully',
-                ]);
-            }
-        return redirect(route('ward.index'))->with('message','Ward Deleted Successfully');
-        } catch (ModelNotFoundException $e) {
-            return redirect(route('ward.index'))->with('error', 'ward not found');
-        }  catch (Exception $e) {
-            return redirect(route('ward.index'))->with('error', 'An error occurred while updating ward');
+        $this->locationInterface->delete('Ward', $ward);
+        if (request()->is('api/*')) {
+            return response()->json([
+                'status' => Config::get('variables.SUCCESS_MESSAGES.RESPONSE_STATUS_CODE'),
+                'message' => Config::get('variables.SUCCESS_MESSAGES.DELETED_WARD'),
+            ]);
         }
+        return redirect(route('ward.index'))->with('message',Config::get('variables.SUCCESS_MESSAGES.DELETED_WARD'));
     }
 }

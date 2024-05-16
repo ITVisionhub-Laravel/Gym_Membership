@@ -180,6 +180,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
         // SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
 
         /*

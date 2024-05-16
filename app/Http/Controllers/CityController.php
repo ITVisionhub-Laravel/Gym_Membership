@@ -1,32 +1,32 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Exception;
+  
 use App\Models\City;
-use App\Models\State;
-use Illuminate\Http\Response;
+use App\Models\State; 
+use App\Exceptions\ErrorException; 
 use App\Http\Requests\CityRequest;
-use App\Http\Resources\CityResource;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Contracts\LocationInterface;
+use App\Http\Resources\CityResource; 
+use Illuminate\Support\Facades\Config; 
 
 class CityController extends Controller
-{
+{ 
+    private $locationInterface;
 
-    private $city;
-    public function __construct()
+    public function __construct(LocationInterface $locationInterface)
     {
-        $this->city = new City();
+        $this->locationInterface = $locationInterface;
     }
 
     public function index()
     {
-       $cities = City::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
-       if(request()->expectsJson()){
-        return CityResource::collection($cities);
-       }
-       return view('admin.address.city.index',compact('cities'));
+        $cities = $this->locationInterface->all('City');
+        if (request()->is('api/*')) {
+            return CityResource::collection($cities);
+        }
+        return view('admin.address.city.index', compact('cities'));
+       
     }
 
     public function create()
@@ -38,31 +38,19 @@ class CityController extends Controller
 
     public function store(CityRequest $request)
     {
-        try {
-            $validatedData = $request->validated();
-            // Check if the State ID exists
-            $state = State::find($validatedData['state_id']);
-            if (!$state) {
-                return response()->json([
-                    'message' => 'Invalid State ID provided'
-                ], Response::HTTP_BAD_REQUEST);
-            }
-            $this->city->name = $validatedData['name'];
-            $this->city->state_id = $validatedData['state_id'];
-            $this->city->save();
-            if (request()->expectsJson()) {
-                return new CityResource($this->city);
-            }
-            return redirect(route('city.index'))->with('message', 'City Created Successfully');
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_CITY')
-            ], Response::HTTP_NOT_FOUND);
-            // return redirect(route('city.index'))->with('error', 'City not found');
-        } catch (Exception $e) {
-            return redirect(route('city.index'))->with('error', 'An error occurred while updating city');
+        $validatedData = $request->validated(); 
+        // Check if the State ID exists
+        $state = $this->locationInterface->findById('State', $validatedData['state_id']);
+        if (!$state) {
+            throw ErrorException::errorMessageCode(Config::get('variables.ERROR_MESSAGES.INVALID_STATE_ID'));
         }
-
+       
+        $city = $this->locationInterface->store('City', $validatedData);
+        if (request()->is('api/*')) {
+            return new CityResource($city);
+        }
+        return redirect(route('city.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.CREATED_CITY'));
+        
     }
 
     public function show($id)
@@ -79,56 +67,30 @@ class CityController extends Controller
 
     public function update(CityRequest $request, string $city)
     {
-        try {
-            $validatedData = $request->validated();
+        $validatedData = $request->validated();
 
-            // Check if the state ID exists
-            $state = State::find($validatedData['state_id']);
-            if (!$state) {
-                return response()->json([
-                    'message' => 'Invalid State ID provided'
-                ], Response::HTTP_BAD_REQUEST);
-            }
-
-            $city = City::findOrFail($city);
-            $city->name = $validatedData['name'];
-            $city->state_id = $validatedData['state_id'];
-
-            $city->update();
-            if ($request->expectsJson()) {
-                return new CityResource($city);
-            }
-            return redirect(route('city.index'))->with('message', 'City Updated Successfully');
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_CITY')
-            ], Response::HTTP_NOT_FOUND);
-            // return redirect(route('city.index'))->with('error', 'City not found');
-        } catch (Exception $e) {
-            return redirect(route('city.index'))->with('error', 'An error occurred while updating city');
+        // Check if the state ID exists
+        $state = $this->locationInterface->findById('State', $validatedData['state_id']);
+        if (!$state) {
+            throw ErrorException::errorMessageCode(Config::get('variables.ERROR_MESSAGES.INVALID_STATE_ID'));
         }
+        $city = $this->locationInterface->update('City', $validatedData, $city);
+        if ($request->is('api/*')) {
+            return new CityResource($city);
+        }
+        return redirect(route('city.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.UPDATED_CITY'));
+        
     }
 
     public function destroy($city)
     {
-        try {
-            $city = State::findOrFail($city);
-            // $this->deleteImage($city);
-            $city->delete();
-            if (request()->expectsJson()) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'City has been deleted successfully',
-                ]);
-            }
-            return redirect(route('city.index'))->with('message', 'City Deleted Successfully');
-        } catch (ModelNotFoundException $e) {
+        $this->locationInterface->delete('City', $city); 
+        if (request()->is('api/*')) {
             return response()->json([
-                'message' => Config::get('variables.ERROR_MESSAGES.NOT_FOUND_CITY')
-            ], Response::HTTP_NOT_FOUND);
-            // return redirect(route('city.index'))->with('error', 'City not found');
-        } catch (Exception $e) {
-            return redirect(route('city.index'))->with('error', 'An error occurred while updating city');
+                'status' => Config::get('variables.SUCCESS_MESSAGES.RESPONSE_STATUS_CODE'),
+                'message' => Config::get('variables.SUCCESS_MESSAGES.DELETED_CITY'),
+            ]);
         }
+        return redirect(route('city.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.DELETED_CITY'));
     }
 }

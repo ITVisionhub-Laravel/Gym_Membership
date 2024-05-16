@@ -3,11 +3,13 @@
 return [
     'ERROR_MESSAGES' => [
         'SOMETHING_WENT_WRONG' => 'Something Went Wrong',
-        'NOT_FOUND_GYM_CLASS' => 'Gym Class not found',
-        'NOT_FOUND_GYM_CLASS_CATEGORY' => 'Gym Class Category not found',
-        'NOT_FOUND_COUNTRY' => 'Country not found',
-        'NOT_FOUND_STATE' => 'State not found',
-        'NOT_FOUND_CITY' => 'City not found',
+        'NOT_FOUND_MODEL' => 'Model not found',
+        'NOT_FOUND_RECORD' => 'This Record not found',
+        'INVALID_COUNTRY_ID' => 'Invalid Country ID provided', 
+        'INVALID_STATE_ID' => 'Invalid State ID provided', 
+        'INVALID_CITY_ID' => 'Invalid City ID provided',
+        'INVALID_TOWNSHIP_ID' => 'Invalid Township ID provided',
+        'INVALID_WARD_ID' => 'Invalid Ward ID provided',
         'NOT_FOUND_TOWNSHIP' => 'Township not found',
     ],
     'SUCCESS_MESSAGES' => [
@@ -22,8 +24,34 @@ return [
         'UPDATED_SCHEDULE' => 'Schedule Updated Successfully',
         'DELETED_SCHEDULE' => 'Schedule Deleted Successfully',
 
+        'CREATED_COUNTRY' => 'Country has been created successfully',
+        'UPDATED_COUNTRY' => 'Country has been updated successfully',
+        'DELETED_COUNTRY' => 'Country has been deleted successfully',
+
+        'CREATED_STATE' => 'State has been created successfully',
+        'UPDATED_STATE' => 'State has been updated successfully',
+        'DELETED_STATE' => 'State has been deleted successfully',
+
+        'CREATED_CITY' => 'City has been created successfully',
+        'UPDATED_CITY' => 'City has been updated successfully',
+        'DELETED_CITY' => 'City has been deleted successfully',
+
+        'CREATED_TOWNSHIP' => 'Township has been created successfully',
+        'UPDATED_TOWNSHIP' => 'Township has been updated successfully',
+        'DELETED_TOWNSHIP' => 'Township has been deleted successfully',
+
+        'CREATED_WARD' => 'Ward has been created successfully',
+        'UPDATED_WARD' => 'Ward has been updated successfully',
+        'DELETED_WARD' => 'Ward has been deleted successfully',
+
+        'CREATED_STREET' => 'Street has been created successfully',
+        'UPDATED_STREET' => 'Street has been updated successfully',
+        'DELETED_STREET' => 'Street has been deleted successfully',
+
         'CREATED_SETTING' => 'Setting Created Successfully',
         'UPDATED_SETTING' => 'Setting Updated Successfully',
+       
+        'RESPONSE_STATUS_CODE' => 200,
     ],
     "NUMBER_OF_ITEMS_PER_PAGE" => 10,
     "SUCCESS" => 1, "FAILURE" => 2, "STAFFID" => 2, "DEBIT" => 1, "CREDIT" => 2,

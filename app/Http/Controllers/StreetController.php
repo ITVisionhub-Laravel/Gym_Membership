@@ -6,7 +6,9 @@ use Exception;
 use App\Models\Ward;
 use App\Models\Street;
 use Illuminate\Http\Request;
+use App\Exceptions\ErrorException;
 use App\Http\Requests\WardRequest;
+use App\Contracts\LocationInterface;
 use App\Http\Requests\StreetRequest;
 use App\Http\Resources\StreetResource;
 use Illuminate\Support\Facades\Config;
@@ -14,55 +16,42 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class StreetController extends Controller
 {
-    private $street;
-    public function __construct()
+    private $locationInterface;
+
+    public function __construct(LocationInterface $locationInterface)
     {
-        $this->street = new Street();
+        $this->locationInterface = $locationInterface;
     }
 
     public function index()
     {
-       $streets = Street::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
-       if(request()->expectsJson()){
-        return StreetResource::collection($streets);
-       }
-       return view('admin.address.street.index',compact('streets'));
+        $streets = $this->locationInterface->all('Street');
+        if (request()->is('api/*')) {
+            return StreetResource::collection($streets);
+        }
+        return view('admin.address.street.index',compact('streets'));
     }
 
     public function create()
     {
-        $ward = Ward::get();
-        // dd($ward);
+        $ward = Ward::get(); 
        return view('admin.address.street.create',compact('ward'));
     }
 
     public function store(StreetRequest $request)
     {
-       if(request()->expectsJson()){
         $validatedData = $request->validated();
-        $this->street->name = $validatedData['name'];
-        $this->street->ward_id = $validatedData['ward_id'];
-        $this->street->save();
-
-        if(!$this->street){
-            return response()->json([
-                'message' => 'street not found'
-            ], 401);
+        // Check if the Ward ID exists
+        $ward = $this->locationInterface->findById('Ward', $validatedData['ward_id']);
+        if (!$ward) {
+            throw ErrorException::errorMessageCode(Config::get('variables.ERROR_MESSAGES.INVALID_WARD_ID'));
         }
-        return new streetResource($this->street);
-       }
-       try {
-        $validatedData = $request->validated();
-        $street = new Street();
-        $street->name = $validatedData['name'];
-        $street->ward_id = $validatedData['ward_id'];
-        $street->save();
-        return redirect(route('street.index'))->with('message','Street Created Successfully');
-    } catch (ModelNotFoundException $e) {
-        return redirect(route('street.index'))->with('error', 'street not found');
-    }  catch (Exception $e) {
-        return redirect(route('street.index'))->with('error', 'An error occurred while updating street');
-    }
+
+        $street = $this->locationInterface->store('Street', $validatedData);
+        if (request()->is('api/*')) {
+            return new streetResource($street);
+        }
+        return redirect(route('street.index'))->with('message', Config::get('variables.ERROR_MESSAGES.CREATED_STREET'));
     }
 
     public function show($id)
@@ -78,51 +67,29 @@ class StreetController extends Controller
 
     public function update(StreetRequest $request, string $street)
     {
-       if(request()->expectsJson()){
         $validatedData = $request->validated();
-        $street = Street::find($street);
-        if(!$street){
-            return response()->json([
-                'message' => 'street not found'
-            ],401);
+        // Check if the Ward ID exists
+        $ward = $this->locationInterface->findById('Ward', $validatedData['ward_id']);
+        if (!$ward) {
+            throw ErrorException::errorMessageCode(Config::get('variables.ERROR_MESSAGES.INVALID_WARD_ID'));
         }
-        $street->name = $validatedData['name'];
-        $street->ward_id = $validatedData['ward_id'];
-        $street->save();
-        return new StreetResource($street);
-       }
-       try {
-        $validatedData = $request->validated();
-        $street = Street::findOrFail($street);
 
-        $street->name = $validatedData['name'];
-        $street->ward_id = $validatedData['ward_id'];
-
-        $street->update();
-        return redirect(route('street.index'))->with('message','Street Updated Successfully');
-       }catch (ModelNotFoundException $e) {
-        return redirect(route('street.index'))->with('error', 'street not found');
-    }  catch (Exception $e) {
-        return redirect(route('street.index'))->with('error', 'An error occurred while updating street');
-    }
+        $street = $this->locationInterface->update('Street', $validatedData, $street);
+        if (request()->is('api/*')) {
+            return new StreetResource($street);
+        }
+        return redirect(route('street.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.UPDATED_STREET'));
     }
 
-    public function destroy(Street $street)
+    public function destroy($street)
     {
-        try {
-            $street->delete();
-            if (request()->expectsJson()) {
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'Street has been deleted successfully',
-                ]);
-            }
-            return redirect(route('street.index'))->with('message','Street Deleted Successfully');
-        }catch (ModelNotFoundException $e) {
-            return redirect(route('street.index'))->with('error', 'street not found');
-        }  catch (Exception $e) {
-            return redirect(route('street.index'))->with('error', 'An error occurred while updating street');
+        $this->locationInterface->delete('Street', $street);
+        if (request()->is('api/*')) {
+            return response()->json([
+                'status' => Config::get('variables.SUCCESS_MESSAGES.RESPONSE_STATUS_CODE'),
+                'message' => Config::get('variables.SUCCESS_MESSAGES.DELETED_STREET'),
+            ]);
         }
-
+        return redirect(route('street.index'))->with('message', Config::get('variables.SUCCESS_MESSAGES.DELETED_STREET'));
     }
 }

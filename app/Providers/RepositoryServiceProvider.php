@@ -16,6 +16,11 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Contracts\LocationInterface',
             'App\Repositories\LocationRepository'
         );
+
+        $this->app->bind(
+            'App\Contracts\ExpenseInterface',
+            'App\Repositories\ExpenseRepository'
+        );
     }
 
     /**

@@ -5,22 +5,30 @@ namespace App\Http\Controllers\Admin;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Expenses;
-use App\Models\DebitAndCredit;
+use App\Models\DebitAndCredit; 
 use Illuminate\Support\Facades\DB;
+use App\Contracts\ExpenseInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ExpensesRequest;
-use App\Http\Resources\ExpensesResource;
-use App\Traits\UploadImageTrait;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Database\Eloquent\Model;
+use App\Http\Resources\ExpensesResource;
 
 class ExpensesController extends Controller
 {
-    use UploadImageTrait;
+    // use UploadImageTrait;
 
-    public Model $expenses;
+    public Model $expense;
+    private $expenseInterface;
+
+    public function __construct(ExpenseInterface $expenseInterface)
+    {
+        $this->expenseInterface = $expenseInterface;
+    }
     public function index()
     {
+        dd("hello");
+        dd($this->expenseInterface);
         $expenses = Expenses::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
         if (request()->expectsJson()) {
             return ExpensesResource::collection($expenses);
@@ -35,25 +43,25 @@ class ExpensesController extends Controller
 
     public function store(ExpensesRequest $request)
     { 
-        $validatedData = $request->validated(); 
-        DB::beginTransaction();
-        try {
-            $this->expenses = new Expenses();
-            $this->expenses->fill($validatedData);
-            $this->uploadImage($request, $this->expenses, 'expenses', 'invoice_slip');
+        // $validatedData = $request->validated(); 
+        // DB::beginTransaction();
+        // try {
+        //     $this->expenses = new Expenses();
+        //     $this->expenses->fill($validatedData);
+        //     $this->uploadImage($request, $this->expenses, 'expenses', 'invoice_slip');
             
-            $this->expenses->save();
-            $this->debitCreditInfos();
+        //     $this->expenses->save();
+        //     $this->debitCreditInfos();
 
-            DB::commit();
-            if (request()->expectsJson()) {
-                return new ExpensesResource($this->expenses);
-            }
-            return redirect()->route('expenses.index')->with('message', 'Expenses created successfully.');
-        } catch (Exception $e) {
-            DB::rollback();
-            throw new Exception($e->getMessage());
-        }
+        //     DB::commit();
+        //     if (request()->expectsJson()) {
+        //         return new ExpensesResource($this->expenses);
+        //     }
+        //     return redirect()->route('expenses.index')->with('message', 'Expenses created successfully.');
+        // } catch (Exception $e) {
+        //     DB::rollback();
+        //     throw new Exception($e->getMessage());
+        // }
     }
 
     public function edit(Expenses $expense)
@@ -61,29 +69,10 @@ class ExpensesController extends Controller
         return view('expenses.edit', compact('expense'));
     }
 
-    public function update(ExpensesRequest $request, Expenses $expense)
-    { 
-        $this->expenses = Expenses::findOrFail($expense->id);
-        $validatedData = $request->validated();
-        DB::beginTransaction();
-        try {
-            // $this->expenses->fill($validatedData);
-            $this->expenses->name = $validatedData['name'];
-            $this->expenses->amount = $validatedData['amount'];
-            $this->expenses->invoice_id = $validatedData['invoice_id'];
-            $this->uploadImage($request, $expense, 'expenses', 'invoice_slip');
-
-            $this->expenses->save();
-            $this->debitCreditInfos($expense->invoice_id);
-            DB::commit();
-            if (request()->expectsJson()) {
-                return new ExpensesResource($this->expenses);
-            }
-            return redirect()->route('expenses.index')->with('message', 'Expenses updated successfully.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            throw new Exception($e->getMessage());
-        }
+    public function update()
+    {
+        dd("hello");
+        
     }
 
     public function destroy(Expenses $expense)
@@ -114,11 +103,11 @@ class ExpensesController extends Controller
             $new_debit_credit_info = new DebitAndCredit();
         }
         // return $new_debit_credit_info;
-        $new_debit_credit_info->name = $this->expenses->name;
-        $new_debit_credit_info->amount = $this->expenses->amount;
+        $new_debit_credit_info->name = $this->expense->name;
+        $new_debit_credit_info->amount = $this->expense->amount;
         $new_debit_credit_info->status_id = Config::get('variables.SUCCESS');
         $new_debit_credit_info->date = Carbon::now()->format('Y-m-d');
-        $new_debit_credit_info->related_info_id = $this->expenses->invoice_id;
+        $new_debit_credit_info->related_info_id = $this->expense->invoice_id;
         $new_debit_credit_info->related_info_type = Config::get('variables.EXPENSES');
         $new_debit_credit_info->transaction_type_id = Config::get('variables.CREDIT');
         $new_debit_credit_info->save();

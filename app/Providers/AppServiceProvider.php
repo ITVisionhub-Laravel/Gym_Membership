@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('admin.products.*', DropdownComposer::class . '@categoryDropdown');
         view()->composer('admin.shops.*', DropdownComposer::class . '@shopTypeDropdown');
         view()->composer('admin.shops.*', DropdownComposer::class . '@productDropdown');
-        Validator::extend('recaptcha', 'App\\Validators\\ReCaptcha@validate');
+        Validator::extend('ReCaptcha', 'App\\Validators\\ReCaptcha@validate');
 
     Paginator::useBootstrap();
     // $websiteSetting = Setting::first();

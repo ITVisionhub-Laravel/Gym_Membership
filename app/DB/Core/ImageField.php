@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Db\Core;
+namespace App\Db\Core;
 
 use App\Db\Core\Crud;
 use Illuminate\Support\Facades\Storage;
@@ -29,7 +29,7 @@ class ImageField extends ParentField
         if (!is_string($uploadedFile)) {
             $imageName = round(microtime(true) * 1000)  . '.' . $uploadedFile->extension();
             $finalImagePath = Crud::storeImage($uploadedFile, $this->imageDirectory, $imageName, $this->diskName);
-            $this->value = Storage::disk('do')->url($finalImagePath);
+            $this->value = Storage::disk('spaces')->url($finalImagePath);
         }
         return $this->value;
     }

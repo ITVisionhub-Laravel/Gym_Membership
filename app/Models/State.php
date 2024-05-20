@@ -2,13 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Db\Core\StringField;
+use App\Db\Core\IntegerField;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class State extends Model
 {
     use HasFactory;
-    protected $guarded = ['id'];
+    public function saveableFields(): array
+    {
+        return [
+            'name' => StringField::new(),
+            'country_id' => IntegerField::new(),
+        ];
+    }
 
     public function cities()
     {

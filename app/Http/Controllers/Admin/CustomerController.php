@@ -26,12 +26,17 @@ use App\Models\ProfitSharingView;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MemberRequest;
+use App\Http\Resources\CityResource;
+use App\Http\Resources\WardResource;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Resources\StateResource;
 use App\Models\PaymentExpiredMembers;
 use App\Models\ProductPaymentRecords;
 use App\Http\Resources\MemberResource;
+use App\Http\Resources\StreetResource;
 use App\Http\Resources\InvoiceResource;
+use App\Http\Resources\TownshipResource;
 use App\Http\Requests\CustomerFormRequest;
 use App\Http\Resources\EditMemberResource;
 use App\Http\Requests\CustomerUpdateRequest;
@@ -127,45 +132,49 @@ class CustomerController extends Controller
 
         return view('admin.customers.create', $data);
     }
-    public function fetchState(Request $request)
+    public function fetchState(String $country_id)
     {
         $data['states'] = State::where(
             'country_id',
-            $request->country_id
-        )->get(['name', 'id']);
-        return response()->json($data);
+            $country_id
+        )->get();
+        return StateResource::collection($data);
+        // return response()->json($data);
     }
-    public function fetchCity(Request $request)
+    
+    public function fetchCity(String $state_id)
     {
         $data['cities'] = City::where(
             'state_id',
-            $request->state_id
-        )->get(['name', 'id']);
-        return response()->json($data);
+            $state_id
+        )->get();
+        return CityResource::collection($data);
+        // return response()->json($data);
     }
-    public function fetchTownship(Request $request)
+    public function fetchTownship(String $city_id)
     {
         $data['townships'] = Township::where(
             'city_id',
-            $request->city_id
-        )->get(['name', 'id']);
-        return response()->json($data);
+            $city_id
+        )->get();
+        return TownshipResource::collection($data);
     }
-    public function fetchWard(Request $request)
+    public function fetchWard(String $township_id)
     {
         $data['wards'] = Ward::where(
             'township_id',
-            $request->township_id
-        )->get(['name', 'id']);
-        return response()->json($data);
+            $township_id
+        )->get();
+        return WardResource::collection($data);
     }
-    public function fetchStreet(Request $request)
+
+    public function fetchStreet(String $ward_id)
     {
         $data['streets'] = Street::where(
             'ward_id',
-            $request->ward_id
-        )->get(['name', 'id']);
-        return response()->json($data);
+            $ward_id
+        )->get();
+        return StreetResource::collection($data);
     }
     public function daily(Request $request)
     {

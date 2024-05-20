@@ -120,7 +120,7 @@ class Crud
     public function deleteImage(): bool
     {
         $old_image = $this->record->image;
-        return $old_image ? Storage::disk('do')->delete($old_image) : false;
+        return $old_image ? Storage::disk('spaces')->delete($old_image) : false;
     }
 
     public static function storeImage($value, $imageDirectory, $imageName, $diskName)

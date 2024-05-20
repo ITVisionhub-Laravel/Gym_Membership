@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Db\Core;
+namespace App\Db\Core;
 
 use Carbon\Carbon;
 

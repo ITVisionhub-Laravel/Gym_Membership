@@ -2,17 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Db\Core\StringField;
+use App\Db\Core\IntegerField;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Street extends Model
 {
     use HasFactory;
 
     protected $table = 'streets';
-
-    protected $fillable = ['name','township_id'];
+    public function saveableFields(): array
+    {
+        return [
+            'name' => StringField::new(),
+            'ward_id' => IntegerField::new(),
+        ];
+    }
 
     public function ward():BelongsTo
     {

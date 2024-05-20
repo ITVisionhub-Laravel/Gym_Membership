@@ -48,6 +48,10 @@ return [
         'UPDATED_STREET' => 'Street has been updated successfully',
         'DELETED_STREET' => 'Street has been deleted successfully',
 
+        'CREATED_EXPENSE' => 'Expense has been created successfully',
+        'UPDATED_EXPENSE' => 'Expense has been updated successfully',
+        'DELETED_EXPENSE' => 'Expense has been deleted successfully',
+
         'CREATED_SETTING' => 'Setting Created Successfully',
         'UPDATED_SETTING' => 'Setting Updated Successfully',
        

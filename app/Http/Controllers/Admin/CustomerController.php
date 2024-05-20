@@ -137,8 +137,8 @@ class CustomerController extends Controller
         $data['states'] = State::where(
             'country_id',
             $country_id
-        )->get();
-        return StateResource::collection($data);
+        )->get(); 
+        return StateResource::collection($data['states']);
         // return response()->json($data);
     }
     
@@ -148,7 +148,7 @@ class CustomerController extends Controller
             'state_id',
             $state_id
         )->get();
-        return CityResource::collection($data);
+        return CityResource::collection($data['cities']);
         // return response()->json($data);
     }
     public function fetchTownship(String $city_id)
@@ -157,7 +157,7 @@ class CustomerController extends Controller
             'city_id',
             $city_id
         )->get();
-        return TownshipResource::collection($data);
+        return TownshipResource::collection($data['townships']);
     }
     public function fetchWard(String $township_id)
     {
@@ -165,7 +165,7 @@ class CustomerController extends Controller
             'township_id',
             $township_id
         )->get();
-        return WardResource::collection($data);
+        return WardResource::collection($data['wards']);
     }
 
     public function fetchStreet(String $ward_id)
@@ -174,7 +174,7 @@ class CustomerController extends Controller
             'ward_id',
             $ward_id
         )->get();
-        return StreetResource::collection($data);
+        return StreetResource::collection($data['streets']);
     }
     public function daily(Request $request)
     {

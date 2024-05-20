@@ -27,8 +27,6 @@ class ExpensesController extends Controller
     }
     public function index()
     {
-        dd("hello");
-        dd($this->expenseInterface);
         $expenses = Expenses::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
         if (request()->expectsJson()) {
             return ExpensesResource::collection($expenses);
@@ -69,10 +67,27 @@ class ExpensesController extends Controller
         return view('expenses.edit', compact('expense'));
     }
 
-    public function update()
+    public function update(ExpensesRequest $request, String $id)
     {
-        dd("hello");
-        
+        try{
+            $validatedData = $request->validated(); 
+            DB::beginTransaction();
+                $this->expense = $this->expenseInterface->update(
+                    "Expenses",
+                    $validatedData,
+                    $id
+                );
+                $this->debitCreditInfos($id); 
+            DB::commit();
+            if (request()->expectsJson()) {
+                return new ExpensesResource($this->expense);
+            }
+            return redirect()->route('expenses.index')->with('message', Config::get('variables.SUCCESS_MESSAGES.UPDATED_EXPENSE'));
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
+        }
+
     }
 
     public function destroy(Expenses $expense)
@@ -95,21 +110,44 @@ class ExpensesController extends Controller
         }
     }
 
-    public function debitCreditInfos($invoice_id = '')
+   public function debitCreditInfos($id = '')
     {
-        if ($invoice_id !== '') {
-            $new_debit_credit_info = DebitAndCredit::where('related_info_id', $invoice_id)->first();
-        } else {
-            $new_debit_credit_info = new DebitAndCredit();
+        // Ensure $this->expense has required properties
+        if (!isset($this->expense->name) || !isset($this->expense->amount)) {
+            throw new \Exception('Expense properties are not set.');
         }
-        // return $new_debit_credit_info;
-        $new_debit_credit_info->name = $this->expense->name;
-        $new_debit_credit_info->amount = $this->expense->amount;
-        $new_debit_credit_info->status_id = Config::get('variables.SUCCESS');
-        $new_debit_credit_info->date = Carbon::now()->format('Y-m-d');
-        $new_debit_credit_info->related_info_id = $this->expense->invoice_id;
-        $new_debit_credit_info->related_info_type = Config::get('variables.EXPENSES');
-        $new_debit_credit_info->transaction_type_id = Config::get('variables.CREDIT');
-        $new_debit_credit_info->save();
+
+         // Initialize or update DebitAndCredit model
+        $debitCredit = DebitAndCredit::where('related_info_id', $id)
+            ->where('related_info_type', Config::get('variables.EXPENSES'))
+            ->first();
+
+        // Initialize new DebitAndCredit model
+        // $new_debit_credit_info = new/.id = Config::get('variables.CREDIT');
+        // $data = $new_debit_credit_info->toArray();
+
+        if ($debitCredit) {
+        // Update existing record
+        $debitCredit->name = $this->expense->name;
+        $debitCredit->amount = $this->expense->amount;
+        $debitCredit->status_id = Config::get('variables.SUCCESS');
+        $debitCredit->date = Carbon::now()->format('Y-m-d');
+        $debitCredit->transaction_type_id = Config::get('variables.CREDIT');
+        $debitCredit->save();
+    } else {
+        // Create new record
+        $newDebitCredit = new DebitAndCredit();
+        $newDebitCredit->name = $this->expense->name;
+        $newDebitCredit->amount = $this->expense->amount;
+        $newDebitCredit->status_id = Config::get('variables.SUCCESS');
+        $newDebitCredit->date = Carbon::now()->format('Y-m-d');
+        $newDebitCredit->related_info_id = $id;
+        $newDebitCredit->related_info_type = Config::get('variables.EXPENSES');
+        $newDebitCredit->transaction_type_id = Config::get('variables.CREDIT');
+        $newDebitCredit->save();
     }
+
+    }
+
+
 }

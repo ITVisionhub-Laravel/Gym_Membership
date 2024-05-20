@@ -2,15 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Db\Core\StringField;
+use App\Db\Core\IntegerField;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Ward extends Model
 {
     use HasFactory;
-    protected $guarded = ['id'];
+    public function saveableFields(): array
+    {
+        return [
+            'name' => StringField::new(),
+            'township_id' => IntegerField::new(),
+        ];
+    }
 
     public function street(): HasMany
     {

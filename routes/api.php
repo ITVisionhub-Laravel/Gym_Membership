@@ -19,8 +19,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Delivery\DeliveryTypeController;
 use App\Http\Controllers\Admin\GymClassCategoryController;
 use App\Http\Controllers\Admin\Shop\ShopController;
-use App\Http\Controllers\Admin\Shop\ShopTypeController;
-use App\Http\Controllers\MemberController;
+use App\Http\Controllers\Admin\Shop\ShopTypeController; 
 use App\Http\Controllers\Admin\DebitAndCreditController;
 use App\Http\Controllers\Admin\ExpensesController;
 use App\Http\Controllers\Admin\LogoController;
@@ -77,8 +76,13 @@ Route::post('/login', [AuthController::class, 'login']);
         // Dashboard Routes
         Route::get('/dashboard', DashboardController::class);
         Route::get('/payment-expired-members', [CustomerController::class, 'showExpiredMembers']);
-        
-    // });
+
+// });
+Route::get('/fetch_state_by_country_id/{country_id}', [CustomerController::class, 'fetchState']);
+Route::get('/fetch_city_by_state_id/{state_id}', [CustomerController::class, 'fetchCity']);
+Route::get('/fetch_township_by_city_id/{city_id}', [CustomerController::class, 'fetchTownship']);
+Route::get('/fetch_ward_by_township_id/{township_id}', [CustomerController::class, 'fetchWard']);
+Route::get('/fetch_street_by_ward_id/{ward_id}', [CustomerController::class, 'fetchStreet']);
 
 Route::get('/gymclass-type/{gymClassCategoryId}', [GymClassType::class, 'GymClassType']);
 Route::get('/schedule-by-dayofweek/{dayOfWeek}', [FrontendController::class, 'scheduleByDayOfWeek']);

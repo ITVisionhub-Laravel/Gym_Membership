@@ -2,18 +2,25 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Db\Core\StringField;
+use App\Db\Core\IntegerField;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Township extends Model
 {
     use HasFactory;
 
-    protected $table = 'townships';
-
-    protected $fillable = ['name','city_id'];
+    protected $table = 'townships'; 
+    public function saveableFields(): array
+    {
+        return [
+            'name' => StringField::new(),
+            'city_id' => IntegerField::new(),
+        ];
+    }
 
     public function city():BelongsTo
     {

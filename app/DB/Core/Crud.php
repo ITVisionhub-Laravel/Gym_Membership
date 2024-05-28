@@ -19,6 +19,7 @@ class Crud
         private ?int $id,
         private $editMode,
         private $deleteMode,
+        private ?string $imageField = 'image'
     ) {
         $this->model = $model;
         $this->data = $data;
@@ -92,9 +93,13 @@ class Crud
         }catch(ModelNotFoundException){
             throw ErrorException::recordNotFoundCode(Config::get('variables.ERROR_MESSAGES.NOT_FOUND_RECORD'));
         }
-        if ($this->model->getTable() === 'products' || $this->model->getTable() === 'profiles' || $this->model->getTable() === 'users' || $this->model->getTable() === 'company') {
-            $this->deleteImage();
+        if ($this->record->{$this->imageField}) {
+            // dd("editimage");
+            $this->deleteImage($this->imageField);
         }
+        // if ($this->model->getTable() === 'products' || $this->model->getTable() === 'profiles' || $this->model->getTable() === 'users' || $this->model->getTable() === 'company') {
+        //     $this->deleteImage();
+        // }
         if ($this->data) {
             $record = $this->iterateData($this->data, $this->record);
             return $record->save() ? $this->record : response(status: 500);
@@ -105,6 +110,10 @@ class Crud
     {
         try {
             $this->record = $this->model->findOrFail($this->id);
+            // dd($this->model->getTable());
+            if ($this->model->getTable() === 'expenses') {
+                $this->deleteImage('invoice_slip ');
+            }
             return $this->record->delete() ? true : false;
         } catch (ModelNotFoundException) {
             throw ErrorException::recordNotFoundCode(Config::get('variables.ERROR_MESSAGES.NOT_FOUND_RECORD'));
@@ -117,9 +126,9 @@ class Crud
         return $this->model->saveableFields()[$column];
     }
 
-    public function deleteImage(): bool
+    public function deleteImage($image = 'image'): bool
     {
-        $old_image = $this->record->image;
+        $old_image = $this->record->$image;
         return $old_image ? Storage::disk('spaces')->delete($old_image) : false;
     }
 

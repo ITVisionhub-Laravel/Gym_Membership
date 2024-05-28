@@ -16,6 +16,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class GymClassCategoryController extends Controller
 {
     use UploadImageTrait;
+    // private $locationInterface;
+
+    // public function __construct(LocationInterface $locationInterface)
+    // {
+    //     $this->locationInterface = $locationInterface;
+    // }
+
     public function index(){ 
      $classCategories = GymClassCategory::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
     if (request()->expectsJson()) {

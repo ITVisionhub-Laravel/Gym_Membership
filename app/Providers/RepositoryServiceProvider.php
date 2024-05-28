@@ -21,6 +21,11 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Contracts\ExpenseInterface',
             'App\Repositories\ExpenseRepository'
         );
+
+        $this->app->bind(
+            'App\Contracts\MemberInterface',
+            'App\Repositories\MemberRepository'
+        );
     }
 
     /**

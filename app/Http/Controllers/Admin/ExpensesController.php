@@ -27,8 +27,8 @@ class ExpensesController extends Controller
     }
     public function index()
     {
-        $expenses = Expenses::paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
-        if (request()->expectsJson()) {
+        $expenses = $this->expenseInterface->all('Expenses');
+        if (request()->is('api/*')) {
             return ExpensesResource::collection($expenses);
         }
         return view('expenses.index', compact('expenses'));
@@ -40,26 +40,21 @@ class ExpensesController extends Controller
     }
 
     public function store(ExpensesRequest $request)
-    { 
-        // $validatedData = $request->validated(); 
-        // DB::beginTransaction();
-        // try {
-        //     $this->expenses = new Expenses();
-        //     $this->expenses->fill($validatedData);
-        //     $this->uploadImage($request, $this->expenses, 'expenses', 'invoice_slip');
-            
-        //     $this->expenses->save();
-        //     $this->debitCreditInfos();
-
-        //     DB::commit();
-        //     if (request()->expectsJson()) {
-        //         return new ExpensesResource($this->expenses);
-        //     }
-        //     return redirect()->route('expenses.index')->with('message', 'Expenses created successfully.');
-        // } catch (Exception $e) {
-        //     DB::rollback();
-        //     throw new Exception($e->getMessage());
-        // }
+    {
+        try {
+            $validatedData = $request->validated(); 
+            DB::beginTransaction();
+            $this->expense = $this->expenseInterface->store('Expenses', $validatedData);
+            $this->debitCreditInfos(); 
+            DB::commit();
+            if (request()->expectsJson()) {
+                return new ExpensesResource($this->expense);
+            }
+            return redirect()->route('expenses.index')->with('message', Config::get('variables.SUCCESS_MESSAGES.CREATED_EXPENSE'));
+        } catch (Exception $e) {
+            DB::rollback();
+            throw new Exception($e->getMessage());
+        }           
     }
 
     public function edit(Expenses $expense)
@@ -103,7 +98,7 @@ class ExpensesController extends Controller
             if (request()->expectsJson()) {
                 return $success ? response(status: 204) : response(status: 500);
             }
-            return redirect()->route('expenses.index')->with('message', 'Expenses deleted successfully.');
+            return redirect()->route('expenses.index')->with('message', Config::get('variables.SUCCESS_MESSAGES.DELETED_EXPENSE'));
         } catch (\Exception $e) {
             DB::rollBack();
             throw new Exception($e->getMessage());
@@ -117,7 +112,7 @@ class ExpensesController extends Controller
             throw new \Exception('Expense properties are not set.');
         }
 
-         // Initialize or update DebitAndCredit model
+        // Initialize or update DebitAndCredit model
         $debitCredit = DebitAndCredit::where('related_info_id', $id)
             ->where('related_info_type', Config::get('variables.EXPENSES'))
             ->first();

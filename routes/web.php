@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\ProfitSharingController;
-use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\ExpensesController;
 use App\Http\Controllers\OurRevenueListController;
 use App\Http\Controllers\Admin\AttendentController;
@@ -148,7 +148,7 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::controller(
-        App\Http\Controllers\Admin\CustomerController::class
+        App\Http\Controllers\Admin\MemberController::class
     )->group(function () {
         Route::get('/customers', 'index');
         Route::get('/customers/create', 'create');

@@ -14,7 +14,7 @@ use App\Http\Controllers\TownshipController;
 use App\Http\Controllers\Admin\BrandsController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ClassController;
-use App\Http\Controllers\Admin\CustomerController;
+use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Delivery\DeliveryTypeController;
 use App\Http\Controllers\Admin\GymClassCategoryController;
@@ -62,7 +62,7 @@ Route::post('/login', [AuthController::class, 'login']);
 
         // Gym Resources
         Route::resource('/gymclass-category', GymClassCategoryController::class);
-        Route::resource('/member', CustomerController::class);
+        Route::resource('/member', MemberController::class);
         Route::resource('/package', PaymentPackageController::class);
         Route::resource('/payment-provider', PaymentProviderController::class);
         Route::resource('/expenses', ExpensesController::class);
@@ -75,19 +75,19 @@ Route::post('/login', [AuthController::class, 'login']);
 
         // Dashboard Routes
         Route::get('/dashboard', DashboardController::class);
-        Route::get('/payment-expired-members', [CustomerController::class, 'showExpiredMembers']);
+        Route::get('/payment-expired-members', [MemberController::class, 'showExpiredMembers']);
 
 // });
-Route::get('/fetch_state_by_country_id/{country_id}', [CustomerController::class, 'fetchState']);
-Route::get('/fetch_city_by_state_id/{state_id}', [CustomerController::class, 'fetchCity']);
-Route::get('/fetch_township_by_city_id/{city_id}', [CustomerController::class, 'fetchTownship']);
-Route::get('/fetch_ward_by_township_id/{township_id}', [CustomerController::class, 'fetchWard']);
-Route::get('/fetch_street_by_ward_id/{ward_id}', [CustomerController::class, 'fetchStreet']);
+Route::get('/fetch_state_by_country_id/{country_id}', [MemberController::class, 'fetchState']);
+Route::get('/fetch_city_by_state_id/{state_id}', [MemberController::class, 'fetchCity']);
+Route::get('/fetch_township_by_city_id/{city_id}', [MemberController::class, 'fetchTownship']);
+Route::get('/fetch_ward_by_township_id/{township_id}', [MemberController::class, 'fetchWard']);
+Route::get('/fetch_street_by_ward_id/{ward_id}', [MemberController::class, 'fetchStreet']);
 
 Route::get('/gymclass-type/{gymClassCategoryId}', [GymClassType::class, 'GymClassType']);
 Route::get('/schedule-by-dayofweek/{dayOfWeek}', [FrontendController::class, 'scheduleByDayOfWeek']);
-Route::get('/admin/search_member', [CustomerController::class, 'searchMember']);
-Route::get('/admin/customers/{id}/history', [CustomerController::class, 'history']);
-Route::get('/admin/customers/{id}/invoice', [CustomerController::class, 'invoice']);
-Route::get('admin/customers/{customer}/edit', [CustomerController::class, 'edit']);
-Route::patch('admin/customers/{customer}', [CustomerController::class, 'update']);
+Route::get('/admin/search_member', [MemberController::class, 'searchMember']);
+Route::get('/admin/customers/{id}/history', [MemberController::class, 'history']);
+Route::get('/admin/customers/{id}/invoice', [MemberController::class, 'invoice']);
+Route::get('admin/customers/{customer}/edit', [MemberController::class, 'edit']);
+Route::patch('admin/customers/{customer}', [MemberController::class, 'update']);

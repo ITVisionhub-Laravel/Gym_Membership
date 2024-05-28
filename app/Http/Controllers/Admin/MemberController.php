@@ -23,6 +23,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use App\Traits\UploadImageTrait;
 use FontLib\TrueType\Collection;
 use App\Models\ProfitSharingView;
+use App\Contracts\MemberInterface;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MemberRequest;
@@ -44,10 +45,14 @@ use App\Http\Resources\SearchMemberResource;
 use App\Http\Resources\MemberHistoryResource;
 use App\Http\Resources\PaymentExpiredMemberResource;
 
-class CustomerController extends Controller
+class MemberController extends Controller
 {
-    // use FilterableByDatesTrait;
-    use UploadImageTrait;
+    private $memberInterface;
+
+    public function __construct(MemberInterface $memberInterface)
+    {
+        $this->memberInterface = $memberInterface;
+    }
 
     public function searchMember(Request $request)
     {
@@ -95,27 +100,36 @@ class CustomerController extends Controller
     }
 
     public function index()
-    {
-        $customers = User::with('address')
-            ->where('role_as', 0)
-            ->paginate(10);
+    { 
+        $customers = $this->memberInterface->all('User');    
             
         // For API
-        foreach ($customers as $customer) {
-            // dd($customer->address->last()?->street);
+        foreach ($customers as $customer) { 
             $customer->address->last()?->street;
             $customer->address->last()?->street?->ward;
             $customer->address->last()?->street?->ward?->township;
             $customer->address->last()?->street?->ward?->township?->city;
             $customer->address->last()?->street?->ward?->township?->city?->state;
-            $customer->address->last()?->street?->ward?->township?->city?->state?->country;
-            
+            $customer->address->last()?->street?->ward?->township?->city?->state?->country;            
         }
-        if (request()->expectsJson()) {
+        if (request()->is('api/*')) {
+            $customers->each(function ($customer) {
+                $address = $customer->address->last();
+                if ($address) {
+                    $address->street;
+                    $address->street?->ward;
+                    $address->street?->ward?->township;
+                    $address->street?->ward?->township?->city;
+                    $address->street?->ward?->township?->city?->state;
+                    $address->street?->ward?->township?->city?->state?->country;
+                }
+            });
+
             return MemberResource::collection($customers);
         }
         return view('admin.customers.index', compact('customers'));
     }
+
     public function create()
     {
         $data = [
@@ -132,16 +146,155 @@ class CustomerController extends Controller
 
         return view('admin.customers.create', $data);
     }
+
+    public function store(CustomerFormRequest $request)
+    {
+        $validatedData = $request->validated();
+        $customer = new User();
+        $address = new Address();
+        $customer->name = $validatedData['name'];
+        $customer->email = $validatedData['email'];
+        $customer->age = $validatedData['age'];
+        $customer->gender = $validatedData['gender'];
+        $customer->member_card = time();
+        $customer->password = bcrypt('00000');
+        $customer->gym_class_id = $validatedData['gym_class_id'];
+        $customer->height = $validatedData['height'];
+        $customer->weight = $validatedData['weight'];
+        $customer->phone_number = $validatedData['phone_number'];
+        $customer->emergency_phone = $validatedData['emergency_phone'];
+        $customer->facebook = $request->facebook;
+        $customer->twitter = $request->twitter;
+        $customer->linkedIn = $request->linkedIn;
+        $this->uploadImage($request, $customer, "member");
+        DB::beginTransaction();
+        try {
+            $customer->save();
+            $address->street_id = $request->street_id;
+            $address->user_id = $customer->id;
+            $address->block_no = $request->block_no;
+            $address->floor = $request->floor;
+            $address->zipcode = $request->zipcode;
+            $address->save();
+            DB::commit();
+            return redirect('admin/customers')->with('message', 'Customer Added Successfully');
+        } catch (Exception $e) {
+            DB::rollback();
+            dd("Exception occurred: " . $e->getMessage());
+        }
+        if (request()->expectsJson()) {
+            if (!$customer) {
+                return response()->json([
+                    'message' => 'Member not found'
+                ], 401);
+            }
+            return new MemberResource($customer);
+        }
+    }
+    public function edit(User $customer)
+    {
+        $data = [
+            'countries' => Country::all(),
+            'states' => State::all(),
+            'cities' => City::all(),
+            'townships' => Township::all(),
+            'wards' => Ward::all(),
+            'streets' => Street::all(),
+            'packages' => PaymentPackage::get(),
+            'providers' => PaymentProvider::get(),
+            'gymclasses' => GymClass::get(),
+            'userAddress' => Address::where('user_id', $customer->id)->latest()->first(),
+            'oldGymClassId' => $customer->gym_class_id,
+        ];
+        $data['payment_records'] = PaymentRecord::where(
+            'user_id',
+            $customer->id
+        )->get();
+        $this->setOldValues($data);
+
+        if (request()->expectsJson()) {
+            return new EditMemberResource($data, $customer);
+        }
+        return view('admin.customers.edit', $data, compact('customer'));
+    }
+
+    public function update(CustomerUpdateRequest $request, $customer)
+    {
+        $customer = User::findOrFail($customer);
+        $address = new Address();
+        $validatedData = $request->validated();
+        $customer->name = $validatedData['name'];
+        $customer->age = $validatedData['age'];
+        $customer->gender = $validatedData['gender'];
+        $customer->member_card = time();
+        $customer->password = bcrypt('00000');
+        $customer->gym_class_id = $validatedData['gym_class_id'];
+        $customer->height = $validatedData['height'];
+        $customer->weight = $validatedData['weight'];
+        $customer->phone_number = $validatedData['phone_number'];
+        $customer->emergency_phone = $validatedData['emergency_phone'];
+        $customer->facebook = $request->facebook;
+        $customer->twitter = $request->twitter;
+        $customer->linkedIn = $request->linkedIn;
+        $this->uploadImage($request, $customer, "member");
+
+
+        DB::beginTransaction();
+        try {
+            $customer->update();
+            $address->street_id = $request->street_id;
+            $address->user_id = $customer->id;
+            $address->block_no = $request->block_no;
+            $address->floor = $request->floor;
+            $address->zipcode = $request->zipcode;
+            $address->save();
+            DB::commit();
+
+            if (request()->expectsJson()) {
+                return new MemberResource($customer);
+            }
+            return redirect('admin/customers')->with('message', 'Customer Updated Successfully');
+        } catch (Exception $e) {
+            DB::rollback();
+            if (request()->expectsJson()) {
+                return response()->json(['error' => 'Failed to update customer, error: ' . $e->getMessage()], 500);
+            }
+            dd("Exception occurred: " . $e->getMessage());
+        }
+    }
+
+    public function destroy($customer_id)
+    {
+        $customer = User::findOrFail($customer_id);
+        $this->deleteImage($customer);
+
+        if ($customer->delete()) {
+            PaymentRecord::where('user_id', $customer_id)->delete();
+            PaymentExpiredMembers::where('user_id', $customer_id)->delete();
+        }
+        if (request()->expectsJson()) {
+            return response()->json([
+                'status' => 200,
+                'message' => 'City has been deleted successfully',
+            ]);
+        }
+        return redirect('admin/customers')->with(
+            'message',
+            'Customer Deleted Successfully'
+        );
+    }
+
+
     public function fetchState(String $country_id)
     {
         $data['states'] = State::where(
             'country_id',
             $country_id
-        )->get(); 
+        )->get();
         return StateResource::collection($data['states']);
         // return response()->json($data);
     }
-    
+
     public function fetchCity(String $state_id)
     {
         $data['cities'] = City::where(
@@ -226,76 +379,6 @@ class CustomerController extends Controller
         ];
         return response()->json($data);
     }
-    public function store(CustomerFormRequest $request)
-    {
-        $validatedData = $request->validated();
-        $customer = new User();
-        $address = new Address();
-        $customer->name = $validatedData['name'];
-        $customer->email = $validatedData['email'];
-        $customer->age = $validatedData['age'];
-        $customer->gender = $validatedData['gender'];
-        $customer->member_card = time();
-        $customer->password = bcrypt('00000');
-        $customer->gym_class_id = $validatedData['gym_class_id'];
-        $customer->height = $validatedData['height'];
-        $customer->weight = $validatedData['weight'];
-        $customer->phone_number = $validatedData['phone_number'];
-        $customer->emergency_phone = $validatedData['emergency_phone'];
-        $customer->facebook = $request->facebook;
-        $customer->twitter = $request->twitter;
-        $customer->linkedIn = $request->linkedIn;
-        $this->uploadImage($request, $customer, "member");
-        DB::beginTransaction();
-        try {
-            $customer->save();
-            $address->street_id = $request->street_id;
-            $address->user_id = $customer->id;
-            $address->block_no = $request->block_no;
-            $address->floor = $request->floor;
-            $address->zipcode = $request->zipcode;
-            $address->save();
-            DB::commit();
-            return redirect('admin/customers')->with('message', 'Customer Added Successfully');
-        } catch (Exception $e) {
-            DB::rollback();
-            dd("Exception occurred: " . $e->getMessage());
-        }
-        if (request()->expectsJson()) {
-            if (!$customer) {
-                return response()->json([
-                    'message' => 'Member not found'
-                ], 401);
-            }
-            return new MemberResource($customer);
-        }
-    }
-    public function edit(User $customer)
-    {
-        $data = [
-            'countries' => Country::all(),
-            'states' => State::all(),
-            'cities' => City::all(),
-            'townships' => Township::all(),
-            'wards' => Ward::all(),
-            'streets' => Street::all(),
-            'packages' => PaymentPackage::get(),
-            'providers' => PaymentProvider::get(),
-            'gymclasses' => GymClass::get(),
-            'userAddress' => Address::where('user_id', $customer->id)->latest()->first(),
-            'oldGymClassId' => $customer->gym_class_id,
-        ];
-        $data['payment_records'] = PaymentRecord::where(
-            'user_id',
-            $customer->id
-        )->get();
-        $this->setOldValues($data);
-
-        if (request()->expectsJson()) {
-            return new EditMemberResource($data, $customer);
-        }
-        return view('admin.customers.edit', $data, compact('customer'));
-    }
 
     private function setOldValues(&$data)
     {
@@ -307,72 +390,6 @@ class CustomerController extends Controller
         $data['oldTownshipId'] = $userAddress->street->ward->township->id ?? null;
         $data['oldWardId'] = $userAddress->street->ward->id ?? null;
         $data['oldStreetId'] = $userAddress->street->id ?? null;
-    }
-
-    public function update(CustomerUpdateRequest $request, $customer)
-    {
-        $customer = User::findOrFail($customer);
-        $address = new Address();
-        $validatedData = $request->validated();
-        $customer->name = $validatedData['name'];
-        $customer->age = $validatedData['age'];
-        $customer->gender = $validatedData['gender'];
-        $customer->member_card = time();
-        $customer->password = bcrypt('00000');
-        $customer->gym_class_id = $validatedData['gym_class_id'];
-        $customer->height = $validatedData['height'];
-        $customer->weight = $validatedData['weight'];
-        $customer->phone_number = $validatedData['phone_number'];
-        $customer->emergency_phone = $validatedData['emergency_phone'];
-        $customer->facebook = $request->facebook;
-        $customer->twitter = $request->twitter;
-        $customer->linkedIn = $request->linkedIn;
-        $this->uploadImage($request, $customer, "member");
-
-
-        DB::beginTransaction();
-        try {
-            $customer->update();
-            $address->street_id = $request->street_id;
-            $address->user_id = $customer->id;
-            $address->block_no = $request->block_no;
-            $address->floor = $request->floor;
-            $address->zipcode = $request->zipcode;
-            $address->save();
-            DB::commit();
-
-            if (request()->expectsJson()) {
-                return new MemberResource($customer);
-            }
-            return redirect('admin/customers')->with('message', 'Customer Updated Successfully');
-        } catch (Exception $e) {
-            DB::rollback();
-            if (request()->expectsJson()) {
-                return response()->json(['error' => 'Failed to update customer, error: ' . $e->getMessage()], 500);
-            }
-            dd("Exception occurred: " . $e->getMessage());
-        }
-    }
-
-    public function destroy($customer_id)
-    {
-        $customer = User::findOrFail($customer_id);
-        $this->deleteImage($customer);
-
-        if ($customer->delete()) {
-            PaymentRecord::where('user_id', $customer_id)->delete();
-            PaymentExpiredMembers::where('user_id', $customer_id)->delete();
-        }
-        if (request()->expectsJson()) {
-            return response()->json([
-                'status' => 200,
-                'message' => 'City has been deleted successfully',
-            ]);
-        }
-        return redirect('admin/customers')->with(
-            'message',
-            'Customer Deleted Successfully'
-        );
     }
 
     public function history($customer_id)

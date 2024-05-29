@@ -30,6 +30,7 @@ use App\Http\Requests\MemberRequest;
 use App\Http\Resources\CityResource;
 use App\Http\Resources\WardResource;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Resources\StateResource;
 use App\Models\PaymentExpiredMembers;
@@ -48,6 +49,9 @@ use App\Http\Resources\PaymentExpiredMemberResource;
 class MemberController extends Controller
 {
     private $memberInterface;
+    public $addressDataKeys = [
+            'street_id', 'block_no', 'floor', 'zipcode'
+        ];
 
     public function __construct(MemberInterface $memberInterface)
     {
@@ -102,29 +106,8 @@ class MemberController extends Controller
     public function index()
     { 
         $customers = $this->memberInterface->all('User');    
-            
-        // For API
-        foreach ($customers as $customer) { 
-            $customer->address->last()?->street;
-            $customer->address->last()?->street?->ward;
-            $customer->address->last()?->street?->ward?->township;
-            $customer->address->last()?->street?->ward?->township?->city;
-            $customer->address->last()?->street?->ward?->township?->city?->state;
-            $customer->address->last()?->street?->ward?->township?->city?->state?->country;            
-        }
-        if (request()->is('api/*')) {
-            $customers->each(function ($customer) {
-                $address = $customer->address->last();
-                if ($address) {
-                    $address->street;
-                    $address->street?->ward;
-                    $address->street?->ward?->township;
-                    $address->street?->ward?->township?->city;
-                    $address->street?->ward?->township?->city?->state;
-                    $address->street?->ward?->township?->city?->state?->country;
-                }
-            });
-
+        
+        if (request()->is('api/*')) { 
             return MemberResource::collection($customers);
         }
         return view('admin.customers.index', compact('customers'));
@@ -147,40 +130,35 @@ class MemberController extends Controller
         return view('admin.customers.create', $data);
     }
 
+    private function splitAddressData(array $data)
+    { 
+        $addressData = array_intersect_key($data, array_flip($this->addressDataKeys));
+        return  $addressData;
+    }
+
+
     public function store(CustomerFormRequest $request)
-    {
+    { 
         $validatedData = $request->validated();
-        $customer = new User();
-        $address = new Address();
-        $customer->name = $validatedData['name'];
-        $customer->email = $validatedData['email'];
-        $customer->age = $validatedData['age'];
-        $customer->gender = $validatedData['gender'];
-        $customer->member_card = time();
-        $customer->password = bcrypt('00000');
-        $customer->gym_class_id = $validatedData['gym_class_id'];
-        $customer->height = $validatedData['height'];
-        $customer->weight = $validatedData['weight'];
-        $customer->phone_number = $validatedData['phone_number'];
-        $customer->emergency_phone = $validatedData['emergency_phone'];
-        $customer->facebook = $request->facebook;
-        $customer->twitter = $request->twitter;
-        $customer->linkedIn = $request->linkedIn;
-        $this->uploadImage($request, $customer, "member");
-        DB::beginTransaction();
+        $validatedData['member_card']  = time();
+        $validatedData['password']  = Hash::make("password");
+        // Split the data
+        $addressData = $this->splitAddressData($validatedData);
+        $userData = array_diff_key($validatedData, array_flip($this->addressDataKeys));
+        
         try {
-            $customer->save();
-            $address->street_id = $request->street_id;
-            $address->user_id = $customer->id;
-            $address->block_no = $request->block_no;
-            $address->floor = $request->floor;
-            $address->zipcode = $request->zipcode;
-            $address->save();
+            DB::beginTransaction();
+            $customer = $this->memberInterface->store('User', $userData);
+            $addressData['user_id'] = $customer['id'];
+            $this->memberInterface->store('Address', $addressData);
             DB::commit();
+            if (request()->is('api/*')) {
+                return new MemberResource($customer);
+            }
             return redirect('admin/customers')->with('message', 'Customer Added Successfully');
         } catch (Exception $e) {
             DB::rollback();
-            dd("Exception occurred: " . $e->getMessage());
+            throw new Exception($e->getMessage());
         }
         if (request()->expectsJson()) {
             if (!$customer) {

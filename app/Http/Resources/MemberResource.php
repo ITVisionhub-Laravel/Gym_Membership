@@ -20,8 +20,8 @@ class MemberResource extends JsonResource
     }
     public function toArray($request)
     {
-        // dd(Address::where('user_id', $this->customer->id)->latest('updated_at')->first());
-        $addressData = Address::where('user_id', $this->customer->id)->latest('updated_at')->first();
+        // $addressData = Address::where('user_id', $this->customer->id)->latest('updated_at')->first();
+        $addressData = $this->customer->address->last();
         return [
             'id' => $this->customer->id,
             'name' => $this->customer->name,
@@ -38,15 +38,15 @@ class MemberResource extends JsonResource
             'emergency' => $this->customer->emergency_phone,
             'image' => $this->customer->image,
             'address' => [
-                'Street' => $addressData?->street->name,
-                'Ward' => $addressData?->street->ward->name,
-                'Township' => $addressData?->street->ward->township->name,
-                'City' => $addressData?->street->ward->township->city->name,
-                'State' => $addressData?->street->ward->township->city->state->name,
-                'Country' => $addressData?->street->ward->township->city->state->country->name,
-                'Block_no' => $addressData?->block_no,
-                'Floor' => $addressData?->floor,
-                'ZipCode' => $addressData?->zipcode
+                'street' => $addressData?->street->name,
+                'ward' => $addressData?->street->ward->name,
+                'township' => $addressData?->street->ward->township->name,
+                'city' => $addressData?->street->ward->township->city->name,
+                'state' => $addressData?->street->ward->township->city->state->name,
+                'country' => $addressData?->street->ward->township->city->state->country->name,
+                'block_no' => $addressData?->block_no,
+                'floor' => $addressData?->floor,
+                'zipCode' => $addressData?->zipcode
             ]
         ];
     }

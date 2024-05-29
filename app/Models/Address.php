@@ -2,17 +2,27 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Db\Core\StringField;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Address extends Model
 {
     use HasFactory;
     protected $table = 'addresses';
-    protected $guarded = ['id'];
-
+    public function saveableFields(): array
+    {
+        return [
+            "street_id" => StringField::new(),
+            "floor" => StringField::new(),
+            "block_no" => StringField::new(),
+            "zipcode" => StringField::new(),
+            "user_id" => StringField::new()
+        ];
+    }
+    
     public function street(){
         return $this->belongsTo(Street::class, 'street_id', 'id');
     }

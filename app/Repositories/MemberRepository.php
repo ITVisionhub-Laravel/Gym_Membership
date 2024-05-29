@@ -17,9 +17,9 @@ class MemberRepository implements MemberInterface
     }
     
     public function all(string $modelName)
-    { 
+    {  
         try { 
-            return $this->getModelInstance($modelName)::with('address')
+            return $this->getModelInstance($modelName)::with('address.street.ward.township.city.state.country')
                         ->where('role_as', 0)
                         ->paginate(Config::get('variables.NUMBER_OF_ITEMS_PER_PAGE'));
         } catch (BindingResolutionException) {

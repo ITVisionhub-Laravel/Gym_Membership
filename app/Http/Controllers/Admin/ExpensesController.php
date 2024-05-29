@@ -47,7 +47,7 @@ class ExpensesController extends Controller
             $this->expense = $this->expenseInterface->store('Expenses', $validatedData);
             $this->debitCreditInfos(); 
             DB::commit();
-            if (request()->expectsJson()) {
+            if (request()->is('api/*')) {
                 return new ExpensesResource($this->expense);
             }
             return redirect()->route('expenses.index')->with('message', Config::get('variables.SUCCESS_MESSAGES.CREATED_EXPENSE'));

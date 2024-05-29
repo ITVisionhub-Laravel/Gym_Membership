@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Db\Core;
+namespace App\DB\Core;
 
-use App\Db\Core\Crud;
+use App\DB\Core\Crud;
 use Illuminate\Support\Facades\Storage;
 
 class ImageField extends ParentField

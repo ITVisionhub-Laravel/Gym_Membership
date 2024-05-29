@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Db\Core\Crud; 
+use App\DB\Core\Crud; 
 use App\Contracts\MemberInterface;
 use App\Exceptions\ErrorException; 
 use Illuminate\Support\Facades\Config;
@@ -39,19 +39,21 @@ class MemberRepository implements MemberInterface
     public function store(string $modelName, array $data)
     { 
         $crud = new Crud($this->getModelInstance($modelName), $data, null, false, false);
-        $crud->setImageDirectory("members", "members", "spaces");
+        $crud->setImageDirectory("users", "users", "spaces");
         return $crud->execute();
     }
 
     public function update($modelName, array $data, int $id)
     { 
         $crud = new Crud($this->getModelInstance($modelName), $data, $id, true, false);
-        $crud->setImageDirectory("members", "members", "spaces");
+        $crud->setImageDirectory("users", "users", "spaces");
         return $crud->execute();
     }
 
     public function delete(string $modelName, int $id)
     {
-        return (new Crud($this->getModelInstance($modelName), null, $id, false, true))->execute();
+        $crud = new Crud($this->getModelInstance($modelName), null, $id, false, true);
+        $crud->setImageDirectory("users", "users", "spaces");
+        return $crud->execute();
     }
 }

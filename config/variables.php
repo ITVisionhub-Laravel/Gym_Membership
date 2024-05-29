@@ -52,6 +52,10 @@ return [
         'UPDATED_EXPENSE' => 'Expense has been updated successfully',
         'DELETED_EXPENSE' => 'Expense has been deleted successfully',
 
+        'CREATED_MEMBER' => 'Member has been created successfully',
+        'UPDATED_MEMBER' => 'Member has been updated successfully',
+        'DELETED_MEMBER' => 'Member has been deleted successfully',
+
         'CREATED_SETTING' => 'Setting Created Successfully',
         'UPDATED_SETTING' => 'Setting Updated Successfully',
        

@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Repositories;
-use App\Db\Core\Crud;
+use App\DB\Core\Crud;
 use App\Exceptions\ErrorException;
 use App\Contracts\LocationInterface;
 use Illuminate\Support\Facades\Config;  

@@ -13,30 +13,30 @@ class MemberResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    private $customer;
-    public function __construct($customer)
+    private $member;
+    public function __construct($member)
     {
-        $this->customer = $customer;
+        $this->member = $member;
     }
     public function toArray($request)
     {
-        // $addressData = Address::where('user_id', $this->customer->id)->latest('updated_at')->first();
-        $addressData = $this->customer->address->last();
+        // $addressData = Address::where('user_id', $this->member->id)->latest('updated_at')->first();
+        $addressData = $this->member->address->last();
         return [
-            'id' => $this->customer->id,
-            'name' => $this->customer->name,
-            'email' => $this->customer->email,
-            'member_card' => $this->customer->member_card,
-            'twitter' => $this->customer->twitter,
-            'facebook' => $this->customer->facebook,
-            'linkedIn' => $this->customer->linkedIn,
-            'age' => $this->customer->age,
-            'gender' => $this->customer->gender,
-            'height' => $this->customer->height,
-            'weight' => $this->customer->weight,
-            'mobile' => $this->customer->phone_number,
-            'emergency' => $this->customer->emergency_phone,
-            'image' => $this->customer->image,
+            'id' => $this->member->id,
+            'name' => $this->member->name,
+            'email' => $this->member->email,
+            'member_card' => $this->member->member_card,
+            'twitter' => $this->member->twitter,
+            'facebook' => $this->member->facebook,
+            'linkedIn' => $this->member->linkedIn,
+            'age' => $this->member->age,
+            'gender' => $this->member->gender,
+            'height' => $this->member->height,
+            'weight' => $this->member->weight,
+            'mobile' => $this->member->phone_number,
+            'emergency' => $this->member->emergency_phone,
+            'image' => $this->member->image,
             'address' => [
                 'street' => $addressData?->street->name,
                 'ward' => $addressData?->street->ward->name,

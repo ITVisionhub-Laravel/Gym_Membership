@@ -151,6 +151,7 @@ class MemberController extends Controller
             DB::beginTransaction();
             $member = $this->memberInterface->store('User', $userData);
             $addressData['user_id'] = $member->id;
+            dd($addressData);
             $this->memberInterface->store('Address', $addressData);
             DB::commit();
             if (request()->is('api/*')) {

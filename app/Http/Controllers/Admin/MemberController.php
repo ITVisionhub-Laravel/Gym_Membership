@@ -149,25 +149,22 @@ class MemberController extends Controller
         
         try {
             DB::beginTransaction();
-            $customer = $this->memberInterface->store('User', $userData);
-            $addressData['user_id'] = $customer['id'];
+            $member = $this->memberInterface->store('User', $userData);
+            $addressData['user_id'] = $member->id;
             $this->memberInterface->store('Address', $addressData);
             DB::commit();
             if (request()->is('api/*')) {
-                return new MemberResource($customer);
+                if (!$member) {
+                    return response()->json([
+                        'message' => 'Member not found'
+                    ], 401);
+                }
+                return new MemberResource($member);
             }
             return redirect('admin/customers')->with('message', Config::get('variables.SUCCESS_MESSAGES.CREATED_MEMBER'));
         } catch (Exception $e) {
             DB::rollback();
             throw new Exception($e->getMessage());
-        }
-        if (request()->expectsJson()) {
-            if (!$customer) {
-                return response()->json([
-                    'message' => 'Member not found'
-                ], 401);
-            }
-            return new MemberResource($customer);
         }
     }
     public function edit(User $customer)

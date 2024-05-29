@@ -5,11 +5,14 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\Customer;
 use App\Models\Position;
+use App\Db\Core\ImageField;
+use App\Db\Core\StringField;
+use App\Db\Core\IntegerField;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -21,7 +24,26 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $guarded = ['id'];
+    public function saveableFields(): array
+    {
+        return [
+            "name" => StringField::new(),
+            "email" => StringField::new(),
+            "password" => StringField::new(),
+            "age" => IntegerField::new(),
+            "gender" => StringField::new(),
+            "height" => StringField::new(),
+            "weight" => StringField::new(),
+            "member_card" => IntegerField::new(),
+            "phone_number" => StringField::new(),
+            "emergency_phone" => StringField::new(),
+            "gym_class_id" => StringField::new(),
+            "image" => ImageField::new(),
+            "facebook" => StringField::new(),
+            "twitter" => StringField::new(),
+            "linkedIn" => StringField::new(),
+        ];
+    }
 
     /**
      * The attributes that should be hidden for serialization.

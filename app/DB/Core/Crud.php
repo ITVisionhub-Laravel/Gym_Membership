@@ -67,7 +67,6 @@ class Crud
         $target = $record ?? $this->model;
         foreach ($data as $column => $value) {
             $target->{$column} = $this->savableField($column)->setValue($value)->execute();
-            Log::error("This is savabled data");
         }
         return $target;
     }
@@ -76,7 +75,7 @@ class Crud
     {
         if ($this->data) {
             $this->model = $this->iterateData($this->data, null);
-            Log::error('This is stored data log');
+           
             if ($this->model->save()) {
                 return $this->model;
             } 

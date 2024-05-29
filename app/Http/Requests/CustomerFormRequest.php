@@ -42,6 +42,7 @@ class CustomerFormRequest extends FormRequest
             'facebook' => ['nullable', 'string'],
             'twitter' => ['nullable', 'string'],
             'linkedIn' => ['nullable', 'string'],
+            'user_id' => ['nullable', 'string']
         ];
     }
 }

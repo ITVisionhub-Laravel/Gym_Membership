@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Db\Core\ImageField;
-use App\Db\Core\StringField;
-use App\Db\Core\IntegerField;
+use App\DB\Core\ImageField;
+use App\DB\Core\StringField;
+use App\DB\Core\IntegerField;
 use App\Traits\FilterableByDatesTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;

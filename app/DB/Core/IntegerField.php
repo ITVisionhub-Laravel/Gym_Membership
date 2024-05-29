@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Db\Core;
+namespace App\DB\Core;
 
 class IntegerField extends ParentField
 {

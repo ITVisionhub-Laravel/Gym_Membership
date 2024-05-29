@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Db\Core;
+namespace App\DB\Core;
  
 use app\Db\Core\ParentField;
 use App\Exceptions\ErrorException;

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Db\Core\StringField;
+use App\DB\Core\StringField;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

@@ -195,48 +195,28 @@ class MemberController extends Controller
         return view('admin.customers.edit', $data, compact('customer'));
     }
 
-    public function update(CustomerUpdateRequest $request, $customer)
+    public function update(CustomerUpdateRequest $request, $member_id)
     {
-        // $customer = User::findOrFail($customer);
-        // $address = new Address();
-        // $validatedData = $request->validated();
-        // $customer->name = $validatedData['name'];
-        // $customer->age = $validatedData['age'];
-        // $customer->gender = $validatedData['gender'];
-        // $customer->member_card = time();
-        // $customer->password = bcrypt('00000');
-        // $customer->gym_class_id = $validatedData['gym_class_id'];
-        // $customer->height = $validatedData['height'];
-        // $customer->weight = $validatedData['weight'];
-        // $customer->phone_number = $validatedData['phone_number'];
-        // $customer->emergency_phone = $validatedData['emergency_phone'];
-        // $customer->facebook = $request->facebook;
-        // $customer->twitter = $request->twitter;
-        // $customer->linkedIn = $request->linkedIn;
-        // $this->uploadImage($request, $customer, "member");
-
-
-        DB::beginTransaction();
+        $validatedData = $request->validated(); 
+        $validatedData['member_card']  = time();
+        $validatedData['password']  = Hash::make("password");
+        // Split the data
+        $addressData = $this->splitAddressData($validatedData);
+        $userData = array_diff_key($validatedData, array_flip($this->addressDataKeys));
         try {
-            // $customer->update();
-            // $address->street_id = $request->street_id;
-            // $address->user_id = $customer->id;
-            // $address->block_no = $request->block_no;
-            // $address->floor = $request->floor;
-            // $address->zipcode = $request->zipcode;
-            // $address->save();
-            DB::commit();
+            DB::beginTransaction();
+            $member = $this->memberInterface->update('User', $userData, $member_id);
+            $addressData['user_id'] = $member->id;
 
-            if (request()->is('api/*')) {
-                return new MemberResource($customer);
+            $this->memberInterface->update('Address', $addressData, $member_id, 'user_id');
+            DB::commit();
+            if (request()->is('api/*')) {  
+                return new MemberResource($member);
             }
-            return redirect('admin/customers')->with('message', 'Customer Updated Successfully');
+            return redirect('admin/customers')->with('message', Config::get('variables.SUCCESS_MESSAGES.UPDATED_MEMBER'));
         } catch (Exception $e) {
             DB::rollback();
-            if (request()->expectsJson()) {
-                return response()->json(['error' => 'Failed to update customer, error: ' . $e->getMessage()], 500);
-            }
-            dd("Exception occurred: " . $e->getMessage());
+            throw new Exception($e->getMessage());
         }
     }
 

@@ -43,9 +43,14 @@ class MemberRepository implements MemberInterface
         return $crud->execute();
     }
 
-    public function update($modelName, array $data, int $id)
+    public function update($modelName, array $data, int $id, String $updateColumnField = null)
     { 
-        $crud = new Crud($this->getModelInstance($modelName), $data, $id, true, false);
+        if($updateColumnField != null){  
+            $crud = new Crud($this->getModelInstance($modelName), $data, $id, true, false, $updateColumnField);
+        } else{
+            $crud = new Crud($this->getModelInstance($modelName), $data, $id, true, false);
+        }
+        
         $crud->setImageDirectory("users", "users", "spaces");
         return $crud->execute();
     }

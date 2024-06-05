@@ -19,13 +19,14 @@ class Crud
         private ?int $id,
         private $editMode,
         private $deleteMode,
-        private ?string $imageField = 'image'
+        private ?string $updateColumnField = 'id',
+        private ?string $imageField = 'image',
     ) {
         $this->model = $model;
         $this->data = $data;
         $this->id = $id;
         $this->editMode = $editMode;
-        $this->deleteMode = $deleteMode;
+        $this->deleteMode = $deleteMode; 
         self::$tableName = $model->getTable();
     }
 
@@ -88,20 +89,21 @@ class Crud
     protected function handleEditMode(): Model
     {
         try{
-            $this->record = $this->model->findOrFail($this->id);
+            $this->record = $this->model->where($this->updateColumnField,$this->id)->first();
         }catch(ModelNotFoundException){
             throw ErrorException::recordNotFoundCode(Config::get('variables.ERROR_MESSAGES.NOT_FOUND_RECORD'));
         }
-        if ($this->record->{$this->imageField}) {
-            // dd("editimage");
+        if ($this->record?->{$this->imageField}) { 
             $this->deleteImage($this->imageField);
         }
+        
         // if ($this->model->getTable() === 'products' || $this->model->getTable() === 'profiles' || $this->model->getTable() === 'users' || $this->model->getTable() === 'company') {
         //     $this->deleteImage();
         // }
         if ($this->data) {
             $record = $this->iterateData($this->data, $this->record);
-            return $record->save() ? $this->record : response(status: 500);
+            return $record->save() ? $record : response(status: 500);
+            // return $record->save() ? $this->record : response(status: 500);
         }
     }
 
